@@ -1,5 +1,5 @@
 # base image
-FROM node:8.4.0
+FROM node:13.6.0
 
 # set working directory
 RUN mkdir /usr/src/app
@@ -10,10 +10,9 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY . .
-RUN npm install --silent
-RUN npm install react-scripts@1.1.1 -g --silent
-
+RUN npm install
+WORKDIR /usr/src/app
 EXPOSE 3000
 
 # start application
-CMD ["npm", "start"]
+CMD npm run start

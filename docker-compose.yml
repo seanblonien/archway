@@ -1,0 +1,45 @@
+version: '3'
+services:
+  database:
+    container_name: 'database'
+    hostname: 'database'
+    image: 'mongo:3.4.23'
+    environment:
+      - MONGO_INITDB_DATABASE=strapi
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=capstone
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - 27017:27017
+    restart: always
+
+  strapi:
+    container_name: strapi
+    image: strapi/strapi
+    environment:
+      - DATABASE_CLIENT=mongo
+      - DATABASE_HOST=database
+      - DATABASE_PORT=27017
+      - DATABASE_NAME=strapi
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=capstone
+    ports:
+      - 1337:1337
+    depends_on:
+      - database
+
+  app:
+    container_name: app
+    hostname: app
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src:/usr/src/app
+    depends_on:
+      - strapi
+    environment:
+      - MONGO_URI=mongodb://database/database
+volumes:
+  mongodata:
