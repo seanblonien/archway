@@ -10,9 +10,9 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY . .
-RUN npm install
+RUN npm install --silent
 WORKDIR /usr/src/app
 EXPOSE 3000
 
 # start application
-CMD npm run start
+CMD ["npm","start"]
