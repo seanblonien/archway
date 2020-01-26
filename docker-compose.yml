@@ -33,14 +33,14 @@ services:
   app:
     hostname: app
     container_name: app
-    build: ./app
+    build: .
     image: app:latest
     ports:
       - 3000:3000
     depends_on:
-      - strapi
+      -  strapi
     environment:
-      - MONGO_URI=mongodb://database:27017/strapi
+      - MONGO_URI='mongodb://database:27017/strapi'
     networks:
       - backend
 volumes:

@@ -7,12 +7,12 @@ WORKDIR /usr/src/app
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
+ENV MONGO_URI 'mongodb://database:27017/strapi'
 
 # install and cache app dependencies
 COPY . .
 RUN npm install --silent
-WORKDIR /usr/src/app
 EXPOSE 3000
-
+RUN ls
 # start application
 CMD ["npm","start"]
