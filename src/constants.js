@@ -7,7 +7,7 @@ Stephen Tate - added the school colors and homepageBackground functionality
 
 import Strapi from 'strapi-sdk-javascript/build/main';
 
-export const strapiURL = "http://192.168.3.114:1337";
+export const strapiURL = "http://strapi:1337";
 export var strapi = new Strapi(strapiURL);
 
 //Put the name of your university here

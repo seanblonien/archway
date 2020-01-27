@@ -1,0 +1,12 @@
+# base image
+FROM mongo:3.4.23
+
+ENV MONGO_INITDB_DATABASE=strapi
+ENV MONGO_INITDB_ROOT_USERNAME=root
+ENV MONGO_INITDB_ROOT_PASSWORD=capstone
+
+VOLUME mongodata:/data/db
+
+EXPOSE 27017
+
+

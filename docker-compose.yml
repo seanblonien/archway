@@ -1,0 +1,52 @@
+version: '3.7'
+
+services:
+  database:
+    hostname: database
+    container_name: database
+    build: ./database
+    image: database:latest
+    ports:
+      - 27017:27017
+    restart: always
+    networks:
+      - backend
+  database-seed:
+    container_name: database-seed
+    build: ./database/seed
+    image: database-seed:latest
+    depends_on:
+      - database
+    networks:
+      - backend
+  strapi:
+    hostname: strapi
+    container_name: strapi
+    build: ./strapi
+    image: strapi:latest
+    ports:
+      - 1337:1337
+    depends_on:
+      - database-seed
+    networks:
+      - backend
+  app:
+    hostname: app
+    container_name: app
+    build: .
+    image: app:latest
+    ports:
+      - 3000:3000
+    depends_on:
+      -  strapi
+    environment:
+      - MONGO_URI='mongodb://database:27017/strapi'
+    networks:
+      - backend
+volumes:
+  mongodata:
+  resources:
+networks:
+  backend:
+    name: backend
+    driver: bridge
