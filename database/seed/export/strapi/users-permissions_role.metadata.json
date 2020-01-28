@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"strapi.users-permissions_role"},{"v":2,"unique":true,"key":{"type":1},"name":"type_1","ns":"strapi.users-permissions_role","background":true}]}
