@@ -1,5 +1,5 @@
 # base image
-FROM strapi/strapi
+FROM strapi/strapi:3.0.0-beta.18.6-node12
 
 ENV DATABASE_CLIENT=mongo
 ENV DATABASE_HOST=database
