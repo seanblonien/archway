@@ -8,6 +8,7 @@ services:
     image: database:latest
     volumes:
     - ./database/seed/export:/export
+    - /mnt/mongodb/mongodata:/data/db
     ports:
       - 27017:27017
     restart: always
