@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.5'
 
 services:
   database:
@@ -48,9 +48,8 @@ services:
       - MONGO_URI='mongodb://database:27017/strapi'
     networks:
       - backend
-volumes:
-  mongodata:
-  resources:
+    volumes:
+      - .:/usr/src/app
 networks:
   backend:
     name: backend

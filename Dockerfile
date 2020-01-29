@@ -10,10 +10,6 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 ENV MONGO_URI 'mongodb://database:27017/strapi'
 
 # install and cache app dependencies
-COPY src ./src
-COPY package.json ./package.json
-COPY public ./public
-RUN npm install --silent
 EXPOSE 3000
 
 # start application
