@@ -6,6 +6,9 @@ services:
     container_name: database
     build: ./database
     image: database:latest
+    volumes:
+    - ./database/seed/export:/export
+    - /mnt/mongodb/mongodata:/data/db
     ports:
       - 27017:27017
     restart: always
@@ -24,6 +27,8 @@ services:
     container_name: strapi
     build: ./strapi
     image: strapi:latest
+    volumes:
+      - ./strapi/app:/srv/app
     ports:
       - 1337:1337
     depends_on:
