@@ -1,42 +1,65 @@
-version: '3.5'
+version: '3.7'
 
+# The distinct services/containers that our app needs to run
 services:
+
+  # Run configuration for the MongoDB database
   database:
-    hostname: database
     container_name: database
+    # Runs the Dockerfile build in the /database folder
     build: ./database
+    # The name of the built database image with version
     image: database:latest
+    # Mounts the local directory to where the database values are stored
+    # This is what makes the database persistent
     volumes:
     - /mnt/mongodb/mongodata:/data/db
+    # Exposes the host port to the container port for interservice communication
     ports:
       - 27017:27017
     restart: on-failure
+    # Join the network used for back-end intercommunication (between Strapi and database)
     networks:
       - backend
+
+  # Run configuration for the Strapi middleware
   strapi:
-    hostname: strapi
     container_name: strapi
+    # Runs the Dockerfile build in the /strapi folder
     build: ./strapi
+    # The name of the built strapi image with version
     image: strapi:latest
+    # Mounts the local directory to app's working directory
+    # This allows source code changes to happen while the container is running
     volumes:
       - ./strapi/app:/srv/app
+    # Exposes the host port to the container port for interservice communication
     ports:
       - 1337:1337
+    # Ensure the database service is up before the strapi service starts
+    # Strapi is initialized using the database
     depends_on:
       - database
+    # Join the network used for back-end intercommunication (between Strapi and database)
     networks:
       - backend
   app:
-    hostname: app
     container_name: app
+    # Runs the Dockerfile build in the root directory, corresponding to the app build
     build: .
+    # The name of the built app image with version
     image: app:latest
+    # Exposes the host port to the container port for interservice communication
     ports:
       - 3000:3000
+    # Ensure the strapi service is up before the app starts
+    # The app uses strapi to load data
     depends_on:
       - strapi
+    # Sets the URI for the MongoDB connection 
     environment:
       - MONGO_URI='mongodb://database:27017/strapi'
+    # Join the network used for back-end intercommunication
     networks:
       - backend
     volumes:
