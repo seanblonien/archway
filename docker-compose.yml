@@ -7,19 +7,10 @@ services:
     build: ./database
     image: database:latest
     volumes:
-    - ./database/seed/export:/export
     - /mnt/mongodb/mongodata:/data/db
     ports:
       - 27017:27017
     restart: always
-    networks:
-      - backend
-  database-seed:
-    container_name: database-seed
-    build: ./database/seed
-    image: database-seed:latest
-    depends_on:
-      - database
     networks:
       - backend
   strapi:
@@ -32,7 +23,7 @@ services:
     ports:
       - 1337:1337
     depends_on:
-      - database-seed
+      - database
     networks:
       - backend
   app:
