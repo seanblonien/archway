@@ -10,7 +10,7 @@ services:
     - /mnt/mongodb/mongodata:/data/db
     ports:
       - 27017:27017
-    restart: always
+    restart: on-failure
     networks:
       - backend
   strapi:
@@ -34,7 +34,7 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      -  strapi
+      - strapi
     environment:
       - MONGO_URI='mongodb://database:27017/strapi'
     networks:

@@ -1,0 +1,1 @@
+docker run -d --name=dev-database --rm -e HOSTNAME=dev-database  database:latest -v /mnt/mongodb/mongodata-dev:/data/db -P 27020:27017
