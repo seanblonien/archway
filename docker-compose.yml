@@ -14,7 +14,7 @@ services:
     # This is what makes the database persistent
     volumes:
     - /mnt/mongodb/mongodata:/data/db
-    # Exposes the host port to the container port for interservice communication
+    # Exposes the host port to the container port for intercommunication
     ports:
       - 27017:27017
     restart: on-failure
@@ -29,17 +29,15 @@ services:
     build: ./strapi
     # The name of the built strapi image with version
     image: strapi:latest
-    # Mounts the local directory to app's working directory
-    # This allows source code changes to happen while the container is running
-    volumes:
-      - ./strapi/app:/srv/app
-    # Exposes the host port to the container port for interservice communication
+    # Exposes the host port to the container port for intercommunication
     ports:
       - 1337:1337
-    # Ensure the database service is up before the strapi service starts
+    # Ensure the database service is up before the Strapi service starts
     # Strapi is initialized using the database
     depends_on:
       - database
+    # Set the restart to always in case error about development environment
+    restart: always
     # Join the network used for back-end intercommunication (between Strapi and database)
     networks:
       - backend

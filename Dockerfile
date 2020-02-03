@@ -5,8 +5,12 @@ FROM node:13.6.0
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 
-# aAdd node modules to the path
+# Add node modules to the path
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
+# Copy the package.json over used to tell the app what packages to install
+COPY package.json ./package.json
+# Install those packages
+RUN npm i --silent
 
 # Exposees this port so that other services can access the database within the container
 EXPOSE 3000
