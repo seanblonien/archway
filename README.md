@@ -1,6 +1,14 @@
-# Section02-Group01
+# Section02-Group03
 
-## Project Structure
+## How to Run the Project
+
+1. Download and install Docker for your computer (verify with `Docker -v` and `docker-compose -v` in a terminal)
+1. Clone this repository to your computer
+1. In a terminal, navigate to the repository
+1. Type `docker-compose build` to build all of the required Docker images for the project
+1. Once that is done, type `docker-compose up` to start all of the Docker containers (database, strapi, and app)
+
+## [OLD] Project Structure
 
 ### Front-End
 

@@ -1,20 +1,19 @@
-# base image
+# Base node image to run the npm build scripts
 FROM node:13.6.0
 
-# set working directory
+# Create and set the app's working directory (default directory for react-scripts)
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 
-# add `/usr/src/app/node_modules/.bin` to $PATH
+# Add node modules to the path
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
-ENV MONGO_URI 'mongodb://database:27017/strapi'
-
-# install and cache app dependencies
-COPY src ./src
+# Copy the package.json over used to tell the app what packages to install
 COPY package.json ./package.json
-COPY public ./public
-RUN npm install --silent
+# Install those packages
+RUN npm i --silent
+
+# Exposees this port so that other services can access the database within the container
 EXPOSE 3000
 
-# start application
+# Set the startup command to be the start script that runs the project
 CMD ["npm","start"]

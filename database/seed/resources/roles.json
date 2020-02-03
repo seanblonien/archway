@@ -1,3 +1,0 @@
-{"_id":{"$oid":"5c461785fe16690229b33c5a"},"name":"Administrator","description":"These users have all access in the project.","type":"root","__v":0}
-{"_id":{"$oid":"5c461785fe16690229b33c5b"},"name":"Authenticated","description":"Default role given to authenticated user.","type":"authenticated","__v":0}
-{"_id":{"$oid":"5c461785fe16690229b33c5c"},"name":"Public","description":"Default role given to unauthenticated user.","type":"public","__v":0}

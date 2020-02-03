@@ -1,1 +1,0 @@
-{"_id":{"$oid":"5ca99ad5c26aac000d09df99"},"confirmed":true,"blocked":false,"username":"cappyadmin","password":"$2a$10$savkuA5xMhivy0L8yHXraeGU8vC8b3kL9ec4/Dzhi93pnsPRWTr6S","email":"test@test.com","provider":"local","role":{"$oid":"5c461785fe16690229b33c5a"},"__v":0}
