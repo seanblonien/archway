@@ -7,6 +7,8 @@ ENV MONGO_INITDB_DATABASE=strapi
 ENV MONGO_INITDB_ROOT_USERNAME=root
 ENV MONGO_INITDB_ROOT_PASSWORD=capstone
 
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y zip unzip
+
 # Exposees this port so that other services can access the database within the container
 EXPOSE 27017
 
