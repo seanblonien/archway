@@ -17,7 +17,7 @@ import AboutIcon from '@material-ui/icons/QuestionAnswer';
 import CreateIcon from '@material-ui/icons/CreateTwoTone';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/HomeTwoTone';
-import IconButton from "@material-ui/core/IconButton/IconButton";
+import IconButton from '@material-ui/core/IconButton';
 import BusinessIcon from '@material-ui/icons/BusinessTwoTone';
 import ViewAllSponsorsIcon from '@material-ui/icons/ContactsTwoTone';
 import ViewAllDepartmentsIcon from '@material-ui/icons/SchoolTwoTone';
