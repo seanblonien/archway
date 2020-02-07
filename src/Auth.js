@@ -3,7 +3,7 @@ Filename: Auth.js
 Contributors:
 Parker Wagner - Wrote entire page and authentication workflow.
 Caleb DeHaan - Changed login domain to archwaycapstone, as well as
-    adding a redirect to auth0.com/v2/logout to correctly clear cookies
+    adding a redirect to auth0.com/v2/logout to correctly clear cookies.
  */
 
 /* eslint no-restricted-globals: 0*/
