@@ -41,6 +41,8 @@ services:
     # Join the network used for back-end intercommunication (between Strapi and database)
     networks:
       - backend
+
+  # Run configuration for the app front end
   app:
     container_name: app
     # Runs the Dockerfile build in the root directory, corresponding to the app build
@@ -62,6 +64,8 @@ services:
       - backend
     volumes:
       - .:/usr/src/app
+
+# Network service
 networks:
   backend:
     name: backend

@@ -1,6 +1,14 @@
+/**
+ * Script that imports the Strapi database from a locally stored zip file (generated from the export-database.js)
+ * into a locally running Docker container.
+ *
+ * Note: drops any pre-existing collection if a collection being imported has the same name.
+ * Will not delete or modify collections that are not imported.
+ */
 const { execShellCommand } = require('./execShellCommand');
 const path = require("path");
 
+// Anonymous method that is directly called to allow for async/await usage
 (async () => {
     try {
         // Delete any dump directory on the container

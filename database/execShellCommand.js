@@ -1,3 +1,6 @@
+/**
+ * Function for handling shell/command-line commands (i.e. Docker commands) for Node scripts.
+ */
 const { exec } = require("child_process");
 
 // Executes a shell command and logs stdout to console if successful.

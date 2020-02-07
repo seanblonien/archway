@@ -1,6 +1,13 @@
+/**
+ * Script that export the Strapi database from the database Docker container that is running.
+ *
+ * Stores the database dump in the local directory as a zip file that can be later used for importing to another
+ * database instance.
+ */
 const { execShellCommand }  = require('./execShellCommand');
 const path = require("path");
 
+// Anonymous method that is directly called to allow for async/await usage
 (async () => {
     try {
         // Delete any dump directory on the container

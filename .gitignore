@@ -1,3 +1,4 @@
 node_modules/
 .idea/
 mongodata/
+database/dump.zip
