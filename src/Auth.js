@@ -2,6 +2,8 @@
 Filename: Auth.js
 Contributors:
 Parker Wagner - Wrote entire page and authentication workflow.
+Caleb DeHaan - Changed login domain to archwaycapstone, as well as
+    adding a redirect to auth0.com/v2/logout to correctly clear cookies
  */
 
 /* eslint no-restricted-globals: 0*/
@@ -11,14 +13,14 @@ import jwtDecode from "jwt-decode";
 
 const LOGIN_SUCCESS_PAGE = "/secret";
 const LOGIN_FAILURE_PAGE = "/";
+const DOMAIN_PREFIX = 'archwaycapstone';
 
 export default class Auth {
-
     auth0 = new auth0.WebAuth({
-        domain: "cappy.auth0.com",
-        clientID: "9bKo0ksvr1TrqcASqTgzmEXZyxZf42Dm",
+        domain: DOMAIN_PREFIX + ".auth0.com",
+        clientID: "V9OTevHpl8fIrm4ZV8sXbzH1c7CkRtxA",
         redirectUri: "http://localhost:3000/callback",
-        audience: "https://cappy.auth0.com/userinfo",
+        audience: "https://archwaycapstone.auth0.com/userinfo",
         responseType: "token id_token",
         scope: "openid profile"
     });
@@ -79,6 +81,9 @@ export default class Auth {
     logout() {
         localStorage.clear();
         location.pathname = LOGIN_FAILURE_PAGE;
+        // necessary link to clear cookies, else it logs user back in immediately
+        window.location.replace("http://" + DOMAIN_PREFIX + ".auth0.com/v2/logout");
+        window.location.replace("/");
     }
 
     getProfile() {
