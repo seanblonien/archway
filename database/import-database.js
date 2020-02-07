@@ -1,13 +1,30 @@
-const { exec } = require("child_process");
+/**
+ * Script that imports the Strapi database from a locally stored zip file (generated from the export-database.js)
+ * into a locally running Docker container.
+ *
+ * Note: drops any pre-existing collection if a collection being imported has the same name.
+ * Will not delete or modify collections that are not imported.
+ */
+const { execShellCommand } = require('./execShellCommand');
 const path = require("path");
 
-// Delete any dump directory on the container
-exec(`docker exec database rm -r /dump`);
-// Delete the dump zip file if on container
-exec(`docker exec database rm /dump.zip`);
-// Copy the dump zip file over to the container
-exec(`docker cp ${path.resolve(__dirname, `dump.zip`)} database:/dump.zip`);
-// Unzip the dump zip into a directory
-exec(`docker exec database unzip /dump.zip -d /`);
-// Perform the data dump import of the strapi database
-exec(`docker exec database mongorestore --uri "mongodb://root:capstone@database:27017/?authSource=admin" --drop -d strapi /dump/strapi`);
+// Anonymous method that is directly called to allow for async/await usage
+(async () => {
+    try {
+        // Delete any dump directory on the container
+        await execShellCommand(`docker exec database rm -rf /dump`);
+        // Delete the dump zip file if on container
+        await execShellCommand(`docker exec database rm -rf /dump.zip`);
+        // Copy the dump zip file over to the container
+        await execShellCommand(`docker cp ${path.resolve(__dirname, `dump.zip`)} database:/dump.zip`);
+        // Unzip the dump zip into a directory
+        await execShellCommand(`docker exec database unzip /dump.zip -d /`);
+        // Perform the data dump import of the Strapi database
+        await execShellCommand(`docker exec database mongorestore --uri "mongodb://root:capstone@database:27017/?authSource=admin" --drop -d strapi /dump/strapi`);
+        // Log successful execution
+        console.log(`Import successful!`);
+    } catch(e){
+        // Log the error to console
+        console.error(e);
+    }
+})();
