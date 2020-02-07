@@ -20,7 +20,7 @@ export default class Auth {
         domain: DOMAIN_PREFIX + ".auth0.com",
         clientID: "V9OTevHpl8fIrm4ZV8sXbzH1c7CkRtxA",
         redirectUri: "http://localhost:3000/callback",
-        audience: "https://archwaycapstone.auth0.com/userinfo",
+        audience: "https://" + DOMAIN_PREFIX + ".auth0.com/userinfo",
         responseType: "token id_token",
         scope: "openid profile"
     });
