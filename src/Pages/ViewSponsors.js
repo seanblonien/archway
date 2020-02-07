@@ -88,7 +88,7 @@ class ViewSponsors extends React.Component {
             // If there is no search phrase, we sort results alphabetically
 
             if (this.state.searchTerm.searchTerm === undefined) {
-                while (i !== n) {
+                while (i <= n) {
 
                     key = this.state.sponsors[i];
                     j = i - 1;

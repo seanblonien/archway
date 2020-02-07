@@ -199,7 +199,7 @@ class ViewUser extends React.Component {
                     username:   user
                 }
             }).then ((response) => {
-                     userId = response.data[0]._id;
+                     //userId = response.data[0]._id;
         });
 
         const pic = await strapi.axios.get(strapiURL + "/userpictures?user=" + userId);

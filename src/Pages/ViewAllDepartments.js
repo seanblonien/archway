@@ -181,7 +181,7 @@ class ViewAllDepartments extends React.Component {
                                                       <Grid xs={10}>
                                                           <Grid xs={12}>
                                                             <ExpansionPanelDetails >
-                                                                {"Capstone Description: " + result.description}
+                                                                {"Capstone Description: " + result2.description}
                                                             </ExpansionPanelDetails>
                                                           </Grid>
                                                           <Grid xs={4}>
