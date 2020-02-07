@@ -83,12 +83,12 @@ class ViewSponsors extends React.Component {
             var i = 1;
             var j;
             var key;
-            var n = this.state.sponsors.length;
+            var n = this.state.sponsors.length-1;
 
             // If there is no search phrase, we sort results alphabetically
 
             if (this.state.searchTerm.searchTerm === undefined) {
-                while (i !== n) {
+                while (i <= n) {
 
                     key = this.state.sponsors[i];
                     j = i - 1;

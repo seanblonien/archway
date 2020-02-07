@@ -252,9 +252,6 @@ class ViewPost extends React.Component {
     }
 
     checkUserLoggedIn(result2) {
-        if("USER" in localStorage){
-            console.log('blah');
-        }
         if ("USER" in localStorage) {
             if (JSON.parse(localStorage.getItem('USER')).username === result2.username) {
                 var icons = (<IconButton aria-label="Delete"
