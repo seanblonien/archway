@@ -32,68 +32,43 @@ const axios = require('axios').default;
     // Set the authorization token in the header
     axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
 
+    // Fetch the content types
+    const fs = require('fs');
+    const path = require('path');
+    let contentTypes = JSON.parse(fs.readFileSync(`${path.resolve(__dirname, 'contentTypes.json')}`, 'utf8'));
+
     // Add the content types
     try {
-        // Example content type creation with multiple/various attributes
-        // with certain requirements.
-        response = await axios.post('http://localhost:1337/content-type-builder/content-types', {
-            "components": [],
-            "contentType": {
-                "name": "exampletype",
-                "description": "This is a description",
-                "attributes": {
-                    "aShortText": {
-                        "type": "string"
-                    },
-                    "aLongText": {
-                        "type": "text"
-                    },
-                    "aRichText": {
-                        "type": "richtext"
-                    },
-                    "aInteger": {
-                        "type": "integer",
-                        "required": true,
-                        "unique": true,
-                        "max": 100,
-                        "min": 0,
-                        "default": 0
-                    },
-                    "aFloat": {
-                        "type": "float"
-                    },
-                    "aDateTime": {
-                        "type": "datetime"
-                    },
-                    "aBoolean": {
-                        "type": "boolean"
-                    },
-                    "aRelation": {
-                        "nature": "manyToOne",
-                        "targetAttribute": "test_1S",
-                        "target": "plugins::users-permissions.user",
-                        "unique": false
-                    },
-                    "aEmail": {
-                        "type": "email",
-                        "unique": true
-                    },
-                    "password": {
-                        "type": "password",
-                        "required": true,
-                        "private": true
-                    },
-                    "aSingleMedia": {
-                        "type": "media",
-                        "multiple": false
-                    },
-                    "someJson": {
-                        "type": "json",
-                        "private": false
-                    }
-                }
+        // Construct the endpoints of all of the content types to check if
+        // they exist
+        const contentTypesToUpdate = [];
+        const contentTypeToCreate = [];
+        for (const contentType of contentTypes) {
+            let response = await axios.get('http://localhost:1337/content-manager/content-types/application::' + contentType.name + '.' + contentType.name).catch(e => e);
+            if(response instanceof Error){
+                contentTypeToCreate.push(contentType);
+            } else {
+                contentTypesToUpdate.push(contentType);
             }
-        });
+        }
+
+        for(const contentType of contentTypesToUpdate){
+            let data = {
+                "components": [],
+                "contentType": contentType
+            };
+            await axios.put('http://localhost:1337/content-type-builder/content-types/application::' + contentType.name + '.' + contentType.name, data);
+            const x = 1;
+        }
+
+        for(const contentType of contentTypeToCreate){
+            // Example content type creation with multiple/various attributes
+            // with certain requirements.
+            response = await axios.post('http://localhost:1337/content-type-builder/content-types', {
+                "components": [],
+                "contentType": contentType
+            });
+        }
     } catch(error){
         console.error(error);
     }
