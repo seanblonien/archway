@@ -36,9 +36,16 @@ const axios = require('axios').default;
     const fs = require('fs');
     const path = require('path');
     let contentTypes = JSON.parse(fs.readFileSync(`${path.resolve(__dirname, 'contentTypes.json')}`, 'utf8'));
+    let applicationContentTypes = contentTypes.application;
+    let pluginsContentTypes = contentTypes.plugins;
 
     // Add the content types
     try {
+        for(const contentType of pluginsContentTypes){
+            let response = await axios.put('http://localhost:1337/content-manager/content-types/plugins::' + contentType.collectionName.replace('_', '.'));
+        }
+
+
         // Construct the endpoints of all of the content types to check if
         // they exist
         const contentTypesToUpdate = [];
@@ -50,6 +57,23 @@ const axios = require('axios').default;
             } else {
                 contentTypesToUpdate.push(contentType);
             }
+        }
+
+        for(const contentType of contentTypeToCreate){
+            const key = Object.keys(contentType.attributes)[0];
+            const value = contentType.attributes[key];
+            const obj = {key: value};
+            await axios.post('http://localhost:1337/content-type-builder/content-types', {
+                "components": [],
+                "contentType": {
+                    "name": contentType.name,
+                    "attributes": {
+                        key: value
+                    }
+                }
+            });
+            await new Promise(r => setTimeout(r, 3000));
+            let x= 1;
         }
 
         for(const contentType of contentTypesToUpdate){

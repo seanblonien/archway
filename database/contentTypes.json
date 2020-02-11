@@ -1,203 +1,273 @@
-[
-  {
-    "name": "capstones",
-    "description": "Describes a Capstone Project",
-    "connection": "default",
-    "collectionName": "capstones",
-    "attributes": {
-      "capstoneName": {
-        "type": "string",
-        "required": true
-      },
-      "startDate": {
-        "type": "date"
-      },
-      "endDate": {
-        "type": "date"
-      },
-      "description": {
-        "type": "text"
-      },
-      "moderator": {
-        "target": "user"
-      },
-      "displayPhoto": {
-        "type": "media",
-        "multiple": false
-      },
-      "pictures": {
-        "type": "media",
-        "multiple": true
-      },
-      "department": {
-        "nature": "manyToMany",
-        "targetAttribute": "capstones",
-        "target": "application::sponsors.sponsors",
-        "unique": false,
-        "dominant": true
-      },
-      "sponsors": {
-        "nature": "manyToMany",
-        "targetAttribute": "capstones",
-        "target": "application::sponsors.sponsors",
-        "unique": false,
-        "dominant": true
-      },
-      "posts": {
-        "nature": "manyWay",
-        "target": "application::posts.posts",
-        "unique": false
-      },
-      "creators": {
-        "nature": "manyToMany",
-        "targetAttribute": "capstones",
-        "target": "application::users.users",
-        "unique": false,
-        "dominant": true
+{
+  "application": [
+    {
+      "name": "capstones",
+      "description": "Describes a Capstone Project",
+      "connection": "default",
+      "collectionName": "capstones",
+      "attributes": {
+        "capstoneName": {
+          "type": "string",
+          "required": true
+        },
+        "startDate": {
+          "type": "date",
+          "required": true
+        },
+        "endDate": {
+          "type": "date",
+          "required": true
+        },
+        "description": {
+          "type": "text",
+          "required": true,
+          "maxLength": 10000
+        },
+        "moderator": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "unique": false,
+          "targetAttribute": "capstone"
+        },
+        "displayPhoto": {
+          "type": "media",
+          "multiple": false
+        },
+        "pictures": {
+          "type": "media",
+          "multiple": true
+        },
+        "department": {
+          "nature": "oneToMany",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "capstone",
+          "unique": false
+        },
+        "sponsors": {
+          "nature": "manyToMany",
+          "target": "application::sponsors.sponsors",
+          "dominant": true,
+          "targetAttribute": "capstones",
+          "unique": false
+        },
+        "posts": {
+          "nature": "manyWay",
+          "target": "application::posts.posts",
+          "dominant": false,
+          "unique": false
+        },
+        "creators": {
+          "nature": "oneToMany",
+          "targetAttribute": "capstone",
+          "target": "plugins::users-permissions.user",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "commemts",
+      "description": "Describes a Comment to a Post",
+      "attributes": {
+        "content": {
+          "type": "text"
+        },
+        "user": {
+          "nature": "manyToOne",
+          "targetAttribute": "comments",
+          "target": "plugins::users-permissions.user",
+          "unique": false
+        },
+        "post": {
+          "nature": "manyToOne",
+          "targetAttribute": "comments",
+          "target": "application::posts.posts",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "departments",
+      "description": "Describes a Department",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        "capstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": true,
+          "targetAttribute": "departments",
+          "unique": false
+        },
+        "url": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "email"
+        },
+        "description": {
+          "type": "richtext",
+          "default": "10000"
+        }
+      }
+    },
+    {
+      "name": "faqs",
+      "description": "Describes a FAQ",
+      "attributes": {
+        "category": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string",
+          "required": true
+        },
+        "answer": {
+          "type": "text",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "posts",
+      "description": "Describes a Post on a Capstone Project",
+      "attributes": {
+        "title": {
+          "type": "string",
+          "unique": false,
+          "default": "title",
+          "required": true
+        },
+        "content": {
+          "type": "richtext",
+          "required": true
+        },
+        "media": {
+          "type": "media",
+          "multiple": true
+        },
+        "user": {
+          "nature": "manyToOne",
+          "targetAttribute": "posts",
+          "target": "plugins::users-permissions.user",
+          "unique": false
+        },
+        "capstone": {
+          "nature": "manyToOne",
+          "targetAttribute": "posts",
+          "target": "application::capstones.capstones",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "sponsors",
+      "description": "Describes a Sponsor for a Capstone Project",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "capstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "sponsors",
+          "unique": false
+        },
+        "url": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "media",
+          "multiple": false
+        },
+        "description": {
+          "type": "richtext",
+          "required": true
+        }
       }
     }
-  },
-  {
-    "name": "commemts",
-    "description": "Describes a Comment to a Post",
-    "attributes": {
-      "conetent": {
-        "type": "text"
-      },
-      "username": {
-        "type": "string"
-      },
-      "editable": {
-        "type": "bool"
-      },
-      "post": {
-        "model": "posts"
-      },
-      "user": {
-        "model": "user"
+  ],
+  "plugins": [
+    {
+      "name": "users-permissions_user",
+      "description": "Describes a User",
+      "connection": "default",
+      "collectionName": "users-permissions_user",
+      "attributes": {
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "unique": true,
+          "configurable": false,
+          "required": true
+        },
+        "email": {
+          "type": "email",
+          "minLength": 6,
+          "configurable": false,
+          "required": true
+        },
+        "provider": {
+          "type": "string",
+          "configurable": false
+        },
+        "password": {
+          "type": "password",
+          "minLength": 6,
+          "configurable": false,
+          "private": true
+        },
+        "resetPasswordToken": {
+          "type": "string",
+          "configurable": false,
+          "private": true
+        },
+        "confirmed": {
+          "type": "boolean",
+          "default": false,
+          "configurable": false
+        },
+        "blocked": {
+          "type": "boolean",
+          "default": false,
+          "configurable": false
+        },
+        "role": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.role",
+          "dominant": false,
+          "targetAttribute": "users",
+          "configurable": false,
+          "unique": false
+        },
+        "capstone": {
+          "nature": "manyToOne",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "creators",
+          "unique": false
+        },
+        "posts": {
+          "nature": "oneToMany",
+          "target": "application::posts.posts",
+          "dominant": false,
+          "targetAttribute": "user",
+          "unique": false
+        },
+        "profilePicture": {
+          "type": "media",
+          "multiple": false
+        },
+        "description": {
+          "type": "richtext",
+          "maxLength": 10000
+        }
       }
     }
-  },
-  {
-    "name": "department",
-    "description": "Describes a Department",
-    "attributes": {
-      "name": {
-        "type": "string"
-      },
-      "description": {
-        "type": "text"
-      },
-      "url": {
-        "type": "string"
-      },
-      "contact": {
-        "type": "email"
-      }
-    }
-  },
-  {
-    "name": "faqs",
-    "description": "Describes a FAQ",
-    "attributes": {
-      "Category": {
-        "type": "string"
-      },
-      "Question": {
-        "type": "text"
-      },
-      "Answer": {
-        "type": "text"
-      },
-      "Url": {
-        "type": "string"
-      }
-    }
-  },
-  {
-    "name": "posts",
-    "description": "Describes a Post on a Capstone Project",
-    "attributes": {
-      "title": {
-        "type": "string"
-      },
-      "content": {
-        "type": "text"
-      },
-      "media": {
-        "type": "media",
-        "multiple": true
-      },
-      "user": {
-        "model": "user"
-      },
-      "capstone": {
-        "model": "capstones",
-        "via": "posts"
-      }
-    }
-  },
-  {
-    "name": "sponsors",
-    "description": "Describes a Sponsor for a Capstone Project",
-    "attributes": {
-      "name": {
-        "type": "string"
-      },
-      "description": {
-        "type": "text"
-      },
-      "webUrl": {
-        "type": "string"
-      },
-      "logo": {
-        "type": "media",
-        "multiple": false
-      }
-    }
-  },
-  {
-    "name": "users-permissions_user",
-    "description": "Describes a User",
-    "attributes": {
-      "Fullname": {
-        "type": "string"
-      },
-      "Department": {
-        "type": "string"
-      },
-      "Bio": {
-        "type": "text"
-      },
-      "Description": {
-        "type": "richtext"
-      },
-      "ProfilePicture": {
-        "type": "media",
-        "multiple": false
-      },
-      "moderator": {
-        "model": "user"
-      },
-      "createdCapstones": {
-        "collection": "capstones",
-        "via": "user"
-      }
-    }
-  },
-  {
-    "name": "viewstats",
-    "description": "Describes a ViewStat",
-    "attributes": {
-      "count": {
-        "type": "integer"
-      },
-      "user": {
-        "model": "user"
-      },
-      "department": {
-        "model": "departments"
-      }
-    }
-  }
-]
+  ]
+}
