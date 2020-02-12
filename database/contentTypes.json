@@ -26,16 +26,20 @@
         "moderator": {
           "nature": "oneToMany",
           "target": "plugins::users-permissions.user",
-          "unique": false,
-          "targetAttribute": "capstone"
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "capstone",
+          "unique": false
         },
         "DisplayPhoto": {
           "type": "media",
-          "multiple": false
+          "multiple": false,
+          "required": false
         },
         "pictures": {
           "type": "media",
-          "multiple": true
+          "multiple": true,
+          "required": false
         },
         "department": {
           "nature": "oneToMany",
@@ -59,8 +63,10 @@
         },
         "creators": {
           "nature": "oneToMany",
-          "targetAttribute": "capstone",
           "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "capstone",
           "unique": false
         }
       }
@@ -68,6 +74,8 @@
     {
       "name": "commemts",
       "description": "Describes a Comment to a Post",
+      "connection": "default",
+      "collectionName": "commemts",
       "attributes": {
         "content": {
           "type": "text"
@@ -77,8 +85,10 @@
         },
         "user": {
           "nature": "manyToOne",
-          "targetAttribute": "comments",
           "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "comments",
           "unique": false
         },
         "editable": {
@@ -87,8 +97,9 @@
         },
         "post": {
           "nature": "manyToOne",
-          "targetAttribute": "comments",
           "target": "application::posts.posts",
+          "dominant": false,
+          "targetAttribute": "comments",
           "unique": false
         }
       }
@@ -96,17 +107,19 @@
     {
       "name": "departments",
       "description": "Describes a Department",
+      "connection": "default",
+      "collectionName": "departments",
       "attributes": {
         "name": {
           "type": "string",
           "unique": true,
           "required": true
         },
-        "capstones": {
-          "nature": "manyToMany",
+        "capstone": {
+          "nature": "manyToOne",
           "target": "application::capstones.capstones",
-          "dominant": true,
-          "targetAttribute": "departments",
+          "dominant": false,
+          "targetAttribute": "department",
           "unique": false
         },
         "url": {
@@ -131,6 +144,8 @@
     {
       "name": "faqs",
       "description": "Describes a FAQ",
+      "connection": "default",
+      "collectionName": "faqs",
       "attributes": {
         "Category": {
           "type": "string"
@@ -151,6 +166,8 @@
     {
       "name": "posts",
       "description": "Describes a Post on a Capstone Project",
+      "connection": "default",
+      "collectionName": "posts",
       "attributes": {
         "title": {
           "type": "string",
@@ -164,18 +181,22 @@
         },
         "media": {
           "type": "media",
-          "multiple": true
+          "multiple": true,
+          "required": false
         },
         "user": {
           "nature": "manyToOne",
-          "targetAttribute": "posts",
           "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "posts",
           "unique": false
         },
-        "capstone": {
-          "nature": "manyToOne",
-          "targetAttribute": "posts",
-          "target": "application::capstones.capstones",
+        "comments": {
+          "nature": "oneToMany",
+          "target": "application::commemts.commemts",
+          "dominant": false,
+          "targetAttribute": "post",
           "unique": false
         }
       }
@@ -183,6 +204,8 @@
     {
       "name": "sponsors",
       "description": "Describes a Sponsor for a Capstone Project",
+      "connection": "default",
+      "collectionName": "sponsors",
       "attributes": {
         "name": {
           "type": "string",
@@ -200,7 +223,8 @@
         },
         "logo": {
           "type": "media",
-          "multiple": false
+          "multiple": false,
+          "required": false
         },
         "description": {
           "type": "richtext",
@@ -211,6 +235,8 @@
     {
       "name": "viewstats",
       "description": "Describes a ViewStat",
+      "connection": "default",
+      "collectionName": "viewstats",
       "attributes": {
         "count": {
           "type": "integer"
@@ -218,14 +244,31 @@
         "user": {
           "nature": "oneToOne",
           "target": "plugins::users-permissions.user",
-          "unique": false,
-          "targetAttribute": "viewstat"
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "viewstat",
+          "unique": false
         },
         "department": {
           "nature": "oneToOne",
-          "targetAttribute": "viewstat",
           "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "viewstat",
           "unique": false
+        },
+        "testAttr": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "newtype",
+      "description": "Describes a newType",
+      "connection": "default",
+      "collectionName": "newtype",
+      "attributes": {
+        "count": {
+          "type": "integer"
         }
       }
     }
@@ -237,22 +280,12 @@
       "connection": "default",
       "collectionName": "users-permissions_user",
       "attributes": {
-        "Fullname": {
+        "username": {
           "type": "string",
           "minLength": 3,
           "unique": true,
           "configurable": false,
           "required": true
-        },
-        "Department": {
-          "type": "string"
-        },
-        "Bio": {
-          "type": "text"
-        },
-        "Description": {
-          "type": "richtext",
-          "maxLength": 10000
         },
         "email": {
           "type": "email",
@@ -288,17 +321,28 @@
         "role": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.role",
+          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "users",
           "configurable": false,
           "unique": false
         },
-        "createdCapstones": {
-          "nature": "manyToOne",
-          "target": "application::capstones.capstones",
-          "dominant": false,
-          "targetAttribute": "creators",
-          "unique": false
+        "Fullname": {
+          "type": "string",
+          "minLength": 3,
+          "unique": true,
+          "configurable": false,
+          "required": true
+        },
+        "Department": {
+          "type": "string"
+        },
+        "Bio": {
+          "type": "text"
+        },
+        "Description": {
+          "type": "richtext",
+          "maxLength": 10000
         },
         "posts": {
           "nature": "oneToMany",
@@ -309,13 +353,110 @@
         },
         "ProfilePicture": {
           "type": "media",
-          "multiple": false
+          "multiple": false,
+          "required": false
         },
         "viewstat": {
           "nature": "oneToOne",
           "target": "application::viewstats.viewstats",
           "dominant": false,
           "targetAttribute": "user",
+          "unique": false
+        },
+        "capstone": {
+          "nature": "manyToOne",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "moderator",
+          "unique": false
+        },
+        "comments": {
+          "nature": "oneToMany",
+          "target": "application::commemts.commemts",
+          "dominant": false,
+          "targetAttribute": "user",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "permission",
+      "description": "",
+      "connection": "default",
+      "collectionName": "users-permissions_permission",
+      "attributes": {
+        "type": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "controller": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "action": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "enabled": {
+          "type": "boolean",
+          "required": true,
+          "configurable": false
+        },
+        "policy": {
+          "type": "string",
+          "configurable": false
+        },
+        "role": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.role",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "permissions",
+          "configurable": false,
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "role",
+      "description": "",
+      "connection": "default",
+      "collectionName": "users-permissions_role",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "minLength": 3,
+          "required": true,
+          "configurable": false
+        },
+        "description": {
+          "type": "string",
+          "configurable": false
+        },
+        "type": {
+          "type": "string",
+          "unique": true,
+          "configurable": false
+        },
+        "permissions": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.permission",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "role",
+          "configurable": false,
+          "unique": false
+        },
+        "users": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "role",
+          "configurable": false,
           "unique": false
         }
       }
