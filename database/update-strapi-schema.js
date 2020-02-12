@@ -1,3 +1,17 @@
+/**
+ * Script that imports a Strapi content type schema from a local JSON file
+ * that stores both the application (user created) and plugin (strapi
+ * created) content types.
+ *
+ * This program merely creates and imports any new content types into
+ * Strapi, and for the content types that already exist, they will be
+ * updated if they differ from their imported counterpart.
+ *
+ * The URL routing, JSON format, and specific syntax all comes from reverse
+ * engineering the content-type-builder within Strapi. The documentation may
+ * be helpful, although it was outdated for this:
+ * https://strapi.io/documentation/3.0.0-beta.x/concepts/models.html#concept
+ */
 const axios = require('axios').default;
 const fs = require('fs');
 const path = require('path');
@@ -36,11 +50,12 @@ const formatContentType = contentType => {
     };
 };
 
+// Get the content types from newContentTypes that do not exist in allContentTypes
 const getDifference = (allContentTypes, newContentTypes) => {
     return newContentTypes.filter(contentType => {
             let result = true;
             for (const currentContentType of allContentTypes) {
-                if (_.isEqual(contentType, currentContentType.schema)) {
+                if (_.isEqual(contentType, currentContentType)) {
                     result = false;
                     break;
                 }
@@ -50,8 +65,7 @@ const getDifference = (allContentTypes, newContentTypes) => {
     );
 };
 
-
-// Runs the script
+// Anonymous method that is directly called to allow for async/await usage
 (async () => {
     let loginResponse;
 
@@ -73,7 +87,7 @@ const getDifference = (allContentTypes, newContentTypes) => {
                 loginResponse = await axios.post(STRAPI_ADMIN_LOGIN, {
                     "identifier": STRAPI_ADMIN_USERNAME,
                     "password": STRAPI_ADMIN_PASSWORD,
-                    "rememberMe": true
+                    "rememberMe": false
                 });
             } catch (error) {
                 console.error(`Error when logging in:\n` + error);
@@ -89,26 +103,26 @@ const getDifference = (allContentTypes, newContentTypes) => {
     // Fetch the content type schema from file
     const contentTypes = JSON.parse(fs.readFileSync(CONTENT_TYPES_SCHEMA_FILE, 'utf8'));
     // Get the list of application content types
-    let applicationContentTypes = contentTypes.application;
+    let differentApplicationContentTypes = contentTypes.application;
     // Get the list of plugin content types
-    let pluginsContentTypes = contentTypes.plugins;
-    let existingContentTypes;
+    let differentPluginsContentTypes = contentTypes.plugins;
 
     // Add the content type schemas to Strapi
     try {
         console.log(`Fetching all existing content types`);
         // Get all of the current content types on Strapi
-        existingContentTypes = (await axios.get(STRAPI_CONTENT_TYPE_URL)).data.data;
+        let existingContentTypesResponse = await axios.get(STRAPI_CONTENT_TYPE_URL);
+        let existingContentTypes = existingContentTypesResponse.data.data.map(t => t.schema);
         // Get the application content types that need to be created or updated
-        applicationContentTypes = getDifference(existingContentTypes, applicationContentTypes);
+        differentApplicationContentTypes = getDifference(existingContentTypes, differentApplicationContentTypes);
         // Get the plugins content types that need to be created or updated
-        pluginsContentTypes = getDifference(existingContentTypes, pluginsContentTypes);
+        differentPluginsContentTypes = getDifference(existingContentTypes, differentPluginsContentTypes);
 
         console.log(`Checking which content types need to be created`);
         // Check to see which content types need to be created
         const contentTypeToCreate = [];
         const contentTypeToUpdate = [];
-        for (const contentType of applicationContentTypes) {
+        for (const contentType of differentApplicationContentTypes) {
             const url = STRAPI_CONTENT_TYPE_GET_URL + contentType.name + '.' + contentType.name;
             const response = await axios.get(url).catch(e => e);
             // If request returned error, the content type needs to be created
@@ -120,7 +134,7 @@ const getDifference = (allContentTypes, newContentTypes) => {
         }
 
         // For the content types that need to be created, shallow create them
-        // so that that can be referenced by other content types
+        // so that that can be referenced by other content types upon creation
         for (const contentType of contentTypeToCreate) {
             const key = Object.keys(contentType.attributes)[0];
             const value = contentType.attributes[key];
@@ -138,7 +152,7 @@ const getDifference = (allContentTypes, newContentTypes) => {
 
         console.log(`Updating content types`);
         // Update the plugin content types
-        for (const contentType of pluginsContentTypes) {
+        for (const contentType of differentPluginsContentTypes) {
             const url = STRAPI_CONTENT_TYPE_UPDATE_PLUGIN_URL + contentType.collectionName.replace('_', '.');
             const payload = formatContentType(contentType);
             console.log(`\tUpdating ${contentType.name}`);
