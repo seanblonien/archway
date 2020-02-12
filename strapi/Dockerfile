@@ -10,5 +10,9 @@ ENV DATABASE_NAME=strapi
 ENV DATABASE_USERNAME=root
 ENV DATABASE_PASSWORD=capstone
 
+# Creates the app folder where files will be generated from strapi start
+# Mounted on the Docker drive so that the image does not start over
+VOLUME /mnt/strapi/app /srv/app
+
 # Exposes this port so that other services can access the database within the container
 EXPOSE 1337

@@ -1,4 +1,36 @@
 const axios = require('axios').default;
+const fs = require('fs');
+const path = require('path');
+
+const STRAPI_BASE_URL = 'http://localhost:1337';
+const STRAPI_CONTENT_TYPE_CREATE_URL = STRAPI_BASE_URL + '/content-type-builder/content-types';
+const STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL = STRAPI_BASE_URL + '/content-type-builder/content-types/application::';
+const STRAPI_CONTENT_TYPE_UPDATE_PLUGIN_URL = STRAPI_BASE_URL + '/content-type-builder/content-types/plugins::';
+const STRAPI_CONTENT_TYPE_GET_URL = STRAPI_BASE_URL + '/content-manager/content-types/application::';
+const STRAPI_ADMIN_REGISTER = STRAPI_BASE_URL + '/admin/auth/local/register';
+const STRAPI_ADMIN_LOGIN = STRAPI_BASE_URL + '/admin/auth/local';
+const STRAPI_ADMIN_USERNAME = 'admin';
+const STRAPI_ADMIN_PASSWORD = 'capstone';
+const STRAPI_ADMIN_EMAIL = 'seanb2016@gmail.com';
+const CONTENT_TYPES_SCHEMA_FILE = `${path.resolve(__dirname, 'contentTypes.json')}`;
+
+const awaitRestart = async () => {
+    let response = null;
+    while (response == null) {
+        try {
+            response = await axios.get(STRAPI_BASE_URL);
+        } catch (error) {
+        }
+    }
+    return true;
+};
+
+const formatContentType = contentType => {
+    return {
+        "components": [],
+        "contentType": contentType
+    };
+};
 
 (async () => {
     let response;
@@ -6,94 +38,82 @@ const axios = require('axios').default;
     // Register or Login to the admin panel
     try {
         // Attempt to register
-        response = await axios.post('http://localhost:1337/admin/auth/local/register', {
-            "password": "capstone",
-            "username": "admin",
-            "passwordConfirmation": "capstone",
-            "email": "seanb2016@gmail.com"
+        response = await axios.post(STRAPI_ADMIN_REGISTER, {
+            "username": STRAPI_ADMIN_USERNAME,
+            "email": STRAPI_ADMIN_EMAIL,
+            "password": STRAPI_ADMIN_PASSWORD,
+            "passwordConfirmation": STRAPI_ADMIN_PASSWORD
         });
-    } catch(error){
+    } catch (error) {
         // If already registered
         if (error.response.status !== 200) {
             // Attempt to login
             try {
-                response = await axios.post('http://localhost:1337/admin/auth/local', {
-                    "identifier":"admin",
-                    "password":"capstone",
-                    "rememberMe":true
+                response = await axios.post(STRAPI_ADMIN_LOGIN, {
+                    "identifier": STRAPI_ADMIN_USERNAME,
+                    "password": STRAPI_ADMIN_PASSWORD,
+                    "rememberMe": true
                 });
-            } catch(error){
-                console.error(error);
+            } catch (error) {
+                console.error(`Error when logging in:\n` + error);
             }
         }
     }
-    // Get the jwt token from login
-    const jwt = response.data.jwt;
+
     // Set the authorization token in the header
-    axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.jwt}`;
 
-    // Fetch the content types
-    const fs = require('fs');
-    const path = require('path');
-    let contentTypes = JSON.parse(fs.readFileSync(`${path.resolve(__dirname, 'contentTypes.json')}`, 'utf8'));
-    let applicationContentTypes = contentTypes.application;
-    let pluginsContentTypes = contentTypes.plugins;
+    // Fetch the content type schema from file
+    const contentTypes = JSON.parse(fs.readFileSync(CONTENT_TYPES_SCHEMA_FILE, 'utf8'));
+    // Get the list of application content types
+    const applicationContentTypes = contentTypes.application;
+    // Get the list of plugin content types
+    const pluginsContentTypes = contentTypes.plugins;
 
-    // Add the content types
+    // Add the content type schemas to Strapi
     try {
-        for(const contentType of pluginsContentTypes){
-            let response = await axios.put('http://localhost:1337/content-manager/content-types/plugins::' + contentType.collectionName.replace('_', '.'));
-        }
-
-
-        // Construct the endpoints of all of the content types to check if
-        // they exist
-        const contentTypesToUpdate = [];
+        // Check to see which content types need to be created
         const contentTypeToCreate = [];
-        for (const contentType of contentTypes) {
-            let response = await axios.get('http://localhost:1337/content-manager/content-types/application::' + contentType.name + '.' + contentType.name).catch(e => e);
-            if(response instanceof Error){
+        for (const contentType of applicationContentTypes) {
+            const url = STRAPI_CONTENT_TYPE_GET_URL + contentType.name + '.' + contentType.name;
+            const response = await axios.get(url).catch(e => e);
+            // If request returned error, the content type needs to be created
+            if (response instanceof Error) {
                 contentTypeToCreate.push(contentType);
-            } else {
-                contentTypesToUpdate.push(contentType);
             }
         }
 
-        for(const contentType of contentTypeToCreate){
+        // For the content types that need to be created, shallow create them
+        // so that that can be referenced by other content types
+        for (const contentType of contentTypeToCreate) {
             const key = Object.keys(contentType.attributes)[0];
             const value = contentType.attributes[key];
-            const obj = {key: value};
-            await axios.post('http://localhost:1337/content-type-builder/content-types', {
-                "components": [],
-                "contentType": {
-                    "name": contentType.name,
-                    "attributes": {
-                        key: value
-                    }
+            const payload = formatContentType({
+                "name": contentType.name,
+                "attributes": {
+                    key: value
                 }
             });
-            await new Promise(r => setTimeout(r, 3000));
-            let x= 1;
+            await axios.post(STRAPI_CONTENT_TYPE_CREATE_URL, payload);
+            await awaitRestart();
         }
 
-        for(const contentType of contentTypesToUpdate){
-            let data = {
-                "components": [],
-                "contentType": contentType
-            };
-            await axios.put('http://localhost:1337/content-type-builder/content-types/application::' + contentType.name + '.' + contentType.name, data);
-            const x = 1;
+        // Update the plugin content types
+        for (const contentType of pluginsContentTypes) {
+            const url = STRAPI_CONTENT_TYPE_UPDATE_PLUGIN_URL + contentType.collectionName.replace('_', '.');
+            const payload = formatContentType(contentType);
+            await axios.put(url, payload);
+            await awaitRestart();
         }
 
-        for(const contentType of contentTypeToCreate){
-            // Example content type creation with multiple/various attributes
-            // with certain requirements.
-            response = await axios.post('http://localhost:1337/content-type-builder/content-types', {
-                "components": [],
-                "contentType": contentType
-            });
+        // Update the application (user defined) content types
+        for (const contentType of applicationContentTypes) {
+            const url = STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + contentType.name + '.' + contentType.name;
+            const payload = formatContentType(contentType);
+            await axios.put(url, payload);
+            await awaitRestart();
         }
-    } catch(error){
-        console.error(error);
+    } catch (error) {
+        console.error(`Error when creating and updating content types:\n` + error);
     }
 })();

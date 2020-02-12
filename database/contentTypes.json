@@ -6,19 +6,19 @@
       "connection": "default",
       "collectionName": "capstones",
       "attributes": {
-        "capstoneName": {
+        "CapstoneName": {
           "type": "string",
           "required": true
         },
-        "startDate": {
+        "StartDate": {
           "type": "date",
           "required": true
         },
-        "endDate": {
+        "EndDate": {
           "type": "date",
           "required": true
         },
-        "description": {
+        "Description": {
           "type": "text",
           "required": true,
           "maxLength": 10000
@@ -29,7 +29,7 @@
           "unique": false,
           "targetAttribute": "capstone"
         },
-        "displayPhoto": {
+        "DisplayPhoto": {
           "type": "media",
           "multiple": false
         },
@@ -72,11 +72,18 @@
         "content": {
           "type": "text"
         },
+        "username": {
+          "type": "string"
+        },
         "user": {
           "nature": "manyToOne",
           "targetAttribute": "comments",
           "target": "plugins::users-permissions.user",
           "unique": false
+        },
+        "editable": {
+          "type": "boolean",
+          "default": true
         },
         "post": {
           "nature": "manyToOne",
@@ -111,6 +118,13 @@
         "description": {
           "type": "richtext",
           "default": "10000"
+        },
+        "viewstat": {
+          "nature": "oneToOne",
+          "target": "application::viewstats.viewstats",
+          "dominant": false,
+          "targetAttribute": "department",
+          "unique": false
         }
       }
     },
@@ -118,16 +132,19 @@
       "name": "faqs",
       "description": "Describes a FAQ",
       "attributes": {
-        "category": {
+        "Category": {
           "type": "string"
         },
-        "question": {
+        "Question": {
           "type": "string",
           "required": true
         },
-        "answer": {
+        "Answer": {
           "type": "text",
           "required": true
+        },
+        "Url": {
+          "type": "string"
         }
       }
     },
@@ -178,7 +195,7 @@
           "targetAttribute": "sponsors",
           "unique": false
         },
-        "url": {
+        "webUrl": {
           "type": "string"
         },
         "logo": {
@@ -190,21 +207,52 @@
           "required": true
         }
       }
+    },
+    {
+      "name": "viewstats",
+      "description": "Describes a ViewStat",
+      "attributes": {
+        "count": {
+          "type": "integer"
+        },
+        "user": {
+          "nature": "oneToOne",
+          "target": "plugins::users-permissions.user",
+          "unique": false,
+          "targetAttribute": "viewstat"
+        },
+        "department": {
+          "nature": "oneToOne",
+          "targetAttribute": "viewstat",
+          "target": "application::departments.departments",
+          "unique": false
+        }
+      }
     }
   ],
   "plugins": [
     {
-      "name": "users-permissions_user",
+      "name": "user",
       "description": "Describes a User",
       "connection": "default",
       "collectionName": "users-permissions_user",
       "attributes": {
-        "username": {
+        "Fullname": {
           "type": "string",
           "minLength": 3,
           "unique": true,
           "configurable": false,
           "required": true
+        },
+        "Department": {
+          "type": "string"
+        },
+        "Bio": {
+          "type": "text"
+        },
+        "Description": {
+          "type": "richtext",
+          "maxLength": 10000
         },
         "email": {
           "type": "email",
@@ -245,7 +293,7 @@
           "configurable": false,
           "unique": false
         },
-        "capstone": {
+        "createdCapstones": {
           "nature": "manyToOne",
           "target": "application::capstones.capstones",
           "dominant": false,
@@ -259,13 +307,16 @@
           "targetAttribute": "user",
           "unique": false
         },
-        "profilePicture": {
+        "ProfilePicture": {
           "type": "media",
           "multiple": false
         },
-        "description": {
-          "type": "richtext",
-          "maxLength": 10000
+        "viewstat": {
+          "nature": "oneToOne",
+          "target": "application::viewstats.viewstats",
+          "dominant": false,
+          "targetAttribute": "user",
+          "unique": false
         }
       }
     }
