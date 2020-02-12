@@ -54,6 +54,7 @@ const formatContentType = contentType => {
 const getDifference = (allContentTypes, newContentTypes) => {
     return newContentTypes.filter(contentType => {
             let result = true;
+            // See if this content type already exists
             for (const currentContentType of allContentTypes) {
                 if (_.isEqual(contentType, currentContentType)) {
                     result = false;
@@ -106,13 +107,24 @@ const getDifference = (allContentTypes, newContentTypes) => {
     let differentApplicationContentTypes = contentTypes.application;
     // Get the list of plugin content types
     let differentPluginsContentTypes = contentTypes.plugins;
+    // List of the current existing content types in Strapi
+    let existingContentTypes;
 
     // Add the content type schemas to Strapi
     try {
         console.log(`Fetching all existing content types`);
         // Get all of the current content types on Strapi
         let existingContentTypesResponse = await axios.get(STRAPI_CONTENT_TYPE_URL);
-        let existingContentTypes = existingContentTypesResponse.data.data.map(t => t.schema);
+        existingContentTypes = existingContentTypesResponse.data.data.map(t => t.schema);
+        // Ensure to remove the 'plugin' key/value that from existing
+        // content types because it will cause error when updating
+        existingContentTypes.forEach(contentType => {
+            Object.keys(contentType.attributes).forEach(t => {
+                if(contentType.attributes[t].hasOwnProperty('plugin')){
+                    delete contentType.attributes[t]['plugin'];
+                }
+            });
+        });
         // Get the application content types that need to be created or updated
         differentApplicationContentTypes = getDifference(existingContentTypes, differentApplicationContentTypes);
         // Get the plugins content types that need to be created or updated
@@ -136,15 +148,15 @@ const getDifference = (allContentTypes, newContentTypes) => {
         // For the content types that need to be created, shallow create them
         // so that that can be referenced by other content types upon creation
         for (const contentType of contentTypeToCreate) {
-            const key = Object.keys(contentType.attributes)[0];
-            const value = contentType.attributes[key];
             const payload = formatContentType({
                 "name": contentType.name,
                 "attributes": {
-                    key: value
+                    "dummyAttribute": {
+                        "type": "string"
+                    }
                 }
             });
-            console.log(`\tCreating ${contentType.name}`);
+            console.log(`\tCreating dummy ${contentType.name}`);
             await axios.post(STRAPI_CONTENT_TYPE_URL, payload);
             await awaitRestart();
         }
@@ -160,6 +172,7 @@ const getDifference = (allContentTypes, newContentTypes) => {
             await awaitRestart();
         }
 
+        contentTypeToUpdate.push(...contentTypeToCreate);
         // Update the application (user defined) content types
         for (const contentType of contentTypeToUpdate) {
             const url = STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + contentType.name + '.' + contentType.name;
@@ -172,6 +185,8 @@ const getDifference = (allContentTypes, newContentTypes) => {
 
         console.log(`Schema import successful!`);
     } catch (error) {
-        console.error(`Error when creating and updating content types:\n` + error);
+        const key = Object.keys(error.response.data.error)[0];
+        const value = error.response.data.error[key][0];
+        console.error(`${error}\n${value}`);
     }
 })();

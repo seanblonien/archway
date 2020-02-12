@@ -26,7 +26,6 @@
         "moderator": {
           "nature": "oneToMany",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "capstone",
           "unique": false
@@ -64,7 +63,6 @@
         "creators": {
           "nature": "oneToMany",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "capstone",
           "unique": false
@@ -86,7 +84,6 @@
         "user": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "comments",
           "unique": false
@@ -187,7 +184,6 @@
         "user": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "posts",
           "unique": false
@@ -244,7 +240,6 @@
         "user": {
           "nature": "oneToOne",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "viewstat",
           "unique": false
@@ -275,8 +270,87 @@
   ],
   "plugins": [
     {
+      "name": "permission",
+      "description": "",
+      "connection": "default",
+      "collectionName": "users-permissions_permission",
+      "attributes": {
+        "type": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "controller": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "action": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "enabled": {
+          "type": "boolean",
+          "required": true,
+          "configurable": false
+        },
+        "policy": {
+          "type": "string",
+          "configurable": false
+        },
+        "role": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.role",
+          "dominant": false,
+          "targetAttribute": "permissions",
+          "configurable": false,
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "role",
+      "description": "",
+      "connection": "default",
+      "collectionName": "users-permissions_role",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "minLength": 3,
+          "required": true,
+          "configurable": false
+        },
+        "description": {
+          "type": "string",
+          "configurable": false
+        },
+        "type": {
+          "type": "string",
+          "unique": true,
+          "configurable": false
+        },
+        "permissions": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.permission",
+          "dominant": false,
+          "targetAttribute": "role",
+          "configurable": false,
+          "unique": false
+        },
+        "users": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "role",
+          "configurable": false,
+          "unique": false
+        }
+      }
+    },
+    {
       "name": "user",
-      "description": "Describes a User",
+      "description": "",
       "connection": "default",
       "collectionName": "users-permissions_user",
       "attributes": {
@@ -321,7 +395,6 @@
         "role": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.role",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "users",
           "configurable": false,
@@ -367,7 +440,7 @@
           "nature": "manyToOne",
           "target": "application::capstones.capstones",
           "dominant": false,
-          "targetAttribute": "moderator",
+          "targetAttribute": "creators",
           "unique": false
         },
         "comments": {
@@ -375,88 +448,6 @@
           "target": "application::commemts.commemts",
           "dominant": false,
           "targetAttribute": "user",
-          "unique": false
-        }
-      }
-    },
-    {
-      "name": "permission",
-      "description": "",
-      "connection": "default",
-      "collectionName": "users-permissions_permission",
-      "attributes": {
-        "type": {
-          "type": "string",
-          "required": true,
-          "configurable": false
-        },
-        "controller": {
-          "type": "string",
-          "required": true,
-          "configurable": false
-        },
-        "action": {
-          "type": "string",
-          "required": true,
-          "configurable": false
-        },
-        "enabled": {
-          "type": "boolean",
-          "required": true,
-          "configurable": false
-        },
-        "policy": {
-          "type": "string",
-          "configurable": false
-        },
-        "role": {
-          "nature": "manyToOne",
-          "target": "plugins::users-permissions.role",
-          "plugin": "users-permissions",
-          "dominant": false,
-          "targetAttribute": "permissions",
-          "configurable": false,
-          "unique": false
-        }
-      }
-    },
-    {
-      "name": "role",
-      "description": "",
-      "connection": "default",
-      "collectionName": "users-permissions_role",
-      "attributes": {
-        "name": {
-          "type": "string",
-          "minLength": 3,
-          "required": true,
-          "configurable": false
-        },
-        "description": {
-          "type": "string",
-          "configurable": false
-        },
-        "type": {
-          "type": "string",
-          "unique": true,
-          "configurable": false
-        },
-        "permissions": {
-          "nature": "oneToMany",
-          "target": "plugins::users-permissions.permission",
-          "plugin": "users-permissions",
-          "dominant": false,
-          "targetAttribute": "role",
-          "configurable": false,
-          "unique": false
-        },
-        "users": {
-          "nature": "oneToMany",
-          "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
-          "dominant": false,
-          "targetAttribute": "role",
-          "configurable": false,
           "unique": false
         }
       }
