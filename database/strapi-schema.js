@@ -35,6 +35,7 @@ const formatContentType = contentType => {
 (async () => {
     let response;
 
+    console.log(`Logging in to Strapi admin panel...`);
     // Register or Login to the admin panel
     try {
         // Attempt to register
@@ -62,7 +63,9 @@ const formatContentType = contentType => {
 
     // Set the authorization token in the header
     axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.jwt}`;
+    console.log(`Login successful!`);
 
+    console.log(`Reading in content type schema fromm file`);
     // Fetch the content type schema from file
     const contentTypes = JSON.parse(fs.readFileSync(CONTENT_TYPES_SCHEMA_FILE, 'utf8'));
     // Get the list of application content types
@@ -72,6 +75,7 @@ const formatContentType = contentType => {
 
     // Add the content type schemas to Strapi
     try {
+        console.log(`Checking which content types need to be created`);
         // Check to see which content types need to be created
         const contentTypeToCreate = [];
         for (const contentType of applicationContentTypes) {
@@ -94,14 +98,18 @@ const formatContentType = contentType => {
                     key: value
                 }
             });
+            console.log(`\tCreating ${contentType.name}`);
             await axios.post(STRAPI_CONTENT_TYPE_CREATE_URL, payload);
             await awaitRestart();
         }
+        console.log(`Done creating new content types`);
 
+        console.log(`Updating content types`);
         // Update the plugin content types
         for (const contentType of pluginsContentTypes) {
             const url = STRAPI_CONTENT_TYPE_UPDATE_PLUGIN_URL + contentType.collectionName.replace('_', '.');
             const payload = formatContentType(contentType);
+            console.log(`\tUpdating ${contentType.name}`);
             await axios.put(url, payload);
             await awaitRestart();
         }
@@ -110,9 +118,13 @@ const formatContentType = contentType => {
         for (const contentType of applicationContentTypes) {
             const url = STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + contentType.name + '.' + contentType.name;
             const payload = formatContentType(contentType);
+            console.log(`\tUpdating ${contentType.name}`);
             await axios.put(url, payload);
             await awaitRestart();
         }
+        console.log(`Finished updating content types`);
+
+        console.log(`Schema import successful!`);
     } catch (error) {
         console.error(`Error when creating and updating content types:\n` + error);
     }
