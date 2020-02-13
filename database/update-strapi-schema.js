@@ -92,6 +92,7 @@ const getDifference = (allContentTypes, newContentTypes) => {
                 });
             } catch (error) {
                 console.error(`Error when logging in:\n` + error);
+                return;
             }
         }
     }
@@ -102,11 +103,11 @@ const getDifference = (allContentTypes, newContentTypes) => {
 
     console.log(`Reading in content type schema fromm file`);
     // Fetch the content type schema from file
-    const contentTypes = JSON.parse(fs.readFileSync(CONTENT_TYPES_SCHEMA_FILE, 'utf8'));
+    const schema = JSON.parse(fs.readFileSync(CONTENT_TYPES_SCHEMA_FILE, 'utf8'));
     // Get the list of application content types
-    let differentApplicationContentTypes = contentTypes.application;
+    let differentApplicationContentTypes = schema.application;
     // Get the list of plugin content types
-    let differentPluginsContentTypes = contentTypes.plugins;
+    let differentPluginsContentTypes = schema.plugins;
     // List of the current existing content types in Strapi
     let existingContentTypes;
 
@@ -127,7 +128,7 @@ const getDifference = (allContentTypes, newContentTypes) => {
         });
         // Get the application content types that need to be created or updated
         differentApplicationContentTypes = getDifference(existingContentTypes, differentApplicationContentTypes);
-        // Get the plugins content types that need to be created or updated
+        // Get the plugin content types that need to be created or updated
         differentPluginsContentTypes = getDifference(existingContentTypes, differentPluginsContentTypes);
 
         console.log(`Checking which content types need to be created`);
@@ -137,7 +138,8 @@ const getDifference = (allContentTypes, newContentTypes) => {
         for (const contentType of differentApplicationContentTypes) {
             const url = STRAPI_CONTENT_TYPE_GET_URL + contentType.name + '.' + contentType.name;
             const response = await axios.get(url).catch(e => e);
-            // If request returned error, the content type needs to be created
+            // If request returned error, the content type needs to be created,
+            // otherwise, updated
             if (response instanceof Error) {
                 contentTypeToCreate.push(contentType);
             } else {
@@ -172,6 +174,7 @@ const getDifference = (allContentTypes, newContentTypes) => {
             await awaitRestart();
         }
 
+        // Add the content types that were created to be updated
         contentTypeToUpdate.push(...contentTypeToCreate);
         // Update the application (user defined) content types
         for (const contentType of contentTypeToUpdate) {

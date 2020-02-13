@@ -1,13 +1,37 @@
-# Section02-Group03
+# Archway
 
 ## How to Run the Project
 
-1. Download and install Docker for your computer (verify with `Docker -v` and `docker-compose -v` in a terminal)
+1. Download and install [Docker](https://www.docker.com/products/docker-desktop) to your computer (verify with 
+`Docker -v` and `docker-compose -v` in a terminal)
 1. Clone this repository to your computer
 1. In a terminal, navigate to the repository
 1. Run `docker-compose build` to build all of the required Docker images for the project
-1. Run `npm install` in the same directory to install all dependencies for the front end app (this is run locally, and not in the container, so that files may be edited in real time and updated in the container)
+1. Run `npm install` in the same directory to install all dependencies for the front end app (this is run locally, and
+ not in the container, so that files may be edited in real time and updated in the container)
 1. Once that is done, run `docker-compose up` to start all of the Docker containers (database, strapi, and app)
+
+## How to Import Data
+
+There won't be anything in the database or backend yet, so you have to import a schema and data to start off with a
+ running project.
+
+1. Download and install [Node](https://nodejs.org/en/download/) to your computer to run the import scripts
+ (verify with `node -v` in a terminal)
+1. Ensure that the project is running successfully (using previous steps) by seeing this in the Strapi Docker container
+ logs. If you do not see this yet, then it is possible the container is still starting up.
+    ```
+    One more thing... 
+    Create your first administrator 💻 by going to the administration panel at: 
+    ┌─────────────────────────────┐
+    │ http://localhost:1337/admin │
+    └─────────────────────────────┘
+    ```
+1. Navigate to the database folder of the project (i.e. `cd database` in project root) and then run `node update
+-strapi-schema.js` to create and import the Strapi schema content types for the backend.
+1. Once it says schema import successful, run the data import with `node import-database.js BaseSchema.zip` which
+ will restore the Strapi database with base data/content that matches the Strapi schema content types.
+1. Launch the Strapi admin panel (localhost:1337) to see the new content types!
 
 ## [OLD] Project Structure
 
