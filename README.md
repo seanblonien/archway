@@ -15,16 +15,35 @@ There won't be anything in the database or backend yet, so you have to import a 
 
 1. Download and install [Node](https://nodejs.org/en/download/) to your computer to run the import scripts (verify with `node -v` in a terminal)
 1. Ensure that the project is running successfully (using previous steps) by seeing this in the Strapi Docker container logs. If you do not see this yet, then it is possible the container is still starting up.
+
     ```
-    One more thing... 
-    Create your first administrator 💻 by going to the administration panel at: 
+    One more thing...
+    Create your first administrator 💻 by going to the administration panel at:
     ┌─────────────────────────────┐
     │ http://localhost:1337/admin │
     └─────────────────────────────┘
     ```
-1. Navigate to the database folder of the project (i.e. `cd database` in project root) and then run `node import-strapi.js` to create and import the Strapi schema content types for the backend.
-1. Once it says schema import successful, run the data import with `node import-database.js BaseSchema.zip` which will restore the Strapi database with base data/content that matches the Strapi schema content types.
-1. Launch the Strapi admin panel (localhost:1337) to see the new content types!
+
+1. Navigate to the database folder of the project (i.e. `cd database` in project root).
+1. Run `node import-strapi.js BaseStrapiExport.json` to import the Strapi schema content types.
+1. Run `node import-database.js BaseDatabaseExport.zip` to import the database content that matches the Strapi schema content types.
+1. Run `node import-uploads.js BaseUploadsExport.zip` to import the file uploads (i.e. images) into the Strapi container.
+1. Launch the Strapi admin panel (i.e. localhost:1337) to see the new content types and imported data!
+
+*Why are there 3 separate scripts for this?*
+
+The idea is to give you control over what you import into your project. You can import different exports, schemas, and data depending on what you want to do. use the exporting guide in combination with importing to add, change, modify, and delete anything in the project and have a backup to restore to a stable point if need be.
+
+## How to Export Data
+
+You may be wondering, *where did these 'Base Export' files come anyways*? They came from exporting directly from a running instance of the project already. There are corresponding export scripts that accompany the import scrips used above. Use the export scripts in conjunction with import scripts to manipulate the project schema and data and have a backup to restore the project just in case anything goes wrong.
+
+1. Ensure that the project (i.e. database and strapi containers) is running successfully which can be verified by viewing the container logs.
+1. Navigate to the database folder of the project (i.e. `cd database` in project root).
+1. Run `node export-strapi.js <filename>` to export all of the current content types in your Strapi container. You must give the export a filename for it to be created. File format is `.json`.
+1. Run `node export-database.js <filename>` to export the Strapi database data. You must give the export a filename for it to be created. File format is `.zip`.
+1. Run `node export-uploads.js <filename>` to export the Strapi file uploads data (i.e. images for the sponsors or users). You must give the export a filename for it to be created. File format is `.zip`.
+1. These three files will be created in the current directory under the given filenames and can be used to in an import on an running instance of the project.
 
 ## [OLD] Project Structure
 
