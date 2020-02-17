@@ -1,4 +1,11 @@
-const s = require('./strapi-scripts');
+/**
+ * Script that exports the Strapi content types and their schemas from the
+ * running Strapi container.
+ *
+ * This is done by querying for all of the content types and formatting them
+ * to JSON that can be used to import later. See import-strapi.js for more.
+ */
+const s = require('./strapi-scripts.js');
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
 
@@ -30,10 +37,9 @@ const ARGV_REQUIRED_LENGTH = 3;
         "application": serverContentTypesApplication,
         "plugins": serverContentTypesPlugins
     };
-
     // Write that json object to file
     console.log(`Exporting content types to file`);
     s.writeJSONToFile(fileName, output);
 
-    console.log(`Done!`);
+    console.log(`Strapi schema export successful!!`);
 })();

@@ -12,7 +12,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
-    // Verify a filename was provided.
+    // Verify a filename was provided
     if(process.argv.length < ARGV_REQUIRED_LENGTH){
         console.error(`Please provide a filename for the database export.`);
         return;
@@ -30,8 +30,8 @@ const ARGV_REQUIRED_LENGTH = 3;
         await execShellCommand(`docker exec database zip -r /dump.zip /dump`);
         // Copy the dump zip file over to the local directory
         await execShellCommand(`docker cp database:/dump.zip ${path.resolve(__dirname, fileName)}`);
-        // Log successful execution
-        console.log(`Export successful!`);
+
+        console.log(`Database export successful!`);
     } catch(e){
         // Log the error to console
         console.error(e);

@@ -1,3 +1,7 @@
+/**
+ * This file contains Strapi constants and helper methods for running Strapi
+ * related scripts.
+ */
 const axios = require('axios').default;
 const fs = require('fs');
 const path = require('path');

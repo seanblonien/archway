@@ -1,5 +1,5 @@
 /**
- * Script that imports a Strapi content type schema from a local JSON file
+ * Script that imports Strapi content type schemas from a local JSON file
  * that stores both the application (user created) and plugin (strapi
  * created) content types.
  *
@@ -136,5 +136,5 @@ const ARGV_REQUIRED_LENGTH = 3;
         console.error(`${error}\n${value}`);
     }
 
-    console.log(`Schema import successful!`);
+    console.log(`Strapi schema import successful!`);
 })();
