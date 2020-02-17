@@ -18,6 +18,4 @@ const execShellCommand = cmd => {
     });
 };
 
-module.exports = {
-    execShellCommand
-};
+module.exports = execShellCommand;

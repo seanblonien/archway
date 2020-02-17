@@ -5,7 +5,7 @@
  * Stores the database dump in the local directory as a zip file that can be
  * later used for importing to another database instance.
  */
-const { execShellCommand }  = require('./execShellCommand');
+const execShellCommand  = require('./execShellCommand.js');
 const path = require("path");
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
@@ -14,7 +14,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 (async () => {
     // Verify a filename was provided.
     if(process.argv.length < ARGV_REQUIRED_LENGTH){
-        console.error(`Please provide a filename name for the database export.`);
+        console.error(`Please provide a filename for the database export.`);
         return;
     }
     const fileName = process.argv[ARGV_INDEX_FILE_PATH];

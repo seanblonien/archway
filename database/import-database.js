@@ -6,7 +6,7 @@
  * Note: drops any pre-existing collection if a collection being imported has
  * the same name. Will not delete or modify collections that are not imported.
  */
-const { execShellCommand } = require('./execShellCommand');
+const execShellCommand = require('./execShellCommand.js');
 const path = require("path");
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
@@ -15,7 +15,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 (async () => {
     // Verify a filename was provided.
     if(process.argv.length < ARGV_REQUIRED_LENGTH){
-        console.error(`Please provide a filename name for the database import.`);
+        console.error(`Please provide a filename for the database import.`);
         return;
     }
     const fileName = process.argv[ARGV_INDEX_FILE_PATH];

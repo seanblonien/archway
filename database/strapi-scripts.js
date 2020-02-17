@@ -77,7 +77,7 @@ const readJSONFromFile = filename => {
 // directory
 const writeJSONToFile = (filename, jsonObj) => {
     fs.writeFileSync(`${path.resolve(__dirname, filename)}`,
-                            JSON.stringify(jsonObj, null, 4),
+                            JSON.stringify(jsonObj, null, 2),
                     'utf8');
 };
 
