@@ -163,12 +163,11 @@ class ViewAllDepartments extends React.Component {
                                     </ExpansionPanelDetails>
 
                                         <Grid container justify="flex-end">
-                                        {result['capstones'] ? result['capstones'].map((result2,i) => (
+                                        {result['capstones'] &&  result['capstones'].length > 0 ? result['capstones'].map((result2,i) => (
                                             <Grid xs={12} style={{marginLeft: '4%'}}>
                                             <ExpansionPanel
                                                 square
                                                 onChange={this.handleChange(('panel'.concat(i)))}
-
                                             >
 
                                                     <ExpansionPanelSummary >
