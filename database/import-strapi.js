@@ -40,6 +40,8 @@ const ARGV_REQUIRED_LENGTH = 3;
     let pluginsContentTypes = schema.plugins;
     // All content types
     let localContentTypes = [...applicationContentTypes, ...pluginsContentTypes];
+    // Remove 'plugin' attribute that cause errors
+    s.removePluginAttribute(localContentTypes);
     // Verify local content types are not capitalized
     for(const contentType of localContentTypes){
         if(contentType.name !== contentType.name.toLowerCase()){
@@ -56,15 +58,8 @@ const ARGV_REQUIRED_LENGTH = 3;
         let serverContentTypesResponse = await s.axios.get(s.STRAPI_CONTENT_TYPE_URL);
         // List of the content types on the Strapi server
         let serverContentTypes = serverContentTypesResponse.data.data.map(t => t.schema);
-        // Ensure to remove the 'plugin' key/value that from server
-        // content types because it will cause error when updating
-        serverContentTypes.forEach(contentType => {
-            Object.keys(contentType.attributes).forEach(t => {
-                if(contentType.attributes[t].hasOwnProperty('plugin')){
-                    delete contentType.attributes[t]['plugin'];
-                }
-            });
-        });
+        // Remove 'plugin' attribute that cause errors
+        s.removePluginAttribute(serverContentTypes);
 
         // Find the content types to delete
         let contentTypeNamesToDelete = _.differenceWith(serverContentTypes.map(s => s.name), localContentTypes.map(s => s.name), _.isEqual);

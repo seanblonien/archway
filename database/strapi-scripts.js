@@ -81,6 +81,16 @@ const writeJSONToFile = (filename, jsonObj) => {
                     'utf8');
 };
 
+const removePluginAttribute = contentTypes => {
+    contentTypes.forEach(contentType => {
+        Object.keys(contentType.attributes).forEach(t => {
+            if(contentType.attributes[t].hasOwnProperty('plugin')){
+                delete contentType.attributes[t]['plugin'];
+            }
+        });
+    });
+};
+
 module.exports = {
     axios,
     authenticate,
@@ -88,6 +98,7 @@ module.exports = {
     awaitRestart,
     readJSONFromFile,
     writeJSONToFile,
+    removePluginAttribute,
     STRAPI_BASE_URL,
     STRAPI_CONTENT_TYPE_URL,
     STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL,

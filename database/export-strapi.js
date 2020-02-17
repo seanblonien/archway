@@ -19,6 +19,8 @@ const ARGV_REQUIRED_LENGTH = 3;
     let serverContentTypesResponse = await s.axios.get(s.STRAPI_CONTENT_TYPE_URL);
     // List of the content types on the Strapi server
     let serverContentTypes = serverContentTypesResponse.data.data.map(t => t.schema);
+    // Remove 'plugin' attribute that cause errors
+    s.removePluginAttribute(serverContentTypes);
     // Split the content types into 'application' and 'plugins'
     let serverContentTypesPlugins= serverContentTypes.filter(contentType => contentType.collectionName.startsWith('users-permissions'));
     let serverContentTypesApplication = serverContentTypes.filter(contentType => !contentType.collectionName.startsWith('users-permissions'));
