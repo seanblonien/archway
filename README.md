@@ -22,7 +22,7 @@ There won't be anything in the database or backend yet, so you have to import a 
     │ http://localhost:1337/admin │
     └─────────────────────────────┘
     ```
-1. Navigate to the database folder of the project (i.e. `cd database` in project root) and then run `node update-strapi-schema.js` to create and import the Strapi schema content types for the backend.
+1. Navigate to the database folder of the project (i.e. `cd database` in project root) and then run `node import-strapi.js` to create and import the Strapi schema content types for the backend.
 1. Once it says schema import successful, run the data import with `node import-database.js BaseSchema.zip` which will restore the Strapi database with base data/content that matches the Strapi schema content types.
 1. Launch the Strapi admin panel (localhost:1337) to see the new content types!
 
