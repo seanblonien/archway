@@ -2,18 +2,20 @@
 
 ## How to Run the Project
 
-1. Download and install [Docker](https://www.docker.com/products/docker-desktop) to your computer (verify with `Docker -v` and `docker-compose -v` in a terminal)
-1. Clone this repository to your computer
-1. In a terminal, navigate to the repository
-1. Run `docker-compose build` to build all of the required Docker images for the project
-1. Run `npm install` in the same directory to install all dependencies for the front end app (this is run locally, and not in the container, so that files may be edited in real time and updated in the container)
-1. Once that is done, run `docker-compose up` to start all of the Docker containers (database, strapi, and app)
+1. Download and install [Docker](https://www.docker.com/products/docker-desktop) to your computer (verify with `Docker -v` and `docker-compose -v` in a terminal).
+1. Clone this repository to your computer.
+1. In a terminal, navigate to the repository.
+1. Run `docker-compose build` to build all of the required Docker images for the project.
+1. Run `npm install` in the same directory to install all dependencies for the front end app (this is run locally, and not in the container, so that files may be edited in real time and updated in the container).
+1. Once that is done, run `docker-compose up` to start all of the Docker containers (database, strapi, and app).
+
+    NOTE: if this is your first time starting, this may take severall minutes.
 
 ## How to Import Data
 
 There won't be anything in the database or backend yet, so you have to import a schema and data to start off with a running project.
 
-1. Download and install [Node](https://nodejs.org/en/download/) to your computer to run the import scripts (verify with `node -v` in a terminal)
+1. Download and install [Node](https://nodejs.org/en/download/) to your computer to run the import scripts (verify with `node -v` in a terminal).
 1. Ensure that the project is running successfully (using previous steps) by seeing this in the Strapi Docker container logs. If you do not see this yet, then it is possible the container is still starting up.
 
     ```
@@ -24,11 +26,15 @@ There won't be anything in the database or backend yet, so you have to import a 
     └─────────────────────────────┘
     ```
 
+    NOTE: DON'T OPEN YOUR BROWSER YET - the scripts will handle admin account creation for you.
+
+    NOTE: if this is your first time starting, this may take severall minutes.
+
 1. Navigate to the database folder of the project (i.e. `cd database` in project root).
 1. Run `node import-strapi.js BaseStrapiExport.json` to import the Strapi schema content types.
 1. Run `node import-database.js BaseDatabaseExport.zip` to import the database content that matches the Strapi schema content types.
 1. Run `node import-uploads.js BaseUploadsExport.zip` to import the file uploads (i.e. images) into the Strapi container.
-1. Launch the Strapi admin panel (i.e. localhost:1337) to see the new content types and imported data!
+1. Launch the Strapi admin panel (i.e. localhost:1337) to see the new content types and imported data! The username is `admin` and the password is `capstone` for the Strapi admin panel.
 
 *Why are there 3 separate scripts for this?*
 
