@@ -51,19 +51,8 @@ class ViewADepartment extends React.Component {
 
         if (!this.state.loading) {
 
-            var department;
+            var department = this.state.departments.find(d => d.id == this.props.match.params.id);
 
-            var obj;
-            for (var key in this.state.departments){
-                obj = this.state.departments[key];
-                for( let prop in obj){
-                    if(prop === 'id'){
-                        if(this.props.match.params.id === obj[prop]){
-                            department = obj;
-                        }
-                    }
-                }
-            }
 
             return (
                 <div className="ViewASponsor">
@@ -87,14 +76,12 @@ class ViewADepartment extends React.Component {
                         <h1> All Capstones by {department['name']}</h1>
                     </Typography>
 
-                    {department['capstones'].map((result, i) => (
-                        <Button href={"/ViewCapstone/" + result.CapstoneName}>
-                            <Typography>
-                                <h1>{result.CapstoneName}</h1>
+                    <Button href={"/ViewCapstone/" + department['capstones'].CapstoneName}>
+                        <Typography>
+                            <h1>{department['capstones'].CapstoneName}</h1>
 
-                            </Typography>
-                        </Button>
-                    ))}
+                        </Typography>
+                    </Button>
 
                 </div>
             );
