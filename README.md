@@ -9,7 +9,7 @@
 1. Run `npm install` in the same directory to install all dependencies for the front end app (this is run locally, and not in the container, so that files may be edited in real time and updated in the container).
 1. Once that is done, run `docker-compose up` to start all of the Docker containers (database, strapi, and app).
 
-    NOTE: if this is your first time starting, this may take severall minutes.
+    NOTE: if this is your first time starting, this may take several minutes.
 
 ## How to Import Data
 
@@ -28,7 +28,7 @@ There won't be anything in the database or backend yet, so you have to import a 
 
     NOTE: DON'T OPEN YOUR BROWSER YET - the scripts will handle admin account creation for you.
 
-    NOTE: if this is your first time starting, this may take severall minutes.
+    NOTE: if this is your first time starting, this may take several minutes.
 
 1. Navigate to the database folder of the project (i.e. `cd database` in project root).
 1. Run `node import-strapi.js BaseStrapiExport.json` to import the Strapi schema content types.
