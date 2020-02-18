@@ -112,7 +112,7 @@ class Capstone extends React.Component {
                         <Grid item xs={12} md={10}>
                             <GridList cellHeight={250} cols={Capstone.getColumns(this.props)}>
                                 {/*Creates a gridlist tile for each capstone*/}
-                                {match.map((result, i) => (
+                                {match.map((result, i) => match[i]['DisplayPhoto'] && match[i]['DisplayPhoto'].url != null ? (
                                     <GridListTile key={strapiURL + match[i]['DisplayPhoto'].url} onClick={(e) => Capstone.handleTileClick(result['_id'])}>
                                         {/*The display photo for each gridlisttile*/}
                                         <img src={strapiURL + match[i]['DisplayPhoto'].url} alt={"Capstone"} style={{height: '100%', width: '100%'}}/>
@@ -127,7 +127,7 @@ class Capstone extends React.Component {
                                         >
                                         </GridListTileBar>
                                     </GridListTile>
-                                ))}
+                                ) : '')}
                             </GridList>
                         </Grid>
                     </Grid>

@@ -13,7 +13,7 @@ services:
     # Mounts the local directory to where the database values are stored
     # This is what makes the database persistent
     volumes:
-    - /mnt/mongodb/mongodata:/data/db
+     - /mnt/mongodb/data:/data/db
     # Exposes the host port to the container port for intercommunication
     ports:
       - 27017:27017
@@ -56,7 +56,7 @@ services:
     # The app uses strapi to load data
     depends_on:
       - strapi
-    # Sets the URI for the MongoDB connection 
+    # Sets the URI for the MongoDB connection
     environment:
       - MONGO_URI='mongodb://database:27017/strapi'
     # Join the network used for back-end intercommunication
