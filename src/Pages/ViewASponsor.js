@@ -150,14 +150,7 @@ class ViewASponsor extends React.Component {
                                                 </Typography>
                                             <Divider style={{marginBottom: '2%'}}/>
                                                 <Carousel showArrows={true} showThumbs={false} infiniteLoop={true} >
-                                                    {sponsor['adverts'].map((result) => {
 
-                                                        return(
-                                                            <div>
-                                                                <img height={500} width={300} alt="post" src={strapiURL + result.url}/>
-                                                            </div>
-                                                        );
-                                                    })}
                                                 </Carousel>
 
                                         </Grid>

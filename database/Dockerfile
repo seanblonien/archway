@@ -1,5 +1,5 @@
 # Base MongoDB image
-FROM mongo:3.4.23
+FROM mongo:4.2.3-bionic
 
 # Sets up database called 'strapi'
 ENV MONGO_INITDB_DATABASE=strapi
@@ -8,7 +8,7 @@ ENV MONGO_INITDB_ROOT_USERNAME=root
 ENV MONGO_INITDB_ROOT_PASSWORD=capstone
 
 # Add zip and unzip packages used for exporting/importing the database
-RUN apt-get update -y && apt-get upgrade -y && apt-get install -y zip unzip
+RUN apt-get update -y && apt-get install -y zip unzip
 
 # Exposees this port so that other services can access the database within the container
 EXPOSE 27017

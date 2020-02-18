@@ -1,0 +1,444 @@
+{
+  "application": [
+    {
+      "name": "capstones",
+      "description": "Describes a Capstone Project",
+      "connection": "default",
+      "collectionName": "capstones",
+      "attributes": {
+        "CapstoneName": {
+          "type": "string",
+          "required": true
+        },
+        "StartDate": {
+          "type": "date",
+          "required": true
+        },
+        "EndDate": {
+          "type": "date",
+          "required": true
+        },
+        "Description": {
+          "type": "richtext",
+          "required": true,
+          "maxLength": 10000
+        },
+        "DisplayPhoto": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "pictures": {
+          "type": "media",
+          "multiple": true,
+          "required": false
+        },
+        "sponsors": {
+          "nature": "manyToMany",
+          "target": "application::sponsors.sponsors",
+          "dominant": true,
+          "targetAttribute": "capstones",
+          "unique": false
+        },
+        "posts": {
+          "nature": "manyWay",
+          "target": "application::posts.posts",
+          "dominant": false,
+          "unique": false
+        },
+        "creators": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "capstone",
+          "unique": false
+        },
+        "department": {
+          "nature": "oneToMany",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "capstones",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "commemts",
+      "description": "Describes a Comment to a Post",
+      "connection": "default",
+      "collectionName": "commemts",
+      "attributes": {
+        "content": {
+          "type": "text"
+        },
+        "username": {
+          "type": "string"
+        },
+        "user": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "comments",
+          "unique": false
+        },
+        "editable": {
+          "type": "boolean",
+          "default": true
+        },
+        "post": {
+          "nature": "manyToOne",
+          "target": "application::posts.posts",
+          "dominant": false,
+          "targetAttribute": "comments",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "departments",
+      "description": "Describes a Department",
+      "connection": "default",
+      "collectionName": "departments",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        "capstones": {
+          "nature": "manyToOne",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "department",
+          "unique": false
+        },
+        "url": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "email"
+        },
+        "description": {
+          "type": "richtext",
+          "default": "10000"
+        },
+        "viewstat": {
+          "nature": "oneToOne",
+          "target": "application::viewstats.viewstats",
+          "dominant": false,
+          "targetAttribute": "department",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "faqs",
+      "description": "Describes a FAQ",
+      "connection": "default",
+      "collectionName": "faqs",
+      "attributes": {
+        "Category": {
+          "type": "string"
+        },
+        "Question": {
+          "type": "string",
+          "required": true
+        },
+        "Answer": {
+          "type": "richtext",
+          "required": true,
+          "maxLength": 10000
+        },
+        "Url": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "posts",
+      "description": "Describes a Post on a Capstone Project",
+      "connection": "default",
+      "collectionName": "posts",
+      "attributes": {
+        "title": {
+          "type": "string",
+          "unique": false,
+          "default": "title",
+          "required": true
+        },
+        "content": {
+          "type": "richtext",
+          "required": true
+        },
+        "media": {
+          "type": "media",
+          "multiple": true,
+          "required": false
+        },
+        "user": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "posts",
+          "unique": false
+        },
+        "comments": {
+          "nature": "oneToMany",
+          "target": "application::commemts.commemts",
+          "dominant": false,
+          "targetAttribute": "post",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "sponsors",
+      "description": "Describes a Sponsor for a Capstone Project",
+      "connection": "default",
+      "collectionName": "sponsors",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "capstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "sponsors",
+          "unique": false
+        },
+        "webUrl": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "description": {
+          "type": "richtext",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "viewstats",
+      "description": "Describes a ViewStat",
+      "connection": "default",
+      "collectionName": "viewstats",
+      "attributes": {
+        "count": {
+          "type": "integer"
+        },
+        "user": {
+          "nature": "oneToOne",
+          "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "viewstat",
+          "unique": false
+        },
+        "department": {
+          "nature": "oneToOne",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "viewstat",
+          "unique": false
+        },
+        "testAttr": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "plugins": [
+    {
+      "name": "permission",
+      "description": "",
+      "connection": "default",
+      "collectionName": "users-permissions_permission",
+      "attributes": {
+        "type": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "controller": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "action": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "enabled": {
+          "type": "boolean",
+          "required": true,
+          "configurable": false
+        },
+        "policy": {
+          "type": "string",
+          "configurable": false
+        },
+        "role": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.role",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "permissions",
+          "configurable": false,
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "role",
+      "description": "",
+      "connection": "default",
+      "collectionName": "users-permissions_role",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "minLength": 3,
+          "required": true,
+          "configurable": false
+        },
+        "description": {
+          "type": "string",
+          "configurable": false
+        },
+        "type": {
+          "type": "string",
+          "unique": true,
+          "configurable": false
+        },
+        "permissions": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.permission",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "role",
+          "configurable": false,
+          "unique": false
+        },
+        "users": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "role",
+          "configurable": false,
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "user",
+      "description": "",
+      "connection": "default",
+      "collectionName": "users-permissions_user",
+      "attributes": {
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "unique": true,
+          "configurable": false,
+          "required": true
+        },
+        "email": {
+          "type": "email",
+          "minLength": 6,
+          "configurable": false,
+          "required": true
+        },
+        "provider": {
+          "type": "string",
+          "configurable": false
+        },
+        "password": {
+          "type": "password",
+          "minLength": 6,
+          "configurable": false,
+          "private": true
+        },
+        "resetPasswordToken": {
+          "type": "string",
+          "configurable": false,
+          "private": true
+        },
+        "confirmed": {
+          "type": "boolean",
+          "default": false,
+          "configurable": false
+        },
+        "blocked": {
+          "type": "boolean",
+          "default": false,
+          "configurable": false
+        },
+        "role": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.role",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "users",
+          "configurable": false,
+          "unique": false
+        },
+        "Fullname": {
+          "type": "string",
+          "minLength": 3,
+          "unique": true,
+          "configurable": false,
+          "required": true
+        },
+        "Bio": {
+          "type": "text"
+        },
+        "Description": {
+          "type": "richtext",
+          "maxLength": 10000
+        },
+        "posts": {
+          "nature": "oneToMany",
+          "target": "application::posts.posts",
+          "dominant": false,
+          "targetAttribute": "user",
+          "unique": false
+        },
+        "ProfilePicture": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "viewstat": {
+          "nature": "oneToOne",
+          "target": "application::viewstats.viewstats",
+          "dominant": false,
+          "targetAttribute": "user",
+          "unique": false
+        },
+        "capstone": {
+          "nature": "manyToOne",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "creators",
+          "unique": false
+        },
+        "comments": {
+          "nature": "oneToMany",
+          "target": "application::commemts.commemts",
+          "dominant": false,
+          "targetAttribute": "user",
+          "unique": false
+        }
+      }
+    }
+  ]
+}

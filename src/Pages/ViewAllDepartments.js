@@ -148,7 +148,7 @@ class ViewAllDepartments extends React.Component {
                                             </Grid>
                                             <Grid xs={1}>
                                                 <Typography>
-                                                    {result['capstones'].length + " capstones"}
+                                                    {result['capstones'] ? result['capstones'].length + " capstones" : ''}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
@@ -163,12 +163,11 @@ class ViewAllDepartments extends React.Component {
                                     </ExpansionPanelDetails>
 
                                         <Grid container justify="flex-end">
-                                        {result['capstones'].map((result2,i) => (
+                                        {result['capstones'] &&  result['capstones'].length > 0 ? result['capstones'].map((result2,i) => (
                                             <Grid xs={12} style={{marginLeft: '4%'}}>
                                             <ExpansionPanel
                                                 square
                                                 onChange={this.handleChange(('panel'.concat(i)))}
-
                                             >
 
                                                     <ExpansionPanelSummary >
@@ -212,7 +211,7 @@ class ViewAllDepartments extends React.Component {
                                                   </Grid>
                                             </ExpansionPanel>
                                             </Grid>
-                                        ))}
+                                        )) : ''}
 
                                         </Grid>
 
