@@ -4,6 +4,7 @@ Contributors:
 Stephen Tate - Wrote entire page.
 Parker Wagner - Implemented and added targeted advertisement to Page
 Ryan Cave - Designed Cappy logo.
+Emily Tracey - updated page to match different branding (2-18-2019)
  */
 
 import React from 'react';
@@ -15,30 +16,31 @@ import compose from 'recompose/compose';
 import withWidth from "@material-ui/core/withWidth/withWidth";
 import Grid from '@material-ui/core/Grid';
 import { Parallax, Background } from 'react-parallax';
-import {strapi, strapiURL} from "../constants";
+import {strapi, strapiURL, university, schoolColorPrimary, schoolColorSecondary} from "../constants";
 import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
-import BackgroundImage from '../Images/LogoFinal.png';
 import {getAdvertisement} from "../util/Advertisements";
 import LoadingCircle from "../Components/LoadingCircle";
 import {homepageBackground} from "../constants";
+import { Button, Paper, Link } from '@material-ui/core';
 
 const insideStyles = {
-    backgroundImage: `url(${BackgroundImage})`,
-    color: "white",
+    background: schoolColorPrimary,
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%,-50%)",
     borderRadius: '10px',
     textAlign: 'center',
-    fontSize: '300%',
-    height: '182px',
+    fontSize: '250%',
+    height: '500px',
     width: '350px',
+    paddingTop: 10,
+    paddingBottom: 50,
 };
 const surroundStyle = {
     background: `rgb(0,0,0,0.75)`,
@@ -46,12 +48,12 @@ const surroundStyle = {
     paddingRight: 20,
     position: "absolute",
     top: "50%",
-    left: "50%",
+    left: "75%",
     transform: "translate(-50%,-50%)",
     borderRadius: '10px',
     textAlign: 'center',
-    fontSize: '300%',
-    height: '202px',
+    fontSize: '200%',
+    height: '520px',
     width: '370px',
 };
 
@@ -59,12 +61,42 @@ const styles = theme => ({
     card: {
         marginTop: '1%',
     },
+    topButtom: {
+        color:'black',
+        width: 350,
+        height: 50,
+        left: '-14%',
+        variant: 'contained',
+        fontSize: 16
+    },
+    featuredPaper:{
+        background: schoolColorSecondary,
+        color: 'black',
+        marginTop: 30,
+        marginLeft: 30,
+        align: "center",
+        textAlign: "center"
+    },
+    infoTextPaper: {
+        marginTop: 30,
+        height: 200,
+        marginRight: 30
+    },
+    topCard:{
+        marginTop: '1%',
+        maxWidth: 360,
+        color: 'black'
+    },
     leftColCard: {
         marginRight: '2%',
         marginTop: '1%',
     },
     textCenteredContainer: {
         position: 'relative',
+    },
+    paper: {
+        height: 140,
+        width: 100,
     },
     photoGalleryGridList: {
         flexWrap: 'nowrap',
@@ -181,57 +213,50 @@ class Home extends React.Component {
 
     render() {
         const {classes} = this.props;
+
         if (this.state.loading) {
             this.top5MostViewedCapstones();
 
             return (
                 <div>
                     <Parallax bgImage={homepageBackground} strength={500}>
-                        <div style={{height: 750}}>
+                        <div style={{height: 650}}>
                             <div style={surroundStyle}>
-                                <div style={insideStyles}/>
+                                <div style={insideStyles}>
+                                    <Typography variant='h4' style={{color: 'white'}}>{university} University</Typography>
+                                    <Typography variant='h5' style={{color: 'white'}}></Typography>
+                                    <Typography variant='h2' style={{color: 'white'}}>Capstones</Typography>
+                                    <div> 
+                                        <Link href='/Capstones'>
+                                            <Button className={classes.topButtom} variant="contained" color='secondary'>Check out Current Capstones</Button>
+                                        </Link>
+                                        <Link href='/ViewSponsors'>
+                                            <Button className={classes.topButtom} variant="contained" color='secondary'>Check Out Our Sponsors</Button>
+                                        </Link>
+                                        <Link href='./Sponsors'>
+                                            <Button className={classes.topButtom} variant="contained" color='secondary'>Become a Sponsor</Button>
+                                        </Link>
+                                    </div>
+                                </div>/>
                             </div>
+                        </div>
+                        <div>
+                            
                         </div>
                     </Parallax>
 
-                    <Grid container justify="center">
-                        <Grid item xs={12} md={4}>
-                            <CardContent>
-                                <SubHeadingTextTypography text="What is Cappy?"/>
-                                <Grid container>
-                                    <Grid item xs={5}>
-                                        <Divider light={true}/>
-                                    </Grid>
-                                </Grid>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    Cappy is a Capstone Management System designed for students and sponsors alike. We
-                                    provide students a platform to <b>store, edit, and present</b> their capstone
-                                    projects.
-                                </Typography>
-                            </CardContent>
+                    <Grid container justify="center" spacing={3}>
+                        <Grid item xs>
+                                <Paper className={classes.featuredPaper}>
+                                    <Typography variant="h4">Featured Capstones</Typography>
+                                </Paper>
                         </Grid>
-
-                        <Grid item xs={12} md={4}>
-                            <CardContent>
-                                <SubHeadingTextTypography text="With Cappy, You Can:"/>
-                                <Grid container>
-                                    <Grid item xs={7}>
-                                        <Divider light={true}/>
-                                    </Grid>
-                                </Grid>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    ✓ Create a capstone project
-                                </Typography>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    ✓ Post updates
-                                </Typography>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    ✓ Make connections
-                                </Typography>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    ✓ Become a sponsor
-                                </Typography>
-                            </CardContent>
+                        <Grid item xs >
+                            <Typography variant='h4' align="center" marginTop={30}>Information about Capstones</Typography>
+                                <Paper className={classes.infoTextPaper}>
+                                    Lots of info right here! all about capstones and baylor and 
+                                    all of that!
+                                </Paper>
                         </Grid>
                     </Grid>
 

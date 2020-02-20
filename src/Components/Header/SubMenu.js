@@ -6,11 +6,6 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Link from '@material-ui/core/Link';
-import ListItemText from '@material-ui/core/ListItemText';
-import AppBar from '@material-ui/core/AppBar'
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
 import { Toolbar } from '@material-ui/core';
 
 const StyledMenu = withStyles({
@@ -23,11 +18,11 @@ const StyledMenu = withStyles({
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: 'bottom',
-      horizontal: 'center',
+      horizontal: 'left',
     }}
     transformOrigin={{
       vertical: 'top',
-      horizontal: 'center',
+      horizontal: 'left',
     }}
     {...props}
   />
@@ -83,8 +78,7 @@ class SubMenu extends Component {
                     aria-haspopup="true"
                     variant="contained"
                     color="primary"
-                    onClick={this.handleHoverOver}
-                    
+                    onMouseEnter={this.handleHoverOver}
                     style={{color: 'white'}}
                 >
                     {this.props.title}
@@ -96,7 +90,6 @@ class SubMenu extends Component {
                     open={Boolean(anchorEl)}
                     onClose={this.handleClose}
                 >
-                    <Toolbar>
                         {this.props.items.map((value, index) => {
                             const linkValue = this.props.href[index]
                             return (
@@ -105,7 +98,6 @@ class SubMenu extends Component {
                                 </Link>
                             )
                         })}
-                    </Toolbar>
                 </StyledMenu>
             </div>
         );
