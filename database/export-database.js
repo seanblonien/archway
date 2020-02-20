@@ -29,7 +29,7 @@ const ARGV_REQUIRED_LENGTH = 3;
         // Compress the database dump into one zip file
         await execShellCommand(`docker exec database zip -r /dump.zip /dump`);
         // Copy the dump zip file over to the local directory
-        await execShellCommand(`docker cp database:/dump.zip ${path.resolve(__dirname, fileName)}`);
+        await execShellCommand(`docker cp database:/dump.zip "${path.resolve(__dirname, fileName)}"`);
 
         console.log(`Database export successful!`);
     } catch(e){

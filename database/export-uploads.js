@@ -24,7 +24,7 @@ const ARGV_REQUIRED_LENGTH = 3;
         // Zip the uploads directory
         await execShellCommand(`docker exec strapi zip -r /uploads.zip /srv/app/public/uploads`);
         // Copy the uploads zip to the local directory with the given filename
-        await execShellCommand(`docker cp strapi:/uploads.zip ${path.resolve(__dirname, fileName)}`);
+        await execShellCommand(`docker cp strapi:/uploads.zip "${path.resolve(__dirname, fileName)}"`);
 
         console.log(`Uploads export successful!`);
     } catch(e){

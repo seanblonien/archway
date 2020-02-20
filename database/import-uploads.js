@@ -25,7 +25,7 @@ const ARGV_REQUIRED_LENGTH = 3;
         // Delete existing uploads.zip
         await execShellCommand(`docker exec strapi rm -rf /uploads.zip`);
         // Copy the local uploads zip to the Strapi container
-        await execShellCommand(`docker cp ${path.resolve(__dirname, filename)} strapi:/uploads.zip`);
+        await execShellCommand(`docker cp "${path.resolve(__dirname, filename)}" strapi:/uploads.zip`);
         // Unzip the uploads
         await execShellCommand(`docker exec strapi unzip /uploads.zip -d /`);
 
