@@ -74,13 +74,18 @@ const styles = theme => ({
         color: 'black',
         marginTop: 30,
         marginLeft: 30,
-        align: "center",
-        textAlign: "center"
+        textAlign: "center",
+        height: 450,
+        maxWidth: 600,
     },
     infoTextPaper: {
-        marginTop: 30,
-        height: 200,
-        marginRight: 30
+        background: "lightgrey",
+        color: "black",
+        marginTop: 10,
+        height: 400,
+        marginRight: 30,
+        maxWidth: 600,
+        textAlign: "center",
     },
     topCard:{
         marginTop: '1%',
@@ -98,15 +103,13 @@ const styles = theme => ({
         height: 140,
         width: 100,
     },
-    photoGalleryGridList: {
-        flexWrap: 'nowrap',
-        transform: 'translateZ(0)',
-    },
     gridListContainer: {
         marginTop: '2%',
+        marginLeft: '2%',
+        marginRight: '2%',
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        align: 'center',
         overflow: 'hidden',
     },
     icon: {
@@ -170,21 +173,6 @@ class Home extends React.Component {
         this.setState({featuredCapstones: featuredCapstoneProjects});
     }
 
-
-    getColumns(props) {
-        if(this.state.featuredCapstones.length < 4){
-            return this.state.featuredCapstones.length;
-        }else{
-            if(props.width ==='sm'){
-                return 2;
-            }
-            if(props.width === 'xs'){
-                return 2;
-            }
-            return 4;
-        }
-    }
-
     top5MostViewedCapstones(){
         var i = 1;
         var j;
@@ -245,58 +233,56 @@ class Home extends React.Component {
                         </div>
                     </Parallax>
 
-                    <Grid container justify="center" spacing={3}>
-                        <Grid item xs>
-                                <Paper className={classes.featuredPaper}>
-                                    <Typography variant="h4">Featured Capstones</Typography>
-                                </Paper>
+                    <Grid 
+                        container 
+                        direction="row"
+                        alignItems="flex-end"
+                        justify="center"
+                        spacing={3}>
+                        <Grid item xs={6} align="right">
+                            <Paper className={classes.featuredPaper}>
+                                <Typography variant="h4">Featured Capstones</Typography>
+                                <div className={classes.gridListContainer}>
+                                    <GridList cellHeight={180} cols={2}>
+                                        {this.state.featuredCapstones.map((result, i) => (
+                                            <GridListTile style={{maxWidth: '300px'}}
+                                                        key={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
+                                                        onClick={(e) => Home.handleTileClick(result.id)}>
+                                                <img src={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
+                                                    alt={"Capstone"} style={{height: '100%', width: '100%'}}/>
+                                                <GridListTileBar
+                                                    title={result.CapstoneName}
+                                                    subtitle={"Made by: " + result.moderator.username}
+                                                    actionIcon={
+                                                        <IconButton className={classes.icon}
+                                                                    href={"/ViewCapstone/" + result.id}>
+                                                            <InfoIcon/>
+                                                        </IconButton>
+                                                    }
+                                                >
+                                                </GridListTileBar>
+                                            </GridListTile>
+                                        ))}
+                                    </GridList>
+                                </div>
+                                <Link href="/Capstones">See More</Link>
+                            </Paper>
                         </Grid>
-                        <Grid item xs >
-                            <Typography variant='h4' align="center" marginTop={30}>Information about Capstones</Typography>
-                                <Paper className={classes.infoTextPaper}>
+                        <Grid item xs={5} >
+                            <Typography variant='h4' align="left">More Information</Typography>
+                                <Paper elevation={3} className={classes.infoTextPaper}>
+                                    <Typography p={2} variant="body1">
                                     Lots of info right here! all about capstones and baylor and 
                                     all of that!
+                                    </Typography>
                                 </Paper>
                         </Grid>
                     </Grid>
 
-
-                    <Grid container justify="center">
-                        <Grid item xs={12} md={8}>
-                            <SubHeadingTextTypography style={{marginTop: '100px'}}
-                                                      text="Check Out Our Featured Capstones!" align="center"/>
-                            <Divider variant="middle"/>
-                            <div className={classes.gridListContainer}>
-                                <GridList className={classes.photoGalleryGridList} cols={this.getColumns(this.props)}>
-                                    {this.state.featuredCapstones.map((result, i) => (
-                                        <GridListTile style={{maxWidth: '300px'}}
-                                                      key={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
-                                                      onClick={(e) => Home.handleTileClick(result.id)}>
-                                            <img src={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
-                                                 alt={"Capstone"} style={{height: '100%', width: '100%'}}/>
-                                            <GridListTileBar
-                                                title={result.CapstoneName}
-                                                subtitle={"Made by: " + result.moderator.username}
-                                                actionIcon={
-                                                    <IconButton className={classes.icon}
-                                                                href={"/ViewCapstone/" + result.id}>
-                                                        <InfoIcon/>
-                                                    </IconButton>
-                                                }
-                                            >
-                                            </GridListTileBar>
-                                        </GridListTile>
-                                    ))}
-                                </GridList>
-                            </div>
-                        </Grid>
-                    </Grid>
 
                     <Grid container justify="center" style={{marginTop: '1.5%'}}>
                         <Grid item xs={12} md={8}>
-                            <SubHeadingTextTypography text={"Sponsored Message from " + this.state.sponsorName + "!"}
-                                                      align="center"/>
-                            <Divider variant="middle"/>
+                            <Typography align="center" variant="h4">Sponsors</Typography>
                             <div className={classes.gridListContainer}>
                                 {this.state.advertisement}
                             </div>

@@ -8,6 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Link from '@material-ui/core/Link';
 import { Toolbar } from '@material-ui/core';
 
+const timeoutLength = 400;
+
 const StyledMenu = withStyles({
   paper: {
     border: '1px solid #d3d4d5',
@@ -43,33 +45,45 @@ class SubMenu extends Component {
     constructor(props) {
         super(props);
 
-        this.toggle = this.toggle.bind(this);
-        this.onMouseEnter = this.handleHoverOver.bind(this);
-        this.onMouseLeave = this.handleClose.bind(this);
-
         this.state = {
             anchorEl: null,
-            dropdownOpen: false
+            mouseOverButton: false,
+            mouseOverMenu: false,
         }
     }
-    toggle() {
-        this.setState(prevState => ({
-          dropdownOpen: !prevState.dropdownOpen
-        }));
-      }
-
-    handleHoverOver = event => {
-        this.setState({anchorEl: event.currentTarget, dropdownOpen: true});
-
+    
+    handleClick = event => {
+      this.setState({ open: true, anchorEl: event.currentTarget });
     };
-
+  
     handleClose = () => {
-        this.setState({anchorEl: null, dropdownOpen: false});
+      this.setState({ mouseOverButton: false, mouseOverMenu: false });
     };
+  
+    enterButton = event => {
+      this.setState({ mouseOverButton: true, anchorEl: event.currentTarget });
+    }
+  
+    leaveButton = () => {
+      // Set a timeout so that the menu doesn't close before the user has time to
+      // move their mouse over it
+      setTimeout(() => {
+        this.setState({ mouseOverButton: false });
+      }, timeoutLength);
+    }
+
+    enterMenu = () => {
+      this.setState({ mouseOverMenu: true });
+    }
+  
+    leaveMenu = () => {
+       setTimeout(() => {
+        this.setState({ mouseOverMenu: false });
+       }, timeoutLength);
+    }  
 
     render() {
-
-        const { anchorEl } = this.state;
+        const open = this.state.mouseOverButton || this.state.mouseOverMenu;
 
         return (
             <div>
@@ -78,23 +92,29 @@ class SubMenu extends Component {
                     aria-haspopup="true"
                     variant="contained"
                     color="primary"
-                    onMouseEnter={this.handleHoverOver}
+                    onClick={this.handleClick}
+                    onMouseEnter={this.enterButton}
+                    onMouseLeave={this.leaveButton}
                     style={{color: 'white'}}
                 >
                     {this.props.title}
                 </MenuItem>
                 <StyledMenu
                     id="customized-menu"
-                    anchorEl={anchorEl}
+                    anchorEl={this.state.anchorEl}
                     keepMounted
-                    open={Boolean(anchorEl)}
+                    open={open}
                     onClose={this.handleClose}
+                    MenuListProps={{
+                      onMouseEnter: this.enterMenu,
+                      onMouseLeave: this.leaveMenu,
+                    }}
                 >
                         {this.props.items.map((value, index) => {
                             const linkValue = this.props.href[index]
                             return (
                                 <Link href={linkValue}>
-                                <StyledMenuItem key={index}>{value}</StyledMenuItem>
+                                <StyledMenuItem onClick={this.handleClose} key={index}>{value}</StyledMenuItem>
                                 </Link>
                             )
                         })}
