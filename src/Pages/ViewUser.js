@@ -202,11 +202,13 @@ class ViewUser extends React.Component {
                      userId = response.data[0]._id;
         });
 
-        const pic = await strapi.axios.get(strapiURL + "/userpictures?user=" + userId);
+        //const pic = await strapi.axios.get(strapiURL + "/users?id_=" + userId);
+        const pic = await strapi.axios.get(strapiURL + "/uploads/bb3abc86979646339c771efdc42d9329.png");
         console.log(pic);
 
         if(pic.data.length !== 0) {
-            let picURL = pic.data[0].ProfilePicture.url;
+            //let picURL = pic.data[0].ProfilePicture.url;
+            let picURL = "/uploads/bb3abc86979646339c771efdc42d9329.png";
             this.setState({ProfilePicture: strapiURL + picURL});
         }
         else {
