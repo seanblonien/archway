@@ -14,10 +14,9 @@ const FILE_STATE = Object.freeze({
     "error": 4
 });
 
-class ImportCSV extends Component {
+class ImportDelimit extends Component {
     constructor(props) {
         super(props);
-        this.errorComponent =  <div>ERROR</div>;
 
         this.state = {
             fileState: FILE_STATE.nothing,
@@ -30,9 +29,8 @@ class ImportCSV extends Component {
     };
 
     formatError = (error) => {
-        return error.type +
-            (_.has(error, 'row') ?  ' on' + ' row ' + error.row : '') +
-            ': ' + error.message;
+        return error.type + (_.has(error, 'row') ?  ' on row ' +
+            error.row : '') + ': ' + error.message;
     };
 
     onFileLoaded = (fileData) => {
@@ -40,8 +38,8 @@ class ImportCSV extends Component {
         let missingFields = _.difference(userImport.requiredFields, fileData.meta.fields);
         let hasRequiredFields = missingFields.length === 0;
 
-        if(hasErrors && hasRequiredFields) {
-            this.setState({fileState: FILE_STATE.success});
+        if(!hasErrors && hasRequiredFields) {
+            this.setState({fileState: FILE_STATE.success, fileData: fileData});
         } else {
             this.errorComponent =
                 <div>
@@ -61,9 +59,8 @@ class ImportCSV extends Component {
                         </Box>
                     }
                 </div>;
-            this.setState({fileState: FILE_STATE.error});
+            this.setState({fileState: FILE_STATE.error, fileData: fileData});
         }
-        this.setState({fileData: fileData});
         this.props.setUsers(this.state.fileState === FILE_STATE.success, fileData.data);
     };
 
@@ -72,8 +69,7 @@ class ImportCSV extends Component {
     };
 
     onFileClear = () => {
-        this.setState({fileState: FILE_STATE.nothing});
-        this.setState({fileData: undefined});
+        this.setState({fileState: FILE_STATE.nothing, fileData: undefined});
         this.props.setUsers(this.state.fileState === FILE_STATE.success, undefined);
     };
 
@@ -101,19 +97,20 @@ class ImportCSV extends Component {
 
     render() {
         return (
-            <div>
+            <div display={'block'}>
                 <UploadCSV onFileSelected={this.onFileSelected}
                            onFileLoaded={this.onFileLoaded}
                            onFileError={this.onFileError}
                            onFileClear={this.onFileClear}/>
+
                 {this.renderChecked(this.state.fileState)}
             </div>
         );
     }
 }
 
-ImportCSV.propTypes = {
+ImportDelimit.propTypes = {
     setUsers: PropTypes.func.isRequired,
 };
 
-export default ImportCSV;
+export default ImportDelimit;
