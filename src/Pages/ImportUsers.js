@@ -1,30 +1,45 @@
 import Divider from '@material-ui/core/Divider';
-import {Button, Typography, ButtonGroup} from '@material-ui/core';
+import {
+    Button,
+    Typography,
+    ButtonGroup,
+    List,
+    ListItemText, Box
+} from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
 import React, {Component} from 'react';
-import UploadFile from '../Components/UploadFile';
+import {strapi, strapiURL, userImport} from '../constants';
+import ImportCSV from '../Components/ImportCSV';
 
 class ImportUsers extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: "csv"
+            type: '',
+            roles: []
         };
     }
 
-    componentDidMount() {
-        this.setState({type: "csv"})
+    async componentDidMount() {
+        let roles = await strapi.axios.get(strapiURL + '/users-permissions/roles');
+        roles = roles.data.roles.map(role => role.name);
+        this.setState({roles: roles});
     }
 
-    onClickCSV() {
+    onClickCSV = () => {
         this.setState({type: "csv"})
     };
 
-    onClickTab() {
+    onClickTab = () => {
         this.setState({type: "tab"})
     };
 
-    onClickCP() {
+    onClickCP = () => {
         this.setState({type: "cp"})
+    };
+
+    setUsers = users => {
+        this.users = users;
     };
 
     renderType(type) {
@@ -32,19 +47,26 @@ class ImportUsers extends Component {
 
         switch(type){
             case 'tab':
-                render = <UploadFile/>;
+                render = <div></div>;
                 break;
             case 'cp':
-                render = <UploadFile/>;
+                render = <div></div>;
+                break;
+            case 'csv':
+                render = <ImportCSV setUsers={this.setUsers}/>;
                 break;
             default:
-            case 'csv':
-                render = <UploadFile/>;
-                break;
+                render = <div></div>;
         }
 
         return render;
     }
+
+    importFile = async () => {
+        for(const user of this.users) {
+            await strapi.axios.post(strapiURL + '', user);
+        }
+    };
 
     render() {
         return (
@@ -56,13 +78,29 @@ class ImportUsers extends Component {
                 <Typography variant="h5">Where do you want to import users from?</Typography>
 
                 <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                    <Button>CSV</Button>
-                    <Button>Tab-delimited</Button>
-                    <Button>Copy/paste</Button>
+                    <Button onClick={this.onClickCSV}>CSV</Button>
+                    <Button onClick={this.onClickTab}>Tab-delimited</Button>
+                    <Button onClick={this.onClickCP}>Copy/paste</Button>
                 </ButtonGroup>
 
                 {this.renderType(this.state.type)}
 
+                <Typography label="Required Fields">
+                    Required CSV fields are: {userImport.requiredFields.join(', ')}
+                </Typography>
+
+                <Typography label="Valid Roles">Valid roles are</Typography>
+
+                <Box border={1} width={150}>
+                    <List dense={true}>
+                        {this.state.roles && this.state.roles.map(role =>
+                            <ListItem key={role}><ListItemText>{role}</ListItemText></ListItem>
+                        )}
+                    </List>
+                </Box>
+
+                <br/>
+                <Button onClick={this.importFile} variant="contained">Import</Button>
             </div>
         );
     }
