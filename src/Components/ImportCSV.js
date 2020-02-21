@@ -64,7 +64,7 @@ class ImportCSV extends Component {
             this.setState({fileState: FILE_STATE.error});
         }
         this.setState({fileData: fileData});
-        this.props.setUsers(fileData.data);
+        this.props.setUsers(this.state.fileState === FILE_STATE.success, fileData.data);
     };
 
     onFileError = (error) => {
@@ -74,7 +74,7 @@ class ImportCSV extends Component {
     onFileClear = () => {
         this.setState({fileState: FILE_STATE.nothing});
         this.setState({fileData: undefined});
-        this.props.setUsers(undefined);
+        this.props.setUsers(this.state.fileState === FILE_STATE.success, undefined);
     };
 
     renderChecked = (fileState) => {

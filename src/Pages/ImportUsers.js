@@ -10,13 +10,16 @@ import ListItem from '@material-ui/core/ListItem';
 import React, {Component} from 'react';
 import {strapi, strapiURL, userImport} from '../constants';
 import ImportCSV from '../Components/ImportCSV';
+import _ from 'lodash';
 
 class ImportUsers extends Component {
     constructor(props) {
         super(props);
         this.state = {
             type: '',
-            roles: []
+            roles: [],
+            canImport: false,
+            users: undefined
         };
     }
 
@@ -38,33 +41,15 @@ class ImportUsers extends Component {
         this.setState({type: "cp"})
     };
 
-    setUsers = users => {
-        this.users = users;
+    setUsers = (canImport, users) => {
+        this.setState({canImport: canImport, users: users})
     };
 
-    renderType(type) {
-        let render;
-
-        switch(type){
-            case 'tab':
-                render = <div></div>;
-                break;
-            case 'cp':
-                render = <div></div>;
-                break;
-            case 'csv':
-                render = <ImportCSV setUsers={this.setUsers}/>;
-                break;
-            default:
-                render = <div></div>;
-        }
-
-        return render;
-    }
-
     importFile = async () => {
-        for(const user of this.users) {
-            await strapi.axios.post(strapiURL + '', user);
+        for(const user of this.state.users) {
+            let x = 1;
+            let response = await strapi.axios.post(strapiURL + '', user);
+            let y = x;
         }
     };
 
@@ -83,7 +68,17 @@ class ImportUsers extends Component {
                     <Button onClick={this.onClickCP}>Copy/paste</Button>
                 </ButtonGroup>
 
-                {this.renderType(this.state.type)}
+                {/* Use hidden to conditionally render to keep state
+                 persistent and prevent unmounting when switching types*/}
+                <div hidden={this.state.type !== 'csv'}>
+                    <ImportCSV setUsers={this.setUsers}/>
+                </div>
+                <div hidden={this.state.type !== 'cp'}>
+                    cp
+                </div>
+                <div hidden={this.state.type !== 'tab'}>
+                    tab
+                </div>
 
                 <Typography label="Required Fields">
                     Required CSV fields are: {userImport.requiredFields.join(', ')}
@@ -100,7 +95,10 @@ class ImportUsers extends Component {
                 </Box>
 
                 <br/>
-                <Button onClick={this.importFile} variant="contained">Import</Button>
+                <Button onClick={this.importFile}
+                        variant="contained"
+                        disabled={!this.state.canImport}
+                >Import</Button>
             </div>
         );
     }
