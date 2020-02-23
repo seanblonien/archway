@@ -31,6 +31,7 @@ import ViewADepartment from "./Pages/ViewADepartment";
 import FAQ from "./Pages/FAQ";
 import EditCapstone from "./Pages/EditCapstone";
 import Footer from "./Components/Footer";
+import ViewYourCapstonesSponsors from "./Pages/ViewYourCapstonesSponsors";
 
 export default class extends Component {
   render() {
@@ -53,6 +54,7 @@ export default class extends Component {
                     <Route path="/ViewPost/:id" component={ViewPost}/>
                     <Route path="/ViewUser/:username" component={ViewUser}/>
                     <Route path="/ViewYourCapstones/" component={ViewYourCapstones} />
+                    <Route path="/ViewYourCapstonesSponsors/" component={ViewYourCapstonesSponsors} />
                     <Route path="/Sponsors/" component={Sponsors} />
                     <Route path="/ViewSponsors/:searchTerm?" component={ViewSponsors} />
                     <Route path="/ViewASponsor/:id" component={ViewASponsor}/>
