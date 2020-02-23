@@ -113,7 +113,7 @@ class SubMenu extends Component {
                         {this.props.items.map((value, index) => {
                             const linkValue = this.props.href[index]
                             return (
-                                <Link href={linkValue}>
+                                <Link key={index} href={linkValue}>
                                 <StyledMenuItem onClick={this.handleClose} key={index}>{value}</StyledMenuItem>
                                 </Link>
                             )
@@ -123,10 +123,5 @@ class SubMenu extends Component {
         );
     }
 }
-
-SubMenu.propTypes = {
-    classes: PropTypes.object.isRequired,
-
-};
 
 export default SubMenu;

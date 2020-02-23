@@ -268,7 +268,7 @@ class Home extends React.Component {
                                 <Link href="/Capstones">See More</Link>
                             </Paper>
                         </Grid>
-                        <Grid item xs={5} >
+                        <Grid item xs={6} >
                             <Typography variant='h4' align="left">More Information</Typography>
                                 <Paper elevation={3} className={classes.infoTextPaper}>
                                     <Typography p={2} variant="body1">
