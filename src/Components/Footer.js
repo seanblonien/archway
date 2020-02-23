@@ -75,7 +75,7 @@ class Footer extends React.Component{
                             <a href="/Sponsors" className={classes.linkStyle}>Sponsor A Project</a>
                         </Grid>
                         <Grid className={classes.gridItem} item xs={2}>
-                            <img src={require('../Images/arch.svg')} alt="archway" height="30" width="30"/>
+                            <img src={require('../Images/arch.svg')} alt="Powered by Archway" title="Powered by Archway" height="30" width="30"/>
                         </Grid>
                         <Grid className={classes.gridItem} item xs>
                             <a href="/ViewAllDepartments" className={classes.linkStyle}>Departments</a>
