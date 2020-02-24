@@ -12,11 +12,11 @@ export const strapi = new Strapi(strapiURL);
 
 export const userImport = {
     requiredFields: ['email', 'role', 'Fullname', 'username'],
-    optionalFields: ['password, Description, confirmed']
+    optionalFields: ['password', 'Description', 'confirmed']
 };
 
 //Put the name of your university here
-export const university = "Bay";
+export const university = "Baylor";
 
 //These colors make up the theme of the website. Use a site like https://www.hexcolortool.com/ to find your school's colors in hex
 export const schoolColorPrimary = '#003015';

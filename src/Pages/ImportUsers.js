@@ -135,6 +135,17 @@ class ImportUsers extends Component {
                             </Box>
 
                             <Box>
+                                <Typography label="Optional Fields">Optional fields are:</Typography>
+                                <List dense={true}>
+                                    {userImport.optionalFields && userImport.optionalFields.map(field =>
+                                        <ListItem key={field}>
+                                            <ListItemText>{field}</ListItemText>
+                                        </ListItem>
+                                    )}
+                                </List>
+                            </Box>
+
+                            <Box>
                                 <Typography label="Valid Roles">Valid roles are:</Typography>
                                 <List dense={true}>
                                     {roles && roles.map(role =>
