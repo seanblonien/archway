@@ -27,6 +27,11 @@ class UploadText extends Component {
                     multiline
                     rows="10"
                     fullWidth
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    placeholder="email,role,Fullname,username
+joe@google.com,Student,Joe Smith,joesmith1"
                     onChange={this.handleChange}
                 />
             </Box>
