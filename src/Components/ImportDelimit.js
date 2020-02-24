@@ -1,18 +1,19 @@
+import ListItem from '@material-ui/core/ListItem';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {userImport} from '../constants';
 import LoadingCircle from '../Components/LoadingCircle';
 import UploadCSV from '../Components/UploadCSV';
 import _ from 'lodash';
-import {List, ListItemText, Box} from '@material-ui/core';
+import {List, ListItemText, Box, Typography} from '@material-ui/core';
 import {Check, Close} from '@material-ui/icons';
 
-const FILE_STATE = Object.freeze({
+const FILE_STATE = {
     "nothing": 1,
     "notChecked": 2,
     "success": 3,
     "error": 4
-});
+};
 
 class ImportDelimit extends Component {
     constructor(props) {
@@ -38,8 +39,9 @@ class ImportDelimit extends Component {
         let missingFields = _.difference(userImport.requiredFields, fileData.meta.fields);
         let hasRequiredFields = missingFields.length === 0;
 
+        let stateToSet;
         if(!hasErrors && hasRequiredFields) {
-            this.setState({fileState: FILE_STATE.success, fileData: fileData});
+            stateToSet = {fileState: FILE_STATE.success, fileData: fileData};
         } else {
             this.errorComponent =
                 <div>
@@ -55,13 +57,19 @@ class ImportDelimit extends Component {
                     }
                     {!hasRequiredFields &&
                         <Box>
-                            Missing required fields: {missingFields.join(', ')}
+                            <Typography label="Required Fields Missing">Missing required fields:</Typography>
+                            <List dense={true}>
+                                {missingFields && missingFields.map(field =>
+                                    <ListItem key={field}><ListItemText>{field}</ListItemText></ListItem>
+                                )}
+                            </List>
                         </Box>
                     }
                 </div>;
-            this.setState({fileState: FILE_STATE.error, fileData: fileData});
+            stateToSet = {fileState: FILE_STATE.error, fileData: fileData};
         }
-        this.props.setUsers(this.state.fileState === FILE_STATE.success, fileData.data);
+        this.setState(stateToSet);
+        this.props.setUsers(stateToSet.fileState === FILE_STATE.success, fileData.data);
     };
 
     onFileError = (error) => {
@@ -69,8 +77,9 @@ class ImportDelimit extends Component {
     };
 
     onFileClear = () => {
-        this.setState({fileState: FILE_STATE.nothing, fileData: undefined});
-        this.props.setUsers(this.state.fileState === FILE_STATE.success, undefined);
+        let stateToSet = {fileState: FILE_STATE.nothing, fileData: undefined};
+        this.props.setUsers(stateToSet.fileState === FILE_STATE.success, stateToSet.fileData);
+        this.setState(stateToSet);
     };
 
     renderChecked = (fileState) => {
