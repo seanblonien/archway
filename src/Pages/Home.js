@@ -9,15 +9,12 @@ Emily Tracey - updated page to match different branding (2-18-2019)
 
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import CardContent from '@material-ui/core/CardContent';
-import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import withWidth from "@material-ui/core/withWidth/withWidth";
 import Grid from '@material-ui/core/Grid';
 import { Parallax, Background } from 'react-parallax';
 import {strapi, strapiURL, university, schoolColorPrimary, schoolColorSecondary} from "../constants";
-import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
@@ -26,7 +23,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import {getAdvertisement} from "../util/Advertisements";
 import LoadingCircle from "../Components/LoadingCircle";
 import {homepageBackground} from "../constants";
-import { Button, Paper, Link } from '@material-ui/core';
+import { Button, Paper, Link, Box } from '@material-ui/core';
 
 const insideStyles = {
     background: schoolColorPrimary,
@@ -82,22 +79,10 @@ const styles = theme => ({
         background: "lightgrey",
         color: "black",
         marginTop: 10,
-        height: 400,
+        height: 450,
         marginRight: 30,
         maxWidth: 600,
         textAlign: "center",
-    },
-    topCard:{
-        marginTop: '1%',
-        maxWidth: 360,
-        color: 'black'
-    },
-    leftColCard: {
-        marginRight: '2%',
-        marginTop: '1%',
-    },
-    textCenteredContainer: {
-        position: 'relative',
     },
     paper: {
         height: 140,
@@ -269,13 +254,15 @@ class Home extends React.Component {
                             </Paper>
                         </Grid>
                         <Grid item xs={6} >
-                            <Typography variant='h4' align="left">More Information</Typography>
-                                <Paper elevation={3} className={classes.infoTextPaper}>
-                                    <Typography p={2} variant="body1">
+                            <Paper elevation={3} className={classes.infoTextPaper}>
+                                <Typography variant='h4'>More Information</Typography>
+                                <Box p={2}>
+                                    <Typography paragraph={true} variant="body1">
                                     Lots of info right here! all about capstones and baylor and 
                                     all of that!
                                     </Typography>
-                                </Paper>
+                                </Box>
+                            </Paper>
                         </Grid>
                     </Grid>
 
