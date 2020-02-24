@@ -12,10 +12,10 @@ import {strapi, strapiURL, userImport} from '../constants';
 import ImportDelimit from '../Components/ImportDelimit';
 import _ from 'lodash';
 
-const IMPORT_TYPE = {
+export const IMPORT_TYPE = {
     'none': 0,
-    'delimit': 1, 
-    'cp': 2
+    'file': 1,
+    'text': 2
 };
 
 class ImportUsers extends Component {
@@ -58,6 +58,7 @@ class ImportUsers extends Component {
             return user;
         });
 
+        let stateToSet = this.state;
         for (const user of users) {
             console.log(user);
             console.log(this.state.roles);
@@ -67,49 +68,43 @@ class ImportUsers extends Component {
                 console.error(err);
                 let msg = err.response.data.message[0].messages[0];
                 let errMsg = JSON.stringify(user) + ': ' + msg.id + ': ' + msg.message;
-                this.setState({importErrors: [...this.state.importErrors, errMsg]});
+                stateToSet.importErrors = [...this.state.importErrors, errMsg];
             }
         }
+        stateToSet.importSuccess = _.isEmpty(stateToSet.importErrors);
 
-        if (_.isEmpty(this.state.importErrors)) {
-            this.setState({importSuccess: true});
-        }
+        this.setState(stateToSet);
     };
 
     render() {
         return (
-            <div>
+            <Box width="50%" mx="auto">
                 {this.state.importSuccess ?
                     <div>
-                        <Typography variant="h4" style={{marginTop: '16px'}}>Import
-                            Successful ✅</Typography>
+                        <Typography variant="h4" style={{marginTop: '16px'}}>Import Successful ✅</Typography>
                     </div>
                     :
                     <div>
-                        <Typography variant="h4" style={{marginTop: '16px'}}>Import
-                            Users</Typography>
+                        <Typography variant="h4" style={{marginTop: '16px'}}>Import Users</Typography>
                         <Divider/>
                         <br/>
 
-                        <Typography variant="h5">Where do you want to import
-                            users from?</Typography>
+                        <Typography variant="h5">Where do you want to import users from?</Typography>
 
-                        <ButtonGroup variant="contained" color="primary"
+                        <ButtonGroup variant="contained"
+                                     color="primary"
                                      aria-label="contained primary button group">
-                            <Button
-                                onClick={() => this.onClickTypeHandle(IMPORT_TYPE.delimit)}>CSV
-                                or Delimited File</Button>
-                            <Button
-                                onClick={() => this.onClickTypeHandle(IMPORT_TYPE.cp)}>Copy/paste</Button>
+                            <Button onClick={() => this.onClickTypeHandle(IMPORT_TYPE.file)}>CSV or Delimited File</Button>
+                            <Button onClick={() => this.onClickTypeHandle(IMPORT_TYPE.text)}>Copy/paste</Button>
                         </ButtonGroup>
 
                         {/* Use hidden to conditionally render to keep state
                      persistent and prevent unmounting when switching types*/}
-                        <div hidden={this.state.type !== IMPORT_TYPE.delimit}>
-                            <ImportDelimit setUsers={this.setUsers}/>
+                        <div hidden={this.state.type !== IMPORT_TYPE.file}>
+                            <ImportDelimit setUsers={this.setUsers} type={IMPORT_TYPE.file}/>
                         </div>
-                        <div hidden={this.state.type !== IMPORT_TYPE.cp}>
-                            cp
+                        <div hidden={this.state.type !== IMPORT_TYPE.text}>
+                            <ImportDelimit setUsers={this.setUsers} type={IMPORT_TYPE.text}/>
                         </div>
 
                         {this.state.type !== IMPORT_TYPE.none &&
@@ -158,7 +153,7 @@ class ImportUsers extends Component {
                         }
                     </div>
                 }
-            </div>
+            </Box>
         );
     }
 }

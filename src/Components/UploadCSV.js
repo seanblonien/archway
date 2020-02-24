@@ -17,29 +17,27 @@ class UploadCSV extends Component {
 
     handleOnSelected = () => {
         this.setState({fileName: this.fileInput.current.files[0].name});
-        this.props.onFileSelected(this.fileInput.current.files[0]);
+        this.props.onDataEntered(this.fileInput.current.files[0]);
     };
 
-    handleOnLoad = (data) => {
-        this.props.onFileLoaded(data);
+    handleOnLoad = (parseResults) => {
+        this.props.onDataLoaded(parseResults);
     };
 
     handleOnError = (err, file, inputElem, reason) => {
-        this.props.onFileError(err, file, inputElem, reason);
+        this.props.onDataError(err, file, inputElem, reason);
     };
 
     handleOnClear = () => {
-        console.dir(this.fileInput);
-        console.log(this.fileInput.current.value);
         this.fileInput.current.value = '';
         this.setState({fileName: ''});
-        this.props.onFileClear();
+        this.props.onDataClear();
     };
 
     render() {
         return (
             <Box display='inline'>
-                <TextField label='Upload File'
+                <TextField label='File Selected'
                            InputProps={{readOnly: true}}
                            value={this.state.fileName}/>
 
@@ -66,10 +64,10 @@ class UploadCSV extends Component {
 }
 
 UploadCSV.propTypes = {
-    onFileSelected: PropTypes.func.isRequired,
-    onFileLoaded: PropTypes.func.isRequired,
-    onFileError: PropTypes.func.isRequired,
-    onFileClear: PropTypes.func.isRequired
+    onDataEntered: PropTypes.func.isRequired,
+    onDataLoaded: PropTypes.func.isRequired,
+    onDataError: PropTypes.func.isRequired,
+    onDataClear: PropTypes.func.isRequired
 };
 
 export default UploadCSV;
