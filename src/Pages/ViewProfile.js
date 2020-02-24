@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from "react-dom";
 import {strapi, strapiURL} from "../constants";
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 class ViewProfile extends React.Component {
 
@@ -9,7 +10,11 @@ class ViewProfile extends React.Component {
         super(props);
         this.state = {
             user: '',
+            fullname: ''
         };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     async componentDidMount(){
@@ -25,8 +30,16 @@ class ViewProfile extends React.Component {
         });
     }
 
-    handleSubmit(){
-        console.log('HELLO THERE');
+    handleChange(event){
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({[name]: value});
+    }
+
+    handleSubmit(event){
+        console.log(this.state.fullname);
+        event.preventDefault();
     }
 
     render() {
@@ -37,34 +50,27 @@ class ViewProfile extends React.Component {
                 <label>Upload a profile picture</label>
                 <hr/>
                 <h2>Main Settings</h2>
-                <div>
-                    <label>Name*</label>
-                    <br/>
-                    <label>{this.state.user.Fullname}</label>
-                </div>
-                <div>
-                    <label>Email*</label>
-                    <br/>
-                    <label>{this.state.user.email}</label>
-                </div>
-                <div>
-                    <label>Phone</label>
-                </div>
-                <div>
-                    <label>LinkedIn</label>
-                </div>
-                <hr/>
-                <Button
-                                type="submit"
-                                //fullWidth
-                                variant="contained"
-                                color="primary"
-                                //disabled={!this.isFormValid()}
-                                onClick={() => {this.handleSubmit()}}
-                                style={{marginTop: '1%'}}
-                            >
-                                Update Profile
-                            </Button>
+                <form onSubmit={this.handleSubmit}>
+                    <div>
+                        <label>Name* {this.state.user.Fullname}
+                            <input name="fullname" value={this.state.fullname} onChange={this.handleChange}/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>Email*</label>
+                        <br/>
+                        <label>{this.state.user.email}</label>
+                    </div>
+                    <div>
+                        <label>Phone</label>
+                    </div>
+                    <div>
+                        <label>LinkedIn</label>
+                    </div>
+                    <hr/>
+                    <input type="submit" value="Update Profile"/>
+                </form>
+                
             </div>
         );
     }
