@@ -18,7 +18,6 @@ class UploadCSV extends Component {
 
     handleOnSelected = () => {
         this.setState({fileName: this.fileInput.current.files[0].name});
-        this.props.onDataEntered(this.fileInput.current.files[0]);
     };
 
     handleOnLoad = (parseResults) => {
@@ -72,7 +71,6 @@ class UploadCSV extends Component {
 }
 
 UploadCSV.propTypes = {
-    onDataEntered: PropTypes.func.isRequired,
     onDataLoaded: PropTypes.func.isRequired,
     onDataError: PropTypes.func.isRequired,
     onDataClear: PropTypes.func.isRequired

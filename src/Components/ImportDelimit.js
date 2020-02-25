@@ -1,20 +1,34 @@
+import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import FieldList from '../Components/FieldList';
 import UploadText from '../Components/UploadText';
 import {IMPORT_TYPE} from '../Pages/ImportUsers';
-import {userImport} from '../constants';
+import {strapi, strapiURL, userImport} from '../constants';
 import LoadingCircle from '../Components/LoadingCircle';
 import UploadCSV from '../Components/UploadCSV';
 import _ from 'lodash';
-import {List, ListItemText, Box, Typography} from '@material-ui/core';
-import {Check, Close} from '@material-ui/icons';
+import {
+    List,
+    ListItemText,
+    Box,
+    Typography,
+    Button,
+    TextField
+} from '@material-ui/core';
+import {Check, Close, GetApp, GetAppRounded} from '@material-ui/icons';
 
 const IMPORT_STATE = {
-    "nothing": 1,
-    "notChecked": 2,
-    "success": 3,
-    "error": 4
+    "none": 1,
+    "success": 2,
+    "error": 3
+};
+
+const PARSE_STATE = {
+    "none": 0,
+    "success": 1,
+    "error": 2
 };
 
 class ImportDelimit extends Component {
@@ -22,14 +36,19 @@ class ImportDelimit extends Component {
         super(props);
 
         this.state = {
-            importState: IMPORT_STATE.nothing,
-            data: undefined
+            importState: IMPORT_STATE.none,
+            parseState: PARSE_STATE.none,
+            data: undefined,
+            roles: [],
+            parseErrors: [],
+            importErrors: []
         };
     }
 
-    onDataEntered = (file) => {
-        this.setState({fileState: IMPORT_STATE.notChecked})
-    };
+    async componentDidMount() {
+        let roles = await strapi.axios.get(strapiURL + '/users-permissions/roles');
+        this.setState({roles: roles.data.roles});
+    }
 
     formatError = (error) => {
         return error.type + (_.has(error, 'row') ?  ' on row ' +
@@ -43,35 +62,29 @@ class ImportDelimit extends Component {
 
         let stateToSet;
         if(!hasErrors && hasRequiredFields) {
-            stateToSet = {fileState: IMPORT_STATE.success, fileData: parseResults};
+            stateToSet = {
+                parseState: PARSE_STATE.success,
+                data: parseResults.data
+            };
         } else {
             this.errorComponent =
                 <div>
                     <Close color="error" fontSize="large"/>
                     {hasErrors &&
-                        <List>
-                            {parseResults.errors.map(error=>
-                                <ListItemText>
-                                    {this.formatError(error)}
-                                </ListItemText>
-                            )}
-                        </List>
+                        <FieldList fields={parseResults.errors.map(error=>this.formatError(error))} label="Import Errors"/>
                     }
                     {!hasRequiredFields &&
-                        <Box>
-                            <Typography label="Required Fields Missing">Missing required fields:</Typography>
-                            <List dense={true}>
-                                {missingFields && missingFields.map(field =>
-                                    <ListItem key={field}><ListItemText>{field}</ListItemText></ListItem>
-                                )}
-                            </List>
-                        </Box>
+                        <FieldList fields={missingFields} label="Missing required fields:"/>
                     }
                 </div>;
-            stateToSet = {fileState: IMPORT_STATE.error, fileData: parseResults};
+            stateToSet = {
+                parseState: PARSE_STATE.error,
+                data: parseResults.data,
+                parseErrors: parseResults.errors
+            };
         }
+        stateToSet = {...stateToSet, importState: IMPORT_STATE.none, importErrors: []};
         this.setState(stateToSet);
-        this.props.setUsers(stateToSet.fileState === IMPORT_STATE.success, parseResults.data);
     };
 
     onDataError = (error) => {
@@ -79,26 +92,21 @@ class ImportDelimit extends Component {
     };
 
     onDataClear = () => {
-        let stateToSet = {fileState: IMPORT_STATE.nothing, fileData: undefined};
-        this.props.setUsers(stateToSet.fileState === IMPORT_STATE.success, stateToSet.fileData);
-        this.setState(stateToSet);
+        this.setState({parseState: PARSE_STATE.none, data: undefined, parseErrors: []});
     };
 
-    renderChecked = (fileState) => {
+    renderParseState = (parseState) => {
         let render;
 
-        switch(fileState){
-            case IMPORT_STATE.nothing:
+        switch(parseState){
+            case PARSE_STATE.none:
             default:
                 render = <div></div>;
                 break;
-            case IMPORT_STATE.notChecked:
-                render = <LoadingCircle/>;
-                break;
-            case IMPORT_STATE.success:
+            case PARSE_STATE.success:
                 render = <Check/>;
                 break;
-            case IMPORT_STATE.error:
+            case PARSE_STATE.error:
                 render = this.errorComponent;
                 break;
         }
@@ -106,14 +114,13 @@ class ImportDelimit extends Component {
         return render;
     };
 
-    renderType = (type) => {
+    renderUploadType = (type) => {
         let render;
 
         switch(type) {
             case IMPORT_TYPE.file:
             default:
-                render = <UploadCSV onDataEntered={this.onDataEntered}
-                                    onDataLoaded={this.onDataLoaded}
+                render = <UploadCSV onDataLoaded={this.onDataLoaded}
                                     onDataError={this.onDataError}
                                     onDataClear={this.onDataClear}/>;
                 break;
@@ -126,12 +133,74 @@ class ImportDelimit extends Component {
         return render;
     };
 
+    importFile = async (e) => {
+        //e.preventDefault();
+        const {data, roles, importErrors} = this.state;
+
+        let users = data.map(user => {
+            // validate role
+            user.role = roles.filter(role => role.name === user.role).map(role => role.id)[0];
+            let p = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            if (!user.hasOwnProperty('password')) user['password'] = p;
+            return user;
+        });
+
+        const stateToSet = {};
+        for (const user of users) {
+            try {
+                await strapi.axios.post(strapiURL + '/content-manager/explorer/plugins::users-permissions.user', user);
+            } catch (err) {
+                console.error(err);
+                let msg = err.response.data.message[0].messages[0];
+                let errMsg = JSON.stringify(user) + ': ' + msg.id + ': ' + msg.message;
+                stateToSet.importErrors = [...importErrors, errMsg];
+            }
+        }
+        stateToSet.importState = _.isEmpty(stateToSet.importErrors) ? IMPORT_STATE.success : IMPORT_STATE.error;
+
+        this.setState(stateToSet);
+    };
+
     render() {
+        const {roles, importState, parseState, importErrors} = this.state;
+        const {type} = this.props;
+
         return (
-            <Box>
-                {this.renderType(this.props.type)}
-                {this.renderChecked(this.state.fileState)}
-            </Box>
+            <div>
+                {importState === IMPORT_STATE.success ?
+                    <div>
+                        <Typography variant="h5" style={{marginTop: '16px'}}>Import Successful ✅</Typography>
+                        {/*//TODO: Redirect to dashboard*/}
+                    </div>
+                    :
+                    <div>
+                        {this.renderUploadType(type)}
+                        {this.renderParseState(parseState)}
+
+                        <Box>
+
+                            <Typography>
+                                <Link to={require('../Images/exampleImport.csv')} target="_blank" download>
+                                    Download
+                                </Link> example import file
+                            </Typography>
+                            <br/>
+                            <FieldList fields={userImport.requiredFields} label="Required fields are:"/>
+                            <FieldList fields={userImport.optionalFields} label="Optional fields are:"/>
+                            <FieldList fields={roles.map(role => role.name)} label="Valid roles are:"/>
+
+                            <br/>
+                            <Button onClick={this.importFile}
+                                    variant="contained"
+                                    disabled={!(parseState === PARSE_STATE.success && importState !== IMPORT_STATE.error)}>Import</Button>
+
+                            {!_.isEmpty(importErrors) &&
+                                <FieldList fields={importErrors} label="Import Errors:"/>
+                            }
+                        </Box>
+                    </div>
+                }
+            </div>
         );
     }
 }

@@ -36,12 +36,6 @@ class UploadText extends Component {
 joe@google.com,Student,Joe Smith,joesmith1"
                     onChange={this.handleChange}
                 />
-
-                <Typography>
-                    <Link to={require('../Images/exampleImport.csv')} target="_blank" download>
-                        Download
-                    </Link> example import file
-                </Typography>
             </Box>
         );
     }
