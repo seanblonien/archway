@@ -230,6 +230,9 @@
         "description": {
           "type": "richtext",
           "required": true
+        },
+        "featured": {
+          "type": "boolean"
         }
       }
     },
