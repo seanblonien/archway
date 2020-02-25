@@ -6,6 +6,34 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import { withStyles } from '@material-ui/core/styles';
+import compose from 'recompose/compose';
+
+const styles = {    
+form: {
+    fullWidth: true,
+    maxWidth: 'lg'
+},
+};
+
+const names = [
+    'Oliver Hansen',
+    'Van Henry',
+    'April Tucker',
+    'Ralph Hubbard',
+    'Omar Alexander',
+    'Carlos Abbott',
+    'Miriam Wagner',
+    'Bradley Wilkerson',
+    'Virginia Andrews',
+    'Kelly Snyder',
+];
 
 class ProposalForm extends React.Component {
     constructor(props) {
@@ -24,26 +52,72 @@ class ProposalForm extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
+
         return (
             <div>
             <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
                 New Proposal
             </Button>
-            <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+            <Dialog 
+                open={this.state.open} 
+                onClose={this.handleClose} 
+                aria-labelledby="form-dialog-title"
+                fullWidth={true}
+                maxWidth='md'>
+                <DialogTitle id="form-dialog-title">Proposal Request Form</DialogTitle>
                 <DialogContent>
-                <DialogContentText>
-                    To subscribe to this website, please enter your email address here. We will send updates
-                    occasionally.
-                </DialogContentText>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
-                />
+                    <Grid container>
+                        <Grid item xs={6}>
+                            <DialogContentText>
+                                Name: Emily Tracey
+                            </DialogContentText>
+                            <DialogContentText>
+                                Company: Baylor University
+                            </DialogContentText>
+                        </Grid>
+                        <Grid item xs={6}>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Contact Email Address"
+                            type="email"
+                            fullWidth
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Contact Phone Number"
+                            type="email"
+                            fullWidth
+                        />
+                        </Grid>
+                    </Grid>
+                    <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Project Title"
+                            type="email"
+                            fullWidth
+                        /> 
+                    <FormControl className={classes.formControl}>
+                        <InputLabel>Department</InputLabel>
+                        <Select
+                        multiple
+                        input={<Input />}
+                        value={names}
+                        >
+                        {names.map(name => (
+                            <MenuItem key={name} value={name}>
+                            {name}
+                            </MenuItem>
+                        ))}
+                        </Select>
+                    </FormControl>
+
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={this.handleClose} color="primary">
@@ -63,4 +137,5 @@ class ProposalForm extends React.Component {
     }
 }
 
-export default (ProposalForm);
+export default compose(
+    withStyles(styles))(ProposalForm);
