@@ -128,10 +128,10 @@ class ImportDelimit extends Component {
 
     render() {
         return (
-            <div display={'block'}>
+            <Box>
                 {this.renderType(this.props.type)}
                 {this.renderChecked(this.state.fileState)}
-            </div>
+            </Box>
         );
     }
 }

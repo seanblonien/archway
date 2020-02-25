@@ -1,4 +1,5 @@
 import {Button, Box, TextField} from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import {HighlightOff} from '@material-ui/icons';
 import React, {Component} from 'react';
 import { CSVReader } from 'react-papaparse';
@@ -36,22 +37,29 @@ class UploadCSV extends Component {
 
     render() {
         return (
-            <Box display='inline'>
+            <Box display="flex"
+                 flexDirection="row"
+                 justifyContent="flex-start"
+                 alignItems="flex-end"
+                 mb={3}>
                 <TextField label='File Selected'
                            InputProps={{readOnly: true}}
                            value={this.state.fileName}/>
 
-                <Button variant="contained" component="label">
-                    Upload File
-                    <CSVReader
-                        onFileLoaded={this.handleOnLoad}
-                        inputRef={this.fileInput}
-                        style={{display: 'none'}}
-                        onError={this.handleOnError}
-                        configOptions={{header: true,
-                            beforeFirstChunk: this.handleOnSelected}}
-                    />
-                </Button>
+                           <Box mx={1}>
+                               <Button variant="contained" component="label">
+                                   Upload File
+                                   <CSVReader
+                                       onFileLoaded={this.handleOnLoad}
+                                       inputRef={this.fileInput}
+                                       style={{display: 'none'}}
+                                       onError={this.handleOnError}
+                                       configOptions={{header: true,
+                                           beforeFirstChunk: this.handleOnSelected}}
+                                   />
+                               </Button>
+                           </Box>
+
 
                 {!_.isEmpty(this.state.fileName) &&
                     <Button variant="contained" onClick={this.handleOnClear}>

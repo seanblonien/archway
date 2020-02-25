@@ -1,8 +1,10 @@
 import {Box, TextField} from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {readString} from 'react-papaparse';
+import {Link} from 'react-router-dom';
 
 class UploadText extends Component {
     constructor(props) {
@@ -20,7 +22,7 @@ class UploadText extends Component {
 
     render() {
         return (
-            <Box display='inline'>
+            <Box my={3}>
                 <TextField
                     id="standard-multiline-static"
                     label="Paste text here"
@@ -34,6 +36,12 @@ class UploadText extends Component {
 joe@google.com,Student,Joe Smith,joesmith1"
                     onChange={this.handleChange}
                 />
+
+                <Typography>
+                    <Link to={require('../Images/exampleImport.csv')} target="_blank" download>
+                        Download
+                    </Link> example import file
+                </Typography>
             </Box>
         );
     }
