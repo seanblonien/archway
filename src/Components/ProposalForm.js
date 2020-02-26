@@ -1,46 +1,50 @@
 import React from 'react';
+import {strapi, strapiURL} from "../constants";
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/InputLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
+import { Typography, Divider } from '@material-ui/core';
+import { ThemeConsumer } from 'styled-components';
+import { createClassExpression } from 'typescript';
 
 const styles = {    
-form: {
-    fullWidth: true,
-    maxWidth: 'lg'
-},
+    form: {
+        fullWidth: true,
+        maxWidth: 'lg'
+    },
+    section: {
+        margin: 20
+    }
 };
 
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-];
 
 class ProposalForm extends React.Component {
     constructor(props) {
         super(props);
         this.state ={
             open: false,
+            Department: '',
+            departmentList: [],
         }
+    }
+
+    async componentDidMount() {
+        const depts = await strapi.getEntries('departments');
+        this.setState({departmentList: depts});
     }
 
     handleClickOpen = () => {
@@ -50,7 +54,20 @@ class ProposalForm extends React.Component {
     handleClose = () => {
         this.setState({open: false})
     };
+    
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.value });
 
+        if (name === "Department"){
+            for (let i = 0; i < this.state.departmentList.length; i++){
+                if (this.state.departmentList[i].name === event.target.value){
+                    this.setState({[name]: this.state.departmentList[i]});
+                    break;
+                }
+            }
+        }
+
+    };
     render() {
         const { classes } = this.props;
 
@@ -67,6 +84,7 @@ class ProposalForm extends React.Component {
                 maxWidth='md'>
                 <DialogTitle id="form-dialog-title">Proposal Request Form</DialogTitle>
                 <DialogContent>
+                    <div className={classes.section}>
                     <Grid container>
                         <Grid item xs={6}>
                             <DialogContentText>
@@ -77,47 +95,129 @@ class ProposalForm extends React.Component {
                             </DialogContentText>
                         </Grid>
                         <Grid item xs={6}>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Contact Email Address"
-                            type="email"
-                            fullWidth
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Contact Phone Number"
-                            type="email"
-                            fullWidth
-                        />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Contact Email Address"
+                                type="email"
+                                fullWidth
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Contact Phone Number"
+                                type="email"
+                                fullWidth
+                            />
                         </Grid>
                     </Grid>
+                    </div>
+                    <div className={classes.section}>
                     <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Project Title"
-                            type="email"
-                            fullWidth
-                        /> 
-                    <FormControl className={classes.formControl}>
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Project Title"
+                        type="email"
+                        fullWidth
+                    /> 
+                    <FormControl className={classes.formMargin}>
                         <InputLabel>Department</InputLabel>
                         <Select
-                        multiple
-                        input={<Input />}
-                        value={names}
+                            native
+                            value={this.state.Department.name}
+                            onChange={this.handleChange('Department')}
                         >
-                        {names.map(name => (
-                            <MenuItem key={name} value={name}>
-                            {name}
-                            </MenuItem>
-                        ))}
+                            <option value={""}> </option>
+                            {this.state.departmentList.map(dept => (
+                                <option value={dept.name}>{dept.name}</option>
+                            ))}
                         </Select>
                     </FormControl>
-
+                    </div>
+                    <div className={classes.section}>
+                        <TextField
+                            label="Multiline"
+                            multiline
+                            rows="4"
+                            fullWidth
+                            label="Project Description"
+                        />
+                        <TextField
+                            label="Multiline"
+                            multiline
+                            rows="4"
+                            fullWidth
+                            label="Project Deliverables"
+                        />
+                    </div>
+                    <div className={classes.section}>
+                    <Grid>
+                        <Typography>Special Considerations</Typography>
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={false} />
+                            }
+                            label="Intellectual Property Agreement Required"
+                        />
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={true} />
+                            }
+                            label="Non-Disclosure Agreement Required"
+                        />
+                    </Grid>
+                    </div>
+                    <div className={classes.section}>
+                    <Typography>Enter financial support that the sponsoring organization is willing to give.
+                        (Standard project fee is 5,000)
+                    </Typography>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Finacial support"
+                        type="email"
+                    /> 
+                    </div>
+                    <div className={classes.section}>
+                    <Grid container direction="column">
+                        <Typography>Project Use</Typography>
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={false} />
+                            }
+                            label="The results, prototypes, or work-product of this project may be used by the general public"
+                        />
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={true} />
+                            }
+                            label="The results, prototypes, or work-product of this project will only be used within the sponsoring organization"
+                        />
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={true} />
+                            }
+                            label="The sponsoring organization is using this project solely to support Mines and/or students at Mines"
+                        />
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={true} />
+                            }
+                            label="The sponsoring organization hopes to commercialize this work at a future time"
+                        />
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={true} />
+                            }
+                            label="The sponsoring organization intends to use this work to improve its business operations or promote it to
+                            others to improve their operations "
+                        />
+                    </Grid>
+                    </div>
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={this.handleClose} color="primary">
