@@ -39,6 +39,13 @@ class ProposalForm extends React.Component {
             open: false,
             Department: '',
             departmentList: [],
+            projectTitle: '',
+            projectDescription: '',
+            projectDeliverables: '',
+            intellectualProperty: false,
+            nondisclosure: false,
+            financialSupport: 0,
+            projectUse: ''
         }
     }
 
@@ -55,6 +62,26 @@ class ProposalForm extends React.Component {
         this.setState({open: false})
     };
     
+    handleSave = () => {
+        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
+
+        strapi.axios.post(strapiURL + '/proposals', {
+            projectTitle: this.state.projectTitle,
+            projectDescription: this.state.projectDescription,
+            projectDeliverables: this.state.projectDeliverables,
+            intellectualProperty: this.state.intellectualProperty,
+            nondisclosure: this.state.nondisclosure,
+            financialSupport: this.state.financialSupport,
+            projectUse: this.state.projectUse,
+            department: this.state.Department.id,
+            status: "Submitted",
+        })
+        
+
+
+        this.setState({open: false});
+    };
+
     handleChange = name => event => {
         this.setState({ [name]: event.target.value });
 
@@ -68,6 +95,10 @@ class ProposalForm extends React.Component {
         }
 
     };
+
+    handleCheck = name => event => {
+        this.setState({ [name]: event.target.checked });
+    }
     render() {
         const { classes } = this.props;
 
@@ -98,17 +129,15 @@ class ProposalForm extends React.Component {
                             <TextField
                                 autoFocus
                                 margin="dense"
-                                id="name"
                                 label="Contact Email Address"
                                 type="email"
                                 fullWidth
+                                required
                             />
                             <TextField
                                 autoFocus
                                 margin="dense"
-                                id="name"
                                 label="Contact Phone Number"
-                                type="email"
                                 fullWidth
                             />
                         </Grid>
@@ -116,13 +145,12 @@ class ProposalForm extends React.Component {
                     </div>
                     <div className={classes.section}>
                     <TextField
-                        autoFocus
                         margin="dense"
-                        id="name"
                         label="Project Title"
-                        type="email"
                         fullWidth
-                    /> 
+                        value={this.state.projectTitle}
+                        onChange={this.handleChange('projectTitle')}
+                    />
                     <FormControl className={classes.formMargin}>
                         <InputLabel>Department</InputLabel>
                         <Select
@@ -144,6 +172,8 @@ class ProposalForm extends React.Component {
                             rows="4"
                             fullWidth
                             label="Project Description"
+                            value={this.state.projectDescription}
+                            onChange={this.handleChange('projectDescription')}
                         />
                         <TextField
                             label="Multiline"
@@ -151,6 +181,8 @@ class ProposalForm extends React.Component {
                             rows="4"
                             fullWidth
                             label="Project Deliverables"
+                            value={this.state.projectDeliverables}
+                            onChange={this.handleChange('projectDeliverables')}
                         />
                     </div>
                     <div className={classes.section}>
@@ -158,13 +190,13 @@ class ProposalForm extends React.Component {
                         <Typography>Special Considerations</Typography>
                         <FormControlLabel
                             control={
-                            <Checkbox checked={false} />
+                            <Checkbox checked={this.state.intellectualProperty}  onChange={this.handleCheck('intellectualProperty')}/>
                             }
                             label="Intellectual Property Agreement Required"
                         />
                         <FormControlLabel
                             control={
-                            <Checkbox checked={true} />
+                            <Checkbox checked={this.state.nondisclosure} onChange={this.handleCheck('nondisclosure')}/>
                             }
                             label="Non-Disclosure Agreement Required"
                         />
@@ -177,53 +209,29 @@ class ProposalForm extends React.Component {
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="name"
                         label="Finacial support"
-                        type="email"
+                        value={this.state.financialSupport}
+                        onChange={this.handleChange('financialSupport')}
                     /> 
                     </div>
                     <div className={classes.section}>
-                    <Grid container direction="column">
-                        <Typography>Project Use</Typography>
-                        <FormControlLabel
-                            control={
-                            <Checkbox checked={false} />
-                            }
-                            label="The results, prototypes, or work-product of this project may be used by the general public"
+                        <Typography>Describe the project's intended use</Typography>
+                        <TextField
+                            label="Multiline"
+                            multiline
+                            rows="2"
+                            fullWidth
+                            label="Project Use"
+                            value={this.state.projectUse}
+                            onChange={this.handleChange('projectUse')}
                         />
-                        <FormControlLabel
-                            control={
-                            <Checkbox checked={true} />
-                            }
-                            label="The results, prototypes, or work-product of this project will only be used within the sponsoring organization"
-                        />
-                        <FormControlLabel
-                            control={
-                            <Checkbox checked={true} />
-                            }
-                            label="The sponsoring organization is using this project solely to support Mines and/or students at Mines"
-                        />
-                        <FormControlLabel
-                            control={
-                            <Checkbox checked={true} />
-                            }
-                            label="The sponsoring organization hopes to commercialize this work at a future time"
-                        />
-                        <FormControlLabel
-                            control={
-                            <Checkbox checked={true} />
-                            }
-                            label="The sponsoring organization intends to use this work to improve its business operations or promote it to
-                            others to improve their operations "
-                        />
-                    </Grid>
                     </div>
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={this.handleClose} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={this.handleClose} color="primary">
+                <Button onClick={this.handleSave} color="primary">
                     Save
                 </Button>
                 <Button onClick={this.handleClose} color="primary">

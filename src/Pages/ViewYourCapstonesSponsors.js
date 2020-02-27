@@ -15,7 +15,14 @@ import Divider from '@material-ui/core/Divider';
 import withWidth from '@material-ui/core/withWidth';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { Button, List, ListItem } from '@material-ui/core';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 const styles = {
     card: {
@@ -36,6 +43,17 @@ const styles = {
         color: 'rgba(255, 255, 255, 0.54)',
     },
 };
+
+function createData(name, calories) {
+    return { name, calories};
+  }
+  
+
+const rows = [
+    createData('New Proposal', "Unsubmitted"),
+    createData('Ice cream sandwich', "Waiting for approval"),
+    createData('Eclair', "Approved"),
+  ];
 
 class ViewYourCapstonesSponsors extends React.Component {
     constructor(props) {
@@ -84,24 +102,40 @@ class ViewYourCapstonesSponsors extends React.Component {
 
                     <Grid container justify="center">
                         <Grid item md={10} xs={12}>
-                            <Typography variant="h4" style={{marginTop: '16px'}}>Pending Company Projects</Typography>
-                            <ProposalForm></ProposalForm>
-                            <Divider/>
+                            <Grid container direction="row" alignItems="flex-end" justify="space-between">
+                                <Grid item align="left">
+                                <Typography variant="h4" style={{marginTop: '16px'}}>Pending Company Projects</Typography>
+                                </Grid>
+                                <Grid item align="right">
+                                <ProposalForm></ProposalForm>
+                                </Grid>
+                            </Grid>
                             <br/>
-                            <List>
-                                <ListItem>
-                                    <Typography variant="h6">Project</Typography>
-                                    <Typography>Status: Awaiting Approval</Typography>
-                                    <Button>Edit</Button>
-                                    <Button>Delete</Button>
-                                </ListItem>
-                                <ListItem>
-                                    <Typography variant="h6">Project</Typography>
-                                    <Typography>Status: Awaiting Approval</Typography>
-                                    <Button>Edit</Button>
-                                    <Button>Delete</Button>
-                                </ListItem>
-                            </List>
+                            <TableContainer component={Paper} className={classes.table}>
+                                <Table aria-label="simple table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell>Project title</TableCell>
+                                        <TableCell align="right">Status</TableCell>
+                                        <TableCell align="right">Actions</TableCell>
+                                    </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                    {rows.map(row => (
+                                        <TableRow key={row.name}>
+                                        <TableCell component="th" scope="row">
+                                            {row.name}
+                                        </TableCell>
+                                        <TableCell align="right">{row.calories}</TableCell>
+                                        <TableCell align="right">
+                                            <Button>Edit</Button>    
+                                            <Button>Delete</Button>    
+                                        </TableCell>
+                                        </TableRow>
+                                    ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </Grid>
                     </Grid>
                     <Grid container justify="center">
