@@ -1,12 +1,15 @@
 import {Box, TextField, Typography} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import _ from 'lodash';
 import React, {Component} from 'react';
 import FieldList from '../Components/FieldList';
-import {userImport} from '../constants';
-import _ from 'lodash';
+import {strapi, strapiURL, userImport} from '../constants';
 
 const initialState = {
+    user: {},
+    roles: [],
     validationErrors: [],
+    importErrors: '',
     hasAddUser: false
 };
 
@@ -17,29 +20,53 @@ class AddUser extends Component {
         this.state = initialState;
     }
 
+    // Fetches the valid roles available in Strapi
+    async componentDidMount() {
+        let roles = await strapi.axios.get(strapiURL + '/users-permissions/roles');
+        this.setState({roles: roles.data.roles});
+    }
+
     // Resets to the initial state and clears any generated field values
     resetState = () => {
         this.setState(initialState);
-        userImport.fields.forEach(field => this.setState({[field.name]: ''}));
     };
 
     // Sets the corresponding field's value in the state, clears validation
     // errors
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value, validationErrors: []});
+        const {name,  value} = event.target;
+        this.setState({
+            user: {...this.state.user, [name]: value},
+            validationErrors: [],
+            importErrors: '',
+        });
     };
 
     // Handles submitting the user form and adding a user
-    handleSubmit = (event) => {
+    handleSubmit = async () => {
         if(this.validate()){
-            this.setState({hasAddUser: true})
+            const stateToSet = {hasAddUser: true};
+
+            const user = {...this.state.user};
+            user.role = this.state.roles.filter(role => role.name === user.role).map(role => role.id)[0];
+            let p = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            if (!user.hasOwnProperty('password')) user['password'] = p;
+
+            try {
+                await strapi.axios.post(strapiURL + '/content-manager/explorer/plugins::users-permissions.user', user);
+            } catch (err) {
+                stateToSet.hasAddUser = false;
+                stateToSet.importErrors = `${err.response.data.error}: ${JSON.stringify(err.response.data.message)}`;
+            }
+            this.setState(stateToSet);
         }
     };
 
     // Performs validation on the form fields
     validate = () => {
+        // TODO abstract user validation to one method
         const requiredFields = userImport.fields.filter(field => field.required);
-        const emptyRequiredFields = requiredFields.filter(field => _.isEmpty(this.state[field.name]));
+        const emptyRequiredFields = requiredFields.filter(field => _.isEmpty(this.state.user[field.name]));
         let isValid = _.isEmpty(emptyRequiredFields);
         if(isValid){
             this.setState({validationErrors: []});
@@ -52,7 +79,7 @@ class AddUser extends Component {
     };
 
     render() {
-        const {validationErrors, hasAddUser} = this.state;
+        const {validationErrors, importErrors, hasAddUser} = this.state;
 
         return (
             <Box my={1}>
@@ -88,6 +115,11 @@ class AddUser extends Component {
                         {!_.isEmpty(validationErrors) &&
                             // Display validation errors if any
                             <FieldList fields={validationErrors} label="Validation Errors"/>
+                        }
+
+                        {!_.isEmpty(importErrors) &&
+                            // Display import errors if any
+                            <FieldList fields={[importErrors]} label="Import Errors"/>
                         }
                     </form>
                 }

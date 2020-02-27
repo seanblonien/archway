@@ -1,23 +1,14 @@
+import {Box, Button, Typography} from '@material-ui/core';
 import Link from '@material-ui/core/Link';
-import ListItem from '@material-ui/core/ListItem';
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import FieldList from '../Components/FieldList';
-import UploadText from '../Components/UploadText';
-import {IMPORT_TYPE} from '../Pages/ImportUsers';
-import {strapi, strapiURL, userImport} from '../constants';
-import LoadingCircle from '../Components/LoadingCircle';
-import UploadCSV from '../Components/UploadCSV';
+import {Check, Close} from '@material-ui/icons';
 import _ from 'lodash';
-import {
-    List,
-    ListItemText,
-    Box,
-    Typography,
-    Button,
-    TextField
-} from '@material-ui/core';
-import {Check, Close, GetApp, GetAppRounded} from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+import FieldList from '../Components/FieldList';
+import UploadCSV from '../Components/UploadCSV';
+import UploadText from '../Components/UploadText';
+import {strapi, strapiURL, userImport} from '../constants';
+import {IMPORT_TYPE} from '../Pages/ImportUsers';
 
 const IMPORT_STATE = {
     "none": 1,
@@ -45,19 +36,23 @@ class ImportDelimit extends Component {
         };
     }
 
+    // Fetches the valid roles available in Strapi
     async componentDidMount() {
         let roles = await strapi.axios.get(strapiURL + '/users-permissions/roles');
         this.setState({roles: roles.data.roles});
     }
 
+    // Formats CSV parsing errors
     formatError = (error) => {
         return error.type + (_.has(error, 'row') ?  ' on row ' +
             error.row : '') + ': ' + error.message;
     };
 
+    // Called when data is loaded from input. Error state is set if parse
+    // errors.
     onDataLoaded = (parseResults) => {
         let hasErrors = !_.isEmpty(parseResults.errors);
-        let missingFields = _.difference(userImport.requiredFields, parseResults.meta.fields);
+        let missingFields = _.difference(userImport.fields.filter(field => field.required).map(field => field.name), parseResults.meta.fields);
         let hasRequiredFields = missingFields.length === 0;
 
         let stateToSet;
@@ -85,10 +80,6 @@ class ImportDelimit extends Component {
         }
         stateToSet = {...stateToSet, importState: IMPORT_STATE.none, importErrors: []};
         this.setState(stateToSet);
-    };
-
-    onDataError = (error) => {
-        console.error(error);
     };
 
     onDataClear = () => {
@@ -121,7 +112,7 @@ class ImportDelimit extends Component {
             case IMPORT_TYPE.file:
             default:
                 render = <UploadCSV onDataLoaded={this.onDataLoaded}
-                                    onDataError={this.onDataError}
+                                    onDataError={console.error}
                                     onDataClear={this.onDataClear}/>;
                 break;
             case IMPORT_TYPE.text:
@@ -133,10 +124,10 @@ class ImportDelimit extends Component {
         return render;
     };
 
-    importFile = async (e) => {
-        //e.preventDefault();
+    importFile = async () => {
         const {data, roles, importErrors} = this.state;
 
+        // TODO abstract user validation to one method
         let users = data.map(user => {
             // validate role
             user.role = roles.filter(role => role.name === user.role).map(role => role.id)[0];
@@ -150,7 +141,6 @@ class ImportDelimit extends Component {
             try {
                 await strapi.axios.post(strapiURL + '/content-manager/explorer/plugins::users-permissions.user', user);
             } catch (err) {
-                console.error(err);
                 let msg = err.response.data.message[0].messages[0];
                 let errMsg = JSON.stringify(user) + ': ' + msg.id + ': ' + msg.message;
                 stateToSet.importErrors = [...importErrors, errMsg];
@@ -185,14 +175,19 @@ class ImportDelimit extends Component {
                                 </Link> example import file
                             </Typography>
                             <br/>
-                            <FieldList fields={userImport.requiredFields} label="Required fields are:"/>
-                            <FieldList fields={userImport.optionalFields} label="Optional fields are:"/>
+                            <FieldList fields={userImport.fields
+                                .filter(field => field.required)
+                                .map(field => field.label)} label="Required fields are:"/>
+                            <FieldList fields={userImport.fields
+                                .filter(field => !field.required)
+                                .map(field => field.label)} label="Optional fields are:"/>
                             <FieldList fields={roles.map(role => role.name)} label="Valid roles are:"/>
 
                             <br/>
                             <Button onClick={this.importFile}
                                     variant="contained"
-                                    disabled={!(parseState === PARSE_STATE.success && importState !== IMPORT_STATE.error)}>Import</Button>
+                                    disabled={!(parseState === PARSE_STATE.success &&
+                                                importState !== IMPORT_STATE.error)}>Import</Button>
 
                             {!_.isEmpty(importErrors) &&
                                 <FieldList fields={importErrors} label="Import Errors:"/>

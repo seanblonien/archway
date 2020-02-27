@@ -1,17 +1,8 @@
+import {Box, Button, ButtonGroup, Typography} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
-import {
-    Button,
-    Typography,
-    ButtonGroup,
-    List,
-    ListItemText, Box
-} from '@material-ui/core';
-import ListItem from '@material-ui/core/ListItem';
 import React, {Component} from 'react';
 import AddUser from '../Components/AddUser';
-import {strapi, strapiURL, userImport} from '../constants';
 import ImportDelimit from '../Components/ImportDelimit';
-import _ from 'lodash';
 
 export const IMPORT_TYPE = {
     'none': 0,

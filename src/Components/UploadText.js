@@ -1,10 +1,8 @@
 import {Box, TextField} from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {readString} from 'react-papaparse';
-import {Link} from 'react-router-dom';
 
 class UploadText extends Component {
     constructor(props) {

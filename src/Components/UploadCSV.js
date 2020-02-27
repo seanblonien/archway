@@ -1,10 +1,9 @@
-import {Button, Box, TextField} from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
+import {Box, Button, TextField} from '@material-ui/core';
 import {HighlightOff} from '@material-ui/icons';
-import React, {Component} from 'react';
-import { CSVReader } from 'react-papaparse';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+import {CSVReader} from 'react-papaparse';
 
 class UploadCSV extends Component {
     constructor(props) {
