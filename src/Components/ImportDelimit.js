@@ -201,7 +201,6 @@ class ImportDelimit extends Component {
 }
 
 ImportDelimit.propTypes = {
-    setUsers: PropTypes.func.isRequired,
     type: PropTypes.number.isRequired,
 };
 

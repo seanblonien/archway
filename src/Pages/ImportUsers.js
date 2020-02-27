@@ -48,10 +48,10 @@ class ImportUsers extends Component {
                  persistent and prevent unmounting when switching types*/}
                     <Box hidden={type !== IMPORT_TYPE.file}
                          marginTop="10px">
-                        <ImportDelimit setUsers={this.setUsers} type={IMPORT_TYPE.file}/>
+                        <ImportDelimit type={IMPORT_TYPE.file}/>
                     </Box>
                     <Box hidden={type !== IMPORT_TYPE.text}>
-                        <ImportDelimit setUsers={this.setUsers} type={IMPORT_TYPE.text}/>
+                        <ImportDelimit type={IMPORT_TYPE.text}/>
                     </Box>
                     <Box hidden={type !== IMPORT_TYPE.manual}>
                         <AddUser/>

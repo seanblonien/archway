@@ -1,5 +1,11 @@
-import {Box, TextField, Typography} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import {
+    Box,
+    Button,
+    List,
+    ListItem,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import _ from 'lodash';
 import React, {Component} from 'react';
 import FieldList from '../Components/FieldList';
@@ -96,18 +102,24 @@ class AddUser extends Component {
                     :
                     // Display the add user form
                     <form noValidate autoComplete="off">
-                        {userImport.fields.map(field =>
-                            // Render all of the fields required/optional
-                            // for the user
-                            <Box p={.5}>
-                                <TextField name={field.name}
-                                           label={field.label}
-                                           onChange={this.handleChange}
-                                           required={field.required}/>
-                            </Box>
-                        )}
+                        {userImport.fields &&
+                            <List py={.5} dense={true}>
+                                {userImport.fields.map(field =>
+                                    // Render all of the fields required/optional
+                                    // for the user
+                                    <ListItem key={field.name} disableGutters={true}>
+                                        <TextField name={field.name}
+                                                   label={field.label}
+                                                   onChange={this.handleChange}
+                                                   required={field.required}/>
+                                    </ListItem>
+                                )}
+                            </List>
+                        }
                         <Box my={1}>
-                            <Button variant="contained" onClick={this.handleSubmit} disabled={!_.isEmpty(validationErrors)}>
+                            <Button variant="contained"
+                                    onClick={this.handleSubmit}
+                                    disabled={!_.isEmpty(validationErrors)}>
                                 Add User
                             </Button>
                         </Box>
