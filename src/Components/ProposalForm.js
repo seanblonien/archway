@@ -11,15 +11,11 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { Typography, Divider } from '@material-ui/core';
-import { ThemeConsumer } from 'styled-components';
-import { createClassExpression } from 'typescript';
 
 const styles = {    
     form: {
@@ -63,7 +59,6 @@ class ProposalForm extends React.Component {
     };
     
     handleSave = () => {
-        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
 
         strapi.axios.post(strapiURL + '/proposals', {
             projectTitle: this.state.projectTitle,
