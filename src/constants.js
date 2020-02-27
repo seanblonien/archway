@@ -11,8 +11,50 @@ export const strapiURL = "http://localhost:1337";
 export const strapi = new Strapi(strapiURL);
 
 export const userImport = {
-    requiredFields: ['Fullname', 'email', 'username', 'role'],
-    optionalFields: ['password', 'Description', 'confirmed']
+    fields: [
+        {
+            name: 'Fullname',
+            label: 'Full Name',
+            validation: '',
+            required: true
+        },
+        {
+            name: 'email',
+            label: 'Email',
+            validation: '',
+            required: true
+        },
+        {
+            name: 'username',
+            label: 'Username',
+            validation: '',
+            required: true
+        },
+        {
+            name: 'role',
+            label: 'Role',
+            validation: '',
+            required: true
+        },
+        {
+            name: 'password',
+            label: 'Password',
+            validation: '',
+            required: false
+        },
+        {
+            name: 'Description',
+            label: 'Description',
+            validation: '',
+            required: false
+        },
+        {
+            name: 'confirmed',
+            label: 'Confirmed',
+            validation: '',
+            required: false
+        }
+    ]
 };
 
 //Put the name of your university here
