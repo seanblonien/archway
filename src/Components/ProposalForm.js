@@ -35,13 +35,16 @@ class ProposalForm extends React.Component {
             open: false,
             Department: '',
             departmentList: [],
+            email: '',
+            phone: '',
             projectTitle: '',
             projectDescription: '',
             projectDeliverables: '',
             intellectualProperty: false,
             nondisclosure: false,
-            financialSupport: 0,
-            projectUse: ''
+            financialSupport: '',
+            projectUse: '',
+            date: new Date()
         }
     }
 
@@ -61,6 +64,8 @@ class ProposalForm extends React.Component {
     handleSave = () => {
 
         strapi.axios.post(strapiURL + '/proposals', {
+            email: this.state.email,
+            phone: this.state.phone,
             projectTitle: this.state.projectTitle,
             projectDescription: this.state.projectDescription,
             projectDeliverables: this.state.projectDeliverables,
@@ -69,12 +74,36 @@ class ProposalForm extends React.Component {
             financialSupport: this.state.financialSupport,
             projectUse: this.state.projectUse,
             department: this.state.Department.id,
+            status: "Not Submitted",
+        })
+        
+
+
+        this.setState({open: false});
+        window.location.reload(false);
+    };
+
+    handleSubmit = () => {
+
+        strapi.axios.post(strapiURL + '/proposals', {
+            email: this.state.email,
+            phone: this.state.phone,
+            projectTitle: this.state.projectTitle,
+            projectDescription: this.state.projectDescription,
+            projectDeliverables: this.state.projectDeliverables,
+            intellectualProperty: this.state.intellectualProperty,
+            nondisclosure: this.state.nondisclosure,
+            financialSupport: this.state.financialSupport,
+            projectUse: this.state.projectUse,
+            department: this.state.Department.id,
+            dateSubmitted: this.state.date.getDate,
             status: "Submitted",
         })
         
 
 
         this.setState({open: false});
+        window.location.reload(false);
     };
 
     handleChange = name => event => {
@@ -128,12 +157,15 @@ class ProposalForm extends React.Component {
                                 type="email"
                                 fullWidth
                                 required
+                                value={this.state.email}
+                                onChange={this.handleChange('email')}
                             />
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 label="Contact Phone Number"
                                 fullWidth
+                                value={this.state.phone}
+                                onChange={this.handleChange('phone')}
                             />
                         </Grid>
                     </Grid>
@@ -202,7 +234,6 @@ class ProposalForm extends React.Component {
                         (Standard project fee is 5,000)
                     </Typography>
                     <TextField
-                        autoFocus
                         margin="dense"
                         label="Finacial support"
                         value={this.state.financialSupport}
@@ -229,7 +260,7 @@ class ProposalForm extends React.Component {
                 <Button onClick={this.handleSave} color="primary">
                     Save
                 </Button>
-                <Button onClick={this.handleClose} color="primary">
+                <Button onClick={this.handleSubmit} color="primary">
                     Submit
                 </Button>
                 </DialogActions>

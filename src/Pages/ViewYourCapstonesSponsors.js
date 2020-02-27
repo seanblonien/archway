@@ -44,8 +44,8 @@ const styles = {
     },
 };
 
-function createData(name, calories) {
-    return { name, calories};
+function createData(title, status) {
+    return { title, status};
   }
   
 
@@ -63,16 +63,13 @@ class ViewYourCapstonesSponsors extends React.Component {
             capstones: [],
             pastCapstones: [],
             currentCapstones: [],
-            pendingCapstones: [],
+            proposals: []
         }
     }
     async componentDidMount() {
-        let userID = "5e4696cf48645901274f2d0b";
+        const currentProposals = await strapi.getEntries('proposals');  
 
-        //get user info to pull user info
-        let tempUser = await strapi.getEntry('users', userID);    
-
-        this.setState({loading: false});
+        this.setState({loading: false, proposals: currentProposals});
     }
 
 
@@ -111,6 +108,7 @@ class ViewYourCapstonesSponsors extends React.Component {
                                 </Grid>
                             </Grid>
                             <br/>
+                            {this.state.proposals.length > 0 &&
                             <TableContainer component={Paper} className={classes.table}>
                                 <Table aria-label="simple table">
                                     <TableHead>
@@ -121,12 +119,12 @@ class ViewYourCapstonesSponsors extends React.Component {
                                     </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                    {rows.map(row => (
-                                        <TableRow key={row.name}>
+                                    {this.state.proposals.map((proposal, index) => (
+                                        <TableRow key={index}>
                                         <TableCell component="th" scope="row">
-                                            {row.name}
+                                            {proposal.projectTitle}
                                         </TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell>
+                                        <TableCell align="right">{proposal.status}</TableCell>
                                         <TableCell align="right">
                                             <Button>Edit</Button>    
                                             <Button>Delete</Button>    
@@ -136,6 +134,7 @@ class ViewYourCapstonesSponsors extends React.Component {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+                            }           
                         </Grid>
                     </Grid>
                     <Grid container justify="center">
