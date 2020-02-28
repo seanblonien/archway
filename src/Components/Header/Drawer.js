@@ -17,6 +17,7 @@ import AboutIcon from '@material-ui/icons/QuestionAnswer';
 import CreateIcon from '@material-ui/icons/CreateTwoTone';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/HomeTwoTone';
+import Publish from '@material-ui/icons/Publish';
 import IconButton from '@material-ui/core/IconButton';
 import BusinessIcon from '@material-ui/icons/BusinessTwoTone';
 import ViewAllSponsorsIcon from '@material-ui/icons/ContactsTwoTone';
@@ -70,6 +71,11 @@ class HeaderDrawer extends React.Component {
                     {this.props.auth.isAuthenticated() && <ListItemLink href="/CreateCapstone">
                         < CreateIcon />
                         <ListItemText primary="Create Capstone" />
+                    </ListItemLink>}
+
+                    {this.props.auth.isAuthenticated() && <ListItemLink href="/ImportUsers">
+                        < Publish />
+                        <ListItemText primary="Import New Users" />
                     </ListItemLink>}
 
                     {this.props.auth.isAuthenticated() && <ListItemLink href="/ViewYourCapstones/">
