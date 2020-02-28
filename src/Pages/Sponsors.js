@@ -7,9 +7,6 @@ Greg - page design
 
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {strapiURL} from "../constants";
-import axios from 'axios';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import withWidth from "@material-ui/core/withWidth/withWidth";
 import Card from '@material-ui/core/Card';
@@ -17,170 +14,132 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import {university} from '../constants';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import * as url from "../Images/businessmen.jpg";
+import * as url2 from "../Images/students.jpg";
+import Container from '@material-ui/core/Container';
 
 
 const styles = theme => ({
     button: {
-        border: '4px solid currentColor',
-        borderRadius: 0,
-        height: 'auto',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 5}px`,
+        color: "white",
+        border: "2px solid white"
     },
     bgImage: {
         width: '100%',
         height: '800px',
         backgroundImage: `url(${url})`,
         backgroundSize: 'cover'
+    },
+    studentImage: {
+        backgroundImage: `url(${url2})`,
+        backgroundSize: 'cover',
+        width: '100%',
+        height: '400px'
+    },
+    sidePanel: {
+        height: '800px',
+        backgroundColor: 'black',
+        color: 'white',
+        opacity: '0.7'
+    },
+    gridBox: {
+        border: '8px solid blue',
+        borderRadius: 0,
     }
 });
 
 
 class Sponsors extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            open: false,
-            name: '',
-            email: '',
-            company: '',
-        };
-    }
-
-    handleClickOpen = () =>{
-        this.setState({ open: true });
-    };
-
-    handleClose = () =>{
-        this.setState({ open: false });
-    };
-
-    handleChange = name => event => {
-        this.setState({ [name]: event.target.value });
-    };
-
-    handleSubmit = () =>{
-        this.setState({open: false});
-
-        let url = strapiURL + '/Sponsorrequests';
-
-        axios.post(url, {
-            Name: this.state.name,
-            Email: this.state.email,
-            Company: this.state.company,
-        });
-
-        window.location.reload(true);
-    };
-
-
-
 
     render() {
         const { classes } = this.props;
 
         return (
             <div>
-                    <div className={classes.bgImage}>
-                        <Grid container justify="center" direction="column" alignItems="center">
-                            <Grid item xs={12} md={4}>
-                                <Typography variant="display3" color="textPrimary" align="center" gutterBottom>
-                                    Sponsorship Opportunity
-                                </Typography>
-
-                                <Typography variant="h5" color="textPrimary" align="center" gutterBottom>
-                                    Why join {university}?
-                                    <br />
-                                </Typography>
-
-                                    <Divider />
-                                    <br/>
+                <div className={classes.bgImage}>
+                    <Grid container direction="row" display="inline" justify="flex-end">
+                        <Grid item xs={12} md={4}>
+                           <Card className={classes.sidePanel}>
+                               <CardContent>
+                                   <Typography variant="h4" align="center" gutterBottom>
+                                       Sponsorship at {university}
+                                   </Typography>
+                                   <br/>
+                                   <Typography variant="body1">
+                                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. 
+                                   </Typography>
+                                   <br/>
+                                   <Grid item align="center">
+                                       <Button className={classes.button} size="large">
+                                           Sponsor Signup
+                                       </Button>
+                                   </Grid>
+                               </CardContent>
+                           </Card>
+                        </Grid>
+                    </Grid>
+                </div>
+                <div>
+                    <br/>
+                    <Grid container direction="row" justify="space-evenly">
+                        <Grid item container direction="column" md={5}>
+                            <Grid item>
+                                <Container>
+                                    <Typography variant="h5">
+                                        Benefits to Students
+                                    </Typography>
+                                    <Typography variant="body1">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.  
+                                    </Typography>
+                                </Container>
                             </Grid>
-
-                            <Grid item xs={12} md={4} alignContent="flex-start">
-                                <Typography variant="subtitle2" color="inherit" align="center" gutterBottom>
-                                    <Card style={{justifyContent: "center"}}>
-                                        <CardContent>
-                                            <br />
-                                            <li>Sponsors benefit from mutual partnerships with {university}</li>
-                                            <br />
-                                            <li>Sponsors see an uptick in profits via site-wide advertisements</li>
-                                            <br />
-                                            <li>Work with and mentor students for potential recruiting opportunities</li>
-                                            <br />
-                                            <li>Receive valuable work products as end results of student projects</li>
-                                        </CardContent>
-                                    </Card>
-                                </Typography>
+                            <br/>
+                            <Grid item>
+                                <Container>
+                                    <Typography variant="h5">
+                                        Benefits to Sponsors
+                                    </Typography>
+                                    <Typography variant="body1">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.  
+                                    </Typography>
+                                </Container>
                             </Grid>
-                        <br />
-                            <Grid item xs={12} md={4}>
-                                <Typography variant="overline" color="inherit" align="center" gutterBottom>
-                                    If your organization is interested in becoming a sponsor, please click below to let us know.
-                                </Typography>
-
-                                <div align="center">
-                                    <Button className={classes.button} onClick={this.handleClickOpen}>
-                                        <Typography color="primary" variant="h6" component="span">
-                                            Get Involved
-                                        </Typography>
-                                    </Button>
-                                    <Dialog
-                                        open={this.state.open}
-                                        onClose={this.handleClose}
-                                    >
-                                        <DialogTitle>Get Involved</DialogTitle>
-                                        <DialogContent>
-                                            <DialogContentText>
-                                                If you are interested in sponsoring a future capstone, please enter your contact information here. We will reach out with additional information.
-                                            </DialogContentText>
-                                            <TextField
-                                                margin="dense"
-                                                id="name"
-                                                label="Name"
-                                                type="text"
-                                                fullWidth
-                                                value={this.state.name}
-                                                onChange={(event) => this.setState({name: event.target.value})}
-                                            />
-                                            <TextField
-                                                margin="dense"
-                                                id="email"
-                                                label="Email Address"
-                                                type="email"
-                                                fullWidth
-                                                value={this.state.email}
-                                                onChange={(event) => this.setState({email: event.target.value})}
-                                            />
-                                            <TextField
-                                                margin="dense"
-                                                id="company"
-                                                label="Company"
-                                                type="text"
-                                                fullWidth
-                                                value={this.state.company}
-                                                onChange={(event) => this.setState({company: event.target.value})}
-                                            />
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={this.handleClose} color="primary">
-                                                Cancel
-                                            </Button>
-                                            <Button onClick={this.handleSubmit} color="primary">
-                                                Submit
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                </div>
+                            <br/>
+                            <Grid item>
+                                <Container>
+                                    <Typography variant="h5">
+                                        What Makes a Good Project
+                                    </Typography>
+                                    <Typography variant="body1">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.  
+                                    </Typography>
+                                </Container>
                             </Grid>
                         </Grid>
-                    </div>
+                        <Grid item container direction="column" md={5}>
+                            <Grid item>
+                                <Container>
+                                    <Typography variant="h5">
+                                        How to Become a Sponsor
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        <ol>
+                                            <li>Sign up for an account</li>
+                                            <li>Fill out the proejct proposal</li>
+                                            <li>Wait for approval for proposal</li>
+                                        </ol>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
+                                    </Typography>
+                                    <br/><br/>
+                                </Container>
+                            </Grid>
+                            <Grid item>
+                                <div className={classes.studentImage}></div>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </div>
+                <br/>
             </div>
         )
     }
