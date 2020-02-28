@@ -21,16 +21,6 @@ class ViewProfile extends React.Component {
                 createdAt: '',
                 updatedAt: ''
             },
-            confirmed: '',
-            blocked: '',
-            _id: '',
-            username: '',
-            password: '',
-            email: '',
-            //Fullname: '',
-            provider: '',
-            createdAt: '',
-            updatedAt: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -53,11 +43,12 @@ class ViewProfile extends React.Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        this.setState(state => state.user[name] = value);
+        this.setState({user: {...this.state.user, [name]: value}});
     }
 
 
     handleSubmit(event){
+        // todo: add authentication
         strapi.axios.put(strapiURL + '/content-manager/explorer/plugins::users-permissions.user/' + this.state.user._id, this.state.user);
         event.preventDefault();
     }
