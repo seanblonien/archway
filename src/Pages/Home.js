@@ -124,28 +124,32 @@ class Home extends React.Component {
             capstones: [],
             loading: false,
             featuredCapstones: [],
-            advertisement: null,
-            sponsorName: null,
-            mostViewedCapstones: [],
+            featuredSponsors: [],
         };
     }
 
 
     async componentDidMount() {
         const capstoneList = await strapi.getEntries('capstones');
+        const sponsorList = await strapi.getEntries('Sponsors');
+
         this.populateFeaturedCapstones(capstoneList);
-        var adUrl = await getAdvertisement();
+        this.getFeaturedSponsors(sponsorList);
 
-        var advertisement = (<div className="col-lg-3 col-md-3">
-            <a href={adUrl[1]}>
-                <img src={adUrl[0]} onClick={adUrl[1]} width={300} height={260}/>
-            </a>
-            </div>);
+        this.setState({loading: false, capstones: capstoneList});
 
-        this.setState({loading: false, capstones: capstoneList, advertisement: advertisement, sponsorName: adUrl[2]});
+        const posts = await strapi.getEntries('Sponsors');
 
-        this.setState({mostViewedCapstones: this.state.capstones, loading: true});
+    }
 
+    getFeaturedSponsors(sponsorList) {
+        let featuredSponsors = [];
+        for (let sponsor in sponsorList) {
+            if (sponsorList[sponsor].featured === true) {
+                featuredSponsors.push(sponsorList[sponsor]);
+            }
+        }
+        this.setState({featuredSponsors: featuredSponsors})
     }
 
     populateFeaturedCapstones(capstones){
@@ -158,37 +162,18 @@ class Home extends React.Component {
         this.setState({featuredCapstones: featuredCapstoneProjects});
     }
 
-    top5MostViewedCapstones(){
-        var i = 1;
-        var j;
-        var key;
-        var n = this.state.mostViewedCapstones.length;
-        while (i !== n && n > 0) {
-
-            key = this.state.mostViewedCapstones[i];
-            j = i - 1;
-            while (j >= 0 && this.state.mostViewedCapstones[j]['viewcount'] < key['viewcount']) {
-                this.state.mostViewedCapstones[j + 1] = this.state.mostViewedCapstones[j];
-                j = j - 1;
-            }
-            this.state.mostViewedCapstones[j + 1] = key;
-            i++;
-        }
-
-        this.state.mostViewedCapstones.splice(4,this.state.mostViewedCapstones.length-4)
-
-
-    }
-
     static handleTileClick(capstoneName){
         window.location = "/ViewCapstone/" + capstoneName;
+    }
+
+    static handleSponsorClick(sponsorName){
+        window.location = "/ViewASponsor/" + sponsorName;
     }
 
     render() {
         const {classes} = this.props;
 
-        if (this.state.loading) {
-            this.top5MostViewedCapstones();
+        if (!this.state.loading) {
 
             return (
                 <div>
@@ -258,8 +243,20 @@ class Home extends React.Component {
                                 <Typography variant='h4'>More Information</Typography>
                                 <Box p={2}>
                                     <Typography paragraph={true} variant="body1">
-                                    Lots of info right here! all about capstones and baylor and 
-                                    all of that!
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                                     pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                    culpa qui officia deserunt mollit anim id est laborum.
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                                     pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                    culpa qui officia deserunt mollit anim id est laborum.
                                     </Typography>
                                 </Box>
                             </Paper>
@@ -267,12 +264,21 @@ class Home extends React.Component {
                     </Grid>
 
 
-                    <Grid container justify="center" style={{marginTop: '1.5%'}}>
-                        <Grid item xs={12} md={8}>
+                    <Grid container direction="column" justify="center" alignItems="center" style={{marginTop: '1.5%'}}>
+                        <Grid item xs={12} md={8} alignItems="center">
                             <Typography align="center" variant="h4">Sponsors</Typography>
-                            <div className={classes.gridListContainer}>
-                                {this.state.advertisement}
-                            </div>
+                        </Grid>
+                        <Grid item xs={12} alignItems="center">
+                            <GridList cellHeight={100} cols={2}>
+                            {this.state.featuredSponsors.map((result, i) => (
+                                <GridListTile style={{maxWidth: '200px'}}
+                                            key={strapiURL + this.state.featuredSponsors[i]['logo'].url}
+                                            onClick={(e) => Home.handleSponsorClick(result.id)}>
+                                    <img src={strapiURL + this.state.featuredSponsors[i]['logo'].url}
+                                        alt={"Sponsor"} style={{height: '100%', width: '100%'}}/>
+                                </GridListTile>
+                            ))}
+                            </GridList>
                         </Grid>
                     </Grid>
                 </div>
