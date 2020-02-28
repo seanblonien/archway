@@ -9,8 +9,28 @@ class ViewProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: '',
-            fullname: ''
+            user: {
+                confirmed: '',
+                blocked: '',
+                _id: '',
+                username: '',
+                password: '',
+                email: '',
+                Fullname: '',
+                provider: '',
+                createdAt: '',
+                updatedAt: ''
+            },
+            confirmed: '',
+            blocked: '',
+            _id: '',
+            username: '',
+            password: '',
+            email: '',
+            //Fullname: '',
+            provider: '',
+            createdAt: '',
+            updatedAt: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -20,25 +40,25 @@ class ViewProfile extends React.Component {
     async componentDidMount(){
 
         // Get the data for the user in question
-        await strapi.axios.get(strapiURL + '/users',
+        let response = await strapi.axios.get(strapiURL + '/users',
             {
                 params: {
                     username: this.props.match.params.username
                 }
-            }).then ((response) => {
-                this.setState({user: response.data[0]});
-        });
+            });
+        this.setState({user: response.data[0]});
     }
 
     handleChange(event){
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        this.setState({[name]: value});
+        this.setState(state => state.user[name] = value);
     }
 
+
     handleSubmit(event){
-        console.log(this.state.fullname);
+        strapi.axios.put(strapiURL + '/content-manager/explorer/plugins::users-permissions.user/' + this.state.user._id, this.state.user);
         event.preventDefault();
     }
 
@@ -51,22 +71,23 @@ class ViewProfile extends React.Component {
                 <hr/>
                 <h2>Main Settings</h2>
                 <form onSubmit={this.handleSubmit}>
-                    <div>
-                        <label>Name* {this.state.user.Fullname}
-                            <input name="fullname" value={this.state.fullname} onChange={this.handleChange}/>
-                        </label>
-                    </div>
-                    <div>
-                        <label>Email*</label>
-                        <br/>
-                        <label>{this.state.user.email}</label>
-                    </div>
-                    <div>
-                        <label>Phone</label>
-                    </div>
-                    <div>
-                        <label>LinkedIn</label>
-                    </div>
+                    <TextField
+                        name="Fullname"
+                        label="Full name"
+                        margin="dense"
+                        variant="outlined"
+                        style={{width: 500}}
+                        onChange={this.handleChange}
+                        value={this.state.user.Fullname}
+                    />
+                    <br/>
+                    <label>Email*</label>
+                    <br/>
+                    <label>{this.state.user.email}</label>
+                    <br/>
+                    <label>Phone</label>
+                    <br/>
+                    <label>LinkedIn</label>
                     <hr/>
                     <input type="submit" value="Update Profile"/>
                 </form>
