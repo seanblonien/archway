@@ -7,6 +7,7 @@ Brenden Detels - Wrote entire page.
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import {Link} from 'react-router-dom';
 import LoadingCircle from '../Components/LoadingCircle.js';
 import withWidth from '@material-ui/core/withWidth';
 import { withStyles } from '@material-ui/core/styles';
@@ -201,7 +202,9 @@ class ViewAllDepartments extends React.Component {
                                                     </Grid>
                                                       <Grid xs={2}>
                                                           <ExpansionPanelDetails>
-                                                              <Button className={classes.button} href={"/ViewCapstone/" + result2._id}>
+                                                              <Button className={classes.button}
+                                                                      component={Link}
+                                                                      to={"/ViewCapstone/" + result2._id}>
                                                                   <Typography>
                                                                       <h5>{"Visit Capstone"}</h5>
                                                                   </Typography>

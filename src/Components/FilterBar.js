@@ -12,6 +12,7 @@ import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router-dom';
 import {strapi} from "../constants";
+import _ from 'lodash';
 
 const styles = theme => ({
     root: {
@@ -44,8 +45,15 @@ class NativeSelects extends React.Component {
     };
 
     async componentDidMount() {
-        const posts = await strapi.getEntries('capstones');
-        this.setState({capstones: posts});
+        const capstones = await strapi.getEntries('capstones');
+        const sponsors = capstones.filter(capstone => !_.isEmpty(capstone.sponsors))
+            .flatMap(capstone => capstone.sponsors)
+            .map(s => s.name);
+        const departments = capstones.filter(capstone => !_.isEmpty(capstone.department))
+            .flatMap(capstone => capstone.department)
+            .map(d => d.name);
+
+        this.setState({capstones: capstones, sponsorList: sponsors, departmentList: departments});
     }
 
     handleChange = name => event => {
@@ -64,18 +72,6 @@ class NativeSelects extends React.Component {
             )
         }
 
-        for (let i = 0; i < this.state.capstones.length; i++){
-            if (!this.state.departmentList.includes(this.state.capstones[i].department.name)){
-                this.state.departmentList.push(this.state.capstones[i].department.name);
-            }
-
-            for(let j = 0; j < this.state.capstones[i].sponsors.length; j++) {
-                if (!this.state.sponsorList.includes(this.state.capstones[i].sponsors[j].name)){
-                    this.state.sponsorList.push(this.state.capstones[i].sponsors[j].name);
-                }
-            }
-        }
-
         return (
             <div className={classes.root} >
                 <Paper className={classes.paper} >
@@ -88,7 +84,7 @@ class NativeSelects extends React.Component {
                         >
                             <option value='' />
                             {this.state.departmentList.map(name => (
-                                <option value={name}>{name}</option>
+                                <option value={name} key={name}>{name}</option>
                             ))}
                         </Select>
                     </FormControl>
@@ -102,7 +98,7 @@ class NativeSelects extends React.Component {
                         >
                             <option value='' />
                             {this.state.sponsorList.map(name => (
-                                <option value={name}>{name}</option>
+                                <option value={name} key={name}>{name}</option>
                             ))}
                         </Select>
                     </FormControl>

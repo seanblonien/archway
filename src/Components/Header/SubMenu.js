@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Link from '@material-ui/core/Link';
-import Tooltip from '@material-ui/core/Tooltip'
+import Tooltip from '@material-ui/core/Tooltip';
+import {Link as RouterLink} from 'react-router-dom';
 
 const StyledTooltip = withStyles(theme => ({
   tooltip: {
@@ -27,25 +24,21 @@ const StyledMenuItem = withStyles(theme => ({
 }))(MenuItem);
 
 class SubMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-
     render() {
-
         return (
             <div>
-              <StyledTooltip disableFocusListener 
-              interactive 
-              placement="bottom-start" 
+              <StyledTooltip disableFocusListener
+              interactive
+              placement="bottom-start"
               title={
-                <React.Fragment>     
+                <React.Fragment>
                   {this.props.items.map((value, index) => {
-                            const linkValue = this.props.href[index]
+                            const linkValue = this.props.links[index];
                             return (
-                                <Link key={index} href={linkValue}>
-                                <StyledMenuItem onClick={this.handleClose} key={index}>{value}</StyledMenuItem>
+                                <Link key={index} component={RouterLink} to={linkValue}>
+                                    <StyledMenuItem onClick={this.handleClose}>
+                                        {value}
+                                    </StyledMenuItem>
                                 </Link>
                             )
                         })}
@@ -61,7 +54,7 @@ class SubMenu extends Component {
                     {this.props.title}
                 </MenuItem>
               </StyledTooltip>
-                
+
             </div>
         );
     }

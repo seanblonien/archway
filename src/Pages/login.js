@@ -5,6 +5,7 @@ Parker Wagner - Implemented this page as a test for basic login functionality.
  */
 
 import React, {Component} from "react";
+import {Link} from 'react-router-dom';
 
 export default class Login extends Component {
     render() {
@@ -12,7 +13,7 @@ export default class Login extends Component {
             <div>
                 <p className="App-intro">
                     Hello, {this.props.name}<br/>
-                    Do you want to see the secret area? <a href="/secret">Click here </a>
+                    Do you want to see the secret area? <Link to="/secret">Click here </Link>
                 </p>
 
                 {!this.props.auth.isAuthenticated() &&

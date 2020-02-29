@@ -4,6 +4,7 @@ Contributors:
 Brenden Detels - Wrote entire page.
  */
 
+import {Link} from '@material-ui/core';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import LoadingCircle from '../Components/LoadingCircle.js';
@@ -53,13 +54,11 @@ class ViewADepartment extends React.Component {
 
             var department = this.state.departments.find(d => d.id == this.props.match.params.id);
 
-
             return (
                 <div className="ViewASponsor">
 
                     <Typography align={"center"}>
                         <h1>{department['name']}</h1>
-
                     </Typography>
 
                     <Typography>
@@ -72,14 +71,13 @@ class ViewADepartment extends React.Component {
 
 
                     <Typography align={"center"}>
-
                         <h1> All Capstones by {department['name']}</h1>
                     </Typography>
 
-                    <Button href={"/ViewCapstone/" + department['capstones'].CapstoneName}>
+                    <Button component={Link}
+                            to={"/ViewCapstone/" + department['capstones'].CapstoneName} >
                         <Typography>
                             <h1>{department['capstones'].CapstoneName}</h1>
-
                         </Typography>
                     </Button>
 
