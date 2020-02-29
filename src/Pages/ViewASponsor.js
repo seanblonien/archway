@@ -8,6 +8,7 @@ Greg Keeton - Image Carousel
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import {Link} from 'react-router-dom';
 import LoadingCircle from '../Components/LoadingCircle.js';
 import Divider from '@material-ui/core/Divider';
 import Card from '@material-ui/core/Card';
@@ -131,7 +132,10 @@ class ViewASponsor extends React.Component {
                                                 </CardContent>
 
                                                 <Grid container justify='center'>
-                                                    <Button className={classes.button} style={{marginTop: '2%'}} href={ sponsor['webUrl']}>
+                                                    <Button className={classes.button}
+                                                            style={{marginTop: '2%'}}
+                                                            component={Link}
+                                                            to={sponsor['webUrl']}>
                                                         <Typography color="primary" variant="h6" component="span">
                                                             Visit {sponsor['name']} Website
                                                         </Typography>

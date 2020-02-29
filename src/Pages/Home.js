@@ -20,7 +20,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
-import {getAdvertisement} from "../util/Advertisements";
+import {Link as RouterLink} from 'react-router-dom';
 import LoadingCircle from "../Components/LoadingCircle";
 import {homepageBackground} from "../constants";
 import { Button, Paper, Link, Box } from '@material-ui/core';
@@ -162,13 +162,13 @@ class Home extends React.Component {
         this.setState({featuredCapstones: featuredCapstoneProjects});
     }
 
-    static handleTileClick(capstoneName){
-        window.location = "/ViewCapstone/" + capstoneName;
-    }
+    handleTileClick = (capstoneName) => {
+        this.props.history.push("/ViewCapstone/" + capstoneName);
+    };
 
-    static handleSponsorClick(sponsorName){
-        window.location = "/ViewASponsor/" + sponsorName;
-    }
+    handleSponsorClick = (sponsorName) => {
+        this.props.history.push("/ViewASponsor/" + sponsorName);
+    };
 
     render() {
         const {classes} = this.props;
@@ -182,29 +182,40 @@ class Home extends React.Component {
                             <div style={surroundStyle}>
                                 <div style={insideStyles}>
                                     <Typography variant='h4' style={{color: 'white'}}>{university} University</Typography>
-                                    <Typography variant='h5' style={{color: 'white'}}></Typography>
                                     <Typography variant='h2' style={{color: 'white'}}>Capstones</Typography>
-                                    <div> 
-                                        <Link href='/Capstones'>
-                                            <Button className={classes.topButtom} variant="contained" color='secondary'>Check out Current Capstones</Button>
-                                        </Link>
-                                        <Link href='/ViewSponsors'>
-                                            <Button className={classes.topButtom} variant="contained" color='secondary'>Check Out Our Sponsors</Button>
-                                        </Link>
-                                        <Link href='./Sponsors'>
-                                            <Button className={classes.topButtom} variant="contained" color='secondary'>Become a Sponsor</Button>
-                                        </Link>
+                                    <div>
+                                        <Button className={classes.topButtom}
+                                                variant="contained"
+                                                color='secondary'
+                                                component={RouterLink}
+                                                to={'/Capstones'}>
+                                            Check out Current Capstones
+                                        </Button>
+                                        <Button className={classes.topButtom}
+                                                variant="contained"
+                                                color='secondary'
+                                                component={RouterLink}
+                                                to={'/ViewSponsors'}>
+                                            Check Out Our Sponsors
+                                        </Button>
+                                        <Button className={classes.topButtom}
+                                                variant="contained"
+                                                color='secondary'
+                                                component={RouterLink}
+                                                to={'/Sponsors'}>
+                                            Become a Sponsor
+                                        </Button>
                                     </div>
-                                </div>/>
+                                </div>
                             </div>
                         </div>
                         <div>
-                            
+
                         </div>
                     </Parallax>
 
-                    <Grid 
-                        container 
+                    <Grid
+                        container
                         direction="row"
                         alignItems="flex-end"
                         justify="center"
@@ -217,7 +228,7 @@ class Home extends React.Component {
                                         {this.state.featuredCapstones.map((result, i) => (
                                             <GridListTile style={{maxWidth: '300px'}}
                                                         key={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
-                                                        onClick={(e) => Home.handleTileClick(result.id)}>
+                                                        onClick={(e) => this.handleTileClick(result.id)}>
                                                 <img src={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
                                                     alt={"Capstone"} style={{height: '100%', width: '100%'}}/>
                                                 <GridListTileBar
@@ -225,7 +236,8 @@ class Home extends React.Component {
                                                     subtitle={"Made by: " + result.moderator.username}
                                                     actionIcon={
                                                         <IconButton className={classes.icon}
-                                                                    href={"/ViewCapstone/" + result.id}>
+                                                                    component={RouterLink}
+                                                                    to={"/ViewCapstone/" + result.id}>
                                                             <InfoIcon/>
                                                         </IconButton>
                                                     }
@@ -235,7 +247,7 @@ class Home extends React.Component {
                                         ))}
                                     </GridList>
                                 </div>
-                                <Link href="/Capstones">See More</Link>
+                                <Link component={RouterLink} to={'/Capstones'}>See More</Link>
                             </Paper>
                         </Grid>
                         <Grid item xs={6} >
@@ -243,18 +255,18 @@ class Home extends React.Component {
                                 <Typography variant='h4'>More Information</Typography>
                                 <Box p={2}>
                                     <Typography paragraph={true} variant="body1">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
                                     nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                                     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
                                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
                                     culpa qui officia deserunt mollit anim id est laborum.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
                                     nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                                     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
                                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
                                     culpa qui officia deserunt mollit anim id est laborum.
                                     </Typography>
@@ -265,7 +277,7 @@ class Home extends React.Component {
 
 
                     <Grid container direction="column" justify="center" alignItems="center" style={{marginTop: '1.5%'}}>
-                        <Grid item xs={12} md={8} alignItems="center">
+                        <Grid container direction="column" item xs={12} md={8}  justify="center" alignItems="center">
                             <Typography align="center" variant="h4">Sponsors</Typography>
                         </Grid>
                         <Grid item xs={12} alignItems="center">
