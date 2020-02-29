@@ -20,7 +20,7 @@ class ViewAllDepartments extends Component {
     render() {
         return (
             <div>
-                <CardLayout title="All Departments" listitems={this.state.departments}/>
+                <CardLayout title="All Departments" listitems={this.state.departments} childURL="/ViewADepartment/"/>
             </div>
         )
     }

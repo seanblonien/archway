@@ -1,6 +1,5 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Cards from './Cards';
 
@@ -12,7 +11,7 @@ const cardLayout = (props) => {
             </Typography>
             <br/>
             <Grid container direction="row" spacing={4} >
-                <Cards listitems={props.listitems}/>
+                <Cards listitems={props.listitems} childURL={props.childURL}/>
             </Grid>
         </div>
     )
