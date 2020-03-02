@@ -20,6 +20,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import {withStyles} from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import {strapi, strapiURL} from "../constants";
 import axios from 'axios';
@@ -229,7 +230,7 @@ class ViewCapstone extends React.Component {
     handleClickOpen(e, open, post) {
         this.setState({
             [open]: true,
-            
+
             // Persist state for making edits to individual posts
             postId: post.id,
             postTitle: post.title,
@@ -638,12 +639,10 @@ class ViewCapstone extends React.Component {
                                             < br/>
                                             <div className={classes.gridListContainer}>
                                                 <Carousel showArrows={true} showThumbs={false} infiniteLoop={true}>
-                                                    {picArray.map((result) => {
-                                                        return(
-                                                            <div>
-                                                                <img height={300} width={300} alt="post" src={result}/>
-                                                            </div>
-                                                        );
+                                                    {picArray.map((result, i) => {
+                                                        return <img height={300} width={300} alt="post"
+                                                                    src={result}
+                                                                    key={i}/>;
                                                     })}
                                                 </Carousel>
                                             </div>
@@ -747,12 +746,12 @@ class ViewCapstone extends React.Component {
                                                 {creatorArray.length > 0 && <Grid container style={{marginTop: '2%'}}>
 
                                                     {creatorArray.map((result, i) => (
-                                                        <Grid item xs={ViewCapstone.getColumnsForTeamPics(this.props)}>
+                                                        <Grid item xs={ViewCapstone.getColumnsForTeamPics(this.props)} key={i}>
                                                             <div className={classes.textContainer}>
-                                                                <Button href={"/ViewUser/" + result.username}
+                                                                <Button component={Link}
+                                                                        to={"/ViewUser/" + result.username}
                                                                         style={{height: '100%', width: '100%'}}>
                                                                     <div>
-
                                                                         {ViewCapstone.showPicture(picCreatorArray[i])}
                                                                     </div>
                                                                     <div className={classes.textBox}>
@@ -864,11 +863,11 @@ class ViewCapstone extends React.Component {
                             <Grid item xs={12} style={{marginTop: '1%'}}>
                                 <Card>
                                     {postArray.map((result2, j) => (
-
-                                        <Grid xs={12}>
+                                        <Grid xs={12} key={j}>
 
                                             <CardActionArea
-                                                href={"/ViewPost/" + result2.id}
+                                                component={Link}
+                                                to={"/ViewPost/" + result2.id}
                                             >
                                                 <CardContent>
 

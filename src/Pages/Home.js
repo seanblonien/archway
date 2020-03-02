@@ -4,41 +4,40 @@ Contributors:
 Stephen Tate - Wrote entire page.
 Parker Wagner - Implemented and added targeted advertisement to Page
 Ryan Cave - Designed Cappy logo.
+Emily Tracey - updated page to match different branding (2-18-2019)
  */
 
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import CardContent from '@material-ui/core/CardContent';
-import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import withWidth from "@material-ui/core/withWidth/withWidth";
 import Grid from '@material-ui/core/Grid';
 import { Parallax, Background } from 'react-parallax';
-import {strapi, strapiURL} from "../constants";
-import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import {strapi, strapiURL, university, schoolColorPrimary, schoolColorSecondary} from "../constants";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
-import BackgroundImage from '../Images/LogoFinal.png';
-import {getAdvertisement} from "../util/Advertisements";
+import {Link as RouterLink} from 'react-router-dom';
 import LoadingCircle from "../Components/LoadingCircle";
 import {homepageBackground} from "../constants";
+import { Button, Paper, Link, Box } from '@material-ui/core';
 
 const insideStyles = {
-    backgroundImage: `url(${BackgroundImage})`,
-    color: "white",
+    background: schoolColorPrimary,
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%,-50%)",
     borderRadius: '10px',
     textAlign: 'center',
-    fontSize: '300%',
-    height: '182px',
+    fontSize: '250%',
+    height: '500px',
     width: '350px',
+    paddingTop: 10,
+    paddingBottom: 50,
 };
 const surroundStyle = {
     background: `rgb(0,0,0,0.75)`,
@@ -46,12 +45,12 @@ const surroundStyle = {
     paddingRight: 20,
     position: "absolute",
     top: "50%",
-    left: "50%",
+    left: "75%",
     transform: "translate(-50%,-50%)",
     borderRadius: '10px',
     textAlign: 'center',
-    fontSize: '300%',
-    height: '202px',
+    fontSize: '200%',
+    height: '520px',
     width: '370px',
 };
 
@@ -59,22 +58,43 @@ const styles = theme => ({
     card: {
         marginTop: '1%',
     },
-    leftColCard: {
-        marginRight: '2%',
-        marginTop: '1%',
+    topButtom: {
+        color:'black',
+        width: 350,
+        height: 50,
+        left: '-14%',
+        variant: 'contained',
+        fontSize: 16
     },
-    textCenteredContainer: {
-        position: 'relative',
+    featuredPaper:{
+        background: schoolColorSecondary,
+        color: 'black',
+        marginTop: 30,
+        marginLeft: 30,
+        textAlign: "center",
+        height: 450,
+        maxWidth: 600,
     },
-    photoGalleryGridList: {
-        flexWrap: 'nowrap',
-        transform: 'translateZ(0)',
+    infoTextPaper: {
+        background: "lightgrey",
+        color: "black",
+        marginTop: 10,
+        height: 450,
+        marginRight: 30,
+        maxWidth: 600,
+        textAlign: "center",
+    },
+    paper: {
+        height: 140,
+        width: 100,
     },
     gridListContainer: {
         marginTop: '2%',
+        marginLeft: '2%',
+        marginRight: '2%',
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        align: 'center',
         overflow: 'hidden',
     },
     icon: {
@@ -104,28 +124,32 @@ class Home extends React.Component {
             capstones: [],
             loading: false,
             featuredCapstones: [],
-            advertisement: null,
-            sponsorName: null,
-            mostViewedCapstones: [],
+            featuredSponsors: [],
         };
     }
 
 
     async componentDidMount() {
         const capstoneList = await strapi.getEntries('capstones');
+        const sponsorList = await strapi.getEntries('Sponsors');
+
         this.populateFeaturedCapstones(capstoneList);
-        var adUrl = await getAdvertisement();
+        this.getFeaturedSponsors(sponsorList);
 
-        var advertisement = (<div className="col-lg-3 col-md-3">
-            <a href={adUrl[1]}>
-                <img src={adUrl[0]} onClick={adUrl[1]} width={300} height={260}/>
-            </a>
-            </div>);
+        this.setState({loading: false, capstones: capstoneList});
 
-        this.setState({loading: false, capstones: capstoneList, advertisement: advertisement, sponsorName: adUrl[2]});
+        const posts = await strapi.getEntries('Sponsors');
 
-        this.setState({mostViewedCapstones: this.state.capstones, loading: true});
+    }
 
+    getFeaturedSponsors(sponsorList) {
+        let featuredSponsors = [];
+        for (let sponsor in sponsorList) {
+            if (sponsorList[sponsor].featured === true) {
+                featuredSponsors.push(sponsorList[sponsor]);
+            }
+        }
+        this.setState({featuredSponsors: featuredSponsors})
     }
 
     populateFeaturedCapstones(capstones){
@@ -138,143 +162,135 @@ class Home extends React.Component {
         this.setState({featuredCapstones: featuredCapstoneProjects});
     }
 
+    handleTileClick = (capstoneName) => {
+        this.props.history.push("/ViewCapstone/" + capstoneName);
+    };
 
-    getColumns(props) {
-        if(this.state.featuredCapstones.length < 4){
-            return this.state.featuredCapstones.length;
-        }else{
-            if(props.width ==='sm'){
-                return 2;
-            }
-            if(props.width === 'xs'){
-                return 2;
-            }
-            return 4;
-        }
-    }
-
-    top5MostViewedCapstones(){
-        var i = 1;
-        var j;
-        var key;
-        var n = this.state.mostViewedCapstones.length;
-        while (i !== n && n > 0) {
-
-            key = this.state.mostViewedCapstones[i];
-            j = i - 1;
-            while (j >= 0 && this.state.mostViewedCapstones[j]['viewcount'] < key['viewcount']) {
-                this.state.mostViewedCapstones[j + 1] = this.state.mostViewedCapstones[j];
-                j = j - 1;
-            }
-            this.state.mostViewedCapstones[j + 1] = key;
-            i++;
-        }
-
-        this.state.mostViewedCapstones.splice(4,this.state.mostViewedCapstones.length-4)
-
-
-    }
-
-    static handleTileClick(capstoneName){
-        window.location = "/ViewCapstone/" + capstoneName;
-    }
+    handleSponsorClick = (sponsorName) => {
+        this.props.history.push("/ViewASponsor/" + sponsorName);
+    };
 
     render() {
         const {classes} = this.props;
-        if (this.state.loading) {
-            this.top5MostViewedCapstones();
+
+        if (!this.state.loading) {
 
             return (
                 <div>
                     <Parallax bgImage={homepageBackground} strength={500}>
-                        <div style={{height: 750}}>
+                        <div style={{height: 650}}>
                             <div style={surroundStyle}>
-                                <div style={insideStyles}/>
+                                <div style={insideStyles}>
+                                    <Typography variant='h4' style={{color: 'white'}}>{university} University</Typography>
+                                    <Typography variant='h2' style={{color: 'white'}}>Capstones</Typography>
+                                    <div>
+                                        <Button className={classes.topButtom}
+                                                variant="contained"
+                                                color='secondary'
+                                                component={RouterLink}
+                                                to={'/Capstones'}>
+                                            Check out Current Capstones
+                                        </Button>
+                                        <Button className={classes.topButtom}
+                                                variant="contained"
+                                                color='secondary'
+                                                component={RouterLink}
+                                                to={'/ViewSponsors'}>
+                                            Check Out Our Sponsors
+                                        </Button>
+                                        <Button className={classes.topButtom}
+                                                variant="contained"
+                                                color='secondary'
+                                                component={RouterLink}
+                                                to={'/Sponsors'}>
+                                            Become a Sponsor
+                                        </Button>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        <div>
+
                         </div>
                     </Parallax>
 
-                    <Grid container justify="center">
-                        <Grid item xs={12} md={4}>
-                            <CardContent>
-                                <SubHeadingTextTypography text="What is Cappy?"/>
-                                <Grid container>
-                                    <Grid item xs={5}>
-                                        <Divider light={true}/>
-                                    </Grid>
-                                </Grid>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    Cappy is a Capstone Management System designed for students and sponsors alike. We
-                                    provide students a platform to <b>store, edit, and present</b> their capstone
-                                    projects.
-                                </Typography>
-                            </CardContent>
+                    <Grid
+                        container
+                        direction="row"
+                        alignItems="flex-end"
+                        justify="center"
+                        spacing={3}>
+                        <Grid item xs={6} align="right">
+                            <Paper className={classes.featuredPaper}>
+                                <Typography variant="h4">Featured Capstones</Typography>
+                                <div className={classes.gridListContainer}>
+                                    <GridList cellHeight={180} cols={2}>
+                                        {this.state.featuredCapstones.map((result, i) => (
+                                            <GridListTile style={{maxWidth: '300px'}}
+                                                        key={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
+                                                        onClick={(e) => this.handleTileClick(result.id)}>
+                                                <img src={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
+                                                    alt={"Capstone"} style={{height: '100%', width: '100%'}}/>
+                                                <GridListTileBar
+                                                    title={result.CapstoneName}
+                                                    subtitle={"Made by: " + result.moderator.username}
+                                                    actionIcon={
+                                                        <IconButton className={classes.icon}
+                                                                    component={RouterLink}
+                                                                    to={"/ViewCapstone/" + result.id}>
+                                                            <InfoIcon/>
+                                                        </IconButton>
+                                                    }
+                                                >
+                                                </GridListTileBar>
+                                            </GridListTile>
+                                        ))}
+                                    </GridList>
+                                </div>
+                                <Link component={RouterLink} to={'/Capstones'}>See More</Link>
+                            </Paper>
                         </Grid>
-
-                        <Grid item xs={12} md={4}>
-                            <CardContent>
-                                <SubHeadingTextTypography text="With Cappy, You Can:"/>
-                                <Grid container>
-                                    <Grid item xs={7}>
-                                        <Divider light={true}/>
-                                    </Grid>
-                                </Grid>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    ✓ Create a capstone project
-                                </Typography>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    ✓ Post updates
-                                </Typography>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    ✓ Make connections
-                                </Typography>
-                                <Typography variant="body1" style={{marginTop: '1%'}}>
-                                    ✓ Become a sponsor
-                                </Typography>
-                            </CardContent>
-                        </Grid>
-                    </Grid>
-
-
-                    <Grid container justify="center">
-                        <Grid item xs={12} md={8}>
-                            <SubHeadingTextTypography style={{marginTop: '100px'}}
-                                                      text="Check Out Our Featured Capstones!" align="center"/>
-                            <Divider variant="middle"/>
-                            <div className={classes.gridListContainer}>
-                                <GridList className={classes.photoGalleryGridList} cols={this.getColumns(this.props)}>
-                                    {this.state.featuredCapstones.map((result, i) => (
-                                        <GridListTile style={{maxWidth: '300px'}}
-                                                      key={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
-                                                      onClick={(e) => Home.handleTileClick(result.id)}>
-                                            <img src={strapiURL + this.state.featuredCapstones[i]['DisplayPhoto'].url}
-                                                 alt={"Capstone"} style={{height: '100%', width: '100%'}}/>
-                                            <GridListTileBar
-                                                title={result.CapstoneName}
-                                                subtitle={"Made by: " + result.moderator.username}
-                                                actionIcon={
-                                                    <IconButton className={classes.icon}
-                                                                href={"/ViewCapstone/" + result.id}>
-                                                        <InfoIcon/>
-                                                    </IconButton>
-                                                }
-                                            >
-                                            </GridListTileBar>
-                                        </GridListTile>
-                                    ))}
-                                </GridList>
-                            </div>
+                        <Grid item xs={6} >
+                            <Paper elevation={3} className={classes.infoTextPaper}>
+                                <Typography variant='h4'>More Information</Typography>
+                                <Box p={2}>
+                                    <Typography paragraph={true} variant="body1">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                     pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                    culpa qui officia deserunt mollit anim id est laborum.
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                     pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                    culpa qui officia deserunt mollit anim id est laborum.
+                                    </Typography>
+                                </Box>
+                            </Paper>
                         </Grid>
                     </Grid>
 
-                    <Grid container justify="center" style={{marginTop: '1.5%'}}>
-                        <Grid item xs={12} md={8}>
-                            <SubHeadingTextTypography text={"Sponsored Message from " + this.state.sponsorName + "!"}
-                                                      align="center"/>
-                            <Divider variant="middle"/>
-                            <div className={classes.gridListContainer}>
-                                {this.state.advertisement}
-                            </div>
+
+                    <Grid container direction="column" justify="center" alignItems="center" style={{marginTop: '1.5%'}}>
+                        <Grid container direction="column" item xs={12} md={8}  justify="center" alignItems="center">
+                            <Typography align="center" variant="h4">Sponsors</Typography>
+                        </Grid>
+                        <Grid item xs={12} alignItems="center">
+                            <GridList cellHeight={100} cols={2}>
+                            {this.state.featuredSponsors.map((result, i) => (
+                                <GridListTile style={{maxWidth: '200px'}}
+                                            key={strapiURL + this.state.featuredSponsors[i]['logo'].url}
+                                            onClick={(e) => Home.handleSponsorClick(result.id)}>
+                                    <img src={strapiURL + this.state.featuredSponsors[i]['logo'].url}
+                                        alt={"Sponsor"} style={{height: '100%', width: '100%'}}/>
+                                </GridListTile>
+                            ))}
+                            </GridList>
                         </Grid>
                     </Grid>
                 </div>

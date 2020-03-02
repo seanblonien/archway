@@ -8,6 +8,7 @@ Brenden Detels - Page functionality
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import {Link} from 'react-router-dom';
 import LoadingCircle from '../Components/LoadingCircle.js';
 import Divider from '@material-ui/core/Divider';
 import GridList from '@material-ui/core/GridList';
@@ -70,9 +71,9 @@ class ViewSponsors extends React.Component {
         return 1;
     }
 
-    static handleTileClick(id){
-        window.location = "/ViewASponsor/" + id;
-    }
+    handleTileClick = (id) => {
+        this.props.history.push("/ViewASponsor/" + id);
+    };
 
     render() {
 
@@ -142,13 +143,15 @@ class ViewSponsors extends React.Component {
                         <Grid item xs={12} md={10}>
                             <GridList cellHeight={250} cols={ViewSponsors.getColumns(this.props)}>
                                 {match.map((result, i) => (
-                                    <GridListTile key={strapiURL + result['logo'].url} onClick={(e) => ViewSponsors.handleTileClick(result.id)}>
+                                    <GridListTile key={strapiURL + result['logo'].url} onClick={(e) => this.handleTileClick(result.id)}>
                                         <img src={strapiURL + result['logo'].url} alt={"Sponsor image"} style={{height: '100%', width: '100%'}}/>
                                         <GridListTileBar
                                             title={result.name}
                                             subtitle={"Sponsors: " + result['capstones'].length  + " capstones"}
                                             actionIcon={
-                                                <IconButton className={classes.icon} href={"/ViewASponsor/" + result.id}>
+                                                <IconButton className={classes.icon}
+                                                            component={Link}
+                                                            to={"/ViewASponsor/" + result.id}>
                                                     <InfoIcon/>
                                                 </IconButton>
                                             }

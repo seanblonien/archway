@@ -9,6 +9,7 @@ import React from "react";
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import {strapi} from "../constants";
 import Button from '@material-ui/core/Button';
@@ -153,7 +154,7 @@ class FAQ extends React.Component {
                                                 </ExpansionPanelDetails>
                                                 {question.url &&
                                                 <ExpansionPanelDetails>
-                                                    <Button href={question.url}>
+                                                    <Button component={Link} to={question.url}>
                                                         More Info Here
                                                     </Button>
                                                 </ExpansionPanelDetails>}

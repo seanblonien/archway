@@ -5,6 +5,7 @@ Brenden Detels - Entire Page functionality and styling
  */
 
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import {strapi, strapiURL} from "../constants";
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -224,7 +225,7 @@ class EditCapstone extends Component {
         }
     };
 
-    async handleEdit(){
+    handleEdit = async () => {
         const sponsorIDs = [];
 
         for (let i = 0; i < this.state.checkedSponsors.length; i++){
@@ -281,7 +282,7 @@ class EditCapstone extends Component {
             })
         }
 
-        window.location = ("/ViewCapstone/" + this.state.id)
+        this.props.history.push("/ViewCapstone/" + this.state.id);
     }
 
     static formatDate(dateToFormat) {
@@ -606,12 +607,10 @@ class EditCapstone extends Component {
                                     fullWidth
                                     variant="contained"
                                     color="primary"
-
-                                    onClick={() => {
-                                        this.handleEdit();
-                                    }}
+                                    onClick={this.handleEdit}
                                     style={{marginTop: '1%'}}
-                                    href={"/ViewCapstone/" + this.state.id}
+                                    component={Link}
+                                    to={"/ViewCapstone/" + this.state.id}
                                 >
                                     Edit Capstone
                                 </Button>

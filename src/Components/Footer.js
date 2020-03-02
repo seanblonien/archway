@@ -6,35 +6,48 @@ Stephen Tate - Wrote entire file.
 
 import React from 'react';
 import {withStyles} from "@material-ui/core";
+import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Divider from "@material-ui/core/Divider";
 
 
 const styles = theme =>({
 
     divStyle: {
-        background: theme.palette.primary.main,
+        background: 'white',
         width: '100%',
         bottom: 0,
         position: 'absolute',
         maxHeight: '120px',
         paddingTop: '5px',
-        paddingLeft: '5px',
+        // paddingLeft: '5px',
+        // paddingRight: '5px',
+        //borderTop: '2px solid #535353',
     },
     textStyle: {
-        color: 'white',
+        color: '#535353',
         textDecoration: 'none',
         marginTop: '0px',
         marginBottom: '0px',
     },
     navigationHeading: {
-        color: 'white',
+        color: '#535353',
         textDecoration: 'none',
         marginTop: '0px',
         marginBottom: '5px',
-        borderBottom: '2px solid white'
-    }
+        //borderBottom: '2px solid white',
+    },
+    gridItem: {
+        paddingTop: '10px', // idk why this doesn't change things
+        textAlign: 'center',
+        color: '#535353',
+    },
+    linkStyle: {
+        color: '#0366D6',
+        textDecoration: 'none',
+    },
 });
 
 
@@ -45,49 +58,38 @@ class Footer extends React.Component{
 
         return(
             <div className={classes.divStyle}>
-                <div>
+                <Grid container justify="center" >
                     <Grid container justify="center">
-                        <Grid item xs={12} md={10}>
-                            <Typography className={classes.navigationHeading}>
-                                <b>Navigation</b>
-                            </Typography>
-                            <Grid container>
-                                <Grid item xs={4} md={2}>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/Home" className={classes.textStyle}>Home Page</a>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/About" className={classes.textStyle}>About Page</a>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/Sponsors" className={classes.textStyle}>Sponsor A Project</a>
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={4} md={2}>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/ViewAllDepartments" className={classes.textStyle}>Departments</a>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/FAQ" className={classes.textStyle}>Help and Info</a>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/Sponsors" className={classes.textStyle}>View Sponsors</a>
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={4} md={2}>
-
-                                </Grid>
-                                <Grid item xs={4} md={2}>
-
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={6}>
-                            </Grid>
-
+                        <Grid item xs={10}>
+                            <Divider light={true}/>
                         </Grid>
                     </Grid>
-                </div>
+                    <Grid container justify="center" style={{paddingTop: 30, paddingBottom: 40}}>
+                        <Grid container justify="center" style={{paddingLeft: 250, paddingRight: 250}}>
+                        <Grid className={classes.gridItem} item xs>
+                            <Link to="/Home" className={classes.linkStyle}>Home Page</Link>
+                        </Grid>
+                        <Grid className={classes.gridItem} item xs>
+                            <Link to="/About" className={classes.linkStyle}>About Page</Link>
+                        </Grid>
+                        <Grid className={classes.gridItem} item xs>
+                            <Link to="/Sponsors" className={classes.linkStyle}>Sponsor A Project</Link>
+                        </Grid>
+                        <Grid className={classes.gridItem} item xs={2}>
+                            <img src={require('../Images/arch.svg')} alt="Powered by Archway" title="Powered by Archway" height="30" width="30"/>
+                        </Grid>
+                        <Grid className={classes.gridItem} item xs>
+                            <Link to="/ViewAllDepartments" className={classes.linkStyle}>Departments</Link>
+                        </Grid>
+                        <Grid className={classes.gridItem} item xs>
+                            <Link to="/FAQ" className={classes.linkStyle}>Help and Info</Link>
+                        </Grid>
+                        <Grid className={classes.gridItem} item xs>
+                            <Link to="/Sponsors" className={classes.linkStyle}>View Sponsors</Link>
+                        </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </div>
         );
     }

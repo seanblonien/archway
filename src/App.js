@@ -7,6 +7,7 @@ Brenden Detels - Routing Functionality
  */
 
 import React, { Component, Fragment } from "react";
+import ImportUsers from './Pages/ImportUsers';
 import Header from './Components/Header/Header';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import About from './Components/About';
@@ -63,6 +64,7 @@ export default class extends Component {
                     <Route path="/ViewADepartment/:id" component={ViewADepartment}/>
                     <Route path="/EditCapstone/:id" component={EditCapstone}/>
                     <Route path="/FAQ/" component={FAQ}/>
+                    <Route path="/ImportUsers/" component={ImportUsers}/>
                     <Route exact path="" component={Home}/>
                     <Route path="*" component={NotFound}/>
                 </Switch>

@@ -178,13 +178,11 @@ class ViewUser extends React.Component {
                     });
                 });
         }
-
-        window.location.reload(true);
     }
 
-    static handleCapstoneClick(capstoneName){
-        window.location = '/ViewCapstone/' + capstoneName;
-    }
+    handleCapstoneClick = (capstoneName) => {
+        this.props.history.push('/ViewCapstone/' + capstoneName);
+    };
 
     async componentDidMount() {
 

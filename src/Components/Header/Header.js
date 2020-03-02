@@ -5,11 +5,12 @@ Contributors: Ryan Cave
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import {university} from "../../constants";
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -19,6 +20,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SearchBar from './SearchBar.js';
 import Drawer from './Drawer.js';
+import SubMenu from './SubMenu.js';
 
 const styles = theme => ({
     root: {
@@ -104,6 +106,7 @@ class PrimarySearchAppBar extends React.Component {
         window.location = '/ViewUser/' + localStorage.getItem("nickname");
     };
 
+
     render() {
         const { anchorEl } = this.state;
         const { classes } = this.props;
@@ -133,10 +136,19 @@ class PrimarySearchAppBar extends React.Component {
 
                             < Drawer {...this.props} />
 
+                            <Button style={{color: 'white'}} component={Link} to="/">
+                                {university} | Archway
+                            </Button>
 
-                            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                                {university} | Cappy
-                            </Typography>
+                            <SubMenu title="About"
+                                items={["FAQ", String(university), "Archway"]}
+                                links={["/faq", "/about", "/about"]}></SubMenu>
+                            <SubMenu title="Sponsors"
+                                items={["Become a Sponsor", "View Current Sponsors"]}
+                                 links={["/Sponsors", "/ViewSponsors"]}></SubMenu>
+                            <SubMenu title="Projects"
+                                items={["All Capstones","All Departments"]}
+                                 links={["/Capstones", "/ViewAllDepartments"]}></SubMenu>
 
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
