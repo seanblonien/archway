@@ -5,6 +5,8 @@ Brenden Detels - Wrote entire page
 Greg Keeton - Image Carousel
  */
 
+import {Link} from '@material-ui/core';
+import Markdown from 'markdown-to-jsx';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -125,17 +127,20 @@ class ViewASponsor extends React.Component {
                                                     <img src={strapiURL + sponsor['logo'].url } className={classes.sponsorImage} alt="Display"/>
                                                 </Typography>
                                                 <CardContent>
-                                                    <Typography style={{marginTop: '1%'}}>
-                                                        <b> Description: </b>{ " " + sponsor['description']}
-                                                    </Typography>
+                                                    <Markdown>
+                                                        {sponsor['description']}
+                                                    </Markdown>
                                                 </CardContent>
 
                                                 <Grid container justify='center'>
-                                                    <Button className={classes.button} style={{marginTop: '2%'}} href={ sponsor['webUrl']}>
-                                                        <Typography color="primary" variant="h6" component="span">
-                                                            Visit {sponsor['name']} Website
-                                                        </Typography>
-                                                    </Button>
+                                                    <Link href={sponsor['webUrl']}>
+                                                        <Button className={classes.button}
+                                                                style={{marginTop: '2%'}}>
+                                                            <Typography color="primary" variant="h6" component="span">
+                                                                Visit {sponsor['name']} Website
+                                                            </Typography>
+                                                        </Button>
+                                                    </Link>
                                                 </Grid>
 
 
