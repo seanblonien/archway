@@ -56,14 +56,6 @@
           "targetAttribute": "capstone",
           "unique": false
         },
-        "moderator": {
-          "nature": "oneToOne",
-          "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
-          "dominant": true,
-          "targetAttribute": "capstone",
-          "unique": false
-        },
         "department": {
           "nature": "oneToMany",
           "target": "application::departments.departments",

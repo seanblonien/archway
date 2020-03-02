@@ -178,11 +178,13 @@ class ViewUser extends React.Component {
                     });
                 });
         }
+
+        window.location.reload(true);
     }
 
-    handleCapstoneClick = (capstoneName) => {
-        this.props.history.push('/ViewCapstone/' + capstoneName);
-    };
+    static handleCapstoneClick(capstoneName){
+        window.location = '/ViewCapstone/' + capstoneName;
+    }
 
     async componentDidMount() {
 
@@ -200,11 +202,11 @@ class ViewUser extends React.Component {
                      userId = response.data[0]._id;
         });
 
-        const pic = await strapi.axios.get(strapiURL + "/userpictures?user=" + userId);
-        console.log(pic);
+        const pic = await strapi.axios.get(strapiURL + "/users/" + userId);
+        console.log(pic.data);
 
-        if(pic.data.length !== 0) {
-            let picURL = pic.data[0].ProfilePicture.url;
+        if(pic.data.ProfilePicture !== null) {
+            let picURL = pic.data.ProfilePicture.url;
             this.setState({ProfilePicture: strapiURL + picURL});
         }
         else {
