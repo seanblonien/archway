@@ -178,11 +178,13 @@ class ViewUser extends React.Component {
                     });
                 });
         }
+
+        window.location.reload(true);
     }
 
-    handleCapstoneClick = (capstoneName) => {
-        this.props.history.push('/ViewCapstone/' + capstoneName);
-    };
+    static handleCapstoneClick(capstoneName){
+        window.location = '/ViewCapstone/' + capstoneName;
+    }
 
     async componentDidMount() {
 
@@ -200,13 +202,12 @@ class ViewUser extends React.Component {
                      userId = response.data[0]._id;
         });
 
-        //const pic = await strapi.axios.get(strapiURL + "/users?id_=" + userId);
-        const pic = await strapi.axios.get(strapiURL + "/uploads/bb3abc86979646339c771efdc42d9329.png");
-        console.log(pic);
+        const pic = await strapi.axios.get(strapiURL + "/users/" + userId);
+        console.log(pic.data);
 
         if(pic.data.length !== 0) {
-            //let picURL = pic.data[0].ProfilePicture.url;
-            let picURL = "/uploads/bb3abc86979646339c771efdc42d9329.png";
+            // this is bad because it forces you to have a profile picture
+            let picURL = pic.data.ProfilePicture.url;
             this.setState({ProfilePicture: strapiURL + picURL});
         }
         else {

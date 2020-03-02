@@ -338,10 +338,10 @@ class ViewCapstone extends React.Component {
         let pic;
         let picURLS = [];
         for(let member in this.state.team) {
-            pic = await strapi.axios.get(strapiURL + "/userpictures?user=" + this.state.team[member]._id);
+            pic = await strapi.axios.get(strapiURL + "/users/" + this.state.team[member]._id);
             console.log(pic);
-            if(pic.data.length !== 0) {
-                picURLS[member] = pic.data[0].ProfilePicture.url;
+            if(pic.data.ProfilePicture !== null) {
+                picURLS[member] = pic.data.ProfilePicture.url;
             }
         }
         this.setState({teamPics: picURLS});
@@ -749,7 +749,7 @@ class ViewCapstone extends React.Component {
                                                         <Grid item xs={ViewCapstone.getColumnsForTeamPics(this.props)} key={i}>
                                                             <div className={classes.textContainer}>
                                                                 <Button component={Link}
-                                                                        to={"/ViewUser/" + result.username}
+                                                                        to={"/ViewProfile/" + result.username}
                                                                         style={{height: '100%', width: '100%'}}>
                                                                     <div>
                                                                         {ViewCapstone.showPicture(picCreatorArray[i])}
