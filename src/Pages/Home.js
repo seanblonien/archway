@@ -183,7 +183,7 @@ class Home extends React.Component {
 
             return (
                 <div>
-                    <Parallax bgImage={homepageBackground} strength={500}>
+                    <Parallax bgImage={'https://www.baylor.edu/content/imglib/3/4/7/4/347452.jpg'} strength={500}>
                         <div style={{height: 650}}>
                             <div style={surroundStyle}>
                                 <div style={insideStyles}>
