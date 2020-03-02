@@ -4,20 +4,20 @@ Contributors:
 Brenden Detels - Wrote entire page.
  */
 
-import Markdown from 'markdown-to-jsx';
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import {Link} from 'react-router-dom';
-import LoadingCircle from '../Components/LoadingCircle.js';
-import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import {strapi} from "../constants";
 import Button from '@material-ui/core/Button';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import Markdown from 'markdown-to-jsx';
+import React from 'react';
+import {Link} from 'react-router-dom';
+import compose from 'recompose/compose';
+import LoadingCircle from '../Components/LoadingCircle.js';
+import {strapi} from "../constants";
 
 const styles = theme => ({
     card: {

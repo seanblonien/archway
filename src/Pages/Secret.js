@@ -6,7 +6,7 @@ Contributors:   Parker Wagner - Wrote entire page.
  */
 
 import React, {Component} from "react";
-import {strapiURL, strapi} from "../constants";
+import {strapi, strapiURL} from "../constants";
 
 export default class Secret extends Component {
 

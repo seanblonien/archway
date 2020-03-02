@@ -5,33 +5,33 @@ Brenden Detels - page functionality
 Greg Keeton - page styling, comment modal
  */
 
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import CardHeader from '@material-ui/core/CardHeader';
-import {strapi, strapiURL} from "../constants";
-import {withStyles} from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import withWidth from "@material-ui/core/withWidth";
-import axios from 'axios';
-import {Carousel} from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import LoadingCircle from "../Components/LoadingCircle";
 import {Dialog} from "@material-ui/core";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import TextField from "@material-ui/core/TextField";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import {withStyles} from '@material-ui/core/styles';
+import TextField from "@material-ui/core/TextField";
+import Typography from '@material-ui/core/Typography';
+import withWidth from "@material-ui/core/withWidth";
+import DeleteIcon from '@material-ui/icons/Delete';
+import axios from 'axios';
 import Filter from "bad-words";
+import React from 'react';
+import {Carousel} from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import compose from 'recompose/compose';
+import LoadingCircle from "../Components/LoadingCircle";
+import {strapi, strapiURL} from "../constants";
 
 const styles = theme => ({
     card: {

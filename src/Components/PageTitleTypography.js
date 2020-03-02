@@ -31,11 +31,18 @@ class PageTitleTypography extends React.Component{
     }
 
     render() {
-        return (
-            <Typography align={this.props.align} variant={PageTitleTypography.resizeTitleText(this.props)}>
+        if (this.props.size) {
+            return (<Typography align={this.props.align} variant={this.props.size}>
                 <b>{this.props.text}</b>
-            </Typography>
-        );
+            </Typography>)
+        }
+        else {
+            return (
+                <Typography align={this.props.align} variant={PageTitleTypography.resizeTitleText(this.props)}>
+                    <b>{this.props.text}</b>
+                </Typography>
+            );
+        }
     }
 }
 

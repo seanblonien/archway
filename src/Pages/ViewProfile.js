@@ -1,5 +1,3 @@
-import React from 'react';
-import { strapi, strapiURL } from "../constants";
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
@@ -7,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import {strapi, strapiURL} from "../constants";
 
 class ViewProfile extends React.Component {
 
@@ -141,7 +141,7 @@ class ViewProfile extends React.Component {
                                         onChange={this.handleChange}
                                         value={this.state.user.Fullname}
                                     />
-                                    
+
                                 ):
                                 (
                                     <div>
@@ -162,7 +162,7 @@ class ViewProfile extends React.Component {
                                         onChange={this.handleChange}
                                         value={this.state.user.email}
                                     />
-                                    
+
                                 ):
                                 (
                                     <div>
@@ -181,7 +181,7 @@ class ViewProfile extends React.Component {
                                         margin="dense"
                                         style={{ width: "100%" }}
                                     />
-                                    
+
                                 ):
                                 (
                                     <div>
@@ -200,7 +200,7 @@ class ViewProfile extends React.Component {
                                         margin="dense"
                                         style={{ width: "100%" }}
                                     />
-                                    
+
                                 ):
                                 (
                                     <div>
@@ -238,7 +238,7 @@ class ViewProfile extends React.Component {
                             </Button>
                         )
                     }
-                    
+
                 </Box>
             </Box>
         );

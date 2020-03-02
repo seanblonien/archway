@@ -6,31 +6,31 @@ Greg Keeton - Implemented editing functionality and conditional rendering of pag
 Ryan Cave - minor bug fixes after ViewCapstone routing change.
  */
 
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
+import {CardContent} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
+import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import {strapi, strapiURL} from "../constants";
-import LoadingCircle from "../Components/LoadingCircle";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Divider from '@material-ui/core/Divider';
 import Fab from "@material-ui/core/Fab";
-import axios from 'axios';
-import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
-import PageTitleTypography from "../Components/PageTitleTypography";
-import {CardContent} from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import Grid from '@material-ui/core/Grid';
+import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import Select from "@material-ui/core/Select";
+import {withStyles} from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import React from 'react';
+import LoadingCircle from "../Components/LoadingCircle";
+import PageTitleTypography from "../Components/PageTitleTypography";
+import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import {strapi, strapiURL} from "../constants";
 import * as url from '../Images/default-user-profile-image-png-6.png';
 
 const styles = theme => ({
