@@ -17,12 +17,14 @@ import AboutIcon from '@material-ui/icons/QuestionAnswer';
 import CreateIcon from '@material-ui/icons/CreateTwoTone';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/HomeTwoTone';
+import Publish from '@material-ui/icons/Publish';
 import IconButton from '@material-ui/core/IconButton';
 import BusinessIcon from '@material-ui/icons/BusinessTwoTone';
 import ViewAllSponsorsIcon from '@material-ui/icons/ContactsTwoTone';
 import ViewAllDepartmentsIcon from '@material-ui/icons/SchoolTwoTone';
 import FAQIcon from '@material-ui/icons/HelpTwoTone';
 import ViewYourCapstonesIcon from '@material-ui/icons/TableChartTwoTone';
+import {Link} from 'react-router-dom';
 
 
 const styles = {
@@ -30,10 +32,6 @@ const styles = {
         width: 250,
     }
 };
-
-function ListItemLink(props) {
-    return <ListItem button component="a" {...props} />;
-}
 
 class HeaderDrawer extends React.Component {
     state = {
@@ -52,50 +50,61 @@ class HeaderDrawer extends React.Component {
             <div className={classes.list}>
                 <List>
 
-                    <ListItemLink href="/">
+                    <ListItem button component={Link} to="/">
                         < HomeIcon />
                         <ListItemText primary="Home" />
-                    </ListItemLink>
+                    </ListItem>
 
-                    <ListItemLink href="/Capstones">
+                    <ListItem button component={Link} to="/Capstones">
                         < DashboardIcon />
                         <ListItemText primary="Capstone List" />
-                    </ListItemLink>
+                    </ListItem>
 
-                    <ListItemLink href="/about">
+                    <ListItem button component={Link} to="/about">
                         < AboutIcon />
                         <ListItemText primary="About" />
-                    </ListItemLink>
+                    </ListItem>
 
-                    {this.props.auth.isAuthenticated() && <ListItemLink href="/CreateCapstone">
-                        < CreateIcon />
-                        <ListItemText primary="Create Capstone" />
-                    </ListItemLink>}
+                    {this.props.auth.isAuthenticated() &&
+                        <ListItem button component={Link} to="/CreateCapstone">
+                            < CreateIcon/>
+                            <ListItemText primary="Create Capstone"/>
+                        </ListItem>
+                    }
 
-                    {this.props.auth.isAuthenticated() && <ListItemLink href="/ViewYourCapstones/">
-                        < ViewYourCapstonesIcon />
-                        <ListItemText primary="View Your Capstones" />
-                    </ListItemLink>}
+                    {this.props.auth.isAuthenticated() &&
+                        <ListItem button component={Link} to="/ImportUsers">
+                            < Publish />
+                            <ListItemText primary="Import New Users" />
+                        </ListItem>
+                    }
 
-                    <ListItemLink href="/Sponsors">
+                    {this.props.auth.isAuthenticated() &&
+                        <ListItem button component={Link} to="/ViewYourCapstones">
+                            < ViewYourCapstonesIcon />
+                            <ListItemText primary="View Your Capstones" />
+                        </ListItem>
+                    }
+
+                    <ListItem button component={Link} to="/Sponsors">
                         < BusinessIcon />
                         <ListItemText primary="Become a Sponsor" />
-                    </ListItemLink>
+                    </ListItem>
 
-                    <ListItemLink href="/ViewSponsors">
+                    <ListItem button component={Link} to="/ViewSponsors">
                         <ViewAllSponsorsIcon/>
                         <ListItemText primary="View All Sponsors"/>
-                    </ListItemLink>
+                    </ListItem>
 
-                    <ListItemLink href="/ViewAllDepartments">
+                    <ListItem button component={Link} to="/ViewAllDepartments">
                         <ViewAllDepartmentsIcon/>
                         <ListItemText primary="View Departments"/>
-                    </ListItemLink>
+                    </ListItem>
 
-                    <ListItemLink href="/FAQ">
+                    <ListItem button component={Link} to="/FAQ">
                         <FAQIcon/>
                         <ListItemText primary="Frequently Asked Questions"/>
-                    </ListItemLink>
+                    </ListItem>
 
                     < Divider />
                 </List>

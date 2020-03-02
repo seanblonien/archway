@@ -52,16 +52,7 @@
         "creators": {
           "nature": "oneToMany",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
-          "targetAttribute": "capstone",
-          "unique": false
-        },
-        "moderator": {
-          "nature": "oneToOne",
-          "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
-          "dominant": true,
           "targetAttribute": "capstone",
           "unique": false
         },
@@ -89,7 +80,6 @@
         "user": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "comments",
           "unique": false
@@ -191,7 +181,6 @@
         "user": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "posts",
           "unique": false
@@ -251,7 +240,6 @@
         "user": {
           "nature": "oneToOne",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "viewstat",
           "unique": false
@@ -303,7 +291,6 @@
         "role": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.role",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "permissions",
           "configurable": false,
@@ -335,7 +322,6 @@
         "permissions": {
           "nature": "oneToMany",
           "target": "plugins::users-permissions.permission",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "role",
           "configurable": false,
@@ -344,7 +330,6 @@
         "users": {
           "nature": "oneToMany",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "role",
           "configurable": false,
@@ -399,7 +384,6 @@
         "role": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.role",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "users",
           "configurable": false,

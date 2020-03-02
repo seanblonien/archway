@@ -4,18 +4,20 @@ Contributors:
 Brenden Detels - Wrote entire page.
  */
 
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import LoadingCircle from '../Components/LoadingCircle.js';
-import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import {strapi} from "../constants";
 import Button from '@material-ui/core/Button';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import Markdown from 'markdown-to-jsx';
+import React from 'react';
+import {Link} from 'react-router-dom';
+import compose from 'recompose/compose';
+import LoadingCircle from '../Components/LoadingCircle.js';
+import {strapi} from "../constants";
 
 const styles = theme => ({
     card: {
@@ -127,7 +129,7 @@ class ViewAllDepartments extends React.Component {
             return (
                 <div className="AllSponsors" style={{marginLeft: '2.0%', marginRight: '2.0%'}}>
                     <Typography align={"center"}>
-                    <h1>All Departments</h1>
+                        <h1>All Departments</h1>
                     </Typography>
                     <Grid container >
                             {this.state.departments.map((result, i) => (
@@ -157,9 +159,9 @@ class ViewAllDepartments extends React.Component {
 
 
                                     <ExpansionPanelDetails>
-                                            <Typography>
-                                                <h4>{"Department Description: " + result.description}</h4>
-                                            </Typography>
+                                        <Markdown>
+                                            {result.description}
+                                        </Markdown>
                                     </ExpansionPanelDetails>
 
                                         <Grid container justify="flex-end">
@@ -180,7 +182,9 @@ class ViewAllDepartments extends React.Component {
                                                       <Grid xs={10}>
                                                           <Grid xs={12}>
                                                             <ExpansionPanelDetails >
-                                                                {"Capstone Description: " + result2.description}
+                                                                <Markdown>
+                                                                    {result2.description}
+                                                                </Markdown>
                                                             </ExpansionPanelDetails>
                                                           </Grid>
                                                           <Grid xs={4}>
@@ -201,7 +205,9 @@ class ViewAllDepartments extends React.Component {
                                                     </Grid>
                                                       <Grid xs={2}>
                                                           <ExpansionPanelDetails>
-                                                              <Button className={classes.button} href={"/ViewCapstone/" + result2._id}>
+                                                              <Button className={classes.button}
+                                                                      component={Link}
+                                                                      to={"/ViewCapstone/" + result2._id}>
                                                                   <Typography>
                                                                       <h5>{"Visit Capstone"}</h5>
                                                                   </Typography>
