@@ -39,6 +39,10 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import BusinessIcon from '@material-ui/icons/Business';
+import AddUser from "../Components/AddUser";
+import SimpleDialog from "../Components/AddUserDialog";
+import DragAndDropZone from "../Components/DragAndDropZone/DragAndDropZone";
+import Box from "@material-ui/core/Box";
 
 const styles = theme => ({
     list: {
@@ -88,7 +92,9 @@ class CreateCapstone extends Component {
             Users: [],
             Participants: [],
             typedName: '',
-            typedEmail: ''
+            typedEmail: '',
+            dialogOpen: false,
+            newUser: ''
         };
 
 
@@ -214,8 +220,9 @@ class CreateCapstone extends Component {
             department: this.state.Department.id,
             creators: UserIDs,
             sponsors: sponsorIDs,
-        },
-{headers:
+        }
+        ,
+        {headers:
         {'Authorization': authToken}}).then(
             async function(response) {
                 console.log('Data', response.data['_id']);
@@ -331,6 +338,18 @@ class CreateCapstone extends Component {
                 this.setState({checkedSponsors: joinedSponsor});
             }
         }
+    };
+
+    handleClickDialogOpen = () => {
+        this.setState({dialogOpen: true});
+    };
+
+    handleClickDialogClose = () => {
+        this.setState({dialogOpen: false});
+    };
+
+    handleNewUser = (newUser) => {
+        this.setState({newUser: newUser});
     };
 
     handleInputName = (event) => {
@@ -539,8 +558,15 @@ class CreateCapstone extends Component {
                                                         Confirm
                                                     </Button>
                                                 </Grid>
-
+                                                <Grid item>
+                                                    <Button variant="outlined" color="primary" onClick={this.handleClickDialogOpen}>
+                                                        Add a new user
+                                                    </Button>
+                                                    <SimpleDialog selectedValue={this.handleNewUser} open={this.state.dialogOpen} onClose={this.handleClickDialogClose} />
+                                                    {/*<AddUser/>*/}
+                                                </Grid>
                                             </Grid>
+
                                         </Grid>
                                         {/*team list*/}
                                         <Grid item xs={9}>
@@ -565,6 +591,99 @@ class CreateCapstone extends Component {
                             </CardContent>
                         </Card>
 
+                    </Grid>
+
+                    <Grid item xs={12} md={10}>
+                        <Card className={classes.card}>
+                            <CardContent>
+                                <Grid container  justify={"left"} alignItems={"center"} spacing={2}>
+                                    <Grid item xs={12} >
+                                        <PageTitleTypography text="Team Member Information" align={"left"} size={"h5"}/>
+                                        <Divider/>
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <Grid container  justify={"center"} alignItems={"center"} spacing={2}>
+
+                                            {/*name, email confirm*/}
+                                            <Grid item xs={12}>
+                                                <Grid container alignItems={"center"} justify={"space-evenly"} spacing={3} direction={"row"}>
+                                                    <Grid item xs={3}>
+                                                        <FormControl fullWidth>
+                                                            <TextField
+                                                                id="outlined-textarea"
+                                                                label="Professor Name"
+                                                                placeholder="Professor Name"
+                                                                variant="outlined"
+                                                                onChange={this.handleInputName}
+                                                            />
+                                                        </FormControl>
+
+
+                                                    </Grid>
+                                                    <Grid item xs={5}>
+                                                        <FormControl fullWidth>
+
+                                                            <TextField
+                                                                id="outlined-textarea"
+                                                                label="Professor Email"
+                                                                placeholder="Professor Email"
+                                                                variant="outlined"
+                                                                onChange={this.handleInputEmail}
+                                                            />
+                                                        </FormControl>
+
+                                                    </Grid>
+                                                    <Grid item>
+
+                                                        <Button variant="outlined" color="primary" onClick={this.handleConfirmTeammate}>
+                                                            Confirm
+                                                        </Button>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <Grid container alignItems={"center"} justify={"space-evenly"} spacing={3} direction={"row"}>
+                                                    <Grid item xs={3}>
+                                                        <FormControl fullWidth>
+                                                            <TextField
+                                                                id="outlined-textarea"
+                                                                label="TA Name"
+                                                                placeholder="TA Name"
+                                                                variant="outlined"
+                                                                onChange={this.handleInputName}
+                                                            />
+                                                        </FormControl>
+
+
+                                                    </Grid>
+                                                    <Grid item xs={5}>
+                                                        <FormControl fullWidth>
+
+                                                            <TextField
+                                                                id="outlined-textarea"
+                                                                label="TA Email"
+                                                                placeholder="TA Email"
+                                                                variant="outlined"
+                                                                onChange={this.handleInputEmail}
+                                                            />
+                                                        </FormControl>
+
+                                                    </Grid>
+                                                    <Grid item>
+
+                                                        <Button variant="outlined" color="primary" onClick={this.handleConfirmTeammate}>
+                                                            Confirm
+                                                        </Button>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </CardContent>
+                        </Card>
                     </Grid>
 
                     <Grid item xs={12} md={10}>
@@ -654,70 +773,70 @@ class CreateCapstone extends Component {
                                     {/*    </FormControl>*/}
                                     {/*</Grid>*/}
 
-                                    <Grid container>
-                                        <Grid xs={9}>
-                                            <Typography style={{marginTop: '2.5%'}} variant="h7">
-                                                Add or Remove Participants
-                                            </Typography>
+                                    {/*<Grid container>*/}
+                                    {/*    <Grid xs={9}>*/}
+                                    {/*        <Typography style={{marginTop: '2.5%'}} variant="h7">*/}
+                                    {/*            Add or Remove Participants*/}
+                                    {/*        </Typography>*/}
 
-                                        </Grid>
-                                        <Grid xs={3}>
-                                            <form className={classes.container} noValidate autoComplete="off">
-                                                <TextField
-                                                    id="standard-name"
-                                                    placeholder="Search by Username or Name"
-                                                    className={classes.textField}
-                                                    value={this.state.input}
-                                                    onChange={this.handleSearchChange('input')}
-                                                    margin="normal"
-                                                    onKeyDown={this.keyPress}
-                                                    InputProps={{
-                                                        className: classes.input
-                                                    }}
-                                                />
-                                            </form>
+                                    {/*    </Grid>*/}
+                                    {/*    <Grid xs={3}>*/}
+                                    {/*        <form className={classes.container} noValidate autoComplete="off">*/}
+                                    {/*            <TextField*/}
+                                    {/*                id="standard-name"*/}
+                                    {/*                placeholder="Search by Username or Name"*/}
+                                    {/*                className={classes.textField}*/}
+                                    {/*                value={this.state.input}*/}
+                                    {/*                onChange={this.handleSearchChange('input')}*/}
+                                    {/*                margin="normal"*/}
+                                    {/*                onKeyDown={this.keyPress}*/}
+                                    {/*                InputProps={{*/}
+                                    {/*                    className: classes.input*/}
+                                    {/*                }}*/}
+                                    {/*            />*/}
+                                    {/*        </form>*/}
 
-                                        </Grid>
+                                    {/*    </Grid>*/}
 
-                                        <List dense className={classes.list} subheader={<li />}>
+                                    {/*    <List dense className={classes.list} subheader={<li />}>*/}
 
-                                            {this.state.Users.map((value, i) => (
+                                    {/*        {this.state.Users.map((value, i) => (*/}
 
-                                                <Typography variant="subtitle2" style={{marginTop: '1%'}}>
-                                                    <ListItem key={value}>
+                                    {/*            <Typography variant="subtitle2" style={{marginTop: '1%'}}>*/}
+                                    {/*                <ListItem key={value}>*/}
 
-                                                        <ListItemText primary={ this.checkValue(value)} />
-                                                        <ListItemSecondaryAction>
-                                                            <Checkbox defaultChecked={this.checkUser(value.id)}
-                                                                      onChange={this.handleParticipantToggle(value)}
-                                                            />
-                                                        </ListItemSecondaryAction>
-                                                    </ListItem>
-                                                    <Divider/>
-                                                </Typography>
+                                    {/*                    <ListItemText primary={ this.checkValue(value)} />*/}
+                                    {/*                    <ListItemSecondaryAction>*/}
+                                    {/*                        <Checkbox defaultChecked={this.checkUser(value.id)}*/}
+                                    {/*                                  onChange={this.handleParticipantToggle(value)}*/}
+                                    {/*                        />*/}
+                                    {/*                    </ListItemSecondaryAction>*/}
+                                    {/*                </ListItem>*/}
+                                    {/*                <Divider/>*/}
+                                    {/*            </Typography>*/}
 
-                                            ))}
+                                    {/*        ))}*/}
 
-                                        </List>
-                                    </Grid>
+                                    {/*    </List>*/}
+                                    {/*</Grid>*/}
 
 
                                     <Grid item xs={12}>
 
                                         {/*Upload photo button*/}
-                                        <Typography variant="subtitle2" style={{marginTop: '1%'}}>
-                                            Upload Photo
-                                        </Typography>
+                                        {/*<Typography variant="subtitle2" style={{marginTop: '1%'}}>*/}
+                                        {/*    Upload Photo*/}
+                                        {/*</Typography>*/}
 
-                                        <input
-                                            required
-                                            type="file"
-                                            id="file-id"
-                                            name="file"
-                                            accept="image/*"
-                                            onChange={this.handleChange('DisplayPhoto')}
-                                            style={{marginBottom: '2%'}}
-                                        />
+                                        {/*<input*/}
+                                        {/*    required*/}
+                                        {/*    type="file"*/}
+                                        {/*    id="file-id"*/}
+                                        {/*    name="file"*/}
+                                        {/*    accept="image/*"*/}
+                                        {/*    onChange={this.handleChange('DisplayPhoto')}*/}
+                                        {/*    style={{marginBottom: '2%'}}*/}
+                                        {/*/>*/}
                                     </Grid>
                                 </Grid>
 
@@ -725,19 +844,79 @@ class CreateCapstone extends Component {
                         </Card>
 
                     </Grid>
+
+
+                    <Grid item xs={12} md={10}>
+                        <Grid container  justify={"center"} spacing={2} alignItems={"center"}>
+                            <Grid item xs={3}>
+                                <Card className={classes.card}>
+
+                                <CardContent >
+                                    <DragAndDropZone/>
+                                </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={9}>
+                                <Card className={classes.card}>
+
+                                <CardContent >
+                                    <DragAndDropZone/>
+                                </CardContent>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                     <Grid item xs={12} md={10}>
                         {/*Submit button*/}
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                disabled={!this.isFormValid()}
-                                onClick={() => {this.handleSubmit()}}
-                                style={{marginTop: '1%'}}
-                            >
-                                Add Capstone
-                            </Button>
+                        <Card className={classes.card}>
+                            <CardContent >
+                                <DragAndDropZone/>
+                            </CardContent>
+                        </Card>
+
+
+                    </Grid>
+                    <Grid item xs={12} md={10}>
+                        <Grid container justify={"space-around"} spacing={3} alignItems={"center"}>
+                            <Grid item xs={3}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={!this.isFormValid()}
+                                    onClick={() => {this.handleSubmit()}}
+                                    style={{marginTop: '1%'}}
+                                >
+                                    Save
+                                </Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={!this.isFormValid()}
+                                    onClick={() => {this.handleSubmit()}}
+                                    style={{marginTop: '1%'}}
+                                >
+                                    Add Capstone
+                                </Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    style={{marginTop: '1%'}}
+                                >
+                                    Cancel
+                                </Button>
+                            </Grid>
+
+                            </Grid>
                     </Grid>
                 </Grid>
             </div>
