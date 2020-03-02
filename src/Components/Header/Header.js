@@ -1,6 +1,7 @@
 /*
 Filename: Header.js
-Contributors: Ryan Cave
+Initial Contributors: Ryan Cave
+Further Contributors: Caleb DeHaan, Sean Blonien
  */
 
 import React from 'react';
@@ -137,37 +138,33 @@ class PrimarySearchAppBar extends React.Component {
                         <div className={classes.sectionMobile}>
                             < Drawer {...this.props} />
                         </div>
-
-                        <Link href="/">
-                            <Button style={{color: 'white', fontSize : '20px'}}>
-                                <img src={require('../../Images/univ_logo.svg')} alt={university} title={university} height="40" width="40" style={{paddingRight: 7}}/>
-                                {university} | Archway
-                            </Button>
-                        </Link>
+                        <Button style={{color: 'white', fontSize: '25px'}} component={Link} to="/">
+                            <img src={require('../../Images/univ_logo.svg')} alt={university} title={university} height="40" width="40" style={{paddingRight: 7}}/>
+                            {university} | Archway
+                        </Button>
                         <div className={classes.sectionDesktop}>
-                            <Link href="/About">
+                            <Button style={{color: 'white', fontSize: '15px'}} component={Link} to="/About">
                                 <SubMenu title="About"
-                                    items={["FAQ", String(university), "Archway"]}
-                                    href={["/FAQ", "/About", "/About"]}>
+                                         items={["FAQ", String(university), "Archway"]}
+                                         links={["/FAQ", "/About", "/About"]}>
                                 </SubMenu>
-                            </Link>
-                            <Link href="/Sponsors">
+                            </Button>
+                            <Button style={{color: 'white', fontSize: '15px'}} component={Link} to="/Sponsors">
                                 <SubMenu title="Sponsors"
-                                    items={["Become a Sponsor", "View Current Sponsors"]}
-                                    href={["/Sponsors", "/ViewSponsors"]}>
+                                         items={["Become a Sponsor", "View Current Sponsors"]}
+                                         links={["/Sponsors", "/ViewSponsors"]}>
                                 </SubMenu>
-                            </Link>
-                            <Link href="/Capstones">
+                            </Button>
+                            <Button style={{color: 'white', fontSize: '15px'}} component={Link} to="/Capstones">
                                 <SubMenu title="Projects"
-                                    items={["All Capstones","All Departments"]}
-                                    href={["/Capstones", "/ViewAllDepartments"]}>
+                                         items={["All Capstones","All Departments"]}
+                                         links={["/Capstones", "/ViewAllDepartments"]}>
                                 </SubMenu>
-                            </Link>
+                            </Button>
                         </div>
                         <div className={classes.grow} />
-
                         <div className={classes.sectionDesktop}>
-                        <div className={classes.search}>
+                            <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />
                                 </div>
@@ -175,6 +172,9 @@ class PrimarySearchAppBar extends React.Component {
                             <div key={new Date().getTime()} >
                                 <SearchBar />
                             </div>
+                        </div>
+
+                        <div className={classes.sectionDesktop}>
                             <IconButton
                                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                                 aria-haspopup="true"
@@ -185,27 +185,15 @@ class PrimarySearchAppBar extends React.Component {
                             </IconButton>
                         </div>
 
-                        <div className={classes.sectionMobile}>
-                            {/*Was going to be a search bar that opens on button press*/}
-                            {/*but that turned out to be a little more difficult (it wanted*/}
-                            {/*to be its own component :(*/}
-                            {/*<Toolbar>*/}
-                            {/*    <SubMenu>*/}
-                            {/*        <div className={classes.search}>*/}
-                            {/*            <div className={classes.searchIcon}>*/}
-                            {/*                <SearchIcon />*/}
-                            {/*            </div>*/}
-                            {/*        </div>*/}
-                            {/*    </SubMenu>*/}
-                            {/*</Toolbar>*/}
 
+                        <div className={classes.sectionMobile}>
                             <IconButton
                                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                                 aria-haspopup="true"
                                 onClick={this.handleProfileMenuOpen}
                                 color="inherit"
                             >
-                                <AccountCircle />
+                                <MoreIcon />
                             </IconButton>
                         </div>
                     </Toolbar>
