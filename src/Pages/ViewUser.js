@@ -205,8 +205,7 @@ class ViewUser extends React.Component {
         const pic = await strapi.axios.get(strapiURL + "/users/" + userId);
         console.log(pic.data);
 
-        if(pic.data.length !== 0) {
-            // this is bad because it forces you to have a profile picture
+        if(pic.data.ProfilePicture !== null) {
             let picURL = pic.data.ProfilePicture.url;
             this.setState({ProfilePicture: strapiURL + picURL});
         }
