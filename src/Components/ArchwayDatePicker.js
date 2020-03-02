@@ -1,11 +1,7 @@
-import React, { useState } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import EventNoteIcon from "@material-ui/icons/EventNote";
-import { DesktopDatePicker, MuiPickersUtilsProvider  } from "@material-ui/pickers";
-import { createStyles } from "@material-ui/core/styles";
-
-import { IconButton, withStyles } from "@material-ui/core";
-
+import {DesktopDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import React, {useState} from "react";
 
 function AdvancedKeyboardExample(props) {
     const [selectedDate, handleDateChange] = useState(new Date());

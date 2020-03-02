@@ -5,23 +5,23 @@ Brenden Detels- All functionality
 Stephen Tate - Gridlist layout and bug fixes
  */
 
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import {Link} from 'react-router-dom';
-import {strapiURL, strapi} from "../constants";
-import LoadingCircle from "../Components/LoadingCircle";
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CreateIcon from '@material-ui/icons/CreateTwoTone';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import InfoIcon from '@material-ui/icons/Info';
+import React from 'react';
+import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import LoadingCircle from "../Components/LoadingCircle";
+import {strapi, strapiURL} from "../constants";
 
 const styles = {
     card: {
