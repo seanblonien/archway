@@ -159,7 +159,7 @@ class ViewPost extends React.Component {
                 editable: false
             });
 
-            window.location = '/ViewPost/' + postID;
+            this.props.history.push('/ViewPost/' + postID);
         }
     }
 
@@ -174,12 +174,12 @@ class ViewPost extends React.Component {
         });
     }
 
-    static handleDelete(e, resultID, postID) {
+    handleDelete = (e, resultID, postID) => {
         let url = strapiURL + '/comments/' + resultID;
         let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
         axios.delete(url, {headers: {'Authorization': authToken}});
 
-        window.location = '/ViewPost/' + postID;
+        this.props.history.push('/ViewPost/' + postID);
     };
 
     isFormValid = () => {
