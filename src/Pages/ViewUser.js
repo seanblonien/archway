@@ -32,6 +32,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import * as url from '../Images/default-user-profile-image-png-6.png';
+import {auth} from '../index.js';
 
 const styles = theme => ({
     card: {
@@ -127,7 +128,7 @@ class ViewUser extends React.Component {
 
     async handleSubmit() {
         this.handleClose();
-        let userId = JSON.parse(localStorage.getItem('USER'))._id;
+        let userId = auth.getUser()._id;
         let url = strapiURL + '/users';
         let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
         let newImageId = null;
@@ -220,12 +221,11 @@ class ViewUser extends React.Component {
             users: posts2
         });
 
-        if(localStorage.getItem('USER') !== null) {
-            if(JSON.parse(localStorage.getItem('USER')).username === this.props.match.params.username){
-                this.setState({
-                    editable: true
-                });
-            }
+        const userObj = auth.getUser();
+        if(userObj && userObj.username === this.props.match.params.username) {
+            this.setState({
+                editable: true
+            });
         }
 
         let tempUser = await this.getLoggedInUser();

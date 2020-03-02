@@ -44,8 +44,8 @@ class Capstone extends React.Component {
     }
 
     async componentDidMount() {
-        const posts = await strapi.getEntries('capstones');
-        this.setState({loading: false, capstones: posts});
+        const capstones = await strapi.getEntries('capstones');
+        this.setState({loading: false, capstones: capstones});
     }
 
     //Resizes image grid list based on screen size
@@ -97,7 +97,7 @@ class Capstone extends React.Component {
             }
 
             return (
-                <div className="Blogpost">
+                <div>
                     < FilterBar />
 
                     {/*Page heading*/}

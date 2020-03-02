@@ -137,9 +137,6 @@ class Home extends React.Component {
         this.getFeaturedSponsors(sponsorList);
 
         this.setState({loading: false, capstones: capstoneList});
-
-        const posts = await strapi.getEntries('Sponsors');
-
     }
 
     getFeaturedSponsors(sponsorList) {

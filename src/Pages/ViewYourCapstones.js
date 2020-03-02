@@ -111,8 +111,7 @@ class ViewYourCapstones extends React.Component {
         if (!this.state.loading) {
 
             return (
-                <div className="Blogpost">
-
+                <div>
                     <Grid container justify="center">
                         <Grid item md={10} xs={12}>
                             <Typography variant="h4" style={{marginTop: '16px'}}>Your Moderated Capstone Projects</Typography>

@@ -101,15 +101,13 @@ class ViewAllDepartments extends React.Component {
     }
 
     static formatDate(dateToFormat){
-        var date = new Date(dateToFormat);
+        const date = new Date(dateToFormat);
         return date.toDateString();
     }
 
     async componentDidMount() {
-
-        const posts = await strapi.getEntries('Departments');
-        this.setState({loading: false, departments: posts});
-
+        const departments = await strapi.getEntries('Departments');
+        this.setState({loading: false, departments: departments});
     }
 
     handleChange = panel => (event, expanded) => {

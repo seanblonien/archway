@@ -7,31 +7,24 @@ Ryan Cave - Social Media Integration, Add Photo & Add User functionality, extens
 Greg Keeton - Make/Edit/Delete Post and Image Carousel
  */
 
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import {Dialog, Divider} from "@material-ui/core";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import TextField from "@material-ui/core/TextField";
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import DialogActions from "@material-ui/core/DialogActions";
-import {withStyles} from '@material-ui/core/styles';
-import {Link} from 'react-router-dom';
-import compose from 'recompose/compose';
-import {strapi, strapiURL} from "../constants";
-import axios from 'axios';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import withWidth from "@material-ui/core/withWidth";
-import LoadingCircle from "../Components/LoadingCircle";
-import '../Components/PageTitleTypography';
-import PageTitleTypography from "../Components/PageTitleTypography";
-import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from '@material-ui/core/DialogContentText';
-import {getAdvertisement, updateDeptViewCount} from "../util/Advertisements";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import TextField from "@material-ui/core/TextField";
+import Typography from '@material-ui/core/Typography';
+import withWidth from "@material-ui/core/withWidth";
+import axios from 'axios';
+import 'pure-react-carousel/dist/react-carousel.es.css';
+import React from 'react';
+import {Carousel} from "react-responsive-carousel";
+import {Link} from 'react-router-dom';
 import {
     FacebookIcon,
     FacebookShareButton,
@@ -40,10 +33,15 @@ import {
     TwitterIcon,
     TwitterShareButton
 } from "react-share";
-import Filter from "bad-words";
-
-import {Carousel} from "react-responsive-carousel";
+import compose from 'recompose/compose';
+import LoadingCircle from "../Components/LoadingCircle";
+import '../Components/PageTitleTypography';
+import PageTitleTypography from "../Components/PageTitleTypography";
+import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import {strapi, strapiURL} from "../constants";
 import * as url from "../Images/default-user-profile-image-png-6.png";
+import {auth} from '../index';
+import {getAdvertisement, updateDeptViewCount} from "../util/Advertisements";
 
 const styles = theme => ({
     card: {
@@ -140,9 +138,6 @@ class ViewCapstone extends React.Component {
             title: '',
             content: '',
             media: '',
-            postId: '',
-            postTitle: '',
-            postCont: '',
             userOpen: false,
             newUser: '',
             Username: '',
@@ -153,14 +148,8 @@ class ViewCapstone extends React.Component {
             team: [],
             teamPics: []
         };
-
-        this.handleClickOpen = this.handleClickOpen.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handlePost = this.handlePost.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-        ViewCapstone.handleDelete = ViewCapstone.handleDelete.bind(this);
         this.getCapstone = this.getCapstone.bind(this);
     }
 
@@ -170,93 +159,6 @@ class ViewCapstone extends React.Component {
         });
     };
 
-    static handleDelete(e, resultID) {
-        let url = strapiURL + '/posts/' + resultID;
-        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
-        axios.delete(url, {headers:{'Authorization': authToken}});
-    };
-
-    isFormValid = () => {
-        const content = this.state.postCont;
-        const title = this.state.postTitle;
-
-        let filter = new Filter();
-
-        let profane = false;
-
-        if(filter.isProfane(content) || filter.isProfane(title)){
-            profane = true;
-        }
-
-        return !profane;
-    };
-
-    handleSubmit(capstoneId) {
-        // Make the initial post
-        let url = strapiURL + '/posts';
-        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
-
-        strapi.axios.post(url, {
-            title: this.state.postTitle,
-            content: this.state.postCont,
-            capstone: capstoneId,
-            user: this.state.Username,
-        }, {headers: {'Authorization': authToken}}).then(async function(response) {
-
-            // Get refId of post that was just made
-            let refId = response.data['_id'];
-
-            // Upload image and link it to existing post
-            let formData = new FormData();
-            let image = document.getElementById('file-id');
-            if(typeof image.files[0] !== 'undefined' && typeof image.files[0].name !== 'undefined') {
-                formData.append("files", image.files[0], image.files[0].name);
-
-                formData.set("refId", refId);
-                formData.set("ref", "post");
-                formData.set("field", "media");
-
-                await strapi.upload(formData, {headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': authToken
-                    }}).catch(function(err) {
-                    console.log('Upload failed');
-                    console.log(err);
-                });
-            }
-        });
-    }
-
-    handleClickOpen(e, open, post) {
-        this.setState({
-            [open]: true,
-
-            // Persist state for making edits to individual posts
-            postId: post.id,
-            postTitle: post.title,
-            postCont: post.content
-        });
-    };
-
-    handleClose(e, open) {
-        this.setState({[open]: false});
-    };
-
-    handlePost(e, open, capstoneId) {
-        this.setState({[open]: false});
-        this.handleSubmit(capstoneId);
-    };
-
-    handleEdit = (e, resultID) => {
-        this.setState({editOpen: false});
-        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
-
-        axios.put(strapiURL + '/posts/' + resultID, {
-            title: this.state.postTitle,
-            content: this.state.postCont
-        }, {headers: {'Authorization': authToken}});
-    };
-
     handleUserClickOpen = () =>{
         this.setState({ userOpen: true });
     };
@@ -264,8 +166,6 @@ class ViewCapstone extends React.Component {
     handleUserClose = () =>{
         this.setState({ userOpen: false });
     };
-
-
 
     handleUserSubmit(capstoneId, creators){
         this.setState({ userOpen: false });
@@ -291,36 +191,6 @@ class ViewCapstone extends React.Component {
     handlePhotoClose = () =>{
         this.setState({ photoOpen: false });
     };
-
-    async handlePhotoSubmit(capstoneId){
-
-        this.handlePhotoClose();
-        let refId = capstoneId;
-        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
-
-        // Upload image and link it to existing post
-        let formData = new FormData();
-        let image = document.getElementById('file-id2');
-        if(typeof image.files[0] !== 'undefined' && typeof image.files[0].name !== 'undefined') {
-            formData.append("files", image.files[0], image.files[0].name);
-        }
-        formData.set("refId", refId);
-        formData.set("ref", "capstone");
-        formData.set("field", "Pictures");
-
-        await strapi.upload(formData, {headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': authToken
-            }}).catch(function(err) {
-            console.log('Upload failed');
-            console.log(err);
-        });
-
-    };
-
-    isPostOwner(post){
-        return post.user === this.state.Username;
-    }
 
     isCreator(obj){
         let creators = obj['creators'];
@@ -349,15 +219,15 @@ class ViewCapstone extends React.Component {
 
     async componentDidMount() {
         const users1 = await strapi.getEntries('Users');
-        const posts2 = await strapi.getEntries('Posts');
 
         const ad = await getAdvertisement();
 
         // If we're logged-in, store the user Id and update the count values.
-        if (localStorage.getItem("USER") !== null){
-            this.setState({Username: JSON.parse(localStorage.getItem("USER"))._id});
+        const userObj = auth.getUser();
+        if (userObj){
+            this.setState({Username: userObj._id});
             await updateDeptViewCount(this.props.match.params.capstoneName,
-                JSON.parse(localStorage.getItem("USER")).id);
+                userObj.id);
         }
 
         let tempCapstone = await this.getCapstone();
@@ -384,45 +254,6 @@ class ViewCapstone extends React.Component {
             .then(function(response){
                 return response.data;
             })
-    }
-
-    static resizePostTitleText(props){
-        if(props.width === 'xl'){
-            return "h6";
-        }else if(props.width === 'lg'){
-            return "h6";
-        }else if(props.width ==='md'){
-            return "h6";
-        }else if(props.width ==='sm'){
-            return "h6"
-        }
-        return "subtitle1";
-    }
-
-    static resizePostContentText(props){
-        if(props.width === 'xl'){
-            return "body1";
-        }else if(props.width === 'lg'){
-            return "body1";
-        }else if(props.width ==='md'){
-            return "body1";
-        }else if(props.width ==='sm'){
-            return "body1"
-        }
-        return "body2";
-    }
-
-    static alignMakePostButton(props){
-        if(props.width === 'xl'){
-            return "";
-        }else if(props.width === 'lg'){
-            return "";
-        }else if(props.width ==='md'){
-            return "";
-        }else if(props.width ==='sm'){
-            return ""
-        }
-        return "center";
     }
 
     //Ensures margin is there when screen is large and dissapears when screen resizes to below md and col resizes
@@ -500,10 +331,6 @@ class ViewCapstone extends React.Component {
                 sponsorStr += this.state.capstone['sponsors'][z].name.toString();
             }
 
-            let postArray = [];
-            for (let posting in this.state.capstone['posts']) {
-                postArray.push(this.state.capstone['posts'][posting]);
-            }
             return <div>
                 <Grid container justify="center">
                     <Grid item xs={10}>
@@ -778,180 +605,6 @@ class ViewCapstone extends React.Component {
                                     </Grid>}
                             </Grid>
                         </div>
-
-                        <Card className={classes.card}>
-                            <CardContent>
-                                <SubHeadingTextTypography text="Post Feed" align="center"/>
-                                <Divider/>
-                            </CardContent>
-                            <div>
-                                <Grid container justify={ViewCapstone.alignMakePostButton(this.props)}>
-                                    <Button variant="outlined" color="primary"
-                                            onClick={(e) => this.handleClickOpen(e, 'open', e)}
-                                            style={{marginBottom: '1%', marginLeft: '1%'}}>
-                                        Make a Post
-                                    </Button>
-                                </Grid>
-                                <Dialog
-                                    open={this.state.open}
-                                    onClose={(e) => this.handleClose(e, 'open')}
-                                    aria-labelledby="form-dialog-title"
-                                >
-                                    <DialogTitle id="form-dialog-title">Your Post</DialogTitle>
-                                    <DialogContent>
-                                        <Typography>
-                                            <TextField
-                                                id="title"
-                                                label="Post Title"
-                                                margin="dense"
-                                                variant="outlined"
-                                                style={{width: 500}}
-                                                required
-                                                onChange={this.handleChange('postTitle')}
-                                            />
-                                        </Typography>
-                                        <form className={"Content Box"}>
-                                            <Typography>
-                                                <TextField
-                                                    id="content"
-                                                    label="Write your post here"
-                                                    multiline
-                                                    rows="15"
-                                                    margin="dense"
-                                                    variant="outlined"
-                                                    style={{width: 500}}
-                                                    required
-                                                    onChange={this.handleChange('postCont')}
-                                                />
-                                            </Typography>
-                                        </form>
-                                        <Typography component="h1" align="center">
-                                            Upload a file
-                                        </Typography>
-                                        <form>
-                                            <Typography align="center">
-                                                Browse...
-                                                <input
-                                                    type="file"
-                                                    id="file-id"
-                                                    name="file"
-                                                    accept="image/*"
-                                                    onChange={this.handleChange('media')}
-                                                />
-                                            </Typography>
-                                        </form>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <form>
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            disabled={!this.isFormValid()}
-                                            onClick={(e) => {this.handlePost(e, 'open', this.state.capstone['_id'])}}
-                                        >
-                                            Submit Post
-                                        </Button>
-                                        </form>
-                                    </DialogActions>
-                                </Dialog>
-                            </div>
-                        </Card>
-
-
-                        <Grid container justify="space-between">
-                            <Grid item xs={12} style={{marginTop: '1%'}}>
-                                <Card>
-                                    {postArray.map((result2, j) => (
-                                        <Grid xs={12} key={j}>
-
-                                            <CardActionArea
-                                                component={Link}
-                                                to={"/ViewPost/" + result2.id}
-                                            >
-                                                <CardContent>
-
-                                                    <Typography variant={ViewCapstone.resizePostTitleText(this.props)}>
-                                                        <b>{result2.title}</b>
-                                                    </Typography>
-
-                                                    <Typography variant={ViewCapstone.resizePostContentText(this.props)}>
-                                                        {result2.content}
-                                                    </Typography>
-
-                                                </CardContent>
-                                            </CardActionArea>
-
-
-                                            <CardContent>
-                                                <Grid container justify={ViewCapstone.alignMakePostButton(this.props)}>
-                                                    {this.isPostOwner(result2) &&
-                                                    <Button variant="outlined" color="primary" size="small"
-                                                            onClick={(e) => this.handleClickOpen(e, 'editOpen', result2)}
-                                                            style={{marginRight: '2%'}}>
-                                                        Edit
-                                                    </Button>}
-                                                    {this.isPostOwner(result2) &&
-                                                    <Button variant="outlined" color="primary" size="small"
-                                                            onClick={(e) => ViewCapstone.handleDelete(e, result2.id)}>
-                                                        Delete
-                                                    </Button>}
-
-                                                </Grid>
-                                                <Dialog
-                                                    open={this.state.editOpen}
-                                                    onClose={(e) => this.handleClose(e, 'editOpen')}
-                                                    aria-labelledby="form-dialog-title-edit"
-                                                >
-                                                    <DialogTitle id="form-dialog-title-edit">Edit Post</DialogTitle>
-                                                    <DialogContent>
-                                                        <Typography>
-                                                            <TextField
-                                                                id="title"
-                                                                label="Post Title"
-                                                                margin="dense"
-                                                                variant="outlined"
-                                                                style={{width: 500}}
-                                                                required
-                                                                onChange={this.handleChange('postTitle')}
-                                                                defaultValue={this.state.postTitle}
-                                                            />
-                                                        </Typography>
-                                                        <Typography>
-                                                            <TextField
-                                                                id="content"
-                                                                label="Write your post here"
-                                                                multiline
-                                                                rows="15"
-                                                                margin="dense"
-                                                                variant="outlined"
-                                                                style={{width: 500}}
-                                                                required
-                                                                onChange={this.handleChange('postCont')}
-                                                                defaultValue={this.state.postCont}
-                                                            />
-                                                        </Typography>
-                                                    </DialogContent>
-                                                    <DialogActions>
-                                                        <Button
-                                                            type="submit"
-                                                            variant="contained"
-                                                            color="primary"
-                                                            disabled={!this.isFormValid()}
-                                                            onClick={(e) => {this.handleEdit(e, this.state.postId)}}
-                                                        >
-                                                            Edit Post
-                                                        </Button>
-                                                    </DialogActions>
-                                                </Dialog>
-
-                                            </CardContent>
-
-                                        </Grid>
-                                    ))}
-                                </Card>
-                            </Grid>
-                        </Grid>
                     </Grid>
                 </Grid>
             </div>

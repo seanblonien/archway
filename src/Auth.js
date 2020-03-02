@@ -62,7 +62,6 @@ export default class Auth {
                 }
             });
         }
-        location.pathame = LOGIN_SUCCESS_PAGE;
     }
 
     hashCode(s) {
@@ -93,4 +92,9 @@ export default class Auth {
             return {}
         }
     }
+
+    getUser = () => {
+        let u = localStorage.getItem('USER');
+        return JSON.parse(localStorage.getItem('USER'));
+    };
 }
