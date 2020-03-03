@@ -5,20 +5,22 @@ Brenden Detels - Wrote entire page
 Greg Keeton - Image Carousel
  */
 
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import LoadingCircle from '../Components/LoadingCircle.js';
-import Divider from '@material-ui/core/Divider';
-import Card from '@material-ui/core/Card';
-import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
-import {strapiURL, strapi} from "../constants";
+import {Link} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import PageTitleTypography from "../Components/PageTitleTypography";
+import Card from '@material-ui/core/Card';
 import CardContent from "@material-ui/core/CardContent";
-import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import Markdown from 'markdown-to-jsx';
+import React from 'react';
 import {Carousel} from "react-responsive-carousel";
+import LoadingCircle from '../Components/LoadingCircle.js';
+import PageTitleTypography from "../Components/PageTitleTypography";
+import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import {strapi, strapiURL} from "../constants";
 
 
 const styles = theme => ({
@@ -125,17 +127,20 @@ class ViewASponsor extends React.Component {
                                                     <img src={strapiURL + sponsor['logo'].url } className={classes.sponsorImage} alt="Display"/>
                                                 </Typography>
                                                 <CardContent>
-                                                    <Typography style={{marginTop: '1%'}}>
-                                                        <b> Description: </b>{ " " + sponsor['description']}
-                                                    </Typography>
+                                                    <Markdown>
+                                                        {sponsor['description']}
+                                                    </Markdown>
                                                 </CardContent>
 
                                                 <Grid container justify='center'>
-                                                    <Button className={classes.button} style={{marginTop: '2%'}} href={ sponsor['webUrl']}>
-                                                        <Typography color="primary" variant="h6" component="span">
-                                                            Visit {sponsor['name']} Website
-                                                        </Typography>
-                                                    </Button>
+                                                    <Link href={sponsor['webUrl']}>
+                                                        <Button className={classes.button}
+                                                                style={{marginTop: '2%'}}>
+                                                            <Typography color="primary" variant="h6" component="span">
+                                                                Visit {sponsor['name']} Website
+                                                            </Typography>
+                                                        </Button>
+                                                    </Link>
                                                 </Grid>
 
 

@@ -7,6 +7,7 @@ Brenden Detels - Routing Functionality
  */
 
 import React, { Component, Fragment } from "react";
+import ImportUsers from './Pages/ImportUsers';
 import Header from './Components/Header/Header';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import About from './Components/About';
@@ -33,6 +34,8 @@ import EditCapstone from "./Pages/EditCapstone";
 import Footer from "./Components/Footer";
 import ViewYourCapstonesSponsors from "./Pages/ViewYourCapstonesSponsors";
 
+import ViewProfile from "./Pages/ViewProfile";
+
 export default class extends Component {
   render() {
 
@@ -53,6 +56,7 @@ export default class extends Component {
                     <Route path="/ViewCapstone/:capstoneID" component={ViewCapstone}/>
                     <Route path="/ViewPost/:id" component={ViewPost}/>
                     <Route path="/ViewUser/:username" component={ViewUser}/>
+                    <Route path="/ViewProfile/:username" component={ViewProfile}/>
                     <Route path="/ViewYourCapstones/" component={ViewYourCapstones} />
                     <Route path="/ViewYourCapstonesSponsors/" component={ViewYourCapstonesSponsors} />
                     <Route path="/Sponsors/" component={Sponsors} />
@@ -62,6 +66,7 @@ export default class extends Component {
                     <Route path="/ViewADepartment/:id" component={ViewADepartment}/>
                     <Route path="/EditCapstone/:id" component={EditCapstone}/>
                     <Route path="/FAQ/" component={FAQ}/>
+                    <Route path="/ImportUsers/" component={ImportUsers}/>
                     <Route exact path="" component={Home}/>
                     <Route path="*" component={NotFound}/>
                 </Switch>

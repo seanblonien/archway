@@ -5,22 +5,23 @@ Brenden Detels- All functionality
 Stephen Tate - Gridlist layout and bug fixes
  */
 
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import {strapiURL, strapi} from "../constants";
-import LoadingCircle from "../Components/LoadingCircle";
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CreateIcon from '@material-ui/icons/CreateTwoTone';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import InfoIcon from '@material-ui/icons/Info';
+import React from 'react';
+import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import LoadingCircle from "../Components/LoadingCircle";
+import {strapi, strapiURL} from "../constants";
 
 const styles = {
     card: {
@@ -95,14 +96,14 @@ class ViewYourCapstones extends React.Component {
         return 2;
     }
 
-    static async handleDelete(e, resultID) {
+    handleDelete = async (e, resultID) => {
         await strapi.deleteEntry('capstones', resultID);
-        window.location.reload("Home")
+        this.props.history.push("/");
     };
 
-    static handleTileClick(capstoneName){
-        window.location = "/ViewCapstone/" + capstoneName;
-    }
+    handleTileClick = (capstoneName) => {
+        this.props.history.push("/ViewCapstone/" + capstoneName);
+    };
 
     render() {
         const { classes } = this.props;
@@ -124,7 +125,7 @@ class ViewYourCapstones extends React.Component {
                         <Grid item xs={12} md={10}>
                             <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
                                 {this.state.capstones.map((result, i) => (
-                                    <GridListTile key={strapiURL + result['DisplayPhoto'].url} onClick={(e) => ViewYourCapstones.handleTileClick(result.id)}>
+                                    <GridListTile key={strapiURL + result['DisplayPhoto'].url} onClick={(e) => this.handleTileClick(result.id)}>
                                         <img src={strapiURL + result['DisplayPhoto'].url} alt={"Capstone"} style={{height: '100%', width: '100%'}}/>
 
                                         <GridListTileBar
@@ -133,17 +134,24 @@ class ViewYourCapstones extends React.Component {
                                             actionIcon={
                                                     <Grid container>
                                                         <Grid item xs={3} style={{marginLeft: '2px'}}>
-                                                            <IconButton className={classes.icon} href={"/ViewCapstone/" + result._id}>
+                                                            <IconButton className={classes.icon}
+                                                                        component={Link}
+                                                                        to={"/ViewCapstone" + result._id}>
                                                                 <InfoIcon/>
                                                             </IconButton>
                                                         </Grid>
                                                         <Grid item xs={3} style={{marginLeft: '2px'}}>
-                                                            <IconButton className={classes.icon} href={"/EditCapstone/" + result._id}>
+                                                            <IconButton className={classes.icon}
+                                                                        component={Link}
+                                                                        to={"/EditCapstone" + result._id}>
                                                             <CreateIcon/>
                                                             </IconButton>
                                                         </Grid>
                                                         <Grid item xs={3} style={{marginLeft: '2px'}}>
-                                                            <IconButton className={classes.icon} onClick={(e) => ViewYourCapstones.handleDelete(e, result.id)} href={"/ViewYourCapstones/"}>
+                                                            <IconButton className={classes.icon}
+                                                                        onClick={(e) => this.handleDelete(e, result.id)}
+                                                                        component={Link}
+                                                                        to={"/ViewYourCapstones" + result._id}>
                                                                 <DeleteForeverIcon/>
                                                             </IconButton>
                                                         </Grid>
@@ -182,7 +190,9 @@ class ViewYourCapstones extends React.Component {
                                                 <div>
                                                     <Grid container>
                                                         <Grid xs={3}>
-                                                            <IconButton className={classes.icon} href={"/ViewCapstone/" + result2._id}>
+                                                            <IconButton className={classes.icon}
+                                                                        component={Link}
+                                                                        to={"/ViewCapstone/" + result2._id}>
                                                                 <InfoIcon/>
                                                             </IconButton>
                                                         </Grid>

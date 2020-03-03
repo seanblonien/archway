@@ -5,17 +5,18 @@ Brenden Detels - Wrote entire page.
 Ryan Cave - Took original styling Brenden created, made it dynamic & had it pull from backend instead of hardcoded. Created backend table/associations to handle FAQ.
  */
 
-import React from "react";
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import {strapi} from "../constants";
 import Button from '@material-ui/core/Button';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import React from "react";
+import {Link} from 'react-router-dom';
+import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle.js';
+import {strapi} from "../constants";
 
 const styles = theme => ({
     card: {
@@ -153,7 +154,7 @@ class FAQ extends React.Component {
                                                 </ExpansionPanelDetails>
                                                 {question.url &&
                                                 <ExpansionPanelDetails>
-                                                    <Button href={question.url}>
+                                                    <Button component={Link} to={question.url}>
                                                         More Info Here
                                                     </Button>
                                                 </ExpansionPanelDetails>}

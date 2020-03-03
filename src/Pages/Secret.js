@@ -6,7 +6,7 @@ Contributors:   Parker Wagner - Wrote entire page.
  */
 
 import React, {Component} from "react";
-import {strapiURL, strapi} from "../constants";
+import {strapi, strapiURL} from "../constants";
 
 export default class Secret extends Component {
 
@@ -32,7 +32,7 @@ export default class Secret extends Component {
             }).then(response => {
                 localStorage.setItem("USER", JSON.stringify(response.data.user));
                 localStorage.setItem("USERTOKEN", response.data.jwt);
-                window.location = '/';
+                this.props.history.push("/");
             }).catch(error => {
                 strapi.axios.post(strapiURL + '/auth/local/register', {
                     username: username,
@@ -41,7 +41,7 @@ export default class Secret extends Component {
                 }).then(response => {
                     localStorage.setItem("USER", JSON.stringify(response.data.user));
                     localStorage.setItem("USERTOKEN", response.data.jwt);
-                    window.location = '/';
+                    this.props.history.push("/");
                 }).catch(error => {
                     console.log("It should be impossible to get here, so if this is printed, buy the devs some coffee.");
                 });
