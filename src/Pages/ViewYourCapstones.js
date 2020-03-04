@@ -22,6 +22,7 @@ import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import LoadingCircle from "../Components/LoadingCircle";
 import {strapi, strapiURL} from "../constants";
+import {auth} from "../index";
 
 const styles = {
     card: {
@@ -53,7 +54,7 @@ class ViewYourCapstones extends React.Component {
         }
     }
     async componentDidMount() {
-        let userID = JSON.parse(localStorage.getItem("USER"))._id;
+        let userID = auth.getUser()._id;
 
         //get capstones that are moderated by user
         await strapi.axios.get(strapiURL + '/capstones',{

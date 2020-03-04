@@ -130,7 +130,7 @@ class ViewUser extends React.Component {
         this.handleClose();
         let userId = auth.getUser()._id;
         let url = strapiURL + '/users';
-        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
+        let authToken = 'Bearer ' + auth.getToken();
         let newImageId = null;
 
         // Make the changes

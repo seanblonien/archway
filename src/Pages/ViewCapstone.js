@@ -40,7 +40,6 @@ import PageTitleTypography from "../Components/PageTitleTypography";
 import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
 import {strapi, strapiURL} from "../constants";
 import * as url from "../Images/default-user-profile-image-png-6.png";
-import {getAdvertisement, updateDeptViewCount} from "../util/Advertisements";
 import { auth } from '../index'
 
 const styles = theme => ({
@@ -143,7 +142,6 @@ class ViewCapstone extends React.Component {
             Username: '',
             photoOpen: false,
             newPhoto: '',
-            adUrl: '',
             capstone: '',
             team: [],
             teamPics: []
@@ -217,14 +215,10 @@ class ViewCapstone extends React.Component {
     componentDidMount = async () => {
         const users1 = await strapi.getEntries('Users');
 
-        const ad = await getAdvertisement();
-
         // If we're logged-in, store the user Id and update the count values.
-        const userObj = auth;
+        const userObj = auth.getUser();
         if (userObj){
             this.setState({Username: userObj._id});
-            await updateDeptViewCount(this.props.match.params.capstoneName,
-                userObj.id);
         }
 
         let tempCapstone = await this.getCapstone();
@@ -233,7 +227,7 @@ class ViewCapstone extends React.Component {
 
         this.getTeamPics();
 
-        this.setState({loading: false, users: users1, adUrl: ad});
+        this.setState({loading: false, users: users1});
 
 
         var x = this.state.capstone['viewcount'];

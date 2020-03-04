@@ -94,7 +94,14 @@ export default class Auth {
     }
 
     getUser = () => {
-        let u = localStorage.getItem('USER');
         return JSON.parse(localStorage.getItem('USER'));
     };
+
+    getNickname = () => {
+        return localStorage.getItem('nickname');
+    };
+
+    getToken = () => {
+        return localStorage.getItem('USERTOKEN');
+    }
 }

@@ -22,6 +22,9 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import SearchBar from './SearchBar.js';
 import Drawer from './Drawer.js';
 import SubMenu from './SubMenu.js';
+import {auth} from "../../index";
+import { withRouter } from 'react-router-dom';
+import compose from 'recompose/compose';
 
 const styles = theme => ({
     root: {
@@ -104,9 +107,8 @@ class PrimarySearchAppBar extends React.Component {
     };
 
     handleToAccount = () =>{
-        window.location = '/ViewUser/' + localStorage.getItem("nickname");
+        this.props.history.push('/ViewProfile/' + auth.getNickname());
     };
-
 
     render() {
         const { anchorEl } = this.state;
@@ -209,4 +211,7 @@ PrimarySearchAppBar.propTypes = {
 };
 
 
-export default withStyles(styles)(PrimarySearchAppBar);
+export default compose(
+  withStyles(styles),
+  withRouter
+)(PrimarySearchAppBar);
