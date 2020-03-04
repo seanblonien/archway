@@ -15,7 +15,6 @@ import CreateCapstone from './Pages/CreateCapstone';
 import Capstone from "./Pages/Capstones";
 import Register from "./Components/RegisterModal";
 import ViewCapstone from "./Pages/ViewCapstone";
-import ViewPost from "./Pages/ViewPost";
 import ViewUser from "./Pages/ViewUser";
 import Login from "./Pages/login";
 import Secret from "./Pages/Secret";
@@ -54,7 +53,6 @@ export default class extends Component {
                     {this.props.auth.isAuthenticated() && <Route path="/CreateCapstone" render={()=><CreateCapstone {...this.props}/>}/>}
                     <Route path="/Register" component={Register}/>
                     <Route path="/ViewCapstone/:capstoneID" component={ViewCapstone}/>
-                    <Route path="/ViewPost/:id" component={ViewPost}/>
                     <Route path="/ViewUser/:username" component={ViewUser}/>
                     <Route path="/ViewProfile/:username" component={ViewProfile}/>
                     <Route path="/ViewYourCapstones/" component={ViewYourCapstones} />

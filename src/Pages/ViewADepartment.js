@@ -45,8 +45,8 @@ class ViewADepartment extends React.Component {
         }
     }
     async componentDidMount() {
-        const posts = await strapi.getEntries('Departments');
-        this.setState({loading: false, departments: posts});
+        const departments = await strapi.getEntries('Departments');
+        this.setState({loading: false, departments: departments});
     }
 
     render() {

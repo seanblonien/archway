@@ -15,7 +15,7 @@ import ReactDOM from 'react-dom';
 import Auth from "./Auth";
 import {schoolColorPrimary, schoolColorSecondary} from "./constants";
 
-const auth = new Auth();
+export const auth = new Auth();
 
 // global theme goes here
 
