@@ -131,6 +131,21 @@
           "dominant": false,
           "targetAttribute": "department",
           "unique": false
+        },
+        "preview": {
+          "type": "string"
+        },
+        "image": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "proposal": {
+          "nature": "manyToMany",
+          "target": "application::proposals.proposals",
+          "dominant": true,
+          "targetAttribute": "department",
+          "unique": false
         }
       }
     },
@@ -247,7 +262,6 @@
         "user": {
           "nature": "manyToOne",
           "target": "plugins::users-permissions.user",
-          "plugin": "users-permissions",
           "dominant": false,
           "targetAttribute": "proposals",
           "unique": false
@@ -499,6 +513,13 @@
         "comments": {
           "nature": "oneToMany",
           "target": "application::commemts.commemts",
+          "dominant": false,
+          "targetAttribute": "user",
+          "unique": false
+        },
+        "proposals": {
+          "nature": "oneToMany",
+          "target": "application::proposals.proposals",
           "dominant": false,
           "targetAttribute": "user",
           "unique": false
