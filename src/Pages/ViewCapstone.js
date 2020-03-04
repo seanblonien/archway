@@ -21,7 +21,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from '@material-ui/core/Typography';
 import withWidth from "@material-ui/core/withWidth";
 import axios from 'axios';
-import Filter from "bad-words";
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import React from 'react';
 import {Carousel} from "react-responsive-carousel";
@@ -42,6 +41,7 @@ import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
 import {strapi, strapiURL} from "../constants";
 import * as url from "../Images/default-user-profile-image-png-6.png";
 import {getAdvertisement, updateDeptViewCount} from "../util/Advertisements";
+import { auth } from '../index'
 
 const styles = theme => ({
     card: {
@@ -148,9 +148,6 @@ class ViewCapstone extends React.Component {
             team: [],
             teamPics: []
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.getCapstone = this.getCapstone.bind(this);
     }
 
     handleChange = name => event => {
@@ -204,7 +201,7 @@ class ViewCapstone extends React.Component {
         return false;
     }
 
-    async getTeamPics() {
+    getTeamPics = async () => {
         let pic;
         let picURLS = [];
         for(let member in this.state.team) {
@@ -217,13 +214,13 @@ class ViewCapstone extends React.Component {
         this.setState({teamPics: picURLS});
     }
 
-    async componentDidMount() {
+    componentDidMount = async () => {
         const users1 = await strapi.getEntries('Users');
 
         const ad = await getAdvertisement();
 
         // If we're logged-in, store the user Id and update the count values.
-        const userObj = auth.getUser();
+        const userObj = auth;
         if (userObj){
             this.setState({Username: userObj._id});
             await updateDeptViewCount(this.props.match.params.capstoneName,
@@ -248,7 +245,7 @@ class ViewCapstone extends React.Component {
 
     }
 
-    async getCapstone(){
+    getCapstone  = async () =>{
         let url = strapiURL + '/capstones/' + this.props.match.params.capstoneID;
         return await axios.get(url)
             .then(function(response){
