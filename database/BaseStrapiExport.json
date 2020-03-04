@@ -195,6 +195,73 @@
       }
     },
     {
+      "name": "proposals",
+      "description": "Describes a proposal made by a sponsor",
+      "connection": "default",
+      "collectionName": "posts",
+      "attributes": {
+        "projectTitle": {
+          "type": "string",
+          "unique": false,
+          "default": "New Proposal"
+        },
+        "status": {
+          "type": "string",
+          "unique": false
+        },
+        "email": {
+          "type": "string",
+          "unique": false
+        },
+        "phone": {
+          "type": "string",
+          "unique": false
+        },
+        "projectDescription": {
+          "type": "text",
+          "required": false,
+          "default": "TBD"
+        },
+        "projectDeliverables": {
+          "type": "text",
+          "required": false,
+          "default": "TBD"
+        },
+        "intellectualPropertyRequired": {
+          "type": "boolean"
+        },
+        "nondisclosureRequired": {
+          "type": "boolean"
+        },
+        "finacialSupport": {
+          "type": "string",
+          "unique": false
+        },
+        "projectUse": {
+          "type": "text"
+        },
+        "dateSubmitted": {
+          "type": "date",
+          "unique": false
+        },
+        "user": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.user",
+          "plugin": "users-permissions",
+          "dominant": false,
+          "targetAttribute": "proposals",
+          "unique": false
+        },
+        "department": {
+          "nature": "manyToMany",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "proposal",
+          "unique": false
+        }
+      }
+    },
+    {
       "name": "sponsors",
       "description": "Describes a Sponsor for a Capstone Project",
       "connection": "default",
