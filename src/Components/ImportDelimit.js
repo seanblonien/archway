@@ -159,7 +159,7 @@ class ImportDelimit extends Component {
             <div>
                 {importState === IMPORT_STATE.success ?
                     <div>
-                        <Typography variant="h5" style={{marginTop: '16px'}}>Import Successful ✅</Typography>
+                        <Typography variant="h5" style={{marginTop: '16px'}}>Import Successful <Check/></Typography>
                         {/*//TODO: Redirect to dashboard*/}
                     </div>
                     :

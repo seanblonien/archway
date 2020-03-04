@@ -2,8 +2,8 @@ import React from 'react';
 import {useDropzone} from 'react-dropzone';
 import "./style.css";
 
-export default function Accept(props) {
-    const {acceptedFiles, rejectedFiles, getRootProps, getInputProps} = useDropzone({
+export default function Accept() {
+    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         accept: 'image/jpeg, image/png'
     });
 
@@ -17,7 +17,7 @@ export default function Accept(props) {
                     </div>
                     :
                     <div>
-                        <img  className="preview" src={URL.createObjectURL(acceptedFiles[0])}/>
+                        <img className="preview" src={URL.createObjectURL(acceptedFiles[0])} alt="Preview"/>
                     </div>
                 }
 

@@ -18,7 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from "@material-ui/core/withWidth/withWidth";
 import InfoIcon from '@material-ui/icons/Info';
 import React from 'react';
-import {Background, Parallax} from 'react-parallax';
+import {Parallax} from 'react-parallax';
 import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
 import LoadingCircle from "../Components/LoadingCircle";
@@ -107,20 +107,6 @@ const styles = theme => ({
     },
 });
 
-
-let divStyle = {
-    backgroundImage: `url(${Background})`,
-    width: '100%',
-    height: '600px',
-    backgroundSize: 'cover',
-};
-
-let paperStyle = {
-    height: 400,
-    width: '100%',
-    textAlign: 'center'
-};
-
 class Home extends React.Component {
 
     constructor(props) {
@@ -142,8 +128,6 @@ class Home extends React.Component {
         this.getFeaturedSponsors(sponsorList);
 
         this.setState({loading: false, capstones: capstoneList});
-
-        const posts = await strapi.getEntries('Sponsors');
 
     }
 

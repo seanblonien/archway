@@ -93,7 +93,7 @@ class AddUser extends Component {
                     // Display the success message if a user has been added
                     // successfully
                     <Box>
-                        <Typography variant="h5">Added User Successfully ✅</Typography>
+                        <Typography variant="h5">Added User Successfully <span role="img" aria-label="Check">✅</span></Typography>
 
                         <Button variant="contained" onClick={this.resetState}>
                             Add another user

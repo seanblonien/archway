@@ -321,8 +321,8 @@ class EditCapstone extends Component {
     }
 
     checkUser(id, username) {
-        var k = 0;
-        while(k != this.state.Participants.length){
+        let k = 0;
+        while(k !== this.state.Participants.length){
             if(id === this.state.Participants[k]._id){
                 return true;
             }

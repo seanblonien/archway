@@ -268,13 +268,7 @@ class ViewPost extends React.Component {
         const {classes} = this.props;
 
         if (!this.state.loading) {
-            let commentArray = [];
-
-            var x = 0;
-            for(var com in this.state.post['comments']){
-                commentArray.push(this.state.post['comments'][com]);
-                x++;
-            }
+            let commentArray = this.state.post['comments'].map(c => c);
 
             let picArray = [];
             for(var pic in this.state.post['media']){

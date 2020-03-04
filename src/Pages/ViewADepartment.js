@@ -52,7 +52,7 @@ class ViewADepartment extends React.Component {
 
         if (!this.state.loading) {
 
-            var department = this.state.departments.find(d => d.id == this.props.match.params.id);
+            let department = this.state.departments.find(d => d.id === this.props.match.params.id);
 
             return (
                 <div className="ViewASponsor">

@@ -5,10 +5,6 @@ import React, {Component} from 'react';
 import {readString} from 'react-papaparse';
 
 class UploadText extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     handleChange = (event) => {
         if(_.isEmpty(event.target.value)) {
             this.props.onDataClear();

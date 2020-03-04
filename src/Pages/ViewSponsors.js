@@ -81,28 +81,7 @@ class ViewSponsors extends React.Component {
 
         if (!this.state.loading) {
 
-            var i = 1;
-            var j;
-            var key;
-            var n = this.state.sponsors.length-1;
-
             // If there is no search phrase, we sort results alphabetically
-
-            if (this.state.searchTerm.searchTerm === undefined) {
-                while (i <= n) {
-
-                    key = this.state.sponsors[i];
-                    j = i - 1;
-                    while (j >= 0 && this.state.sponsors[j]['name'] > key['name']) {
-                        this.state.sponsors[j + 1] = this.state.sponsors[j];
-                        j = j - 1;
-                    }
-                    this.state.sponsors[j + 1] = key;
-
-                    i++;
-                }
-            }
-
             let match;
             let phrase;
             let searchOptions = {
@@ -144,7 +123,7 @@ class ViewSponsors extends React.Component {
                             <GridList cellHeight={250} cols={ViewSponsors.getColumns(this.props)}>
                                 {match.map((result, i) => (
                                     <GridListTile key={strapiURL + result['logo'].url} onClick={(e) => this.handleTileClick(result.id)}>
-                                        <img src={strapiURL + result['logo'].url} alt={"Sponsor image"} style={{height: '100%', width: '100%'}}/>
+                                        <img src={strapiURL + result['logo'].url} alt={"Sponsor"} style={{height: '100%', width: '100%'}}/>
                                         <GridListTileBar
                                             title={result.name}
                                             subtitle={"Sponsors: " + result['capstones'].length  + " capstones"}

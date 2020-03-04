@@ -12,10 +12,6 @@ import compose from 'recompose/compose';
 
 class SubHeadingTextTypography extends React.Component{
 
-    constructor(props){
-        super(props);
-    }
-
     static resizeSubheadingText(props){
         if(props.width === 'xl'){
             return "h4";

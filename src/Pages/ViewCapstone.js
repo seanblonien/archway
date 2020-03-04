@@ -349,7 +349,6 @@ class ViewCapstone extends React.Component {
 
     async componentDidMount() {
         const users1 = await strapi.getEntries('Users');
-        const posts2 = await strapi.getEntries('Posts');
 
         const ad = await getAdvertisement();
 
@@ -463,13 +462,13 @@ class ViewCapstone extends React.Component {
     static showPicture(pictureURL){
         if(pictureURL === undefined){
             return <div>
-                <img src={url} width="100%" height="auto" style={{ borderRadius: '5px', display: 'block'}}/>
+                <img src={url} width="100%" height="auto" style={{ borderRadius: '5px', display: 'block'}} alt=""/>
             </div>
         }
         else{
             return <div>
 
-                <img src={strapiURL + pictureURL} width="100%" height="auto" style={{ borderRadius: '5px', display: 'block'}}/>
+                <img src={strapiURL + pictureURL} width="100%" height="auto" style={{ borderRadius: '5px', display: 'block'}} alt=""/>
 
             </div>
         }
@@ -491,13 +490,6 @@ class ViewCapstone extends React.Component {
             for(let i in this.state.team) {
                 creatorArray.push(this.state.team[i]);
                 picCreatorArray.push(this.state.teamPics[i]);
-            }
-
-            let sponsorStr = "";
-            for (var z = 0; z < this.state.capstone['sponsors'].length; z++) {
-                if (z > 0)
-                    sponsorStr += ", ";
-                sponsorStr += this.state.capstone['sponsors'][z].name.toString();
             }
 
             let postArray = [];

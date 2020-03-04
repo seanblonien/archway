@@ -12,10 +12,6 @@ import compose from 'recompose/compose';
 
 class PageTitleTypography extends React.Component{
 
-    constructor(props){
-        super(props);
-    }
-
     //Resize title text based on screen size
     static resizeTitleText(props) {
         if(props.width === 'xl'){

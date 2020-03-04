@@ -106,27 +106,9 @@ class CreateCapstone extends Component {
             this.setState({AllUsers: response2.data});
 
 
-        }).catch( error => {
-
-        });
+        })
 
     }
-
-    handleSponsorToggle = value => () => {
-        const { checkedSponsors } = this.state;
-        const currentIndex = checkedSponsors.indexOf(value);
-        const newChecked = [...checkedSponsors];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        this.setState({
-            checkedSponsors: newChecked,
-        });
-    };
 
     isFormValid = () => {
         const {CapstoneName, Description, DisplayPhoto, checkedSponsors, Department} = this.state;
@@ -164,21 +146,6 @@ class CreateCapstone extends Component {
         }
 
     };
-
-    //Sets the card to a certain format based on screen size
-    setLeftColClass(props){
-        const {classes} = this.props;
-        if(props.width === 'xl'){
-            return classes.leftColCard;
-        }else if(props.width === 'lg'){
-            return classes.leftColCard;
-        }else if(props.width ==='md'){
-            return classes.leftColCard;
-        }else if(props.width ==='sm'){
-            return classes.card
-        }
-        return classes.card;
-    }
 
     handleSubmit() {
         if (this.state.DisplayPhoto == null){
@@ -257,7 +224,6 @@ class CreateCapstone extends Component {
         });
 
 
-        let match;
         let phrase;
         let searchOptions = {
             shouldSort: true,
@@ -285,7 +251,7 @@ class CreateCapstone extends Component {
         var currentIndex = -1;
 
         var x = 0;
-        while( x != this.state.Participants.length){
+        while( x !== this.state.Participants.length){
             if(this.state.Participants[x].id === value.id){
                 currentIndex = x;
             }

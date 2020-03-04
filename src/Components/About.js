@@ -56,19 +56,6 @@ class About extends React.Component {
         return "h6";
     }
 
-    static resizeSubheadingText(props){
-        if(props.width === 'xl'){
-            return "h4";
-        }else if(props.width === 'lg'){
-            return "h5";
-        }else if(props.width ==='md'){
-            return "h5";
-        }else if(props.width ==='sm'){
-            return "h6"
-        }
-        return "subtitle1";
-    }
-
     //Ensures margin is there when screen is large and dissapears when screen resizes to below md and col resizes
     setLeftColClass(props){
         const {classes} = this.props;
@@ -84,7 +71,7 @@ class About extends React.Component {
         return classes.card;
     }
 
-    static resizeSubheadingText(props){
+    resizeSubheadingText = (props) => {
         if(props.width === 'xl'){
             return "h4";
         }else if(props.width === 'lg'){
@@ -145,7 +132,7 @@ class About extends React.Component {
                                 </Typography>
                                 <Divider/>
                                 <CardContent>
-                                    <Typography align="center" variant={About.resizeSubheadingText(this.props)}>
+                                    <Typography align="center" variant={this.resizeSubheadingText(this.props)}>
                                         <b>"Our mission is to provide students a reliable place to store and present
                                             their capstone projects."</b>
                                     </Typography>
@@ -155,7 +142,7 @@ class About extends React.Component {
                                 <Grid item xs={12} md={12}>
                                     <Card className={this.setLeftColClass(this.props)}>
                                         <CardContent>
-                                            <Typography variant={About.resizeSubheadingText(this.props)}>
+                                            <Typography variant={this.resizeSubheadingText(this.props)}>
                                                 <b>What is Cappy?</b>
                                             </Typography>
                                             <Divider/>

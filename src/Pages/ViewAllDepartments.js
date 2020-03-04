@@ -122,10 +122,6 @@ class ViewAllDepartments extends React.Component {
         const { classes } = this.props;
 
         if (!this.state.loading) {
-
-            const { expanded } = this.state;
-
-
             return (
                 <div className="AllSponsors" style={{marginLeft: '2.0%', marginRight: '2.0%'}}>
                     <Typography align={"center"}>
