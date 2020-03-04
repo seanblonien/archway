@@ -6,21 +6,21 @@ Greg Keeton - Image Carousel
  */
 
 import {Link} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from "@material-ui/core/CardContent";
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
 import Markdown from 'markdown-to-jsx';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import LoadingCircle from '../Components/LoadingCircle.js';
-import Divider from '@material-ui/core/Divider';
-import Card from '@material-ui/core/Card';
-import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
-import {strapiURL, strapi} from "../constants";
-import Button from '@material-ui/core/Button';
-import PageTitleTypography from "../Components/PageTitleTypography";
-import CardContent from "@material-ui/core/CardContent";
-import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
 import {Carousel} from "react-responsive-carousel";
+import LoadingCircle from '../Components/LoadingCircle.js';
+import PageTitleTypography from "../Components/PageTitleTypography";
+import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import {strapi, strapiURL} from "../constants";
 
 
 const styles = theme => ({

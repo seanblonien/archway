@@ -21,6 +21,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from '@material-ui/core/Typography';
 import withWidth from "@material-ui/core/withWidth";
 import axios from 'axios';
+import Filter from "bad-words";
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import React from 'react';
 import {Carousel} from "react-responsive-carousel";
@@ -40,7 +41,6 @@ import PageTitleTypography from "../Components/PageTitleTypography";
 import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
 import {strapi, strapiURL} from "../constants";
 import * as url from "../Images/default-user-profile-image-png-6.png";
-import {auth} from '../index';
 import {getAdvertisement, updateDeptViewCount} from "../util/Advertisements";
 
 const styles = theme => ({
@@ -208,10 +208,10 @@ class ViewCapstone extends React.Component {
         let pic;
         let picURLS = [];
         for(let member in this.state.team) {
-            pic = await strapi.axios.get(strapiURL + "/userpictures?user=" + this.state.team[member]._id);
+            pic = await strapi.axios.get(strapiURL + "/users/" + this.state.team[member]._id);
             console.log(pic);
-            if(pic.data.length !== 0) {
-                picURLS[member] = pic.data[0].ProfilePicture.url;
+            if(pic.data.ProfilePicture !== null) {
+                picURLS[member] = pic.data.ProfilePicture.url;
             }
         }
         this.setState({teamPics: picURLS});
@@ -576,7 +576,7 @@ class ViewCapstone extends React.Component {
                                                         <Grid item xs={ViewCapstone.getColumnsForTeamPics(this.props)} key={i}>
                                                             <div className={classes.textContainer}>
                                                                 <Button component={Link}
-                                                                        to={"/ViewUser/" + result.username}
+                                                                        to={"/ViewProfile/" + result.username}
                                                                         style={{height: '100%', width: '100%'}}>
                                                                     <div>
                                                                         {ViewCapstone.showPicture(picCreatorArray[i])}

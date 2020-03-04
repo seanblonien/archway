@@ -1,6 +1,7 @@
 /*
 Filename: Header.js
-Contributors: Ryan Cave
+Initial Contributors: Ryan Cave
+Further Contributors: Caleb DeHaan, Sean Blonien
  */
 
 import React from 'react';
@@ -133,56 +134,68 @@ class PrimarySearchAppBar extends React.Component {
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar>
-
+                        {/*hamburger only shows in mobile view :)*/}
+                        <div className={classes.sectionMobile}>
                             < Drawer {...this.props} />
-
-                            <Button style={{color: 'white'}} component={Link} to="/">
-                                {university} | Archway
+                        </div>
+                        <Button style={{color: 'white', fontSize: '25px'}} component={Link} to="/">
+                            <img src={require('../../Images/univ_logo.svg')} alt={university} title={university} height="40" width="40" style={{paddingRight: 7}}/>
+                            {university} | Archway
+                        </Button>
+                        <div className={classes.sectionDesktop}>
+                            <Button style={{color: 'white', fontSize: '15px'}} component={Link} to="/About">
+                                <SubMenu title="About"
+                                         items={["FAQ", String(university), "Archway"]}
+                                         links={["/FAQ", "/About", "/About"]}>
+                                </SubMenu>
                             </Button>
-
-                            <SubMenu title="About"
-                                items={["FAQ", String(university), "Archway"]}
-                                links={["/faq", "/about", "/about"]}></SubMenu>
-                            <SubMenu title="Sponsors"
-                                items={["Become a Sponsor", "View Current Sponsors"]}
-                                 links={["/Sponsors", "/ViewSponsors"]}></SubMenu>
-                            <SubMenu title="Projects"
-                                items={["All Capstones","All Departments"]}
-                                 links={["/Capstones", "/ViewAllDepartments"]}></SubMenu>
-
+                            <Button style={{color: 'white', fontSize: '15px'}} component={Link} to="/Sponsors">
+                                <SubMenu title="Sponsors"
+                                         items={["Become a Sponsor", "View Current Sponsors"]}
+                                         links={["/Sponsors", "/ViewSponsors"]}>
+                                </SubMenu>
+                            </Button>
+                            <Button style={{color: 'white', fontSize: '15px'}} component={Link} to="/Capstones">
+                                <SubMenu title="Projects"
+                                         items={["All Capstones","All Departments"]}
+                                         links={["/Capstones", "/ViewAllDepartments"]}>
+                                </SubMenu>
+                            </Button>
+                        </div>
+                        <div className={classes.grow} />
+                        <div className={classes.sectionDesktop}>
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />
                                 </div>
                             </div>
-
                             <div key={new Date().getTime()} >
-                            <SearchBar />
+                                <SearchBar />
                             </div>
+                        </div>
 
-                            <div className={classes.grow} />
-                            <div className={classes.sectionDesktop}>
-                                <IconButton
-                                    aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={this.handleProfileMenuOpen}
-                                    color="inherit"
-                                >
-                                    <AccountCircle />
-                                </IconButton>
-                            </div>
+                        <div className={classes.sectionDesktop}>
+                            <IconButton
+                                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                        </div>
 
 
-                            <div className={classes.sectionMobile}>
-                                <IconButton
-                                    aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={this.handleProfileMenuOpen}
-                                    color="inherit"
-                                >
-                                    <MoreIcon />
-                                </IconButton>
-                            </div>
+                        <div className={classes.sectionMobile}>
+                            <IconButton
+                                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <MoreIcon />
+                            </IconButton>
+                        </div>
                     </Toolbar>
                 </AppBar>
                 {renderMenu}
