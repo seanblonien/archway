@@ -4,11 +4,11 @@ Contributors:
 Stephen Tate - Wrote entire file.
  */
 
-import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
 import withWidth from "@material-ui/core/withWidth/withWidth";
+import PropTypes from 'prop-types';
+import React from 'react';
+import compose from 'recompose/compose';
 
 class SubHeadingTextTypography extends React.Component{
 

@@ -4,26 +4,26 @@ Contributors: Ryan Cave
  */
 
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/DashboardTwoTone';
-import AboutIcon from '@material-ui/icons/QuestionAnswer';
-import CreateIcon from '@material-ui/icons/CreateTwoTone';
-import MenuIcon from '@material-ui/icons/Menu';
-import HomeIcon from '@material-ui/icons/HomeTwoTone';
-import Publish from '@material-ui/icons/Publish';
-import IconButton from '@material-ui/core/IconButton';
+import {withStyles} from '@material-ui/core/styles';
 import BusinessIcon from '@material-ui/icons/BusinessTwoTone';
 import ViewAllSponsorsIcon from '@material-ui/icons/ContactsTwoTone';
-import ViewAllDepartmentsIcon from '@material-ui/icons/SchoolTwoTone';
+import CreateIcon from '@material-ui/icons/CreateTwoTone';
+import DashboardIcon from '@material-ui/icons/DashboardTwoTone';
 import FAQIcon from '@material-ui/icons/HelpTwoTone';
+import HomeIcon from '@material-ui/icons/HomeTwoTone';
+import MenuIcon from '@material-ui/icons/Menu';
+import Publish from '@material-ui/icons/Publish';
+import AboutIcon from '@material-ui/icons/QuestionAnswer';
+import ViewAllDepartmentsIcon from '@material-ui/icons/SchoolTwoTone';
 import ViewYourCapstonesIcon from '@material-ui/icons/TableChartTwoTone';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Link} from 'react-router-dom';
 
 

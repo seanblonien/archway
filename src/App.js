@@ -6,34 +6,34 @@ Parker Wagner - Reworked some routes when authentication was finished.
 Brenden Detels - Routing Functionality
  */
 
-import React, { Component, Fragment } from "react";
-import ImportUsers from './Pages/ImportUsers';
-import Header from './Components/Header/Header';
-import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import React, {Component, Fragment} from "react";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import About from './Components/About';
-import CreateCapstone from './Pages/CreateCapstone';
-import Capstone from "./Pages/Capstones";
+import Footer from "./Components/Footer";
+import Header from './Components/Header/Header';
 import Register from "./Components/RegisterModal";
+import SearchRedirect from "./Components/SearchRedirect";
+import Callback from "./Pages/Callback";
+import Capstone from "./Pages/Capstones";
+import CreateCapstone from './Pages/CreateCapstone';
+import EditCapstone from "./Pages/EditCapstone";
+import FAQ from "./Pages/FAQ";
+import Home from "./Pages/Home";
+import ImportUsers from './Pages/ImportUsers';
+import Login from "./Pages/login";
+import NotFound from "./Pages/NotFound";
+import Secret from "./Pages/Secret";
+import Sponsors from "./Pages/Sponsors";
+import ViewADepartment from "./Pages/ViewADepartment";
+import ViewAllDepartments from "./Pages/ViewAllDepartments";
+import ViewASponsor from "./Pages/ViewASponsor";
 import ViewCapstone from "./Pages/ViewCapstone";
 import ViewPost from "./Pages/ViewPost";
-import ViewUser from "./Pages/ViewUser";
-import Login from "./Pages/login";
-import Secret from "./Pages/Secret";
-import NotFound from "./Pages/NotFound";
-import Callback from "./Pages/Callback";
-import ViewYourCapstones from "./Pages/ViewYourCapstones";
-import SearchRedirect from "./Components/SearchRedirect";
-import Home from "./Pages/Home";
-import Sponsors from "./Pages/Sponsors";
-import ViewSponsors from "./Pages/ViewSponsors";
-import ViewASponsor from "./Pages/ViewASponsor";
-import ViewAllDepartments from "./Pages/ViewAllDepartments";
-import ViewADepartment from "./Pages/ViewADepartment";
-import FAQ from "./Pages/FAQ";
-import EditCapstone from "./Pages/EditCapstone";
-import Footer from "./Components/Footer";
 
 import ViewProfile from "./Pages/ViewProfile";
+import ViewSponsors from "./Pages/ViewSponsors";
+import ViewUser from "./Pages/ViewUser";
+import ViewYourCapstones from "./Pages/ViewYourCapstones";
 
 export default class extends Component {
   render() {

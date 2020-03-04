@@ -4,23 +4,23 @@ Initial Contributors: Ryan Cave
 Further Contributors: Caleb DeHaan, Sean Blonien
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import {university} from "../../constants";
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import { withStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
+import MenuItem from '@material-ui/core/MenuItem';
+import {withStyles} from '@material-ui/core/styles';
+import {fade} from '@material-ui/core/styles/colorManipulator';
+import Toolbar from '@material-ui/core/Toolbar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import SearchBar from './SearchBar.js';
+import SearchIcon from '@material-ui/icons/Search';
+import PropTypes from 'prop-types';
+import React from 'react';
+import {Link} from 'react-router-dom';
+import {university} from "../../constants";
 import Drawer from './Drawer.js';
+import SearchBar from './SearchBar.js';
 import SubMenu from './SubMenu.js';
 
 const styles = theme => ({

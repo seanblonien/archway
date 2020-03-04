@@ -5,15 +5,15 @@ Contributors:
     Parker Wagner - Created Auth constant and passed it into app state.
  */
 
-import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './App';
 import Auth from "./Auth";
 import {schoolColorPrimary, schoolColorSecondary} from "./constants";
+import './index.css';
+import * as serviceWorker from './serviceWorker';
 
 const auth = new Auth();
 

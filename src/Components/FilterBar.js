@@ -3,16 +3,16 @@ Filename: FilterBar.js
 Contributors: Ryan Cave
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
-import { Redirect } from 'react-router-dom';
-import {strapi} from "../constants";
+import Select from '@material-ui/core/Select';
+import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import {Redirect} from 'react-router-dom';
+import {strapi} from "../constants";
 
 const styles = theme => ({
     root: {

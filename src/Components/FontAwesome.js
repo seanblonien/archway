@@ -4,12 +4,12 @@ Contributors:
 Stephen Tate - Wrote entire file
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { loadCSS } from 'fg-loadcss/src/loadCSS';
-import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
+import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
+import {loadCSS} from 'fg-loadcss/src/loadCSS';
+import PropTypes from 'prop-types';
+import React from 'react';
 import './RegisterModal.css';
 
 

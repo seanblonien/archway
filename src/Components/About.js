@@ -4,16 +4,16 @@ Contributors:
 Stephen Tate - Wrote entire file.
  */
 
-import React from "react";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import compose from 'recompose/compose';
-import withWidth from "@material-ui/core/withWidth/withWidth";
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import withWidth from "@material-ui/core/withWidth/withWidth";
 import BubbleChart from '@weknow/react-bubble-chart-d3';
+import React from "react";
+import compose from 'recompose/compose';
 import {strapi} from "../constants";
 import LoadingCircle from "./LoadingCircle";
 

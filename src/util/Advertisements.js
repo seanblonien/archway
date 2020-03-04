@@ -1,5 +1,5 @@
-import {strapi, strapiURL} from "../constants";
 import {shuffle} from "d3";
+import {strapi, strapiURL} from "../constants";
 
 /**
  * This function checks if a user is logged-in, parses the department view records to see

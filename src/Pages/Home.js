@@ -23,7 +23,6 @@ import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
 import LoadingCircle from "../Components/LoadingCircle";
 import {
-    homepageBackground,
     schoolColorPrimary,
     schoolColorSecondary,
     strapi,

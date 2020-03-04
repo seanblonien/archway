@@ -1,7 +1,7 @@
 import {Box, List, ListItemText, Typography} from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
-import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 
 class FieldList extends Component {
     render() {

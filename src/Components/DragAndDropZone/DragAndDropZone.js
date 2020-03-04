@@ -1,7 +1,5 @@
 import React from 'react';
 import {useDropzone} from 'react-dropzone';
-import {Tooltip} from "@material-ui/core";
-import Box from "@material-ui/core/Box";
 import "./style.css";
 
 export default function Accept(props) {
