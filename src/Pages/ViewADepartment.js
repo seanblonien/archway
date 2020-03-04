@@ -5,15 +5,16 @@ Brenden Detels - Wrote entire page.
  */
 
 import {Link} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import {withStyles} from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-
-import withWidth from '@material-ui/core/withWidth';
+import Box from '@material-ui/core/Box';
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
 import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle.js';
 import {strapi} from "../constants";
+import Button from '@material-ui/core/Button';
+import Markdown from 'markdown-to-jsx';
+import {withStyles} from '@material-ui/core/styles';
 
 const styles = {
     card: {
@@ -55,7 +56,7 @@ class ViewADepartment extends React.Component {
             var department = this.state.departments.find(d => d.id == this.props.match.params.id);
 
             return (
-                <div className="ViewASponsor">
+                <Box className="ViewASponsor" mx={5}>
 
                     <Typography align={"center"}>
                         <h1>{department['name']}</h1>
@@ -66,7 +67,7 @@ class ViewADepartment extends React.Component {
                     </Typography>
 
                     <Typography>
-                        <h4>{department['description']}</h4>
+                        <Markdown>{department['description']}</Markdown>
                     </Typography>
 
 
@@ -81,7 +82,7 @@ class ViewADepartment extends React.Component {
                         </Typography>
                     </Button>
 
-                </div>
+                </Box>
             );
         }
         else{
