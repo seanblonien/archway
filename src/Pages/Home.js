@@ -7,23 +7,29 @@ Ryan Cave - Designed Cappy logo.
 Emily Tracey - updated page to match different branding (2-18-2019)
  */
 
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import withWidth from "@material-ui/core/withWidth/withWidth";
+import {Box, Button, Link, Paper} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { Parallax, Background } from 'react-parallax';
-import {strapi, strapiURL, university, schoolColorPrimary, schoolColorSecondary} from "../constants";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from '@material-ui/core/IconButton';
+import {withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import withWidth from "@material-ui/core/withWidth/withWidth";
 import InfoIcon from '@material-ui/icons/Info';
+import React from 'react';
+import {Background, Parallax} from 'react-parallax';
 import {Link as RouterLink} from 'react-router-dom';
+import compose from 'recompose/compose';
 import LoadingCircle from "../Components/LoadingCircle";
-import {homepageBackground} from "../constants";
-import { Button, Paper, Link, Box } from '@material-ui/core';
+import {
+    homepageBackground,
+    schoolColorPrimary,
+    schoolColorSecondary,
+    strapi,
+    strapiURL,
+    university
+} from "../constants";
 
 const insideStyles = {
     background: schoolColorPrimary,
@@ -177,7 +183,7 @@ class Home extends React.Component {
 
             return (
                 <div>
-                    <Parallax bgImage={homepageBackground} strength={500}>
+                    <Parallax bgImage={'https://www.baylor.edu/content/imglib/3/4/7/4/347452.jpg'} strength={500}>
                         <div style={{height: 650}}>
                             <div style={surroundStyle}>
                                 <div style={insideStyles}>

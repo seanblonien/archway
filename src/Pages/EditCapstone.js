@@ -4,31 +4,31 @@ Contributors:
 Brenden Detels - Entire Page functionality and styling
  */
 
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {strapi, strapiURL} from "../constants";
+import {Divider} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import axios from 'axios';
-import {withStyles} from '@material-ui/core/styles';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
-import PageTitleTypography from "../Components/PageTitleTypography";
+import {withStyles} from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import withWidth from "@material-ui/core/withWidth/withWidth";
-import compose from 'recompose/compose';
-import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
-import LoadingCircle from "../Components/LoadingCircle";
-import {Divider} from "@material-ui/core";
+import axios from 'axios';
 import Fuse from 'fuse.js';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import compose from 'recompose/compose';
+import LoadingCircle from "../Components/LoadingCircle";
+import PageTitleTypography from "../Components/PageTitleTypography";
+import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import {strapi, strapiURL} from "../constants";
 
 const styles = theme => ({
     list: {

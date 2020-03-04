@@ -7,31 +7,27 @@ Ryan Cave - Social Media Integration, Add Photo & Add User functionality, extens
 Greg Keeton - Make/Edit/Delete Post and Image Carousel
  */
 
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import {Dialog, Divider} from "@material-ui/core";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import TextField from "@material-ui/core/TextField";
-import DialogActions from "@material-ui/core/DialogActions";
-import {withStyles} from '@material-ui/core/styles';
-import {Link} from 'react-router-dom';
-import compose from 'recompose/compose';
-import {strapi, strapiURL} from "../constants";
-import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import withWidth from "@material-ui/core/withWidth";
-import LoadingCircle from "../Components/LoadingCircle";
-import '../Components/PageTitleTypography';
-import PageTitleTypography from "../Components/PageTitleTypography";
-import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import CardContent from '@material-ui/core/CardContent';
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from '@material-ui/core/DialogContentText';
-import {getAdvertisement, updateDeptViewCount} from "../util/Advertisements";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import TextField from "@material-ui/core/TextField";
+import Typography from '@material-ui/core/Typography';
+import withWidth from "@material-ui/core/withWidth";
+import axios from 'axios';
+import Filter from "bad-words";
+import 'pure-react-carousel/dist/react-carousel.es.css';
+import React from 'react';
+
+import {Carousel} from "react-responsive-carousel";
+import {Link} from 'react-router-dom';
 import {
     FacebookIcon,
     FacebookShareButton,
@@ -40,10 +36,14 @@ import {
     TwitterIcon,
     TwitterShareButton
 } from "react-share";
-import Filter from "bad-words";
-
-import {Carousel} from "react-responsive-carousel";
+import compose from 'recompose/compose';
+import LoadingCircle from "../Components/LoadingCircle";
+import '../Components/PageTitleTypography';
+import PageTitleTypography from "../Components/PageTitleTypography";
+import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
+import {strapi, strapiURL} from "../constants";
 import * as url from "../Images/default-user-profile-image-png-6.png";
+import {getAdvertisement, updateDeptViewCount} from "../util/Advertisements";
 
 const styles = theme => ({
     card: {
@@ -338,10 +338,10 @@ class ViewCapstone extends React.Component {
         let pic;
         let picURLS = [];
         for(let member in this.state.team) {
-            pic = await strapi.axios.get(strapiURL + "/userpictures?user=" + this.state.team[member]._id);
+            pic = await strapi.axios.get(strapiURL + "/users/" + this.state.team[member]._id);
             console.log(pic);
-            if(pic.data.length !== 0) {
-                picURLS[member] = pic.data[0].ProfilePicture.url;
+            if(pic.data.ProfilePicture !== null) {
+                picURLS[member] = pic.data.ProfilePicture.url;
             }
         }
         this.setState({teamPics: picURLS});
@@ -749,7 +749,7 @@ class ViewCapstone extends React.Component {
                                                         <Grid item xs={ViewCapstone.getColumnsForTeamPics(this.props)} key={i}>
                                                             <div className={classes.textContainer}>
                                                                 <Button component={Link}
-                                                                        to={"/ViewUser/" + result.username}
+                                                                        to={"/ViewProfile/" + result.username}
                                                                         style={{height: '100%', width: '100%'}}>
                                                                     <div>
                                                                         {ViewCapstone.showPicture(picCreatorArray[i])}

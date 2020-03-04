@@ -8,11 +8,11 @@ import {Link} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import LoadingCircle from '../Components/LoadingCircle.js';
 
 import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
+import React from 'react';
 import compose from 'recompose/compose';
+import LoadingCircle from '../Components/LoadingCircle.js';
 import {strapi} from "../constants";
 import Button from '@material-ui/core/Button';
 import Markdown from 'markdown-to-jsx';
