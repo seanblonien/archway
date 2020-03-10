@@ -15,7 +15,7 @@ import {schoolColorPrimary, schoolColorSecondary} from "./constants";
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-const auth = new Auth();
+export const auth = new Auth();
 
 // global theme goes here
 

@@ -12,6 +12,8 @@ import About from './Components/About';
 import Footer from "./Components/Footer";
 import Header from './Components/Header/Header';
 import Register from "./Components/RegisterModal";
+import ViewCapstone from "./Pages/ViewCapstone";
+import NotFound from "./Pages/NotFound";
 import SearchRedirect from "./Components/SearchRedirect";
 import Callback from "./Pages/Callback";
 import Capstone from "./Pages/Capstones";
@@ -25,11 +27,11 @@ import NotFound from "./Pages/NotFound";
 import Secret from "./Pages/Secret";
 import Sponsors from "./Pages/Sponsors";
 import ViewADepartment from "./Pages/ViewADepartment";
-import ViewAllDepartments from "./Pages/ViewAllDepartments";
-import ViewASponsor from "./Pages/ViewASponsor";
-import ViewCapstone from "./Pages/ViewCapstone";
-import ViewPost from "./Pages/ViewPost";
-
+import ViewYourCapstonesSponsors from "./Pages/ViewYourCapstonesSponsors";
+import FAQ from "./Pages/FAQ";
+import EditCapstone from "./Pages/EditCapstone";
+import Footer from "./Components/Footer";
+import ViewYourCapstonesSponsors from "./Pages/ViewYourCapstonesSponsors";
 import ViewProfile from "./Pages/ViewProfile";
 import ViewSponsors from "./Pages/ViewSponsors";
 import ViewUser from "./Pages/ViewUser";
@@ -53,10 +55,10 @@ export default class extends Component {
                     {this.props.auth.isAuthenticated() && <Route path="/CreateCapstone" render={()=><CreateCapstone {...this.props}/>}/>}
                     <Route path="/Register" component={Register}/>
                     <Route path="/ViewCapstone/:capstoneID" component={ViewCapstone}/>
-                    <Route path="/ViewPost/:id" component={ViewPost}/>
                     <Route path="/ViewUser/:username" component={ViewUser}/>
                     <Route path="/ViewProfile/:username" component={ViewProfile}/>
                     <Route path="/ViewYourCapstones/" component={ViewYourCapstones} />
+                    <Route path="/ViewYourCapstonesSponsors/" component={ViewYourCapstonesSponsors} />
                     <Route path="/Sponsors/" component={Sponsors} />
                     <Route path="/ViewSponsors/:searchTerm?" component={ViewSponsors} />
                     <Route path="/ViewASponsor/:id" component={ViewASponsor}/>

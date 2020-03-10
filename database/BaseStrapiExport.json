@@ -131,6 +131,21 @@
           "dominant": false,
           "targetAttribute": "department",
           "unique": false
+        },
+        "preview": {
+          "type": "string"
+        },
+        "image": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "proposal": {
+          "nature": "manyToMany",
+          "target": "application::proposals.proposals",
+          "dominant": true,
+          "targetAttribute": "department",
+          "unique": false
         }
       }
     },
@@ -190,6 +205,72 @@
           "target": "application::commemts.commemts",
           "dominant": false,
           "targetAttribute": "post",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "proposals",
+      "description": "Describes a proposal made by a sponsor",
+      "connection": "default",
+      "collectionName": "posts",
+      "attributes": {
+        "projectTitle": {
+          "type": "string",
+          "unique": false,
+          "default": "New Proposal"
+        },
+        "status": {
+          "type": "string",
+          "unique": false
+        },
+        "email": {
+          "type": "string",
+          "unique": false
+        },
+        "phone": {
+          "type": "string",
+          "unique": false
+        },
+        "projectDescription": {
+          "type": "text",
+          "required": false,
+          "default": "TBD"
+        },
+        "projectDeliverables": {
+          "type": "text",
+          "required": false,
+          "default": "TBD"
+        },
+        "intellectualPropertyRequired": {
+          "type": "boolean"
+        },
+        "nondisclosureRequired": {
+          "type": "boolean"
+        },
+        "finacialSupport": {
+          "type": "string",
+          "unique": false
+        },
+        "projectUse": {
+          "type": "text"
+        },
+        "dateSubmitted": {
+          "type": "date",
+          "unique": false
+        },
+        "user": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "proposals",
+          "unique": false
+        },
+        "department": {
+          "nature": "manyToMany",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "proposal",
           "unique": false
         }
       }
@@ -432,6 +513,13 @@
         "comments": {
           "nature": "oneToMany",
           "target": "application::commemts.commemts",
+          "dominant": false,
+          "targetAttribute": "user",
+          "unique": false
+        },
+        "proposals": {
+          "nature": "oneToMany",
+          "target": "application::proposals.proposals",
           "dominant": false,
           "targetAttribute": "user",
           "unique": false

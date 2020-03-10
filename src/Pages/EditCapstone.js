@@ -29,6 +29,7 @@ import LoadingCircle from "../Components/LoadingCircle";
 import PageTitleTypography from "../Components/PageTitleTypography";
 import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
 import {strapi, strapiURL} from "../constants";
+import {auth} from "../index";
 
 const styles = theme => ({
     list: {
@@ -80,7 +81,7 @@ class EditCapstone extends Component {
             Description: '',
             DisplayPhoto: '',
             Department: '',
-            Username: JSON.parse(localStorage.getItem("USER"))._id,
+            Username: auth.getUser()._id,
             capstones: [],
             departmentList: [],
 
@@ -238,7 +239,7 @@ class EditCapstone extends Component {
             UserIDs.push(this.state.Participants[i].id);
         }
 
-        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
+        let authToken = 'Bearer ' + auth.getToken();
 
         axios.put(strapiURL + '/Capstones/' + this.state.id, {
             CapstoneName: this.state.CapstoneName,

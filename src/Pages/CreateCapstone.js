@@ -34,6 +34,7 @@ import ArchwayDatePicker from "../Components/ArchwayDatePicker";
 import DragAndDropZone from "../Components/DragAndDropZone/DragAndDropZone";
 import PageTitleTypography from "../Components/PageTitleTypography";
 import {strapi, strapiURL} from "../constants";
+import {auth} from "../index";
 
 const styles = theme => ({
     list: {
@@ -165,7 +166,7 @@ class CreateCapstone extends Component {
             UserIDs.push(this.state.Participants[i].id);
         }
 
-        let authToken = 'Bearer ' + localStorage.getItem('USERTOKEN');
+        let authToken = 'Bearer ' + auth.getToken();
 
 
 
