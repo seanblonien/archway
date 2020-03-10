@@ -8,7 +8,7 @@ Stephen Tate - Gridlist layout and bug fixes
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import {strapiURL, strapi} from "../constants";
+import {strapi} from "../constants";
 import LoadingCircle from "../Components/LoadingCircle";
 import ProposalForm from "../Components/ProposalForm"
 import Divider from '@material-ui/core/Divider';
@@ -44,17 +44,6 @@ const styles = {
     },
 };
 
-function createData(title, status) {
-    return { title, status};
-  }
-  
-
-const rows = [
-    createData('New Proposal', "Unsubmitted"),
-    createData('Ice cream sandwich', "Waiting for approval"),
-    createData('Eclair', "Approved"),
-  ];
-
 class ViewYourCapstonesSponsors extends React.Component {
     constructor(props) {
         super(props);
@@ -67,7 +56,7 @@ class ViewYourCapstonesSponsors extends React.Component {
         }
     }
     async componentDidMount() {
-        const currentProposals = await strapi.getEntries('proposals');  
+        const currentProposals = await strapi.getEntries('proposals');
 
         this.setState({loading: false, proposals: currentProposals});
     }
@@ -104,7 +93,7 @@ class ViewYourCapstonesSponsors extends React.Component {
                                 <Typography variant="h4" style={{marginTop: '16px'}}>Pending Company Projects</Typography>
                                 </Grid>
                                 <Grid item align="right">
-                                <ProposalForm></ProposalForm>
+                                <ProposalForm/>
                                 </Grid>
                             </Grid>
                             <br/>
@@ -126,15 +115,15 @@ class ViewYourCapstonesSponsors extends React.Component {
                                         </TableCell>
                                         <TableCell align="right">{proposal.status}</TableCell>
                                         <TableCell align="right">
-                                            <Button>Edit</Button>    
-                                            <Button>Delete</Button>    
+                                            <Button>Edit</Button>
+                                            <Button>Delete</Button>
                                         </TableCell>
                                         </TableRow>
                                     ))}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            }           
+                            }
                         </Grid>
                     </Grid>
                     <Grid container justify="center">

@@ -23,19 +23,16 @@ import FAQ from "./Pages/FAQ";
 import Home from "./Pages/Home";
 import ImportUsers from './Pages/ImportUsers';
 import Login from "./Pages/login";
-import NotFound from "./Pages/NotFound";
 import Secret from "./Pages/Secret";
 import Sponsors from "./Pages/Sponsors";
 import ViewADepartment from "./Pages/ViewADepartment";
-import ViewYourCapstonesSponsors from "./Pages/ViewYourCapstonesSponsors";
-import FAQ from "./Pages/FAQ";
-import EditCapstone from "./Pages/EditCapstone";
-import Footer from "./Components/Footer";
 import ViewYourCapstonesSponsors from "./Pages/ViewYourCapstonesSponsors";
 import ViewProfile from "./Pages/ViewProfile";
 import ViewSponsors from "./Pages/ViewSponsors";
 import ViewUser from "./Pages/ViewUser";
 import ViewYourCapstones from "./Pages/ViewYourCapstones";
+import ViewASponsor from "./Pages/ViewASponsor";
+import ViewAllDepartments from "./Pages/ViewAllDepartments";
 
 export default class extends Component {
   render() {

@@ -15,9 +15,9 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { Typography, Divider } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
-const styles = {    
+const styles = {
     form: {
         fullWidth: true,
         maxWidth: 'lg'
@@ -60,7 +60,7 @@ class ProposalForm extends React.Component {
     handleClose = () => {
         this.setState({open: false})
     };
-    
+
     handleSave = () => {
 
         strapi.axios.post(strapiURL + '/proposals', {
@@ -76,7 +76,7 @@ class ProposalForm extends React.Component {
             department: this.state.Department.id,
             status: "Not Submitted",
         })
-        
+
 
 
         this.setState({open: false});
@@ -99,7 +99,7 @@ class ProposalForm extends React.Component {
             dateSubmitted: this.state.date.getDate,
             status: "Submitted",
         })
-        
+
 
 
         this.setState({open: false});
@@ -131,9 +131,9 @@ class ProposalForm extends React.Component {
             <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
                 New Proposal
             </Button>
-            <Dialog 
-                open={this.state.open} 
-                onClose={this.handleClose} 
+            <Dialog
+                open={this.state.open}
+                onClose={this.handleClose}
                 aria-labelledby="form-dialog-title"
                 fullWidth={true}
                 maxWidth='md'>
@@ -194,7 +194,6 @@ class ProposalForm extends React.Component {
                     </div>
                     <div className={classes.section}>
                         <TextField
-                            label="Multiline"
                             multiline
                             rows="4"
                             fullWidth
@@ -203,7 +202,6 @@ class ProposalForm extends React.Component {
                             onChange={this.handleChange('projectDescription')}
                         />
                         <TextField
-                            label="Multiline"
                             multiline
                             rows="4"
                             fullWidth
@@ -238,12 +236,11 @@ class ProposalForm extends React.Component {
                         label="Finacial support"
                         value={this.state.financialSupport}
                         onChange={this.handleChange('financialSupport')}
-                    /> 
+                    />
                     </div>
                     <div className={classes.section}>
                         <Typography>Describe the project's intended use</Typography>
                         <TextField
-                            label="Multiline"
                             multiline
                             rows="2"
                             fullWidth
