@@ -1,5 +1,5 @@
 # Base Strapi image
-FROM strapi/strapi:3.0.0-beta.18.7-node12
+FROM strapi/strapi:3.0.0-beta.19-node12
 
 # The environment variables Strapi uses to connect to the database
 # This can be overridden when running the container itself
