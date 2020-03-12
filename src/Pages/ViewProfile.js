@@ -42,7 +42,7 @@ class ViewProfile extends React.Component {
 
         // Check to see if the user has a profile picture. If not, load the default one
         if (response.data[0]['ProfilePicture'] === null) {
-            response.data[0]['ProfilePicture'] = { url: require('../Images/default-user-profile-image-png-6.png') }; //TODO: fix constant value (this is the default image which must exist in strapi)
+            response.data[0]['ProfilePicture'] = { url: require('../Static/default-user-profile-image-png-6.png') }; //TODO: fix constant value (this is the default image which must exist in strapi)
         } else {
             let url = response.data[0]['ProfilePicture']['url'];
             response.data[0]['ProfilePicture']['url'] = strapiURL + url;

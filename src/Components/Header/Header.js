@@ -141,7 +141,7 @@ class PrimarySearchAppBar extends React.Component {
                             < Drawer {...this.props} />
                         </div>
                         <Button style={{color: 'white', fontSize: '25px'}} component={Link} to="/">
-                            <img src={require('../../Images/univ_logo.svg')} alt={university} title={university} height="40" width="40" style={{paddingRight: 7}}/>
+                            <img src={require('../../Static/univ_logo.svg')} alt={university} title={university} height="40" width="40" style={{paddingRight: 7}}/>
                             {university} | Archway
                         </Button>
                         <div className={classes.sectionDesktop}>

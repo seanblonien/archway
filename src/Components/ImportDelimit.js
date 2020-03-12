@@ -170,7 +170,7 @@ class ImportDelimit extends Component {
                         <Box>
 
                             <Typography>
-                                <Link to={require('../Images/exampleImport.csv')} target="_blank" download>
+                                <Link to={require('../Static/exampleImport.csv')} target="_blank" download>
                                     Download
                                 </Link> example import file
                             </Typography>

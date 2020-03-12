@@ -31,7 +31,7 @@ import LoadingCircle from "../Components/LoadingCircle";
 import PageTitleTypography from "../Components/PageTitleTypography";
 import SubHeadingTextTypography from "../Components/SubHeadingTextTypography";
 import {strapi, strapiURL} from "../constants";
-import * as url from '../Images/default-user-profile-image-png-6.png';
+import * as url from '../Static/default-user-profile-image-png-6.png';
 import {auth} from '../index.js';
 
 const styles = theme => ({

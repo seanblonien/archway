@@ -39,7 +39,7 @@ class Cards extends Component {
                             <CardMedia
                                 component="img"
                                 height="300"
-                                image={ this.getImageUrl(this.props.listitems[i]['image']) || require('../Images/arch.svg')}
+                                image={ this.getImageUrl(this.props.listitems[i]['image']) || require('../Static/arch.svg')}
                             />
                             <CardContent>
                                 <Typography variant="h5">

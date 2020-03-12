@@ -15,8 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from "@material-ui/core/withWidth/withWidth";
 import React from 'react';
 import {university} from '../constants';
-import * as url from "../Images/businessmen.jpg";
-import * as url2 from "../Images/students.jpg";
+import * as url from "../Static/businessmen.jpg";
+import * as url2 from "../Static/students.jpg";
 
 
 const styles = theme => ({
