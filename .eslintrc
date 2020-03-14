@@ -12,12 +12,19 @@
   ],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "semi": ["error", "always"],
     "no-param-reassign": ["error", { "props": false }],
     "no-restricted-syntax": "off",
     "react/jsx-no-bind": "error",
     "react/sort-comp": "warn",
     "react/jsx-props-no-spreading": "off",
     "object-curly-spacing": ["warn", "never"],
-    "template-curly-spacing": ["warn", "never"]
+    "template-curly-spacing": ["warn", "never"],
+    "react/jsx-tag-spacing": ["warn", {
+      "closingSlash": "never",
+      "beforeSelfClosing": "never",
+      "afterOpening": "never",
+      "beforeClosing": "never"
+    }]
   }
 }
