@@ -55,10 +55,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint ."
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix ."
   },
   "browserslist": [
     ">0.2%",

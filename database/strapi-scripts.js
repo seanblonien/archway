@@ -2,17 +2,18 @@
  * This file contains Strapi constants and helper methods for running Strapi
  * related scripts.
  */
+/* eslint-disable no-console, no-await-in-loop, no-empty */
 const axios = require('axios').default;
 const fs = require('fs');
 const path = require('path');
 
 const STRAPI_BASE_URL = 'http://localhost:1337';
-const STRAPI_CONTENT_TYPE_URL = STRAPI_BASE_URL + '/content-type-builder/content-types';
-const STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL = STRAPI_CONTENT_TYPE_URL + '/application::';
-const STRAPI_CONTENT_TYPE_UPDATE_PLUGIN_URL = STRAPI_CONTENT_TYPE_URL + '/plugins::';
-const STRAPI_CONTENT_TYPE_GET_URL = STRAPI_BASE_URL + '/content-manager/content-types/application::';
-const STRAPI_ADMIN_REGISTER = STRAPI_BASE_URL + '/admin/auth/local/register';
-const STRAPI_ADMIN_LOGIN = STRAPI_BASE_URL + '/admin/auth/local';
+const STRAPI_CONTENT_TYPE_URL = `${STRAPI_BASE_URL}/content-type-builder/content-types`;
+const STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL = `${STRAPI_CONTENT_TYPE_URL}/application::`;
+const STRAPI_CONTENT_TYPE_UPDATE_PLUGIN_URL = `${STRAPI_CONTENT_TYPE_URL}/plugins::`;
+const STRAPI_CONTENT_TYPE_GET_URL = `${STRAPI_BASE_URL}/content-manager/content-types/application::`;
+const STRAPI_ADMIN_REGISTER = `${STRAPI_BASE_URL}/admin/auth/local/register`;
+const STRAPI_ADMIN_LOGIN = `${STRAPI_BASE_URL}/admin/auth/local`;
 const STRAPI_ADMIN_USERNAME = 'admin';
 const STRAPI_ADMIN_PASSWORD = 'capstone';
 const STRAPI_ADMIN_EMAIL = 'seanb2016@gmail.com';
@@ -40,15 +41,15 @@ const authenticate = async () => {
                     "password": STRAPI_ADMIN_PASSWORD,
                     "rememberMe": false
                 });
-            } catch (error) {
-                console.error(`Error when logging in:\n` + error);
+            } catch (error2) {
+                console.error(`Error when logging in:\n ${error2}`);
                 return;
             }
         }
     }
 
     // Set the authorization token in the header after successful login
-    axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.data.jwt}`;
+    axios.defaults.headers.common.Authorization = `Bearer ${loginResponse.data.jwt}`;
 };
 
 // Format the content type object with the Strapi format required for
@@ -88,8 +89,8 @@ const writeJSONToFile = (filename, jsonObj) => {
 const removePluginAttribute = contentTypes => {
     contentTypes.forEach(contentType => {
         Object.keys(contentType.attributes).forEach(t => {
-            if(contentType.attributes[t].hasOwnProperty('plugin')){
-                delete contentType.attributes[t]['plugin'];
+            if(contentType.attributes[t].plugin){
+                delete contentType.attributes[t].plugin;
             }
         });
     });

@@ -6,8 +6,10 @@
  * Note: drops any pre-existing collection if a collection being imported has
  * the same name. Will not delete or modify collections that are not imported.
  */
-const execShellCommand = require('./execShellCommand.js');
+/* eslint-disable no-console */
 const path = require("path");
+const execShellCommand = require('./execShellCommand.js');
+
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
 

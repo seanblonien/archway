@@ -4,8 +4,10 @@
  * Stores the uploads in the local directory as a zip file that can be
  * later used for importing to another Strapi instance.
  */
-const execShellCommand  = require('./execShellCommand.js');
+/* eslint-disable no-console */
 const path = require("path");
+const execShellCommand  = require('./execShellCommand.js');
+
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
 

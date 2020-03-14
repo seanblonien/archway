@@ -5,7 +5,9 @@
  * This is done by querying for all of the content types and formatting them
  * to JSON that can be used to import later. See import-strapi.js for more.
  */
+/* eslint-disable no-console */
 const s = require('./strapi-scripts.js');
+
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
 
@@ -23,17 +25,17 @@ const ARGV_REQUIRED_LENGTH = 3;
     console.log(`Login successful!`);
 
     console.log(`Fetching all existing content types`);
-    let serverContentTypesResponse = await s.axios.get(s.STRAPI_CONTENT_TYPE_URL);
+    const serverContentTypesResponse = await s.axios.get(s.STRAPI_CONTENT_TYPE_URL);
     // List of the content types on the Strapi server
-    let serverContentTypes = serverContentTypesResponse.data.data.map(t => t.schema);
+    const serverContentTypes = serverContentTypesResponse.data.data.map(t => t.schema);
     // Remove 'plugin' attribute that cause errors
     s.removePluginAttribute(serverContentTypes);
     // Split the content types into 'application' and 'plugins'
-    let serverContentTypesPlugins= serverContentTypes.filter(contentType => contentType.collectionName.startsWith('users-permissions'));
-    let serverContentTypesApplication = serverContentTypes.filter(contentType => !contentType.collectionName.startsWith('users-permissions'));
+    const serverContentTypesPlugins= serverContentTypes.filter(contentType => contentType.collectionName.startsWith('users-permissions'));
+    const serverContentTypesApplication = serverContentTypes.filter(contentType => !contentType.collectionName.startsWith('users-permissions'));
 
     // Put the application and plugins content types in a json object
-    let output = {
+    const output = {
         "application": serverContentTypesApplication,
         "plugins": serverContentTypesPlugins
     };

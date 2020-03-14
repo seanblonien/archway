@@ -12,6 +12,7 @@ The following steps take you through the required steps to install, build, and r
 5. Run `npm install` in the same directory to install all dependencies for the front end app (this is run locally, and not in the container, so that files may be edited in real time and updated in the container).
 6. Once that is done, run `docker-compose up` to start all of the Docker containers (database, strapi, and app).
     - NOTE: if this is your first time starting, this may take several minutes.
+    - NOTE: windows users may have to type `net stop http` to use port 80
 
 ## How to Import Data
 

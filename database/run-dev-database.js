@@ -1,7 +1,7 @@
 /**
  * Starts an instance of a MongoDB dev-database to be used for development purposes.
  */
-const { execShellCommand } = require('./execShellCommand');
+const {execShellCommand} = require('./execShellCommand');
 
 // Runs the database:latest Docker image for the dev environment with its own volume mount, port, and environment variables
 // -d is for detached mode

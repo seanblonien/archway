@@ -12,8 +12,10 @@
  * be helpful, although it was outdated for this:
  * https://strapi.io/documentation/3.0.0-beta.x/concepts/models.html#concept
  */
-const s = require('./strapi-scripts.js');
+/* eslint-disable no-console, no-await-in-loop */
 const _ = require('lodash');
+const s = require('./strapi-scripts.js');
+
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
 
@@ -35,54 +37,48 @@ const ARGV_REQUIRED_LENGTH = 3;
     console.log(`Reading in content type schema fromm file`);
     const schema = JSON.parse(s.readJSONFromFile(fileName));
     // Get the list of application content types
-    let applicationContentTypes = schema.application;
+    const applicationContentTypes = schema.application;
     // Get the list of plugin content types
-    let pluginsContentTypes = schema.plugins;
+    const pluginsContentTypes = schema.plugins;
     // All content types
-    let localContentTypes = [...applicationContentTypes, ...pluginsContentTypes];
+    const localContentTypes = [...applicationContentTypes, ...pluginsContentTypes];
     // Remove 'plugin' attribute that cause errors
     s.removePluginAttribute(localContentTypes);
     // Verify local content types are not capitalized
-    for(const contentType of localContentTypes){
-        if(contentType.name !== contentType.name.toLowerCase()){
-            console.error(`Content types cannot have capital letters in Strapi!`);
-            console.error(`See: ${contentType.name}`);
-            return;
-        }
+    const capitalized = localContentTypes.filter(contentType => contentType.name !== contentType.name.toLowerCase());
+    if(!_.isEmpty(capitalized)){
+        console.error(`Content types cannot have capital letters in Strapi!`);
+        console.error(`See: ${capitalized.map(c => c.name)}`);
+        return;
     }
 
     // Add the content type schemas to Strapi
     try {
         console.log(`Fetching all existing content types`);
         // Fetch all of the current content types on the Strapi server
-        let serverContentTypesResponse = await s.axios.get(s.STRAPI_CONTENT_TYPE_URL);
+        const serverContentTypesResponse = await s.axios.get(s.STRAPI_CONTENT_TYPE_URL);
         // List of the content types on the Strapi server
-        let serverContentTypes = serverContentTypesResponse.data.data.map(t => t.schema);
+        const serverContentTypes = serverContentTypesResponse.data.data.map(t => t.schema);
         // Remove 'plugin' attribute that cause errors
         s.removePluginAttribute(serverContentTypes);
 
         // Find the content types to delete
-        let contentTypeNamesToDelete = _.differenceWith(serverContentTypes.map(s => s.name), localContentTypes.map(s => s.name), _.isEqual);
+        const contentTypeNamesToDelete = _.differenceWith(serverContentTypes.map(serverType => serverType.name), localContentTypes.map(localType => localType.name), _.isEqual);
         // Find the application content types that need to be created or updated
-        let applicationContentTypesToUpdate = _.differenceWith(applicationContentTypes, serverContentTypes, _.isEqual);
+        const applicationContentTypesToUpdate = _.differenceWith(applicationContentTypes, serverContentTypes, _.isEqual);
         // Find the the plugin content types that need to be created or updated
-        let pluginsContentTypesToUpdate = _.differenceWith(pluginsContentTypes, serverContentTypes, _.isEqual);
+        const pluginsContentTypesToUpdate = _.differenceWith(pluginsContentTypes, serverContentTypes, _.isEqual);
 
         console.log(`Checking which content types need to be created`);
         // Check to see which content types need to be created
-        const contentTypeToCreate = [];
-        const contentTypeToUpdate = [];
-        for (const contentType of applicationContentTypesToUpdate) {
-            const url = s.STRAPI_CONTENT_TYPE_GET_URL + contentType.name + '.' + contentType.name;
-            const response = await s.axios.get(url).catch(e => e);
-            // If request returned error, the content type needs to be created,
-            // otherwise, updated
-            if (response instanceof Error) {
-                contentTypeToCreate.push(contentType);
-            } else {
-                contentTypeToUpdate.push(contentType);
-            }
-        }
+        const contentTypesPromises = applicationContentTypesToUpdate.map(contentType =>
+            s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL + contentType.name}.${contentType.name}`).catch(e => e)
+        );
+        const contentTypesResponses = await Promise.all(contentTypesPromises);
+        // If request returned error, the content type needs to be created,
+        // otherwise, updated
+        const contentTypeToCreate = contentTypesResponses.filter(response => response instanceof Error);
+        const contentTypeToUpdate = contentTypesResponses.filter(response => !(response instanceof Error));
 
         // For the content types that need to be created, shallow create them
         // so that that can be referenced by other content types upon creation
@@ -115,7 +111,7 @@ const ARGV_REQUIRED_LENGTH = 3;
         contentTypeToUpdate.push(...contentTypeToCreate);
         // Update the application (user defined) content types
         for (const contentType of contentTypeToUpdate) {
-            const url = s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + contentType.name + '.' + contentType.name;
+            const url = `${s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + contentType.name}.${contentType.name}`;
             const payload = s.formatContentType(contentType);
             console.log(`\tUpdating ${contentType.name}`);
             await s.axios.put(url, payload);
@@ -124,7 +120,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 
         // Delete any content types not specified locally
         for(const name of contentTypeNamesToDelete){
-            const url = s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + name + '.' + name;
+            const url = `${s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + name}.${name}`;
             console.log(`\tDeleting ${name}`);
             await s.axios.delete(url);
             await s.awaitRestart();

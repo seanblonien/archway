@@ -5,8 +5,10 @@
  *
  * Note: any pre-existing uploads on Strapi will be deleted and overridden.
  */
-const execShellCommand  = require('./execShellCommand.js');
+/* eslint-disable no-console */
 const path = require("path");
+const execShellCommand  = require('./execShellCommand.js');
+
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
 
