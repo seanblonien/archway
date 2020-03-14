@@ -13,6 +13,9 @@
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "semi": ["error", "always"],
+    "indent": ["warn", 2],
+    "quotes": "warn",
+    "jsx-quotes": ["warn", "prefer-single"],
     "no-param-reassign": ["error", { "props": false }],
     "no-restricted-syntax": "off",
     "react/jsx-no-bind": "error",
@@ -25,6 +28,7 @@
       "beforeSelfClosing": "never",
       "afterOpening": "never",
       "beforeClosing": "never"
-    }]
+    }],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }]
   }
 }

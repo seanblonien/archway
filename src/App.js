@@ -27,38 +27,38 @@ import ViewYourCapstonesSponsors from './Pages/ViewYourCapstonesSponsors';
 import auth from './Auth';
 
 export default function App (){
-    return <>
-        <Router>
-            <div className="App" style={{minHeight: '100vh', position: 'relative'}}>
-                <Header/>
-                <div style={{paddingBottom: '140px'}}>
-                    <Switch>
-                        <Route path="/login" component={Login}/>
-                        {auth.isAuthenticated() && <Route path="/secret" component={Secret}/>}
-                        <Route path="/callback" component={Callback}/>
-                        <Route path="/SearchRedirect/:path/:searchTerm?" component={SearchRedirect}/>
-                        <Route path="/Capstones/:searchTerm?" component={Capstone}/>
-                        <Route path="/about" component={About}/>
-                        <Route path="/CreateCapstone" component={CreateCapstone}/>
-                        <Route path="/Register" component={Register}/>
-                        <Route path="/ViewCapstone/:capstoneID" component={ViewCapstone}/>
-                        <Route path="/ViewUser/:username" component={ViewUser}/>
-                        <Route path="/ViewProfile/:username" component={ViewProfile}/>
-                        <Route path="/ViewYourCapstones/" component={ViewYourCapstones}/>
-                        <Route path="/ViewYourCapstonesSponsors/" component={ViewYourCapstonesSponsors}/>
-                        <Route path="/Sponsors/" component={Sponsors}/>
-                        <Route path="/ViewSponsors/:searchTerm?" component={ViewSponsors}/>
-                        <Route path="/ViewASponsor/:id" component={ViewASponsor}/>
-                        <Route path="/ViewAllDepartments/" component={ViewAllDepartments}/>
-                        <Route path="/ViewADepartment/:id" component={ViewADepartment}/>
-                        <Route path="/FAQ/" component={FAQ}/>
-                        <Route path="/ImportUsers/" component={ImportUsers}/>
-                        <Route exact path="" component={Home}/>
-                        <Route path="*" component={NotFound}/>
-                    </Switch>
-                </div>
-                <Footer/>
-            </div>
-        </Router>
-    </>;
+  return <>
+    <Router>
+      <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
+        <Header/>
+        <div style={{paddingBottom: '140px'}}>
+          <Switch>
+            <Route path='/login' component={Login}/>
+            {auth.isAuthenticated() && <Route path='/secret' component={Secret}/>}
+            <Route path='/callback' component={Callback}/>
+            <Route path='/SearchRedirect/:path/:searchTerm?' component={SearchRedirect}/>
+            <Route path='/Capstones/:searchTerm?' component={Capstone}/>
+            <Route path='/about' component={About}/>
+            <Route path='/CreateCapstone' component={CreateCapstone}/>
+            <Route path='/Register' component={Register}/>
+            <Route path='/ViewCapstone/:capstoneID' component={ViewCapstone}/>
+            <Route path='/ViewUser/:username' component={ViewUser}/>
+            <Route path='/ViewProfile/:username' component={ViewProfile}/>
+            <Route path='/ViewYourCapstones/' component={ViewYourCapstones}/>
+            <Route path='/ViewYourCapstonesSponsors/' component={ViewYourCapstonesSponsors}/>
+            <Route path='/Sponsors/' component={Sponsors}/>
+            <Route path='/ViewSponsors/:searchTerm?' component={ViewSponsors}/>
+            <Route path='/ViewASponsor/:id' component={ViewASponsor}/>
+            <Route path='/ViewAllDepartments/' component={ViewAllDepartments}/>
+            <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
+            <Route path='/FAQ/' component={FAQ}/>
+            <Route path='/ImportUsers/' component={ImportUsers}/>
+            <Route exact path='' component={Home}/>
+            <Route path='*' component={NotFound}/>
+          </Switch>
+        </div>
+        <Footer/>
+      </div>
+    </Router>
+  </>;
 }
