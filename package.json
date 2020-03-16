@@ -50,7 +50,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint-fix": "eslint --fix .",
-    "import": "node database/import-all.js"
+    "import": "node database/import-all.js",
+    "export": "node database/export-all.js"
   },
   "browserslist": [
     ">0.2%",

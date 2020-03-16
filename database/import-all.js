@@ -1,5 +1,5 @@
 /**
- * Script that runs all three import scripts (database, strapi, and
+ * Script that runs all three import scripts (database, Strapi, and
  * uploads) with the corresponding BaseExports files.
  */
 /* eslint-disable no-console */
