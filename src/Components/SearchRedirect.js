@@ -1,36 +1,25 @@
-/*
-Filename: SearchRedirect.js
-Contributors: Ryan Cave
- */
+import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
 
-import React from "react";
-import {Redirect} from "react-router-dom";
+export default class SearchRedirect extends Component {
+  constructor(props) {
+    super(props);
+    const {match} = props;
 
-export default class SearchRedirect extends React.Component {
+    this.state = {
+      redir: match.params,
+    };
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            redir: this.props.match.params,
-        }
+  render() {
+    const {redir} = this.state;
+
+    if (redir.searchTerm !== undefined) {
+      const newPath = `/${redir.path}/${redir.searchTerm}`;
+
+      return <Redirect to={newPath}/>;
     }
 
-    render() {
-        if (this.state.redir.searchTerm !== undefined){
-            let newPath = "/" + this.state.redir.path + "/" + this.state.redir.searchTerm;
-            this.setState({redirectPath: newPath});
-
-            return(
-                <div>
-                    <Redirect to={newPath}  />
-                </div>
-            );
-        }
-
-        return(
-            <div>
-                <Redirect to={"/" + this.state.redir.path}  />
-            </div>
-        );
-    }
+    return <Redirect to={`/${redir.path}`}/>;
+  }
 }
