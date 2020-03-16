@@ -16,7 +16,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
   // Verify a filename was provided
-  if(process.argv.length < ARGV_REQUIRED_LENGTH){
+  if(process.argv.length < ARGV_REQUIRED_LENGTH) {
     console.error('Please provide a filename for the database import.');
     return;
   }
@@ -35,7 +35,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     await execShellCommand('docker exec database mongorestore --uri "mongodb://root:capstone@database:27017/?authSource=admin" --drop -d strapi /dump/strapi');
 
     console.log('Database import successful!');
-  } catch(e){
+  } catch(e) {
     // Log the error to console
     console.error(e);
   }

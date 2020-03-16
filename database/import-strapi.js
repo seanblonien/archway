@@ -22,7 +22,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
   // Get the import filename to use
-  if(process.argv.length < ARGV_REQUIRED_LENGTH){
+  if(process.argv.length < ARGV_REQUIRED_LENGTH) {
     console.error('Please provide a filename for the strapi import.');
     return;
   }
@@ -46,7 +46,7 @@ const ARGV_REQUIRED_LENGTH = 3;
   s.removePluginAttribute(localContentTypes);
   // Verify local content types are not capitalized
   const capitalized = localContentTypes.filter(contentType => contentType.name !== contentType.name.toLowerCase());
-  if(!_.isEmpty(capitalized)){
+  if(!_.isEmpty(capitalized)) {
     console.error('Content types cannot have capital letters in Strapi!');
     console.error(`See: ${capitalized.map(c => c.name)}`);
     return;
@@ -119,7 +119,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     }
 
     // Delete any content types not specified locally
-    for(const name of contentTypeNamesToDelete){
+    for(const name of contentTypeNamesToDelete) {
       const url = `${s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + name}.${name}`;
       console.log(`\tDeleting ${name}`);
       await s.axios.delete(url);

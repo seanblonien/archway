@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {Router, Route, Switch} from 'react-router-dom';
 import About from './Components/About';
 import Footer from './Components/Footer';
 import Header from './Components/Header/Header';
@@ -25,10 +25,11 @@ import ViewUser from './Pages/ViewUser';
 import ViewYourCapstones from './Pages/ViewYourCapstones';
 import ViewYourCapstonesSponsors from './Pages/ViewYourCapstonesSponsors';
 import auth from './Auth';
+import history from './utils/history';
 
-export default function App (){
+export default function App () {
   return <>
-    <Router>
+    <Router history={history}>
       <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
         <Header/>
         <div style={{paddingBottom: '140px'}}>
@@ -38,7 +39,7 @@ export default function App (){
             <Route path='/callback' component={Callback}/>
             <Route path='/SearchRedirect/:path/:searchTerm?' component={SearchRedirect}/>
             <Route path='/Capstones/:searchTerm?' component={Capstone}/>
-            <Route path='/about' component={About}/>
+            <Route path='/About' component={About}/>
             <Route path='/CreateCapstone' component={CreateCapstone}/>
             <Route path='/Register' component={Register}/>
             <Route path='/ViewCapstone/:capstoneID' component={ViewCapstone}/>

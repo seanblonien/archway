@@ -1,48 +1,47 @@
-/*
-Filename: SubHeadingTextTypography.js
-Contributors:
-Stephen Tate - Wrote entire file.
- */
-
 import Typography from '@material-ui/core/Typography';
-import withWidth from "@material-ui/core/withWidth/withWidth";
+import withWidth from '@material-ui/core/withWidth/withWidth';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Component} from 'react';
 import compose from 'recompose/compose';
 
-class SubHeadingTextTypography extends React.Component{
+class SubHeadingTextTypography extends Component {
+  resizeSubheadingText = () => {
+    const {width} = this.props;
 
-    static resizeSubheadingText(props){
-        if(props.width === 'xl'){
-            return "h4";
-        }else if(props.width === 'lg'){
-            return "h5";
-        }else if(props.width ==='md'){
-            return "h5";
-        }else if(props.width ==='sm'){
-            return "h6"
-        }
-        return "subtitle1";
+    if(width === 'xl') {
+      return 'h4';
+    }if(width === 'lg') {
+      return 'h5';
+    }if(width ==='md') {
+      return 'h5';
+    }if(width ==='sm') {
+      return 'h6';
     }
+    return 'subtitle1';
+  };
 
-    render() {
-        return (
-            <Typography align={this.props.align} variant={SubHeadingTextTypography.resizeSubheadingText(this.props)}>
-                <b>{this.props.text}</b>
-            </Typography>
-        );
-    }
+  render() {
+    const {align, text} = this.props;
+
+    return (
+      <Typography align={align} variant={this.resizeSubheadingText()}>
+        <b>{text}</b>
+      </Typography>
+    );
+  }
 }
 
 SubHeadingTextTypography.propTypes = {
-    text: PropTypes.string,
-    align: PropTypes.string,
+  text: PropTypes.string.isRequired,
+  align: PropTypes.string,
+  width: PropTypes.string,
 };
 
 SubHeadingTextTypography.defaultProps = {
-    align: "left",
+  align: 'left',
+  width: 'md'
 };
 
 export default compose(
-    withWidth(),
+  withWidth(),
 )(SubHeadingTextTypography);

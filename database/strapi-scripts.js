@@ -54,12 +54,10 @@ const authenticate = async () => {
 
 // Format the content type object with the Strapi format required for
 // creating and updating a content type
-const formatContentType = contentType => {
-  return {
-    'components': [],
-    'contentType': contentType
-  };
-};
+const formatContentType = contentType => ({
+  'components': [],
+  'contentType': contentType
+});
 
 // Waits until the Strapi endpoint is reachable while restarting
 const awaitRestart = async () => {
@@ -74,9 +72,7 @@ const awaitRestart = async () => {
 };
 
 // Reads in the given file assumed to be in the local directory
-const readJSONFromFile = filename => {
-  return fs.readFileSync(path.resolve(__dirname, filename), 'utf8');
-};
+const readJSONFromFile = filename => fs.readFileSync(path.resolve(__dirname, filename), 'utf8');
 
 // Writes the given json object to the filename provided in the current
 // directory
@@ -89,7 +85,7 @@ const writeJSONToFile = (filename, jsonObj) => {
 const removePluginAttribute = contentTypes => {
   contentTypes.forEach(contentType => {
     Object.keys(contentType.attributes).forEach(t => {
-      if(contentType.attributes[t].plugin){
+      if(contentType.attributes[t].plugin) {
         delete contentType.attributes[t].plugin;
       }
     });

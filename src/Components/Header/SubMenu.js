@@ -2,7 +2,8 @@ import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles} from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 
 const StyledTooltip = withStyles(theme => ({
@@ -23,41 +24,44 @@ const StyledMenuItem = withStyles(theme => ({
   },
 }))(MenuItem);
 
-class SubMenu extends Component {
-    render() {
-        return (
-            <div>
-              <StyledTooltip disableFocusListener
-              interactive
-              placement="bottom-start"
-              title={
-                <React.Fragment>
-                  {this.props.items.map((value, index) => {
-                            const linkValue = this.props.links[index];
-                            return (
-                                <Link key={index} component={RouterLink} to={linkValue}>
-                                    <StyledMenuItem onClick={this.handleClose}>
-                                        {value}
-                                    </StyledMenuItem>
-                                </Link>
-                            )
-                        })}
-                </React.Fragment>}
-                >
-                  <MenuItem
-                    aria-controls="customized-menu"
-                    aria-haspopup="true"
-                    variant="contained"
-                    color="primary"
-                    style={{color: 'white'}}
-                >
-                    {this.props.title}
-                </MenuItem>
-              </StyledTooltip>
+const SubMenu = ({items, links, title}) => (
+  <>
+    <StyledTooltip
+      disableFocusListener
+      interactive
+      placement='bottom-start'
+      title={
+        <>
+          {items.map((value, index) => {
+            const linkValue = links[index];
+            return (
+              <Link key={linkValue} component={RouterLink} to={linkValue}>
+                <StyledMenuItem>
+                  {value}
+                </StyledMenuItem>
+              </Link>
+            );
+          })}
+        </>}
+    >
+      <MenuItem
+        aria-controls='customized-menu'
+        aria-haspopup='true'
+        variant='contained'
+        color='primary'
+        style={{color: 'white'}}
+      >
+        {title}
+      </MenuItem>
+    </StyledTooltip>
 
-            </div>
-        );
-    }
-}
+  </>
+);
+
+SubMenu.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+  links: PropTypes.arrayOf(PropTypes.string).isRequired,
+  title: PropTypes.string.isRequired
+};
 
 export default SubMenu;

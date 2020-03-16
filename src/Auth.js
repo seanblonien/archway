@@ -1,6 +1,7 @@
 /* eslint no-restricted-globals: 0 */
 import auth0 from 'auth0-js';
 import jwtDecode from 'jwt-decode';
+import hash from 'object-hash';
 
 const LOGIN_SUCCESS_PAGE = '/secret';
 const LOGIN_FAILURE_PAGE = '/';
@@ -10,7 +11,7 @@ class Auth {
     auth0 = new auth0.WebAuth({
       domain: `${DOMAIN_PREFIX}.auth0.com`,
       clientID: 'V9OTevHpl8fIrm4ZV8sXbzH1c7CkRtxA',
-      redirectUri: 'http://localhost:3000/callback',
+      redirectUri: 'http://localhost:80/callback',
       audience: `https://${DOMAIN_PREFIX}.auth0.com/userinfo`,
       responseType: 'token id_token',
       scope: 'openid profile'
@@ -18,7 +19,7 @@ class Auth {
 
     login = () => {
       this.auth0.authorize();
-    }
+    };
 
     handleAuthentication = () => {
       if (!localStorage.getItem('nickname')) {
@@ -47,16 +48,14 @@ class Auth {
           }
         });
       }
-    }
+    };
 
-    hashCode = (s) => {
-      return `${s.hashCode()}`;
-    }
+    hashCode = (s) => `${hash(s)}`;
 
     isAuthenticated = () => {
       const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
       return new Date().getTime() < expiresAt;
-    }
+    };
 
     logout = () => {
       localStorage.clear();
@@ -64,27 +63,20 @@ class Auth {
       // necessary link to clear cookies, else it logs user back in immediately
       window.location.replace(`http://${DOMAIN_PREFIX}.auth0.com/v2/logout`);
       window.location.replace('/');
-    }
+    };
 
     getProfile = () => {
       if(localStorage.getItem('id_token')) {
         return jwtDecode(localStorage.getItem('id_token'));
       }
       return {};
-    }
-
-    getUser = () => {
-      return JSON.parse(localStorage.getItem('USER'));
     };
 
-    getNickname = () => {
-      return localStorage.getItem('nickname');
-    };
+    getUser = () => JSON.parse(localStorage.getItem('USER'));
 
-    getToken = () => {
-      return localStorage.getItem('USERTOKEN');
-    }
+    getNickname = () => localStorage.getItem('nickname');
+
+    getToken = () => localStorage.getItem('USERTOKEN')
 }
 
-const auth = new Auth();
-export default auth;
+export default new Auth();

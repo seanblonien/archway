@@ -14,7 +14,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
   // Get the export filename to use
-  if(process.argv.length < ARGV_REQUIRED_LENGTH){
+  if(process.argv.length < ARGV_REQUIRED_LENGTH) {
     console.error('Please provide a filename for strapi export.');
     return;
   }

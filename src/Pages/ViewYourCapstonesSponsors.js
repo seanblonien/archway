@@ -1,19 +1,9 @@
-/*
-Filename: ViewYourCapstones.js
-Contributors:
-Brenden Detels- All functionality
-Stephen Tate - Gridlist layout and bug fixes
- */
-
-import React from 'react';
+import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import {strapi} from "../constants";
-import LoadingCircle from "../Components/LoadingCircle";
-import ProposalForm from "../Components/ProposalForm"
 import Divider from '@material-ui/core/Divider';
 import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -23,138 +13,130 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import ProposalForm from '../Components/ProposalForm';
+import LoadingCircle from '../Components/LoadingCircle';
+import {strapi} from '../constants';
 
 const styles = {
-    card: {
-        raised: true,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 18,
-    },
-    pos: {
-        marginBottom: 100,
-    },
-    icon: {
-        color: 'rgba(255, 255, 255, 0.54)',
-    },
+  card: {
+    raised: true,
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 18,
+  },
+  pos: {
+    marginBottom: 100,
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)',
+  },
 };
 
-class ViewYourCapstonesSponsors extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: true,
-            capstones: [],
-            pastCapstones: [],
-            currentCapstones: [],
-            proposals: []
-        }
+class ViewYourCapstonesSponsors extends Component {
+  static getColumns(props) {
+    if(props.width === 'xl') {
+      return 4;
+    }if(props.width === 'lg') {
+      return 4;
+    }if(props.width ==='md') {
+      return 3;
     }
-    async componentDidMount() {
-        const currentProposals = await strapi.getEntries('proposals');
+    return 2;
+  }
 
-        this.setState({loading: false, proposals: currentProposals});
+  constructor(props) {
+    super(props);
+
+    // TODO add capstones
+    this.state = {
+      loading: true,
+      proposals: []
+    };
+  }
+
+  async componentDidMount() {
+    const currentProposals = await strapi.getEntries('proposals');
+
+    this.setState({loading: false, proposals: currentProposals});
+  }
+
+  render() {
+    const {classes} = this.props;
+    const {loading, proposals} = this.state;
+
+    if (!loading) {
+      return (
+        <div className='Blogpost'>
+          <Grid container justify='center'>
+            <Grid item md={10} xs={12}>
+              <Grid container direction='row' alignItems='flex-end' justify='space-between'>
+                <Grid item align='left'>
+                  <Typography variant='h4' style={{marginTop: '16px'}}>Pending Company Projects</Typography>
+                </Grid>
+                <Grid item align='right'>
+                  <ProposalForm/>
+                </Grid>
+              </Grid>
+              <br/>
+              {proposals.length > 0 &&
+                <TableContainer component={Paper} className={classes.table}>
+                  <Table aria-label='simple table'>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Project title</TableCell>
+                        <TableCell align='right'>Status</TableCell>
+                        <TableCell align='right'>Actions</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {proposals.map((proposal, index) => (
+                        <TableRow key={index}>
+                          <TableCell component='th' scope='row'>
+                            {proposal.projectTitle}
+                          </TableCell>
+                          <TableCell align='right'>{proposal.status}</TableCell>
+                          <TableCell align='right'>
+                            <Button>Edit</Button>
+                            <Button>Delete</Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              }
+            </Grid>
+          </Grid>
+          <Grid container justify='center'>
+            <Grid item md={10} xs={12}>
+              <Typography variant='h4' style={{marginTop: '16px'}}>Current Company Projects</Typography>
+              <Divider/>
+              <br/>
+            </Grid>
+          </Grid>
+
+
+          <Grid container justify='center'>
+            <Grid item md={10} xs={12}>
+              <Typography variant='h4' style={{marginTop: '16px'}}>Past Company Projects</Typography>
+              <Divider/>
+              <br/>
+            </Grid>
+          </Grid>
+        </div>
+      );
     }
 
-
-    static getColumns(props) {
-        if(props.width === 'xl'){
-            return 4;
-        }else if(props.width === 'lg'){
-            return 4;
-        }else if(props.width ==='md'){
-            return 3;
-        }
-
-        return 2;
-    }
-
-    static handleTileClick(capstoneName){
-        window.location = "/ViewCapstone/" + capstoneName;
-    }
-
-    render() {
-        const { classes } = this.props;
-
-        if (!this.state.loading) {
-
-            return (
-                <div className="Blogpost">
-
-                    <Grid container justify="center">
-                        <Grid item md={10} xs={12}>
-                            <Grid container direction="row" alignItems="flex-end" justify="space-between">
-                                <Grid item align="left">
-                                <Typography variant="h4" style={{marginTop: '16px'}}>Pending Company Projects</Typography>
-                                </Grid>
-                                <Grid item align="right">
-                                <ProposalForm/>
-                                </Grid>
-                            </Grid>
-                            <br/>
-                            {this.state.proposals.length > 0 &&
-                            <TableContainer component={Paper} className={classes.table}>
-                                <Table aria-label="simple table">
-                                    <TableHead>
-                                    <TableRow>
-                                        <TableCell>Project title</TableCell>
-                                        <TableCell align="right">Status</TableCell>
-                                        <TableCell align="right">Actions</TableCell>
-                                    </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                    {this.state.proposals.map((proposal, index) => (
-                                        <TableRow key={index}>
-                                        <TableCell component="th" scope="row">
-                                            {proposal.projectTitle}
-                                        </TableCell>
-                                        <TableCell align="right">{proposal.status}</TableCell>
-                                        <TableCell align="right">
-                                            <Button>Edit</Button>
-                                            <Button>Delete</Button>
-                                        </TableCell>
-                                        </TableRow>
-                                    ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            }
-                        </Grid>
-                    </Grid>
-                    <Grid container justify="center">
-                        <Grid item md={10} xs={12}>
-                            <Typography variant="h4" style={{marginTop: '16px'}}>Current Company Projects</Typography>
-                            <Divider/>
-                            <br/>
-                        </Grid>
-                    </Grid>
-
-
-                    <Grid container justify="center">
-                        <Grid item md={10} xs={12}>
-                            <Typography variant="h4" style={{marginTop: '16px'}}>Past Company Projects</Typography>
-                            <Divider/>
-                            <br/>
-                        </Grid>
-                    </Grid>
-                </div>
-            );
-        }
-        else{
-            return (<div>
-                < LoadingCircle />
-            </div>);
-
-        }
-    }
+    return <LoadingCircle/>;
+  }
 }
 
 export default compose(
-    withStyles(styles),
-    withWidth(),
+  withStyles(styles),
+  withWidth(),
 )(ViewYourCapstonesSponsors);

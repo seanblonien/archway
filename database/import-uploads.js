@@ -15,7 +15,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
   // Verify a filename was provided
-  if(process.argv.length < ARGV_REQUIRED_LENGTH){
+  if(process.argv.length < ARGV_REQUIRED_LENGTH) {
     console.error('Please provide a filename for the uploads import.');
     return;
   }
@@ -32,7 +32,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     await execShellCommand('docker exec strapi unzip /uploads.zip -d /');
 
     console.log('Uploads import successful!');
-  } catch(e){
+  } catch(e) {
     // Log the error to console
     console.error(e);
   }

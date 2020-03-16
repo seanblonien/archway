@@ -1,8 +1,3 @@
-/*
-Filename: FilterBar.js
-Contributors: Ryan Cave
- */
-
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
@@ -10,106 +5,103 @@ import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import React from 'react';
-import {Redirect} from 'react-router-dom';
-import {strapi} from "../constants";
+import React, {Component} from 'react';
+import {strapi} from '../constants';
+import history from '../utils/history';
 
 const styles = theme => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    paper: {
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    formControl: {
-        margin: theme.spacing.unit,
-        minWidth: 200,
-    },
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  paper: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 200,
+  },
 });
 
-class NativeSelects extends React.Component {
+class NativeSelects extends Component {
+  constructor (props) {
+    super(props);
 
-    state = {
-        department: '',
-        sponsor: '',
-        redirectPath: "/SearchRedirect/Capstones/",
-        redirect: false,
-        capstones: [],
-        departmentList: [],
-        sponsorList: [],
+    this.state = {
+      department: '',
+      sponsor: '',
+      capstones: [],
+      departmentList: [],
+      sponsorList: [],
     };
+  }
 
-    async componentDidMount() {
-        const capstones = await strapi.getEntries('capstones');
-        const sponsors = capstones.filter(capstone => !_.isEmpty(capstone.sponsors))
-            .flatMap(capstone => capstone.sponsors)
-            .map(s => s.name);
-        const departments = capstones.filter(capstone => !_.isEmpty(capstone.department))
-            .flatMap(capstone => capstone.department)
-            .map(d => d.name);
+  async componentDidMount() {
+    const capstones = await strapi.getEntries('capstones');
+    const sponsorList = capstones.filter(capstone => !_.isEmpty(capstone.sponsors))
+      .flatMap(capstone => capstone.sponsors)
+      .map(s => s.name);
+    const departmentList = capstones.filter(capstone => !_.isEmpty(capstone.department))
+      .flatMap(capstone => capstone.department)
+      .map(d => d.name);
 
-        this.setState({capstones: capstones, sponsorList: sponsors, departmentList: departments});
-    }
+    this.setState({capstones, sponsorList, departmentList});
+  }
 
-    handleChange = name => event => {
-        this.setState({ [name]: event.target.value });
-        let newPath = this.state.redirectPath + event.target.value;
-        this.setState({redirect: true});
-        this.setState({redirectPath: newPath})
-    };
+  handleChange = name => event => {
+    const path = `/SearchRedirect/Capstones/${event.target.value}`;
+    this.setState({[name]: event.target.value});
+    history.push(path);
+  };
 
-    render() {
-        const { classes } = this.props;
+  render() {
+    const {classes} = this.props;
+    const {department, departmentList, sponsor, sponsorList, capstones} = this.state;
+    // TODO use capstones
+    capstones.filter(() => true);
 
-        if (this.state.redirect === true){
-            return(
-                <Redirect to={this.state.redirectPath}  />
-            )
-        }
+    return (
+      <div className={classes.root}>
+        <Paper className={classes.paper}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor='age-native-simple'>Department</InputLabel>
+            <Select
+              native
+              value={department}
+              onChange={this.handleChange('department')}
+            >
+              <option value=''/>
+              {departmentList.map(name => (
+                <option value={name} key={name}>{name}</option>
+              ))}
+            </Select>
+          </FormControl>
 
-        return (
-            <div className={classes.root} >
-                <Paper className={classes.paper} >
-                    <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="age-native-simple">Department</InputLabel>
-                        <Select
-                            native
-                            value={this.state.department}
-                            onChange={this.handleChange('department')}
-                        >
-                            <option value='' />
-                            {this.state.departmentList.map(name => (
-                                <option value={name} key={name}>{name}</option>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="age-native-simple">Sponsor</InputLabel>
-                        <Select
-                            native
-                            value={this.state.sponsor}
-                            onChange={this.handleChange('sponsor')}
-                        >
-                            <option value='' />
-                            {this.state.sponsorList.map(name => (
-                                <option value={name} key={name}>{name}</option>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Paper>
-            </div>
-        );
-    }
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor='age-native-simple'>Sponsor</InputLabel>
+            <Select
+              native
+              value={sponsor}
+              onChange={this.handleChange('sponsor')}
+            >
+              <option value=''/>
+              {sponsorList.map(name => (
+                <option value={name} key={name}>{name}</option>
+              ))}
+            </Select>
+          </FormControl>
+        </Paper>
+      </div>
+    );
+  }
 }
 
 NativeSelects.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default withStyles(styles)(NativeSelects);
