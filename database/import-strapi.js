@@ -72,13 +72,13 @@ const ARGV_REQUIRED_LENGTH = 3;
     console.log('Checking which content types need to be created');
     // Check to see which content types need to be created
     const contentTypesPromises = applicationContentTypesToUpdate.map(contentType =>
-      s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL + contentType.name}.${contentType.name}`).catch(e => e)
+      s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL + contentType.name}.${contentType.name}`).catch(e => ({...e, contentType}))
     );
     const contentTypesResponses = await Promise.all(contentTypesPromises);
     // If request returned error, the content type needs to be created,
     // otherwise, updated
-    const contentTypeToCreate = contentTypesResponses.filter(response => response instanceof Error);
-    const contentTypeToUpdate = contentTypesResponses.filter(response => !(response instanceof Error));
+    const contentTypeToCreate = contentTypesResponses.filter(response => response.isAxiosError).map(contentType => contentType.contentType);
+    const contentTypeToUpdate = _.differenceWith(applicationContentTypesToUpdate, contentTypeToCreate, _.isEqual);
 
     // For the content types that need to be created, shallow create them
     // so that that can be referenced by other content types upon creation
@@ -127,9 +127,13 @@ const ARGV_REQUIRED_LENGTH = 3;
     }
     console.log('Finished updating content types');
   } catch (error) {
-    const key = Object.keys(error.response.data.error)[0];
-    const value = error.response.data.error[key][0];
-    console.error(`${error}\n${value}`);
+    if(_.isArray(error.response.data.error)){
+      const key = Object.keys(error.response.data.error)[0];
+      const value = error.response.data.error[key][0];
+      console.error(`${error}\n${value}`);
+    } else {
+      console.error(error);
+    }
   }
 
   console.log('Strapi schema import successful!');

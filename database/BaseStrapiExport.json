@@ -4,6 +4,7 @@
       "name": "capstones",
       "description": "Describes a Capstone Project",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "capstones",
       "attributes": {
         "CapstoneName": {
@@ -69,6 +70,7 @@
       "name": "commemts",
       "description": "Describes a Comment to a Post",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "commemts",
       "attributes": {
         "content": {
@@ -101,6 +103,7 @@
       "name": "departments",
       "description": "Describes a Department",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "departments",
       "attributes": {
         "name": {
@@ -153,6 +156,7 @@
       "name": "faqs",
       "description": "Describes a FAQ",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "faqs",
       "attributes": {
         "Category": {
@@ -176,6 +180,7 @@
       "name": "posts",
       "description": "Describes a Post on a Capstone Project",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "posts",
       "attributes": {
         "title": {
@@ -213,6 +218,7 @@
       "name": "proposals",
       "description": "Describes a proposal made by a sponsor",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "posts",
       "attributes": {
         "projectTitle": {
@@ -279,6 +285,7 @@
       "name": "sponsors",
       "description": "Describes a Sponsor for a Capstone Project",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "sponsors",
       "attributes": {
         "name": {
@@ -313,6 +320,7 @@
       "name": "viewstats",
       "description": "Describes a ViewStat",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "viewstats",
       "attributes": {
         "count": {
@@ -343,6 +351,7 @@
       "name": "permission",
       "description": "",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "users-permissions_permission",
       "attributes": {
         "type": {
@@ -383,6 +392,7 @@
       "name": "role",
       "description": "",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "users-permissions_role",
       "attributes": {
         "name": {
@@ -422,6 +432,7 @@
       "name": "user",
       "description": "",
       "connection": "default",
+      "kind": "collectionType",
       "collectionName": "users-permissions_user",
       "attributes": {
         "username": {

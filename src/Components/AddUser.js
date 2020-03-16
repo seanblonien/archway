@@ -42,16 +42,16 @@ class AddUser extends Component {
 
   // Handles submitting the user form and adding a user
   handleSubmit = async () => {
-    const {usr} = this.state;
-    const user = {...usr};
+    const {user} = this.state;
+    const usr = {...user};
 
     if(this.validate()) {
       const stateToSet = {hasAddUser: true};
 
-      await transformUserFields(user);
+      await transformUserFields(usr);
 
       try {
-        await strapi.axios.post(`${strapiURL}/content-manager/explorer/plugins::users-permissions.user`, user);
+        await strapi.axios.post(`${strapiURL}/content-manager/explorer/plugins::users-permissions.user`, usr);
       } catch (err) {
         stateToSet.hasAddUser = false;
         stateToSet.importErrors = `${err.response.data.error}: ${JSON.stringify(err.response.data.message)}`;
