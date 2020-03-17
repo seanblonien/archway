@@ -2,6 +2,7 @@
  * Function for handling shell/command-line commands (i.e. Docker commands) for Node scripts.
  */
 /* eslint-disable no-console */
+const path = require('path');
 const {exec} = require('child_process');
 
 // Executes a shell command and logs stdout to console if successful.
@@ -19,4 +20,10 @@ const execShellCommand = cmd => {
   });
 };
 
-module.exports = execShellCommand;
+// Gets the absolute file path of the local file
+const absPath = (file) => `"${path.resolve(__dirname, file)}"`;
+
+module.exports = {
+  execShellCommand,
+  absPath
+};
