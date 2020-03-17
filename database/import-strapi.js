@@ -14,7 +14,7 @@
  */
 /* eslint-disable no-console, no-await-in-loop */
 const _ = require('lodash');
-const s = require('./strapi-scripts.js');
+const s = require('./strapi-scripts');
 
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
