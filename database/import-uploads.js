@@ -6,8 +6,7 @@
  * Note: any pre-existing uploads on Strapi will be deleted and overridden.
  */
 /* eslint-disable no-console */
-const path = require('path');
-const execShellCommand  = require('./execShellCommand.js');
+const {execShellCommand, absPath}  = require('./execShellCommand');
 
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
@@ -27,7 +26,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Delete existing uploads.zip
     await execShellCommand('docker exec strapi rm -rf /uploads.zip');
     // Copy the local uploads zip to the Strapi container
-    await execShellCommand(`docker cp "${path.resolve(__dirname, filename)}" strapi:/uploads.zip`);
+    await execShellCommand(`docker cp ${absPath(filename)} strapi:/uploads.zip`);
     // Unzip the uploads
     await execShellCommand('docker exec strapi unzip /uploads.zip -d /');
 

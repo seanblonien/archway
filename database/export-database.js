@@ -6,8 +6,7 @@
  * later used for importing to another database instance.
  */
 /* eslint-disable no-console */
-const path = require('path');
-const execShellCommand  = require('./execShellCommand.js');
+const {execShellCommand, absPath}  = require('./execShellCommand');
 
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
@@ -31,7 +30,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Compress the database dump into one zip file
     await execShellCommand('docker exec database zip -r /dump.zip /dump');
     // Copy the dump zip file over to the local directory
-    await execShellCommand(`docker cp database:/dump.zip "${path.resolve(__dirname, fileName)}"`);
+    await execShellCommand(`docker cp database:/dump.zip ${absPath(fileName)}`);
 
     console.log('Database export successful!');
   } catch(e) {

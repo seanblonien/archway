@@ -6,7 +6,7 @@
  * to JSON that can be used to import later. See import-strapi.js for more.
  */
 /* eslint-disable no-console */
-const s = require('./strapi-scripts.js');
+const s = require('./strapi-scripts');
 
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;

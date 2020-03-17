@@ -7,8 +7,7 @@
  * the same name. Will not delete or modify collections that are not imported.
  */
 /* eslint-disable no-console */
-const path = require('path');
-const execShellCommand = require('./execShellCommand.js');
+const {execShellCommand, absPath} = require('./execShellCommand');
 
 const ARGV_INDEX_FILE_PATH = 2;
 const ARGV_REQUIRED_LENGTH = 3;
@@ -28,7 +27,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Delete the dump zip file if on container
     await execShellCommand('docker exec database rm -rf /dump.zip');
     // Copy the dump zip file over to the container
-    await execShellCommand(`docker cp "${path.resolve(__dirname, fileName)}" database:/dump.zip`);
+    await execShellCommand(`docker cp ${absPath(fileName)} database:/dump.zip`);
     // Unzip the dump zip into a directory
     await execShellCommand('docker exec database unzip /dump.zip -d /');
     // Perform the data dump import of the Strapi database
