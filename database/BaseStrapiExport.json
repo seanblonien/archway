@@ -67,39 +67,6 @@
       }
     },
     {
-      "name": "commemts",
-      "description": "Describes a Comment to a Post",
-      "connection": "default",
-      "kind": "collectionType",
-      "collectionName": "commemts",
-      "attributes": {
-        "content": {
-          "type": "text"
-        },
-        "username": {
-          "type": "string"
-        },
-        "user": {
-          "nature": "manyToOne",
-          "target": "plugins::users-permissions.user",
-          "dominant": false,
-          "targetAttribute": "comments",
-          "unique": false
-        },
-        "editable": {
-          "type": "boolean",
-          "default": true
-        },
-        "post": {
-          "nature": "manyToOne",
-          "target": "application::posts.posts",
-          "dominant": false,
-          "targetAttribute": "comments",
-          "unique": false
-        }
-      }
-    },
-    {
       "name": "departments",
       "description": "Describes a Department",
       "connection": "default",
@@ -127,13 +94,6 @@
         "description": {
           "type": "richtext",
           "default": "10000"
-        },
-        "viewstat": {
-          "nature": "oneToOne",
-          "target": "application::viewstats.viewstats",
-          "dominant": false,
-          "targetAttribute": "department",
-          "unique": false
         },
         "preview": {
           "type": "string"
@@ -173,44 +133,6 @@
         },
         "Url": {
           "type": "string"
-        }
-      }
-    },
-    {
-      "name": "posts",
-      "description": "Describes a Post on a Capstone Project",
-      "connection": "default",
-      "kind": "collectionType",
-      "collectionName": "posts",
-      "attributes": {
-        "title": {
-          "type": "string",
-          "unique": false,
-          "default": "title",
-          "required": true
-        },
-        "content": {
-          "type": "richtext",
-          "required": true
-        },
-        "media": {
-          "type": "media",
-          "multiple": true,
-          "required": false
-        },
-        "user": {
-          "nature": "manyToOne",
-          "target": "plugins::users-permissions.user",
-          "dominant": false,
-          "targetAttribute": "posts",
-          "unique": false
-        },
-        "comments": {
-          "nature": "oneToMany",
-          "target": "application::commemts.commemts",
-          "dominant": false,
-          "targetAttribute": "post",
-          "unique": false
         }
       }
     },
@@ -313,35 +235,6 @@
         },
         "featured": {
           "type": "boolean"
-        }
-      }
-    },
-    {
-      "name": "viewstats",
-      "description": "Describes a ViewStat",
-      "connection": "default",
-      "kind": "collectionType",
-      "collectionName": "viewstats",
-      "attributes": {
-        "count": {
-          "type": "integer"
-        },
-        "user": {
-          "nature": "oneToOne",
-          "target": "plugins::users-permissions.user",
-          "dominant": false,
-          "targetAttribute": "viewstat",
-          "unique": false
-        },
-        "department": {
-          "nature": "oneToOne",
-          "target": "application::departments.departments",
-          "dominant": false,
-          "targetAttribute": "viewstat",
-          "unique": false
-        },
-        "testAttr": {
-          "type": "string"
         }
       }
     }
@@ -495,37 +388,16 @@
           "type": "richtext",
           "maxLength": 10000
         },
-        "posts": {
-          "nature": "oneToMany",
-          "target": "application::posts.posts",
-          "dominant": false,
-          "targetAttribute": "user",
-          "unique": false
-        },
         "ProfilePicture": {
           "type": "media",
           "multiple": false,
           "required": false
-        },
-        "viewstat": {
-          "nature": "oneToOne",
-          "target": "application::viewstats.viewstats",
-          "dominant": false,
-          "targetAttribute": "user",
-          "unique": false
         },
         "capstone": {
           "nature": "manyToOne",
           "target": "application::capstones.capstones",
           "dominant": false,
           "targetAttribute": "creators",
-          "unique": false
-        },
-        "comments": {
-          "nature": "oneToMany",
-          "target": "application::commemts.commemts",
-          "dominant": false,
-          "targetAttribute": "user",
           "unique": false
         },
         "proposals": {

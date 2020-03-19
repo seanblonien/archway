@@ -291,10 +291,6 @@ class ViewCapstone extends Component {
         picCreatorArray.push(teamPics[i]);
       }
 
-      const postArray = [];
-      for (const posting in capstone.posts) {
-        postArray.push(capstone.posts[posting]);
-      }
       return <div>
         <Grid container justify='center'>
           <Grid item xs={10}>
