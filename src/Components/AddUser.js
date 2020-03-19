@@ -11,7 +11,7 @@ import React, {Component} from 'react';
 import api from '../Services/api';
 import {userImport} from '../constants';
 import {transformUserFields} from '../utils/utils';
-import {validateAddUser} from '../validation';
+import {validateAddUser} from '../utils/validation';
 import FieldList from './FieldList';
 
 const initialState = {

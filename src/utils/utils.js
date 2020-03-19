@@ -20,10 +20,7 @@ export const getFirstNWords = (str, n) => {
 
 // Returns the image.url value if defined, otherwise, it returns a default
 // image
-const checkImage = (image, defaultImage) => {
-  const x = 1;
-  return image && _.get(image, 'url') ?  strapiURL + image.url : defaultImage;
-};
+const checkImage = (image, defaultImage) => image && _.get(image, 'url') ?  strapiURL + image.url : defaultImage;
 
 // Object with methods for getting image URL for a Strapi image object.
 // If the image is null or does not exist, a corresponding default image is

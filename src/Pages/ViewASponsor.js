@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
-import {Carousel} from 'react-responsive-carousel';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';

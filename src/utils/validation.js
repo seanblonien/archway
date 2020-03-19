@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {userImport} from './constants';
+import {userImport} from '../constants';
 
 /**
  * Validates the given user object to check for required fields
