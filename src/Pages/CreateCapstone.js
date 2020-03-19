@@ -20,12 +20,11 @@ import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import Filter from 'bad-words';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import api from '../Services/api';
 import SimpleDialog from '../Components/AddUserDialog';
 import ArchwayDatePicker from '../Components/ArchwayDatePicker';
 import DragAndDropZone from '../Components/DragAndDropZone/DragAndDropZone';
 import PageTitleTypography from '../Components/PageTitleTypography';
-import {strapi, strapiURL} from '../constants';
-import auth from '../Auth';
 
 const styles = theme => ({
   list: {
@@ -81,15 +80,14 @@ class CreateCapstone extends Component {
 
   async componentDidMount() {
     // pull data from strapi/backend
-    const capstones = await strapi.getEntries('capstones');
-    const departmentList = await strapi.getEntries('departments');
-    const sponsorList = await strapi.getEntries('sponsors');
+    const capstones = await api.capstones.find();
+    const departmentList = await api.departments.find();
+    const sponsorList = await api.sponsors.find();
     // sets the various states
     this.setState({capstones, sponsorList, departmentList});
 
-    await strapi.axios.get(`${strapiURL}/users`).then(response2 => {
-      this.setState({Users: response2.data, AllUsers: response2.data});
-    });
+    const response = await api.users.find();
+    this.setState({Users: response.data, AllUsers: response.data});
   }
 
   handleChange = name => event => {
@@ -166,9 +164,8 @@ class CreateCapstone extends Component {
 
     const sponsorIDs = checkedSponsors.map(s => s.id);
     const UserIDs = Participants.map(p => p.id);
-    const authToken = `Bearer ${auth.getToken()}`;
 
-    const response = await strapi.axios.post(`${strapiURL}/Capstones`, {
+    const response = await api.capstones.create({
       CapstoneName,
       StartDate,
       EndDate,
@@ -177,8 +174,7 @@ class CreateCapstone extends Component {
       department: Department.id,
       creators: UserIDs,
       sponsors: sponsorIDs,
-    }
-    , {headers: {'Authorization': authToken}});
+    });
 
     // Get refId of post that was just made
     const refId = response.data.id;
@@ -191,10 +187,7 @@ class CreateCapstone extends Component {
     formData.set('ref', 'capstone');
     formData.set('field', 'DisplayPhoto');
 
-    await strapi.upload(formData, {headers: {
-      'Content-Type': 'multipart/form-data',
-      'Authorization': authToken
-    }});
+    await api.uploads.upload(formData);
 
     // Use Users and AllUsers eventually
     Users.filter(() => true);

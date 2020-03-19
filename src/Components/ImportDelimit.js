@@ -4,12 +4,13 @@ import {Check, Close} from '@material-ui/icons';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import api from '../Services/api';
+import {USER_IMPORT_TYPE, userImport} from '../constants';
+import exampleImport from '../Static/exampleImport.csv';
 import {transformUserFields} from '../utils/utils';
-import {USER_IMPORT_TYPE, strapi, strapiURL, userImport} from '../constants';
 import FieldList from './FieldList';
 import UploadCSV from './UploadCSV';
 import UploadText from './UploadText';
-import exampleImport from '../Static/exampleImport.csv';
 
 const IMPORT_STATE = {
   'none': 1,
@@ -38,7 +39,7 @@ class ImportDelimit extends Component {
 
   // Fetches the valid roles available in Strapi
   async componentDidMount() {
-    const roles = await strapi.axios.get(`${strapiURL}/users-permissions/roles`);
+    const roles = await api.getRoles();
     this.setState({roles: roles.data.roles});
   }
 
@@ -97,8 +98,7 @@ class ImportDelimit extends Component {
     await Promise.all(userPromises);
 
     const stateToSet = {};
-    const promises = data.map(user =>
-      strapi.axios.post(`${strapiURL}/content-manager/explorer/plugins::users-permissions.user`, user));
+    const promises = data.map(user => api.users.create(user));
 
     await Promise.all(promises).catch(err => {
       const msg = err.response.data.message[0].messages[0];

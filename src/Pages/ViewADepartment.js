@@ -1,13 +1,13 @@
-import {Link} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import React, {Component} from 'react';
+import Button from '@material-ui/core/Button';
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import compose from 'recompose/compose';
-import Button from '@material-ui/core/Button';
 import Markdown from 'markdown-to-jsx';
-import {withStyles} from '@material-ui/core/styles';
-import {strapi} from '../constants';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import compose from 'recompose/compose';
+import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 
 const styles = {
@@ -40,7 +40,7 @@ class ViewADepartment extends Component {
   }
 
   async componentDidMount() {
-    const departments = await strapi.getEntries('Departments');
+    const departments = await api.departments.find();
     this.setState({loading: false, departments});
   }
 
@@ -73,7 +73,7 @@ class ViewADepartment extends Component {
 
           <Button
             component={Link}
-            to={`/ViewCapstone/${department.capstones.CapstoneName}`}
+            to={`/ViewCapstone/${department.capstones.id}`}
           >
             <Typography>
               <h1>{department.capstones.CapstoneName}</h1>

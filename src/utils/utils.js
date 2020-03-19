@@ -1,5 +1,11 @@
 // Returns the first n words from the string
-import {strapi, strapiURL} from '../constants';
+import _ from 'lodash';
+import defaultUserImg from '../Static/defaultUser.png';
+import {strapiURL} from '../constants';
+import defaultCapstoneImg from '../Static/defaultCapstone.svg';
+import defaultSponsorImg from '../Static/defaultSponsor.svg';
+import defaultDepartmentImg from '../Static/defaultDepartment.svg';
+import api from '../Services/api';
 
 export const getFirstNWords = (str, n) => {
   if(str) {
@@ -12,9 +18,26 @@ export const getFirstNWords = (str, n) => {
   return '';
 };
 
+// Returns the image.url value if defined, otherwise, it returns a default
+// image
+const checkImage = (image, defaultImage) => {
+  const x = 1;
+  return image && _.get(image, 'url') ?  strapiURL + image.url : defaultImage;
+};
+
+// Object with methods for getting image URL for a Strapi image object.
+// If the image is null or does not exist, a corresponding default image is
+// returned.
+export const imageURL = {
+  user: (image) => checkImage(image, defaultUserImg),
+  sponsor: (image) => checkImage(image, defaultSponsorImg),
+  department: (image) => checkImage(image, defaultDepartmentImg),
+  capstone: (image) => checkImage(image, defaultCapstoneImg),
+};
+
 /* eslint-disable no-bitwise */
 export const transformUserFields = async (user) => {
-  const {data: {roles}} = await strapi.axios.get(`${strapiURL}/users-permissions/roles`);
+  const {data: {roles}} = await api.getRoles();
 
   const [role] = roles.filter(r => r.name === user.role).map(r => r.id);
   user.role = role;

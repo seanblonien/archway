@@ -44,12 +44,6 @@
           "targetAttribute": "capstones",
           "unique": false
         },
-        "posts": {
-          "nature": "manyWay",
-          "target": "application::posts.posts",
-          "dominant": false,
-          "unique": false
-        },
         "creators": {
           "nature": "oneToMany",
           "target": "plugins::users-permissions.user",
@@ -381,10 +375,7 @@
           "configurable": false,
           "required": true
         },
-        "Bio": {
-          "type": "text"
-        },
-        "Description": {
+        "description": {
           "type": "richtext",
           "maxLength": 10000
         },

@@ -6,12 +6,12 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
-import {strapi} from '../constants';
-import LoadingCircle from './LoadingCircle';
 import history from '../utils/history';
+import LoadingCircle from './LoadingCircle';
+import api from '../Services/api';
 
 const styles = {
   card: {
@@ -32,9 +32,9 @@ class About extends Component {
   }
 
   async componentDidMount() {
-    const sponsors1 = await strapi.getEntries('Sponsors');
+    const sponsors = await api.sponsors.find();
 
-    this.setState({loading: false, sponsors: sponsors1});
+    this.setState({loading: false, sponsors});
   }
 
   bubbleClickFun = (label) => {

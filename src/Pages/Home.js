@@ -12,12 +12,12 @@ import React, {Component} from 'react';
 import {Parallax} from 'react-parallax';
 import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import {
   schoolColorPrimary,
   schoolColorSecondary,
-  strapi,
-  strapiURL,
   university
 } from '../constants';
 import history from '../utils/history';
@@ -110,10 +110,10 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    const capstones = await strapi.getEntries('capstones');
-    const sponsorList = await strapi.getEntries('Sponsors');
+    const capstones = await api.capstones.find();
+    const sponsors = await api.sponsors.find();
     this.populateFeaturedCapstones(capstones);
-    this.getFeaturedSponsors(sponsorList);
+    this.getFeaturedSponsors(sponsors);
     this.setState({loading: false});
   }
 
@@ -209,11 +209,11 @@ class Home extends Component {
                   {featuredCapstones.map((result, i) => (
                     <GridListTile
                       style={{maxWidth: '300px'}}
-                      key={strapiURL + featuredCapstones[i].DisplayPhoto.url}
+                      key={featuredCapstones[i].DisplayPhoto.url}
                       onClick={() => this.handleTileClick(result.id)}
                     >
                       <img
-                        src={strapiURL + featuredCapstones[i].DisplayPhoto.url}
+                        src={imageURL.capstone(featuredCapstones[i].DisplayPhoto)}
                         alt='Capstone' style={{height: '100%', width: '100%'}}
                       />
                       <GridListTileBar
@@ -271,11 +271,11 @@ class Home extends Component {
               {featuredSponsors.map((result, i) => (
                 <GridListTile
                   style={{maxWidth: '200px'}}
-                  key={strapiURL + featuredSponsors[i].logo.url}
+                  key={featuredSponsors[i].logo.url}
                   onClick={() => this.handleSponsorClick(result.id)}
                 >
                   <img
-                    src={strapiURL + featuredSponsors[i].logo.url}
+                    src={imageURL.sponsor(featuredSponsors[i].logo)}
                     alt='Sponsor' style={{height: '100%', width: '100%'}}
                   />
                 </GridListTile>

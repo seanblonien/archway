@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import withWidth from '@material-ui/core/withWidth';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import {withStyles} from '@material-ui/core/styles';
-import compose from 'recompose/compose';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import ProposalForm from '../Components/ProposalForm';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import React, {Component} from 'react';
+import compose from 'recompose/compose';
+import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import {strapi} from '../constants';
+import ProposalForm from '../Components/ProposalForm';
 
 const styles = {
   card: {
@@ -60,9 +60,9 @@ class ViewYourCapstonesSponsors extends Component {
   }
 
   async componentDidMount() {
-    const currentProposals = await strapi.getEntries('proposals');
+    const proposals = await api.proposals.find();
 
-    this.setState({loading: false, proposals: currentProposals});
+    this.setState({loading: false, proposals});
   }
 
   render() {

@@ -1,5 +1,6 @@
 import React from 'react';
-import {Router, Route, Switch} from 'react-router-dom';
+import {Route, Router, Switch} from 'react-router-dom';
+import auth from './Auth';
 import About from './Components/About';
 import Footer from './Components/Footer';
 import Header from './Components/Header/Header';
@@ -24,7 +25,6 @@ import ViewSponsors from './Pages/ViewSponsors';
 import ViewUser from './Pages/ViewUser';
 import ViewYourCapstones from './Pages/ViewYourCapstones';
 import ViewYourCapstonesSponsors from './Pages/ViewYourCapstonesSponsors';
-import auth from './Auth';
 import history from './utils/history';
 
 export default function App () {

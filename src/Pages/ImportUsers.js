@@ -1,9 +1,9 @@
 import {Box, Button, ButtonGroup, Typography} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import React, {Component} from 'react';
-import {USER_IMPORT_TYPE} from '../constants';
 import AddUser from '../Components/AddUser';
 import ImportDelimit from '../Components/ImportDelimit';
+import {USER_IMPORT_TYPE} from '../constants';
 
 class ImportUsers extends Component {
   constructor(props) {

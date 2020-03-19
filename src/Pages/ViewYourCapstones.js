@@ -13,9 +13,10 @@ import InfoIcon from '@material-ui/icons/Info';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
-import LoadingCircle from '../Components/LoadingCircle';
-import {strapi, strapiURL} from '../constants';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
 import auth from '../Auth';
+import LoadingCircle from '../Components/LoadingCircle';
 import history from '../utils/history';
 
 const styles = {
@@ -56,151 +57,141 @@ class ViewYourCapstones extends Component {
     this.state = {
       loading: true,
       capstones: [],
-      participatedCapstones: [],
     };
   }
 
 
   async componentDidMount() {
     const userID = auth.getUser()._id;
-
     // get capstones that are moderated by user
-    await strapi.axios.get(`${strapiURL}/capstones`,{
-      params: {
-        moderator: userID
-      }
-    }).then(response =>{
-      this.setState({capstones: response.data});
-    });
-
-    // get user info to pull user info
-    const tempUser = await strapi.getEntry('users', userID);
-
-    // pull each capstone created from list of created capstones
-    const participatedCapstonesPromises = tempUser.createdcapstones.map(c => strapi.axios.get(`${strapiURL}/capstones/${c._id}`));
-    const participatedCapstones = (await Promise.all(participatedCapstonesPromises)).map(c => c.data);
-    this.setState({participatedCapstones, loading: false});
+    const response = await api.users.findOne(userID);
+    this.setState({capstones: response.data.capstones});
   }
 
-    handleDelete = async (e, resultID) => {
-      await strapi.deleteEntry('capstones', resultID);
-      history.push('/');
-    };
+  handleDelete = async (e, resultID) => {
+    await api.capstones.delete(resultID);
 
-    handleTileClick = (capstoneName) => {
-      history.push(`/ViewCapstone/${capstoneName}`);
-    };
+    const userID = auth.getUser()._id;
+    // get capstones that are moderated by user
+    const response = await api.users.findOne(userID);
+    this.setState({capstones: response.data.capstones});
+    history.push('/');
+  };
 
-    render() {
-      const {classes} = this.props;
-      const {loading, capstones, participatedCapstones} = this.state;
+  handleTileClick = (capstoneName) => {
+    history.push(`/ViewCapstone/${capstoneName}`);
+  };
 
-      if (!loading) {
-        return (
-          <div>
-            <Grid container justify='center'>
-              <Grid item md={10} xs={12}>
-                <Typography variant='h4' style={{marginTop: '16px'}}>Your Moderated Capstone Projects</Typography>
-                <Divider/>
-                <br/>
-              </Grid>
+  render() {
+    const {classes} = this.props;
+    const {loading, capstones, participatedCapstones} = this.state;
+
+    if (!loading) {
+      return (
+        <div>
+          <Grid container justify='center'>
+            <Grid item md={10} xs={12}>
+              <Typography variant='h4' style={{marginTop: '16px'}}>Your Moderated Capstone Projects</Typography>
+              <Divider/>
+              <br/>
             </Grid>
+          </Grid>
 
-            <Grid container justify='center' style={{marginBottom: '16px'}}>
-              <Grid item xs={12} md={10}>
-                <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
-                  {capstones.map((result) => (
-                    <GridListTile key={strapiURL + result.DisplayPhoto.url} onClick={() => this.handleTileClick(result.id)}>
-                      <img src={strapiURL + result.DisplayPhoto.url} alt='Capstone' style={{height: '100%', width: '100%'}}/>
+          <Grid container justify='center' style={{marginBottom: '16px'}}>
+            <Grid item xs={12} md={10}>
+              <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
+                {capstones.map((result) => (
+                  <GridListTile key={result.DisplayPhoto.url} onClick={() => this.handleTileClick(result.id)}>
+                    <img src={imageURL.capstone(result.DisplayPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
 
-                      <GridListTileBar
-                        title={result.CapstoneName}
-                        subtitle={`Made by: ${result.moderator.username}`}
-                        actionIcon={
+                    <GridListTileBar
+                      title={result.CapstoneName}
+                      subtitle={`Made by: ${result.moderator.username}`}
+                      actionIcon={
+                        <Grid container>
+                          <Grid item xs={3} style={{marginLeft: '2px'}}>
+                            <IconButton
+                              className={classes.icon}
+                              component={Link}
+                              to={`/ViewCapstone${result._id}`}
+                            >
+                              <InfoIcon/>
+                            </IconButton>
+                          </Grid>
+                          <Grid item xs={3} style={{marginLeft: '2px'}}>
+                            <IconButton
+                              className={classes.icon}
+                              component={Link}
+                              to={`/EditCapstone${result._id}`}
+                            >
+                              <CreateIcon/>
+                            </IconButton>
+                          </Grid>
+                          <Grid item xs={3} style={{marginLeft: '2px'}}>
+                            <IconButton
+                              className={classes.icon}
+                              onClick={(e) => this.handleDelete(e, result.id)}
+                              component={Link}
+                              to={`/ViewYourCapstones${result._id}`}
+                            >
+                              <DeleteForeverIcon/>
+                            </IconButton>
+                          </Grid>
+                        </Grid>
+
+                      }
+                    />
+                  </GridListTile>
+                ))}
+              </GridList>
+            </Grid>
+          </Grid>
+
+
+          <Grid container justify='center'>
+            <Grid item md={10} xs={12}>
+              <Typography variant='h4' style={{marginTop: '16px'}}>Your Participated Capstone Projects</Typography>
+              <Divider/>
+              <br/>
+            </Grid>
+          </Grid>
+
+          <Grid container justify='center' style={{marginBottom: '16px'}}>
+            <Grid item xs={12} md={10}>
+              <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
+                {participatedCapstones.map((result2) => (
+                  <GridListTile key={result2.DisplayPhoto.url} onClick={() => this.handleTileClick(result2._id)}>
+                    <img src={imageURL.capstone(result2.DisplayPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
+                    <GridListTileBar
+                      title={result2.CapstoneName}
+                      subtitle={`Made by: ${result2.moderator.username}`}
+                      actionIcon={
+                        <div>
                           <Grid container>
-                            <Grid item xs={3} style={{marginLeft: '2px'}}>
+                            <Grid xs={3}>
                               <IconButton
                                 className={classes.icon}
                                 component={Link}
-                                to={`/ViewCapstone${result._id}`}
+                                to={`/ViewCapstone/${result2._id}`}
                               >
                                 <InfoIcon/>
                               </IconButton>
                             </Grid>
-                            <Grid item xs={3} style={{marginLeft: '2px'}}>
-                              <IconButton
-                                className={classes.icon}
-                                component={Link}
-                                to={`/EditCapstone${result._id}`}
-                              >
-                                <CreateIcon/>
-                              </IconButton>
-                            </Grid>
-                            <Grid item xs={3} style={{marginLeft: '2px'}}>
-                              <IconButton
-                                className={classes.icon}
-                                onClick={(e) => this.handleDelete(e, result.id)}
-                                component={Link}
-                                to={`/ViewYourCapstones${result._id}`}
-                              >
-                                <DeleteForeverIcon/>
-                              </IconButton>
-                            </Grid>
                           </Grid>
-
-                        }
-                      />
-                    </GridListTile>
-                  ))}
-                </GridList>
-              </Grid>
+                        </div>
+                      }
+                    />
+                  </GridListTile>
+                ))}
+              </GridList>
             </Grid>
-
-
-            <Grid container justify='center'>
-              <Grid item md={10} xs={12}>
-                <Typography variant='h4' style={{marginTop: '16px'}}>Your Participated Capstone Projects</Typography>
-                <Divider/>
-                <br/>
-              </Grid>
-            </Grid>
-
-            <Grid container justify='center' style={{marginBottom: '16px'}}>
-              <Grid item xs={12} md={10}>
-                <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
-                  {participatedCapstones.map((result2) => (
-                    <GridListTile key={strapiURL + result2.DisplayPhoto.url} onClick={() => this.handleTileClick(result2._id)}>
-                      <img src={strapiURL + result2.DisplayPhoto.url} alt='Capstone' style={{height: '100%', width: '100%'}}/>
-                      <GridListTileBar
-                        title={result2.CapstoneName}
-                        subtitle={`Made by: ${result2.moderator.username}`}
-                        actionIcon={
-                          <div>
-                            <Grid container>
-                              <Grid xs={3}>
-                                <IconButton
-                                  className={classes.icon}
-                                  component={Link}
-                                  to={`/ViewCapstone/${result2._id}`}
-                                >
-                                  <InfoIcon/>
-                                </IconButton>
-                              </Grid>
-                            </Grid>
-                          </div>
-                        }
-                      />
-                    </GridListTile>
-                  ))}
-                </GridList>
-              </Grid>
-            </Grid>
-          </div>
-        );
-      }
-
-      return <LoadingCircle/>;
+          </Grid>
+        </div>
+      );
     }
+
+    return <LoadingCircle/>;
+  }
 }
 
 export default compose(

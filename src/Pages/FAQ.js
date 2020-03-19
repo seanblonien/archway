@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import {strapi} from '../constants';
 
 const styles = theme => ({
   card: {
@@ -90,7 +90,7 @@ class FAQ extends Component {
   }
 
   async componentDidMount() {
-    const allFaqs = await strapi.getEntries('faqs');
+    const allFaqs = await api.faqs.find();
 
     const categories = allFaqs.map(faq => faq.Category);
 
