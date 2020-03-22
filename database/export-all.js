@@ -8,6 +8,7 @@ const {absPath} = require('./execShellCommand');
 
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
+  console.log('stdout and stderr are delayed until the process has finished.');
   try {
     // Run Strapi export
     console.log('=== Exporting Strapi ===');

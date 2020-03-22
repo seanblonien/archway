@@ -19,7 +19,7 @@ class ViewProfile extends Component {
         username: '',
         email: '',
         Fullname: '',
-        ProfilePicture: ''
+        picture: ''
       },
     };
   }
@@ -53,8 +53,8 @@ class ViewProfile extends Component {
 
   handleRemoveProfilePic = async () => {
     const {user} = this.state;
-    if(user.ProfilePicture) {
-      await api.uploads.delete(user.ProfilePicture.id);
+    if(user.picture) {
+      await api.uploads.delete(user.picture.id);
     }
   };
 
@@ -86,7 +86,7 @@ class ViewProfile extends Component {
           <Grid container direction='row' justify='space-between' spacing={2}>
             <Grid item xs={4} style={{width: '300px'}}>
               <img
-                src={imageURL.user(user.ProfilePicture)} alt='profile'
+                src={imageURL.user(user.picture)} alt='profile'
                 style={{
                   border: '4px solid black', borderRadius: '12px',
                   width: '100%', height: 'auto'

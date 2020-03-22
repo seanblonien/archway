@@ -21,7 +21,7 @@ class Cards extends Component {
             <CardMedia
               component='img'
               height='300'
-              image={imageURLFunction(listItems[i].image)}
+              image={imageURLFunction(listItems[i].thumbnail)}
             />
             <CardContent>
               <Typography variant='h5'>

@@ -78,8 +78,8 @@ class ViewYourCapstones extends Component {
     history.push('/');
   };
 
-  handleTileClick = (capstoneName) => {
-    history.push(`/ViewCapstone/${capstoneName}`);
+  handleTileClick = (title) => {
+    history.push(`/ViewCapstone/${title}`);
   };
 
   render() {
@@ -101,11 +101,11 @@ class ViewYourCapstones extends Component {
             <Grid item xs={12} md={10}>
               <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
                 {capstones.map((result) => (
-                  <GridListTile key={result.DisplayPhoto.url} onClick={() => this.handleTileClick(result.id)}>
-                    <img src={imageURL.capstone(result.DisplayPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
+                  <GridListTile key={result.coverPhoto.url} onClick={() => this.handleTileClick(result.id)}>
+                    <img src={imageURL.capstone(result.coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
 
                     <GridListTileBar
-                      title={result.CapstoneName}
+                      title={result.title}
                       subtitle={`Made by: ${result.moderator.username}`}
                       actionIcon={
                         <Grid container>
@@ -160,10 +160,10 @@ class ViewYourCapstones extends Component {
             <Grid item xs={12} md={10}>
               <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
                 {participatedCapstones.map((result2) => (
-                  <GridListTile key={result2.DisplayPhoto.url} onClick={() => this.handleTileClick(result2._id)}>
-                    <img src={imageURL.capstone(result2.DisplayPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
+                  <GridListTile key={result2.coverPhoto.url} onClick={() => this.handleTileClick(result2._id)}>
+                    <img src={imageURL.capstone(result2.coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
                     <GridListTileBar
-                      title={result2.CapstoneName}
+                      title={result2.title}
                       subtitle={`Made by: ${result2.moderator.username}`}
                       actionIcon={
                         <div>

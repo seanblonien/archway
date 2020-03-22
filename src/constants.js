@@ -33,7 +33,7 @@ export const userImport = {
       required: false
     },
     {
-      name: 'Description',
+      name: 'description',
       label: 'Description',
       validation: '',
       required: false

@@ -72,7 +72,7 @@ class ViewUser extends Component {
       open: false,
       Bio: '',
       Department: '',
-      ProfilePicture: '',
+      picture: '',
       Fullname: '',
       oldBio: '',
       oldFullName: '',
@@ -89,9 +89,9 @@ class ViewUser extends Component {
     const response = await api.users.find({username: user});
     const userId = response.data[0].id;
     const pic = await api.users.findOne(userId);
-    const picURL = imageURL.user(pic.data.ProfilePicture);
+    const picURL = imageURL.user(pic.data.picture);
 
-    this.setState({departmentList, loading: false, ProfilePicture: picURL});
+    this.setState({departmentList, loading: false, picture: picURL});
 
     const userObj = auth.getUser();
     if(userObj && userObj.username === match.params.username) {
@@ -110,8 +110,8 @@ class ViewUser extends Component {
     return api.users.find({username: match.params.username});
   };
 
-  handleCapstoneClick = (capstoneName) => {
-    history.push(`/ViewCapstone/${capstoneName}`);
+  handleCapstoneClick = (title) => {
+    history.push(`/ViewCapstone/${title}`);
   };
 
   handleChange = name => event => {
@@ -165,12 +165,12 @@ class ViewUser extends Component {
 
   render() {
     const {classes} = this.props;
-    const {user, loading, ProfilePicture, editable, open, oldBio, Department, departmentList, oldFullName} = this.state;
+    const {user, loading, picture, editable, open, oldBio, Department, departmentList, oldFullName} = this.state;
 
     const userCapstones = [...user.createdcapstones];
 
     if (!loading) {
-      const picArray = [ProfilePicture];
+      const picArray = [picture];
       return(
         <div>
           <Grid container layout='row' justify='center'>
@@ -363,10 +363,10 @@ class ViewUser extends Component {
                   <Grid item xs={12} md={6} style={{marginTop: '1%'}}>
                     <Card className={classes.associatedCard} onClick={() => this.handleCapstoneClick(result._id)}>
                       <CardContent>
-                        <SubHeadingTextTypography text={result.CapstoneName}/>
+                        <SubHeadingTextTypography text={result.title}/>
                         <Divider/>
                         <Markdown>
-                          {result.Description}
+                          {result.description}
                         </Markdown>
                       </CardContent>
                     </Card>

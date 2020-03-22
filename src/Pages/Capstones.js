@@ -58,8 +58,8 @@ class Capstone extends Component {
     this.setState({loading: false, capstones});
   }
 
-  handleTileClick = (capstoneName) => {
-    history.push(`/ViewCapstone/${capstoneName}`);
+  handleTileClick = (title) => {
+    history.push(`/ViewCapstone/${title}`);
   };
 
   render() {
@@ -74,7 +74,7 @@ class Capstone extends Component {
         shouldSort: true,
         threshold: 0.3,
         minMatchCharLength: 1,
-        keys: ['CapstoneName',
+        keys: ['title',
           'department.name',
           'sponsors.name',
         ]
@@ -108,12 +108,12 @@ class Capstone extends Component {
             <Grid item xs={12} md={10}>
               <GridList cellHeight={250} cols={Capstone.getColumns(this.props)}>
                 {/* Creates a gridlist tile for each capstone */}
-                {match.map((result, i) => match[i].DisplayPhoto && match[i].DisplayPhoto.url != null ? (
-                  <GridListTile key={match[i].DisplayPhoto.url} onClick={() => this.handleTileClick(result._id)}>
+                {match.map((result, i) => match[i].coverPhoto && match[i].coverPhoto.url != null ? (
+                  <GridListTile key={match[i].coverPhoto.url} onClick={() => this.handleTileClick(result._id)}>
                     {/* The display photo for each gridlisttile */}
-                    <img src={imageURL.capstone(match[i].DisplayPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
+                    <img src={imageURL.capstone(match[i].coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
                     <GridListTileBar
-                      title={result.CapstoneName}
+                      title={result.title}
                       subtitle={`Made by: ${result.moderator.username}`}
                       actionIcon={
                         <IconButton

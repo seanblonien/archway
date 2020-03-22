@@ -114,7 +114,7 @@ class ViewASponsor extends Component {
                       </CardContent>
 
                       <Grid container justify='center'>
-                        <Link href={sponsor.webUrl}>
+                        <Link href={sponsor.url}>
                           <Button
                             className={classes.button}
                             style={{marginTop: '2%'}}
@@ -144,10 +144,10 @@ class ViewASponsor extends Component {
                           <Grid item xs={12} md={6} style={{marginTop: '2%'}}>
                             <Card className={classes.capstoneCard} style={{height: '200px', overflow: 'auto'}}>
                               <CardContent>
-                                <SubHeadingTextTypography text={result.CapstoneName}/>
+                                <SubHeadingTextTypography text={result.title}/>
                                 <Divider/>
                                 <Markdown>
-                                  {result.Description}
+                                  {result.description}
                                 </Markdown>
                               </CardContent>
                             </Card>

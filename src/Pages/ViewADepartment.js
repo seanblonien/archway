@@ -76,7 +76,7 @@ class ViewADepartment extends Component {
             to={`/ViewCapstone/${department.capstones.id}`}
           >
             <Typography>
-              <h1>{department.capstones.CapstoneName}</h1>
+              <h1>{department.capstones.title}</h1>
             </Typography>
           </Button>
 

@@ -112,38 +112,28 @@ class Home extends Component {
   async componentDidMount() {
     const capstones = await api.capstones.find();
     const sponsors = await api.sponsors.find();
-    this.populateFeaturedCapstones(capstones);
+    this.getFeaturedCapstones(capstones);
     this.getFeaturedSponsors(sponsors);
     this.setState({loading: false});
   }
 
-  getFeaturedSponsors(sponsorList) {
-    const featuredSponsors = [];
-    for (const sponsor in sponsorList) {
-      if (sponsorList[sponsor].featured === true) {
-        featuredSponsors.push(sponsorList[sponsor]);
-      }
-    }
+  getFeaturedSponsors = (sponsorList) => {
+    const featuredSponsors = sponsorList.filter(sponsor => sponsor.isFeatured);
     this.setState({featuredSponsors});
-  }
+  };
 
   handleSponsorClick = (sponsorName) => {
     history.push(`/ViewASponsor/${sponsorName}`);
   };
 
-  handleTileClick = (capstoneName) => {
-    history.push(`/ViewCapstone/${capstoneName}`);
+  handleTileClick = (title) => {
+    history.push(`/ViewCapstone/${title}`);
   };
 
-  populateFeaturedCapstones(capstones) {
-    const featuredCapstoneProjects = [];
-    for(const thisCapstone in capstones) {
-      if(capstones[thisCapstone].Featured === true) {
-        featuredCapstoneProjects.push(capstones[thisCapstone]);
-      }
-    }
-    this.setState({featuredCapstones: featuredCapstoneProjects});
-  }
+  getFeaturedCapstones = (capstones) => {
+    const featuredCapstones = capstones.filter(capstone => capstone.isFeatured);
+    this.setState({featuredCapstones});
+  };
 
   render() {
     const {classes} = this.props;
@@ -209,15 +199,15 @@ class Home extends Component {
                   {featuredCapstones.map((result, i) => (
                     <GridListTile
                       style={{maxWidth: '300px'}}
-                      key={featuredCapstones[i].DisplayPhoto.url}
+                      key={featuredCapstones[i].coverPhoto.url}
                       onClick={() => this.handleTileClick(result.id)}
                     >
                       <img
-                        src={imageURL.capstone(featuredCapstones[i].DisplayPhoto)}
+                        src={imageURL.capstone(featuredCapstones[i].coverPhoto)}
                         alt='Capstone' style={{height: '100%', width: '100%'}}
                       />
                       <GridListTileBar
-                        title={result.CapstoneName}
+                        title={result.title}
                         subtitle={`Made by: ${result.moderator.username}`}
                         actionIcon={
                           <IconButton
