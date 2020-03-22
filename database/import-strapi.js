@@ -127,13 +127,15 @@ const ARGV_REQUIRED_LENGTH = 3;
     }
     console.log('Finished updating content types');
   } catch (error) {
-    if(_.isArray(error.response.data.error)){
+    if(error.response.data.error){
       const key = Object.keys(error.response.data.error)[0];
       const value = error.response.data.error[key][0];
       console.error(`${error}\n${value}`);
     } else {
       console.error(error);
     }
+    console.error('Error importing Strapi schema.');
+    return;
   }
 
   console.log('Strapi schema import successful!');
