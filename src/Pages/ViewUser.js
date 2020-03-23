@@ -16,16 +16,15 @@ import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
+import auth from '../Auth';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
-import {strapi, strapiURL} from '../constants';
-import * as defaultProfileImage from '../Static/default-user-profile-image-png-6.png';
-import auth from '../Auth';
 import history from '../utils/history';
 
 const styles = () => ({
@@ -73,7 +72,7 @@ class ViewUser extends Component {
       open: false,
       Bio: '',
       Department: '',
-      ProfilePicture: '',
+      picture: '',
       Fullname: '',
       oldBio: '',
       oldFullName: '',
@@ -85,31 +84,14 @@ class ViewUser extends Component {
 
   async componentDidMount() {
     const {match} = this.props;
-
     const user = match.params.username;
-    const departmentList = await strapi.getEntries('departments');
-    let userId = null;
+    const departmentList = await api.departments.find();
+    const response = await api.users.find({username: user});
+    const userId = response.data[0].id;
+    const pic = await api.users.findOne(userId);
+    const picURL = imageURL.user(pic.data.picture);
 
-    await strapi.axios.get(`${strapiURL}/users`,
-      {
-        params: {
-          username:   user
-        }
-      }).then ((response) => {
-      userId = response.data[0]._id;
-    });
-
-    const pic = await strapi.axios.get(`${strapiURL}/users/${userId}`);
-
-    if(pic.data.ProfilePicture !== null) {
-      const picURL = pic.data.ProfilePicture.url;
-      this.setState({ProfilePicture: strapiURL + picURL});
-    }
-    else {
-      this.setState({ProfilePicture: defaultProfileImage});
-    }
-
-    this.setState({departmentList, loading: false});
+    this.setState({departmentList, loading: false, picture: picURL});
 
     const userObj = auth.getUser();
     if(userObj && userObj.username === match.params.username) {
@@ -124,17 +106,12 @@ class ViewUser extends Component {
 
   getLoggedInUser = async () => {
     const {match} = this.props;
-    const url = `${strapiURL}/users`;
 
-    return (await axios.get(url, {
-      params: {
-        username: match.params.username
-      }
-    })).data[0];
+    return api.users.find({username: match.params.username});
   };
 
-  handleCapstoneClick = (capstoneName) => {
-    history.push(`/ViewCapstone/${capstoneName}`);
+  handleCapstoneClick = (title) => {
+    history.push(`/ViewCapstone/${title}`);
   };
 
   handleChange = name => event => {
@@ -166,17 +143,14 @@ class ViewUser extends Component {
     const {Bio, Department, Fullname, hasPicture} = this.state;
 
     this.handleClose();
-    const userId = auth.getUser()._id;
-    const url = `${strapiURL}/users`;
-    const authToken = `Bearer ${auth.getToken()}`;
-    let newImageId = null;
+    const userID = auth.getUser()._id;
 
     // Make the changes
-    await strapi.axios.put(`${url}/${userId}`, {
+    await api.users.update(userID, {
       Bio,
       Department,
       Fullname
-    }, {headers: {'Authorization': authToken}});
+    });
 
     if(hasPicture) {
       // Upload image and link it to profile
@@ -185,46 +159,18 @@ class ViewUser extends Component {
 
       formData.append('files', image.files[0], image.files[0].name);
 
-      await strapi.upload(formData, {headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': authToken}
-      }).then( async (response) => {
-        newImageId = response[0]._id;
-
-        await strapi.axios.get(`${strapiURL}/userpictures?user=${userId}`).then(async (response2) => {
-          if(response2.data.length === 0) {
-            await strapi.axios.post(`${strapiURL}/userpictures`, {
-              user: userId,
-              ProfilePicture: newImageId
-            },  {headers: {
-              'Authorization': authToken
-            }});
-          }
-          else {
-            await strapi.axios.delete(`${strapiURL}/userpictures/${response2.data[0]._id}`, {headers:{
-              'Authorization': authToken
-            }}).catch(async () => {
-              await strapi.axios.post(`${strapiURL}/userpictures`, {
-                user: userId,
-                ProfilePicture: newImageId
-              },  {headers: {
-                'Authorization': authToken
-              }});
-            });
-          }
-        });
-      });
+      await api.uploads.upload(formData);
     }
   };
 
   render() {
     const {classes} = this.props;
-    const {user, loading, ProfilePicture, editable, open, oldBio, Department, departmentList, oldFullName} = this.state;
+    const {user, loading, picture, editable, open, oldBio, Department, departmentList, oldFullName} = this.state;
 
     const userCapstones = [...user.createdcapstones];
 
     if (!loading) {
-      const picArray = [ProfilePicture];
+      const picArray = [picture];
       return(
         <div>
           <Grid container layout='row' justify='center'>
@@ -417,10 +363,10 @@ class ViewUser extends Component {
                   <Grid item xs={12} md={6} style={{marginTop: '1%'}}>
                     <Card className={classes.associatedCard} onClick={() => this.handleCapstoneClick(result._id)}>
                       <CardContent>
-                        <SubHeadingTextTypography text={result.CapstoneName}/>
+                        <SubHeadingTextTypography text={result.title}/>
                         <Divider/>
                         <Markdown>
-                          {result.Description}
+                          {result.description}
                         </Markdown>
                       </CardContent>
                     </Card>

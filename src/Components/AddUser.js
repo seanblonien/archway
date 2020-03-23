@@ -8,10 +8,11 @@ import {
 } from '@material-ui/core';
 import _ from 'lodash';
 import React, {Component} from 'react';
+import api from '../Services/api';
+import {userImport} from '../constants';
 import {transformUserFields} from '../utils/utils';
-import {validateAddUser} from '../validation';
+import {validateAddUser} from '../utils/validation';
 import FieldList from './FieldList';
-import {strapi, strapiURL, userImport} from '../constants';
 
 const initialState = {
   user: {},
@@ -51,7 +52,7 @@ class AddUser extends Component {
       await transformUserFields(usr);
 
       try {
-        await strapi.axios.post(`${strapiURL}/content-manager/explorer/plugins::users-permissions.user`, usr);
+        await api.users.create(usr);
       } catch (err) {
         stateToSet.hasAddUser = false;
         stateToSet.importErrors = `${err.response.data.error}: ${JSON.stringify(err.response.data.message)}`;

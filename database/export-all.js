@@ -8,6 +8,7 @@ const {absPath} = require('./execShellCommand');
 
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
+  console.log('stdout and stderr are delayed until the process has finished.');
   try {
     // Run Strapi export
     console.log('=== Exporting Strapi ===');
@@ -16,7 +17,7 @@ const {absPath} = require('./execShellCommand');
     console.log('=== Exporting Database ===');
     await execShellCommand(`node ${absPath('export-database.js')} ${absPath('BaseDatabaseExport.zip')}`);
     // Run uploads export
-    console.log('=== Importing Uploads ===');
+    console.log('=== Exporting Uploads ===');
     await execShellCommand(`node ${absPath('export-uploads.js')} ${absPath('BaseUploadsExport.zip')}`);
 
     console.log('All exports successful!');

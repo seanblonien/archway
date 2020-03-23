@@ -12,8 +12,9 @@ import Fuse from 'fuse.js';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import {strapi, strapiURL} from '../constants';
 import history from '../utils/history';
 
 const styles = {
@@ -59,8 +60,8 @@ class ViewSponsors extends Component {
   }
 
   async componentDidMount() {
-    const posts = await strapi.getEntries('Sponsors');
-    this.setState({loading: false, sponsors: posts});
+    const sponsors = await api.sponsors.find();
+    this.setState({loading: false, sponsors});
   }
 
   handleTileClick = (id) => {
@@ -112,8 +113,8 @@ class ViewSponsors extends Component {
             <Grid item xs={12} md={10}>
               <GridList cellHeight={250} cols={ViewSponsors.getColumns(this.props)}>
                 {match.map((result) => (
-                  <GridListTile key={strapiURL + result.logo.url} onClick={() => this.handleTileClick(result.id)}>
-                    <img src={strapiURL + result.logo.url} alt='Sponsor' style={{height: '100%', width: '100%'}}/>
+                  <GridListTile key={result.logo.url} onClick={() => this.handleTileClick(result.id)}>
+                    <img src={imageURL.sponsor(result.logo)} alt='Sponsor' style={{height: '100%', width: '100%'}}/>
                     <GridListTileBar
                       title={result.name}
                       subtitle={`Sponsors: ${result.capstones.length} capstones`}

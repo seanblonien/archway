@@ -1,7 +1,4 @@
-import Strapi from 'strapi-sdk-javascript/build/main';
-
 export const strapiURL = 'http://localhost:1337';
-export const strapi = new Strapi(strapiURL);
 
 export const userImport = {
   fields: [
@@ -36,7 +33,7 @@ export const userImport = {
       required: false
     },
     {
-      name: 'Description',
+      name: 'description',
       label: 'Description',
       validation: '',
       required: false

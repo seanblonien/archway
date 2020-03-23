@@ -6,21 +6,20 @@ import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
-import _ from 'lodash';
-import {strapi, strapiURL} from '../constants';
-import defaultProfilePicture from '../Static/default-user-profile-image-png-6.png';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
 
 class ViewProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editing: true,
+      editing: false,
       user: {
         _id: '',
         username: '',
         email: '',
         Fullname: '',
-        ProfilePicture: ''
+        picture: ''
       },
     };
   }
@@ -29,20 +28,11 @@ class ViewProfile extends Component {
     const {match} = this.props;
 
     // Get the data for the user in question
-    const response = await strapi.axios.get(`${strapiURL}/users`,
-      {
-        params: {
-          username: match.params.username
-        }
-      });
+    const response = await api.users.find({username: match.params.username});
+    const user = response[0];
 
-    // Check to see if the user has a profile picture. If not, load the default one
-    let picture = defaultProfilePicture;
-    if (!_.isEmpty(response.data[0]) && response.data[0].ProfilePicture) {
-      picture = strapiURL + response.data[0].ProfilePicture.url;
-    }
-    const {user} = this.state;
-    this.setState({user: {...user, ProfilePicture: picture}, editing: false});
+    // Get the user's profile picture
+    this.setState({user});
   }
 
   handleCancel = () => {
@@ -63,13 +53,15 @@ class ViewProfile extends Component {
 
   handleRemoveProfilePic = async () => {
     const {user} = this.state;
-    await strapi.axios.delete(`${strapiURL}/upload/files/${user.ProfilePicture._id}`);
+    if(user.picture) {
+      await api.uploads.delete(user.picture.id);
+    }
   };
 
-  handleSubmit = event => {
+  handleSubmit = async (event) => {
     // todo: add authentication
     const {user} = this.state;
-    strapi.axios.put(`${strapiURL}/users/${user._id}`, user); // must enable users-permissions: update
+    await api.users.update(user.id, user);
     this.setState({editing: false});
     event.preventDefault();
   };
@@ -94,7 +86,7 @@ class ViewProfile extends Component {
           <Grid container direction='row' justify='space-between' spacing={2}>
             <Grid item xs={4} style={{width: '300px'}}>
               <img
-                src={user.ProfilePicture} alt='profile'
+                src={imageURL.user(user.picture)} alt='profile'
                 style={{
                   border: '4px solid black', borderRadius: '12px',
                   width: '100%', height: 'auto'

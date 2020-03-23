@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Typography} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,11 +11,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
 import {withStyles} from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import {Typography} from '@material-ui/core';
-import {strapi, strapiURL} from '../constants';
+import api from '../Services/api';
 
 const styles = {
   form: {
@@ -47,7 +47,7 @@ class ProposalForm extends Component {
   }
 
   async componentDidMount() {
-    const departmentList = await strapi.getEntries('departments');
+    const departmentList = await api.departments.find();
     this.setState({departmentList});
   }
 
@@ -79,7 +79,8 @@ class ProposalForm extends Component {
     const {email, phone, title, description, deliverables, intellectualProperty,
       nondisclosure, financialSupport, projectUse, Department} = this.state;
 
-    await strapi.axios.post(`${strapiURL}/proposals`, {
+    // TODO update to check for create/update
+    await api.proposals.create({
       email,
       phone,
       title,
@@ -101,7 +102,7 @@ class ProposalForm extends Component {
     const {email, phone, title, description, deliverables, intellectualProperty,
       nondisclosure, financialSupport, projectUse, Department} = this.state;
 
-    await strapi.axios.post(`${strapiURL}/proposals`, {
+    await api.proposals.create({
       email,
       phone,
       title,
@@ -232,7 +233,7 @@ class ProposalForm extends Component {
               </Typography>
               <TextField
                 margin='dense'
-                label='Finacial support'
+                label='Financial support'
                 value={financialSupport}
                 onChange={this.handleChange('financialSupport')}
               />

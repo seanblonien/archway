@@ -9,11 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
-import {Carousel} from 'react-responsive-carousel';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
-import {strapi, strapiURL} from '../constants';
 
 const styles = theme => ({
   card: {
@@ -70,27 +70,21 @@ class ViewASponsor extends Component {
     super(props);
     this.state = {
       loading: true,
-      sponsors: []
+      sponsor: []
     };
   }
 
   async componentDidMount() {
     const {match} = this.props;
-    await strapi.axios.get(`${strapiURL}/sponsors`, {
-      params: {
-        _id: match.params.id
-      }
-    }).then(response => {
-      this.setState({loading: false, sponsors: response.data});
-    });
+    const sponsor = await api.sponsors.findOne(match.params.id);
+    this.setState({loading: false, sponsor});
   }
 
   render() {
     const {classes} = this.props;
-    const {loading, sponsors} = this.state;
+    const {loading, sponsor} = this.state;
 
     if (!loading) {
-      const sponsor = sponsors[0];
       return (
         <div className='ViewASponsor'>
           <Grid container justify='center'>
@@ -111,7 +105,7 @@ class ViewASponsor extends Component {
                       </Typography>
                       <Divider style={{marginBottom: '2%'}}/>
                       <Typography align='center' style={{marginBottom: '1%'}}>
-                        <img src={strapiURL + sponsor.logo.url } className={classes.sponsorImage} alt='Display'/>
+                        <img src={imageURL.sponsor(sponsor.logo)} className={classes.sponsorImage} alt='Display'/>
                       </Typography>
                       <CardContent>
                         <Markdown>
@@ -120,7 +114,7 @@ class ViewASponsor extends Component {
                       </CardContent>
 
                       <Grid container justify='center'>
-                        <Link href={sponsor.webUrl}>
+                        <Link href={sponsor.url}>
                           <Button
                             className={classes.button}
                             style={{marginTop: '2%'}}
@@ -131,19 +125,6 @@ class ViewASponsor extends Component {
                           </Button>
                         </Link>
                       </Grid>
-
-
-                    </Grid>
-
-
-                    <Grid xs={6}>
-
-                      <Typography color='primary' align='center' component='span'>
-                        <h1>{sponsor.name} Advertisements </h1>
-                      </Typography>
-                      <Divider style={{marginBottom: '2%'}}/>
-                      <Carousel showArrows showThumbs={false} infiniteLoop/>
-
                     </Grid>
                   </Grid>
                 </Card>
@@ -163,10 +144,10 @@ class ViewASponsor extends Component {
                           <Grid item xs={12} md={6} style={{marginTop: '2%'}}>
                             <Card className={classes.capstoneCard} style={{height: '200px', overflow: 'auto'}}>
                               <CardContent>
-                                <SubHeadingTextTypography text={result.CapstoneName}/>
+                                <SubHeadingTextTypography text={result.title}/>
                                 <Divider/>
                                 <Markdown>
-                                  {result.Description}
+                                  {result.description}
                                 </Markdown>
                               </CardContent>
                             </Card>

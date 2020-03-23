@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
 import CardLayout from '../Components/CardLayout';
-import {strapi} from '../constants';
 
 class ViewAllDepartments extends Component {
   constructor(props) {
@@ -11,13 +12,13 @@ class ViewAllDepartments extends Component {
   }
 
   async componentDidMount() {
-    const departmentList = await strapi.getEntries('departments');
-    this.setState({departments: departmentList});
+    const departments = await api.departments.find();
+    this.setState({departments});
   }
 
   render() {
     const {departments} = this.state;
-    return <CardLayout title='All Departments' listItems={departments} childURL='/ViewADepartment/'/>;
+    return <CardLayout title='All Departments' listItems={departments} childURL='/ViewADepartment/' imageURLFunction={imageURL.department}/>;
   }
 }
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import history from '../utils/history';
-import {strapi, strapiURL} from '../constants';
+import api from '../Services/api';
 import auth from '../Auth';
+import history from '../utils/history';
 
 export default class Secret extends Component {
   async componentDidMount() {
@@ -20,15 +20,12 @@ export default class Secret extends Component {
         password = auth.hashCode(`${email + username}auth0`);
       }
 
-      strapi.axios.post(`${strapiURL}/auth/local`, {
-        identifier: email,
-        password
-      }).then(response => {
+      api.login(email, password).then(response => {
         localStorage.setItem('USER', JSON.stringify(response.data.user));
         localStorage.setItem('USERTOKEN', response.data.jwt);
         history.push('/');
       }).catch(() => {
-        strapi.axios.post(`${strapiURL}/auth/local/register`, {
+        api.register({
           username,
           email,
           password
