@@ -6,7 +6,7 @@ import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {strapi} from '../constants';
+import api from '../Services/api';
 import history from '../utils/history';
 
 const styles = theme => ({
@@ -41,7 +41,7 @@ class NativeSelects extends Component {
   }
 
   async componentDidMount() {
-    const capstones = await strapi.getEntries('capstones');
+    const capstones = await api.capstones.find();
     const sponsorList = capstones.filter(capstone => !_.isEmpty(capstone.sponsors))
       .flatMap(capstone => capstone.sponsors)
       .map(s => s.name);

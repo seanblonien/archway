@@ -13,9 +13,10 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
 import FilterBar from '../Components/FilterBar';
 import LoadingCircle from '../Components/LoadingCircle';
-import {strapi, strapiURL} from '../constants';
 import history from '../utils/history';
 
 const styles = {
@@ -53,93 +54,93 @@ class Capstone extends Component {
   }
 
   async componentDidMount() {
-    const capstones = await strapi.getEntries('capstones');
+    const capstones = await api.capstones.find();
     this.setState({loading: false, capstones});
   }
 
-    handleTileClick = (capstoneName) => {
-      history.push(`/ViewCapstone/${capstoneName}`);
-    };
+  handleTileClick = (title) => {
+    history.push(`/ViewCapstone/${title}`);
+  };
 
-    render() {
-      const {classes} = this.props;
-      const {loading, searchTerm, capstones} = this.state;
+  render() {
+    const {classes} = this.props;
+    const {loading, searchTerm, capstones} = this.state;
 
-      if (!loading) {
-        // Search functionality
-        let match;
-        let phrase;
-        const searchOptions = {
-          shouldSort: true,
-          threshold: 0.3,
-          minMatchCharLength: 1,
-          keys: ['CapstoneName',
-            'department.name',
-            'sponsors.name',
-          ]
-        };
+    if (!loading) {
+      // Search functionality
+      let match;
+      let phrase;
+      const searchOptions = {
+        shouldSort: true,
+        threshold: 0.3,
+        minMatchCharLength: 1,
+        keys: ['title',
+          'department.name',
+          'sponsors.name',
+        ]
+      };
 
-        if (searchTerm.searchTerm !== undefined) {
-          phrase = searchTerm.searchTerm;
-        }
+      if (searchTerm.searchTerm !== undefined) {
+        phrase = searchTerm.searchTerm;
+      }
 
-        if (phrase !== undefined) {
-          const fuse = new Fuse(capstones, searchOptions);
-          match = fuse.search(phrase);
-        } else {
-          match = capstones;
-        }
-
-        return (
-          <div>
-            <FilterBar/>
-
-            {/* Page heading */}
-            <Grid container justify='center'>
-              <Grid item md={10} xs={12}>
-                <Typography variant='h4' style={{marginTop: '16px'}}>Capstone Projects</Typography>
-                <Divider/>
-                <br/>
-              </Grid>
-            </Grid>
-
-            <Grid container justify='center' style={{marginBottom: '16px'}}>
-              <Grid item xs={12} md={10}>
-                <GridList cellHeight={250} cols={Capstone.getColumns(this.props)}>
-                  {/* Creates a gridlist tile for each capstone */}
-                  {match.map((result, i) => match[i].DisplayPhoto && match[i].DisplayPhoto.url != null ? (
-                    <GridListTile key={strapiURL + match[i].DisplayPhoto.url} onClick={() => this.handleTileClick(result._id)}>
-                      {/* The display photo for each gridlisttile */}
-                      <img src={strapiURL + match[i].DisplayPhoto.url} alt='Capstone' style={{height: '100%', width: '100%'}}/>
-                      <GridListTileBar
-                        title={result.CapstoneName}
-                        subtitle={`Made by: ${result.moderator.username}`}
-                        actionIcon={
-                          <IconButton
-                            className={classes.icon}
-                            component={Link}
-                            to={`/ViewCapstone/${result._id}`}
-                          >
-                            <InfoIcon/>
-                          </IconButton>
-                        }
-                      />
-                    </GridListTile>
-                  ) : '')}
-                </GridList>
-              </Grid>
-            </Grid>
-          </div>
-        );
+      if (phrase !== undefined) {
+        const fuse = new Fuse(capstones, searchOptions);
+        match = fuse.search(phrase);
+      } else {
+        match = capstones;
       }
 
       return (
-        <>
+        <div>
           <FilterBar/>
-          <LoadingCircle/>
-        </>
+
+          {/* Page heading */}
+          <Grid container justify='center'>
+            <Grid item md={10} xs={12}>
+              <Typography variant='h4' style={{marginTop: '16px'}}>Capstone Projects</Typography>
+              <Divider/>
+              <br/>
+            </Grid>
+          </Grid>
+
+          <Grid container justify='center' style={{marginBottom: '16px'}}>
+            <Grid item xs={12} md={10}>
+              <GridList cellHeight={250} cols={Capstone.getColumns(this.props)}>
+                {/* Creates a gridlist tile for each capstone */}
+                {match.map((result, i) => match[i].coverPhoto && match[i].coverPhoto.url != null ? (
+                  <GridListTile key={match[i].coverPhoto.url} onClick={() => this.handleTileClick(result._id)}>
+                    {/* The display photo for each gridlisttile */}
+                    <img src={imageURL.capstone(match[i].coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
+                    <GridListTileBar
+                      title={result.title}
+                      subtitle={`Made by: ${result.moderator.username}`}
+                      actionIcon={
+                        <IconButton
+                          className={classes.icon}
+                          component={Link}
+                          to={`/ViewCapstone/${result._id}`}
+                        >
+                          <InfoIcon/>
+                        </IconButton>
+                      }
+                    />
+                  </GridListTile>
+                ) : '')}
+              </GridList>
+            </Grid>
+          </Grid>
+        </div>
       );
     }
+
+    return (
+      <>
+        <FilterBar/>
+        <LoadingCircle/>
+      </>
+    );
+  }
 }
 
 Capstone.propTypes = {

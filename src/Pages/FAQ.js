@@ -1,15 +1,14 @@
-import Button from '@material-ui/core/Button';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import {strapi} from '../constants';
 
 const styles = theme => ({
   card: {
@@ -90,9 +89,9 @@ class FAQ extends Component {
   }
 
   async componentDidMount() {
-    const allFaqs = await strapi.getEntries('faqs');
+    const allFaqs = await api.faqs.find();
 
-    const categories = allFaqs.map(faq => faq.Category);
+    const categories = allFaqs.map(faq => faq.category);
 
     this.setState({loading: false, faqs: allFaqs, categories});
   }
@@ -117,24 +116,20 @@ class FAQ extends Component {
 
                   {faqs.map((question) => (
                     <div>
-                      { category === question.Category &&
+                      { category === question.category &&
                         <Grid xs={12} style={{marginLeft: '4%'}}>
                           <ExpansionPanel square>
                             <ExpansionPanelSummary>
                               <Typography>
-                                {question.Question}
+                                {question.question}
                               </Typography>
                             </ExpansionPanelSummary>
 
                             <ExpansionPanelDetails>
-                              {question.Answer}
+                              <Markdown>
+                                {question.answer}
+                              </Markdown>
                             </ExpansionPanelDetails>
-                            {question.url &&
-                              <ExpansionPanelDetails>
-                                <Button component={Link} to={question.url}>
-                                  More Info Here
-                                </Button>
-                              </ExpansionPanelDetails>}
                           </ExpansionPanel>
                         </Grid>}
                     </div>

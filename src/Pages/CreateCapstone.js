@@ -20,12 +20,11 @@ import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import Filter from 'bad-words';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import api from '../Services/api';
 import SimpleDialog from '../Components/AddUserDialog';
 import ArchwayDatePicker from '../Components/ArchwayDatePicker';
 import DragAndDropZone from '../Components/DragAndDropZone/DragAndDropZone';
 import PageTitleTypography from '../Components/PageTitleTypography';
-import {strapi, strapiURL} from '../constants';
-import auth from '../Auth';
 
 const styles = theme => ({
   list: {
@@ -58,11 +57,11 @@ class CreateCapstone extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      CapstoneName: '',
-      StartDate: '',
-      EndDate: '',
-      Description: '',
-      DisplayPhoto: '',
+      title: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+      coverPhoto: '',
       Department: '',
       Username: '',
       capstones: [],
@@ -81,15 +80,14 @@ class CreateCapstone extends Component {
 
   async componentDidMount() {
     // pull data from strapi/backend
-    const capstones = await strapi.getEntries('capstones');
-    const departmentList = await strapi.getEntries('departments');
-    const sponsorList = await strapi.getEntries('sponsors');
+    const capstones = await api.capstones.find();
+    const departmentList = await api.departments.find();
+    const sponsorList = await api.sponsors.find();
     // sets the various states
     this.setState({capstones, sponsorList, departmentList});
 
-    await strapi.axios.get(`${strapiURL}/users`).then(response2 => {
-      this.setState({Users: response2.data, AllUsers: response2.data});
-    });
+    const response = await api.users.find();
+    this.setState({Users: response.data, AllUsers: response.data});
   }
 
   handleChange = name => event => {
@@ -159,26 +157,24 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
-    const {DisplayPhoto, checkedSponsors, Participants, CapstoneName, StartDate, EndDate, Description, Username, Department, Users, AllUsers} = this.state;
-    if (DisplayPhoto == null) {
+    const {coverPhoto, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers} = this.state;
+    if (coverPhoto == null) {
       return;
     }
 
     const sponsorIDs = checkedSponsors.map(s => s.id);
     const UserIDs = Participants.map(p => p.id);
-    const authToken = `Bearer ${auth.getToken()}`;
 
-    const response = await strapi.axios.post(`${strapiURL}/Capstones`, {
-      CapstoneName,
-      StartDate,
-      EndDate,
-      Description,
+    const response = await api.capstones.create({
+      title,
+      startDate,
+      endDate,
+      description,
       moderator: Username,
       department: Department.id,
-      creators: UserIDs,
+      members: UserIDs,
       sponsors: sponsorIDs,
-    }
-    , {headers: {'Authorization': authToken}});
+    });
 
     // Get refId of post that was just made
     const refId = response.data.id;
@@ -189,12 +185,9 @@ class CreateCapstone extends Component {
     formData.append('files', image.files[0], image.files[0].name);
     formData.set('refId', refId);
     formData.set('ref', 'capstone');
-    formData.set('field', 'DisplayPhoto');
+    formData.set('field', 'coverPhoto');
 
-    await strapi.upload(formData, {headers: {
-      'Content-Type': 'multipart/form-data',
-      'Authorization': authToken
-    }});
+    await api.uploads.upload(formData);
 
     // Use Users and AllUsers eventually
     Users.filter(() => true);
@@ -202,12 +195,12 @@ class CreateCapstone extends Component {
   };
 
   isFormValid = () => {
-    const {CapstoneName, Description, DisplayPhoto, checkedSponsors, Department, capstones} = this.state;
+    const {title, description, coverPhoto, checkedSponsors, Department, capstones} = this.state;
     const filter = new Filter();
-    const profane = filter.isProfane(CapstoneName) || filter.isProfane(Description);
-    const validName = capstones.map(c => c.CapstoneName.toUpperCase()).includes(CapstoneName.toUpperCase());
+    const profane = filter.isProfane(title) || filter.isProfane(description);
+    const validName = capstones.map(c => c.title.toUpperCase()).includes(title.toUpperCase());
 
-    return CapstoneName && Description && DisplayPhoto && Department && (checkedSponsors.length > 0) && validName && !profane;
+    return title && description && coverPhoto && Department && (checkedSponsors.length > 0) && validName && !profane;
   };
 
   render() {

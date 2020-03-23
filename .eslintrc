@@ -41,6 +41,7 @@
       "afterOpening": "never",
       "beforeClosing": "never"
     }],
+    "lines-between-class-members": "off",
     "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }]
   }
 }

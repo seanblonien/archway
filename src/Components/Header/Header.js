@@ -13,13 +13,13 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
+import auth from '../../Auth';
 import {university} from '../../constants';
+import universityLogo from '../../Static/univ_logo.svg';
+import history from '../../utils/history';
 import Drawer from './Drawer';
 import SearchBar from './SearchBar';
 import SubMenu from './SubMenu';
-import auth from '../../Auth';
-import universityLogo from '../../Static/univ_logo.svg';
-import history from '../../utils/history';
 
 const styles = theme => ({
   root: {

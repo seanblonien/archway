@@ -12,12 +12,12 @@ import React, {Component} from 'react';
 import {Parallax} from 'react-parallax';
 import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import {
   schoolColorPrimary,
   schoolColorSecondary,
-  strapi,
-  strapiURL,
   university
 } from '../constants';
 import history from '../utils/history';
@@ -110,40 +110,30 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    const capstones = await strapi.getEntries('capstones');
-    const sponsorList = await strapi.getEntries('Sponsors');
-    this.populateFeaturedCapstones(capstones);
-    this.getFeaturedSponsors(sponsorList);
+    const capstones = await api.capstones.find();
+    const sponsors = await api.sponsors.find();
+    this.getFeaturedCapstones(capstones);
+    this.getFeaturedSponsors(sponsors);
     this.setState({loading: false});
   }
 
-  getFeaturedSponsors(sponsorList) {
-    const featuredSponsors = [];
-    for (const sponsor in sponsorList) {
-      if (sponsorList[sponsor].featured === true) {
-        featuredSponsors.push(sponsorList[sponsor]);
-      }
-    }
+  getFeaturedSponsors = (sponsorList) => {
+    const featuredSponsors = sponsorList.filter(sponsor => sponsor.isFeatured);
     this.setState({featuredSponsors});
-  }
+  };
 
   handleSponsorClick = (sponsorName) => {
     history.push(`/ViewASponsor/${sponsorName}`);
   };
 
-  handleTileClick = (capstoneName) => {
-    history.push(`/ViewCapstone/${capstoneName}`);
+  handleTileClick = (title) => {
+    history.push(`/ViewCapstone/${title}`);
   };
 
-  populateFeaturedCapstones(capstones) {
-    const featuredCapstoneProjects = [];
-    for(const thisCapstone in capstones) {
-      if(capstones[thisCapstone].Featured === true) {
-        featuredCapstoneProjects.push(capstones[thisCapstone]);
-      }
-    }
-    this.setState({featuredCapstones: featuredCapstoneProjects});
-  }
+  getFeaturedCapstones = (capstones) => {
+    const featuredCapstones = capstones.filter(capstone => capstone.isFeatured);
+    this.setState({featuredCapstones});
+  };
 
   render() {
     const {classes} = this.props;
@@ -209,15 +199,15 @@ class Home extends Component {
                   {featuredCapstones.map((result, i) => (
                     <GridListTile
                       style={{maxWidth: '300px'}}
-                      key={strapiURL + featuredCapstones[i].DisplayPhoto.url}
+                      key={featuredCapstones[i].coverPhoto.url}
                       onClick={() => this.handleTileClick(result.id)}
                     >
                       <img
-                        src={strapiURL + featuredCapstones[i].DisplayPhoto.url}
+                        src={imageURL.capstone(featuredCapstones[i].coverPhoto)}
                         alt='Capstone' style={{height: '100%', width: '100%'}}
                       />
                       <GridListTileBar
-                        title={result.CapstoneName}
+                        title={result.title}
                         subtitle={`Made by: ${result.moderator.username}`}
                         actionIcon={
                           <IconButton
@@ -271,11 +261,11 @@ class Home extends Component {
               {featuredSponsors.map((result, i) => (
                 <GridListTile
                   style={{maxWidth: '200px'}}
-                  key={strapiURL + featuredSponsors[i].logo.url}
+                  key={featuredSponsors[i].logo.url}
                   onClick={() => this.handleSponsorClick(result.id)}
                 >
                   <img
-                    src={strapiURL + featuredSponsors[i].logo.url}
+                    src={imageURL.sponsor(featuredSponsors[i].logo)}
                     alt='Sponsor' style={{height: '100%', width: '100%'}}
                   />
                 </GridListTile>

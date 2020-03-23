@@ -7,32 +7,33 @@
       "kind": "collectionType",
       "collectionName": "capstones",
       "attributes": {
-        "CapstoneName": {
+        "title": {
           "type": "string",
           "required": true
         },
-        "Featured": {
-          "type": "boolean"
+        "isFeatured": {
+          "type": "boolean",
+          "default": false
         },
-        "StartDate": {
+        "startDate": {
           "type": "date",
           "required": true
         },
-        "EndDate": {
+        "endDate": {
           "type": "date",
           "required": true
         },
-        "Description": {
+        "description": {
           "type": "richtext",
           "required": true,
           "maxLength": 10000
         },
-        "DisplayPhoto": {
+        "coverPhoto": {
           "type": "media",
           "multiple": false,
           "required": false
         },
-        "pictures": {
+        "media": {
           "type": "media",
           "multiple": true,
           "required": false
@@ -44,17 +45,11 @@
           "targetAttribute": "capstones",
           "unique": false
         },
-        "posts": {
-          "nature": "manyWay",
-          "target": "application::posts.posts",
-          "dominant": false,
-          "unique": false
-        },
-        "creators": {
-          "nature": "oneToMany",
+        "members": {
+          "nature": "manyToMany",
           "target": "plugins::users-permissions.user",
-          "dominant": false,
-          "targetAttribute": "capstone",
+          "dominant": true,
+          "targetAttribute": "capstones",
           "unique": false
         },
         "department": {
@@ -63,38 +58,58 @@
           "dominant": false,
           "targetAttribute": "capstones",
           "unique": false
+        },
+        "section": {
+          "nature": "manyToOne",
+          "target": "application::sections.sections",
+          "dominant": false,
+          "targetAttribute": "capstones",
+          "unique": false
+        },
+        "thumbnail": {
+          "type": "media",
+          "multiple": true,
+          "required": false
         }
       }
     },
     {
-      "name": "commemts",
-      "description": "Describes a Comment to a Post",
+      "name": "courses",
+      "description": "",
       "connection": "default",
       "kind": "collectionType",
-      "collectionName": "commemts",
+      "collectionName": "courses",
       "attributes": {
-        "content": {
-          "type": "text"
+        "title": {
+          "type": "string",
+          "required": true
         },
-        "username": {
+        "subjectAndNumber": {
+          "type": "string",
+          "required": true
+        },
+        "creditHours": {
+          "type": "decimal"
+        },
+        "description": {
+          "type": "richtext",
+          "maxLength": 10000
+        },
+        "url": {
           "type": "string"
         },
-        "user": {
-          "nature": "manyToOne",
-          "target": "plugins::users-permissions.user",
+        "sections": {
+          "nature": "oneToMany",
+          "target": "application::sections.sections",
           "dominant": false,
-          "targetAttribute": "comments",
+          "targetAttribute": "course",
           "unique": false
         },
-        "editable": {
-          "type": "boolean",
-          "default": true
-        },
-        "post": {
+        "department": {
           "nature": "manyToOne",
-          "target": "application::posts.posts",
+          "target": "application::departments.departments",
           "dominant": false,
-          "targetAttribute": "comments",
+          "targetAttribute": "courses",
           "unique": false
         }
       }
@@ -128,25 +143,37 @@
           "type": "richtext",
           "default": "10000"
         },
-        "viewstat": {
-          "nature": "oneToOne",
-          "target": "application::viewstats.viewstats",
-          "dominant": false,
-          "targetAttribute": "department",
-          "unique": false
-        },
         "preview": {
           "type": "string"
         },
-        "image": {
+        "thumbnail": {
           "type": "media",
           "multiple": false,
           "required": false
         },
-        "proposal": {
+        "coverPhoto": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "proposals": {
           "nature": "manyToMany",
           "target": "application::proposals.proposals",
           "dominant": true,
+          "targetAttribute": "departments",
+          "unique": false
+        },
+        "professors": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "department",
+          "unique": false
+        },
+        "courses": {
+          "nature": "oneToMany",
+          "target": "application::courses.courses",
+          "dominant": false,
           "targetAttribute": "department",
           "unique": false
         }
@@ -159,58 +186,17 @@
       "kind": "collectionType",
       "collectionName": "faqs",
       "attributes": {
-        "Category": {
+        "category": {
           "type": "string"
         },
-        "Question": {
+        "question": {
           "type": "string",
           "required": true
         },
-        "Answer": {
+        "answer": {
           "type": "richtext",
           "required": true,
           "maxLength": 10000
-        },
-        "Url": {
-          "type": "string"
-        }
-      }
-    },
-    {
-      "name": "posts",
-      "description": "Describes a Post on a Capstone Project",
-      "connection": "default",
-      "kind": "collectionType",
-      "collectionName": "posts",
-      "attributes": {
-        "title": {
-          "type": "string",
-          "unique": false,
-          "default": "title",
-          "required": true
-        },
-        "content": {
-          "type": "richtext",
-          "required": true
-        },
-        "media": {
-          "type": "media",
-          "multiple": true,
-          "required": false
-        },
-        "user": {
-          "nature": "manyToOne",
-          "target": "plugins::users-permissions.user",
-          "dominant": false,
-          "targetAttribute": "posts",
-          "unique": false
-        },
-        "comments": {
-          "nature": "oneToMany",
-          "target": "application::commemts.commemts",
-          "dominant": false,
-          "targetAttribute": "post",
-          "unique": false
         }
       }
     },
@@ -226,58 +212,115 @@
           "unique": false,
           "default": "New Proposal"
         },
-        "status": {
-          "type": "string",
-          "unique": false
-        },
-        "email": {
-          "type": "string",
-          "unique": false
-        },
         "phone": {
           "type": "string",
           "unique": false
         },
-        "projectDescription": {
-          "type": "text",
-          "required": false,
-          "default": "TBD"
-        },
-        "projectDeliverables": {
-          "type": "text",
-          "required": false,
-          "default": "TBD"
-        },
-        "intellectualPropertyRequired": {
+        "isIntellectualPropertyRequired": {
           "type": "boolean"
         },
-        "nondisclosureRequired": {
+        "isNondisclosureRequired": {
           "type": "boolean"
-        },
-        "finacialSupport": {
-          "type": "string",
-          "unique": false
-        },
-        "projectUse": {
-          "type": "text"
         },
         "dateSubmitted": {
           "type": "date",
           "unique": false
         },
-        "user": {
-          "nature": "manyToOne",
+        "creator": {
+          "nature": "oneWay",
           "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "unique": false
+        },
+        "departments": {
+          "nature": "manyToMany",
+          "target": "application::departments.departments",
           "dominant": false,
           "targetAttribute": "proposals",
           "unique": false
         },
-        "department": {
+        "status": {
+          "type": "enumeration",
+          "enum": [
+            "notSubmitted",
+            "submittedUnapproved",
+            "submittedApproved"
+          ],
+          "default": "notSubmitted"
+        },
+        "dateApproved": {
+          "type": "date"
+        },
+        "projectUse": {
+          "type": "richtext"
+        },
+        "financialSupport": {
+          "type": "richtext"
+        },
+        "projectDeliverables": {
+          "type": "richtext"
+        },
+        "projectDescription": {
+          "type": "richtext"
+        },
+        "email": {
+          "type": "email"
+        },
+        "sponsors": {
           "nature": "manyToMany",
-          "target": "application::departments.departments",
-          "dominant": false,
-          "targetAttribute": "proposal",
+          "target": "application::sponsors.sponsors",
+          "dominant": true,
+          "targetAttribute": "proposals",
           "unique": false
+        }
+      }
+    },
+    {
+      "name": "sections",
+      "description": "",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "sections",
+      "attributes": {
+        "capstones": {
+          "nature": "oneToMany",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "section",
+          "unique": false
+        },
+        "instructors": {
+          "nature": "manyToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": true,
+          "targetAttribute": "instructorSections",
+          "unique": false
+        },
+        "course": {
+          "nature": "manyToOne",
+          "target": "application::courses.courses",
+          "dominant": false,
+          "targetAttribute": "sections",
+          "unique": false
+        },
+        "students": {
+          "nature": "manyToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": true,
+          "targetAttribute": "studentSections",
+          "unique": false
+        },
+        "Semester": {
+          "type": "enumeration",
+          "enum": [
+            "fall",
+            "spring"
+          ],
+          "required": true
+        },
+        "year": {
+          "type": "integer",
+          "required": true
         }
       }
     },
@@ -299,7 +342,7 @@
           "targetAttribute": "sponsors",
           "unique": false
         },
-        "webUrl": {
+        "url": {
           "type": "string"
         },
         "logo": {
@@ -309,39 +352,23 @@
         },
         "description": {
           "type": "richtext",
-          "required": true
+          "required": false,
+          "maxLength": 10000
         },
-        "featured": {
+        "isFeatured": {
           "type": "boolean"
-        }
-      }
-    },
-    {
-      "name": "viewstats",
-      "description": "Describes a ViewStat",
-      "connection": "default",
-      "kind": "collectionType",
-      "collectionName": "viewstats",
-      "attributes": {
-        "count": {
-          "type": "integer"
         },
-        "user": {
-          "nature": "oneToOne",
-          "target": "plugins::users-permissions.user",
+        "coverPhoto": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "proposals": {
+          "nature": "manyToMany",
+          "target": "application::proposals.proposals",
           "dominant": false,
-          "targetAttribute": "viewstat",
+          "targetAttribute": "sponsors",
           "unique": false
-        },
-        "department": {
-          "nature": "oneToOne",
-          "target": "application::departments.departments",
-          "dominant": false,
-          "targetAttribute": "viewstat",
-          "unique": false
-        },
-        "testAttr": {
-          "type": "string"
         }
       }
     }
@@ -488,51 +515,41 @@
           "configurable": false,
           "required": true
         },
-        "Bio": {
-          "type": "text"
-        },
-        "Description": {
+        "description": {
           "type": "richtext",
           "maxLength": 10000
         },
-        "posts": {
-          "nature": "oneToMany",
-          "target": "application::posts.posts",
-          "dominant": false,
-          "targetAttribute": "user",
-          "unique": false
-        },
-        "ProfilePicture": {
+        "picture": {
           "type": "media",
           "multiple": false,
           "required": false
         },
-        "viewstat": {
-          "nature": "oneToOne",
-          "target": "application::viewstats.viewstats",
-          "dominant": false,
-          "targetAttribute": "user",
-          "unique": false
-        },
-        "capstone": {
-          "nature": "manyToOne",
+        "capstones": {
+          "nature": "manyToMany",
           "target": "application::capstones.capstones",
           "dominant": false,
-          "targetAttribute": "creators",
+          "targetAttribute": "members",
           "unique": false
         },
-        "comments": {
-          "nature": "oneToMany",
-          "target": "application::commemts.commemts",
+        "department": {
+          "nature": "manyToOne",
+          "target": "application::departments.departments",
           "dominant": false,
-          "targetAttribute": "user",
+          "targetAttribute": "professors",
           "unique": false
         },
-        "proposals": {
-          "nature": "oneToMany",
-          "target": "application::proposals.proposals",
+        "instructorSections": {
+          "nature": "manyToMany",
+          "target": "application::sections.sections",
           "dominant": false,
-          "targetAttribute": "user",
+          "targetAttribute": "instructors",
+          "unique": false
+        },
+        "studentSections": {
+          "nature": "manyToMany",
+          "target": "application::sections.sections",
+          "dominant": false,
+          "targetAttribute": "students",
           "unique": false
         }
       }

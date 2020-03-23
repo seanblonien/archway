@@ -8,9 +8,10 @@ const {absPath} = require('./execShellCommand');
 
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
+  console.log('stdout and stderr are delayed until the process has finished.');
   try {
     // Run Strapi import
-    console.log('=== Importing Strapi ===');
+    console.log('=== Importing Strapi ===\n(May take a while)');
     await execShellCommand(`node ${absPath('import-strapi.js')} ${absPath('BaseStrapiExport.json')}`);
     // Run database import
     console.log('=== Importing Database ===');

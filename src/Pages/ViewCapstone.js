@@ -14,9 +14,9 @@ import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import axios from 'axios';
-import 'pure-react-carousel/dist/react-carousel.es.css';
+import _ from 'lodash';
 import Markdown from 'markdown-to-jsx';
+import 'pure-react-carousel/dist/react-carousel.es.css';
 import React, {Component} from 'react';
 import {Carousel} from 'react-responsive-carousel';
 import {Link} from 'react-router-dom';
@@ -29,13 +29,12 @@ import {
   TwitterShareButton
 } from 'react-share';
 import compose from 'recompose/compose';
-import _ from 'lodash';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
+import auth from '../Auth';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
-import auth from '../Auth';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
-import {strapi, strapiURL} from '../constants';
-import * as defaultProfileImage from '../Static/default-user-profile-image-png-6.png';
 
 const styles = () => ({
   card: {
@@ -142,21 +141,6 @@ class ViewCapstone extends Component {
     return 12;
   }
 
-  static showPicture(pictureURL) {
-    if(pictureURL === undefined) {
-      return <div>
-        <img src={defaultProfileImage} width='100%' height='auto' style={{borderRadius: '5px', display: 'block'}} alt=''/>
-      </div>;
-    }
-
-    return <div>
-
-      <img src={strapiURL + pictureURL} width='100%' height='auto' style={{borderRadius: '5px', display: 'block'}} alt=''/>
-
-    </div>;
-
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -173,7 +157,7 @@ class ViewCapstone extends Component {
   }
 
   async componentDidMount() {
-    const users1 = await strapi.getEntries('Users');
+    const users1 = await api.users.find();
 
     // If we're logged-in, store the user Id and update the count values.
     const userObj = auth.getUser();
@@ -182,36 +166,25 @@ class ViewCapstone extends Component {
     }
 
     const capstone = await this.getCapstone();
-    this.setState({capstone, team: capstone.creators});
+    this.setState({capstone, team: capstone.members});
     await this.getTeamPics();
     this.setState({loading: false, users: users1});
-
-    let x = capstone.viewcount;
-    x++;
-
-    await axios.put(`${strapiURL}/Capstones/${capstone.id}`, {
-      viewcount: x,
-    });
   };
 
-  getCapstone  = async () =>{
+  getCapstone = async () =>{
     const {match} = this.props;
-    const url = `${strapiURL}/capstones/${match.params.capstoneID}`;
-    return (await axios.get(url)).data;
+    return api.capstones.findOne(match.params.capstoneID);
   };
 
   getTeamPics = async () => {
     const {team} = this.state;
-    let pic;
     const picURLS = [];
     for(const member in team) {
-      pic = await strapi.axios.get(`${strapiURL}/users/${team[member]._id}`);
-      if(pic.data.ProfilePicture !== null) {
-        picURLS[member] = pic.data.ProfilePicture.url;
-      }
+      const response = await api.users.findOne(team[member].id);
+      picURLS[member] = imageURL.user(response.picture);
     }
     this.setState({teamPics: picURLS});
-  }
+  };
 
   // Ensures margin is there when screen is large and dissapears when screen resizes to below md and col resizes
   setLeftColClass(props) {
@@ -250,27 +223,25 @@ class ViewCapstone extends Component {
     this.setState({userOpen: false});
   };
 
-  handleUserSubmit = async (capstoneId, creators) => {
+  handleUserSubmit = async (capstoneId, members) => {
     const {users, newUser} = this.state;
 
     this.setState({userOpen: false});
     for (let i = 0; i < users.length; i++) {
       if (users[i].username.toUpperCase() === newUser.toUpperCase()) {
-        creators.push(users[i]._id);
+        members.push(users[i]._id);
         break;
       }
     }
 
-    await axios.put(`${strapiURL}/capstones/${capstoneId}`, {
-      creators
-    });
+    await api.capstones.update(capstoneId, {members});
   };
 
   isCreator = (obj) => {
-    const {creators} = obj;
+    const {members} = obj;
     const {Username} = this.state;
 
-    return !_.isEmpty(creators.filter(c => c._id === Username));
+    return !_.isEmpty(members.filter(c => c._id === Username));
   };
 
   render() {
@@ -280,7 +251,7 @@ class ViewCapstone extends Component {
     if (!loading) {
       const picArray = [];
       for (const pic in capstone.Pictures) {
-        picArray.push(strapiURL + capstone.Pictures[pic].url);
+        picArray.push(imageURL.capstone(capstone.Pictures[pic]));
       }
 
       const creatorArray = [];
@@ -291,10 +262,6 @@ class ViewCapstone extends Component {
         picCreatorArray.push(teamPics[i]);
       }
 
-      const postArray = [];
-      for (const posting in capstone.posts) {
-        postArray.push(capstone.posts[posting]);
-      }
       return <div>
         <Grid container justify='center'>
           <Grid item xs={10}>
@@ -308,7 +275,7 @@ class ViewCapstone extends Component {
 
                   <FacebookShareButton
                     url='www.baylor.edu'
-                    quote={capstone.CapstoneName}
+                    quote={capstone.title}
                     hashtag='Capstone'
                   >
                     <FacebookIcon
@@ -319,7 +286,7 @@ class ViewCapstone extends Component {
 
                   <TwitterShareButton
                     url='www.baylor.edu'
-                    title={capstone.CapstoneName}
+                    title={capstone.title}
                     hashtags={['Capstone']}
                   >
                     <TwitterIcon
@@ -330,8 +297,8 @@ class ViewCapstone extends Component {
 
                   <LinkedinShareButton
                     url='www.baylor.edu'
-                    title={capstone.CapstoneName}
-                    description={capstone.Description}
+                    title={capstone.title}
+                    description={capstone.description}
                   >
                     <LinkedinIcon
                       size={28}
@@ -341,11 +308,11 @@ class ViewCapstone extends Component {
                 </Grid>
 
                 {/* Title, Capstone Image, Start/End Date */}
-                <PageTitleTypography text={capstone.CapstoneName}/>
+                <PageTitleTypography text={capstone.title}/>
 
                 <Divider/>
                 <Typography align='center' style={{marginBottom: '1%'}}>
-                  <img src={strapiURL + capstone.DisplayPhoto.url } className={classes.capstoneImage} alt='Display'/>
+                  <img src={imageURL.capstone(capstone.coverPhoto)} className={classes.capstoneImage} alt='Display'/>
                 </Typography>
               </CardContent>
             </Card>
@@ -357,13 +324,10 @@ class ViewCapstone extends Component {
                       <SubHeadingTextTypography text='Project Info' align='center'/>
                       <Divider/>
                       <Typography variant='subheading' style={{marginTop: '2%'}}>
-                        <b>Start Date:</b> {ViewCapstone.formatDate(capstone.StartDate)}
+                        <b>Start Date:</b> {ViewCapstone.formatDate(capstone.startDate)}
                       </Typography>
                       <Typography variant='subheading'>
-                        <b>Date Completed:</b> {ViewCapstone.formatDate(capstone.EndDate)}
-                      </Typography>
-                      <Typography variant='subheading' style={{marginTop: '2%'}}>
-                        <b>View Count:</b> {capstone.viewcount}
+                        <b>Date Completed:</b> {ViewCapstone.formatDate(capstone.endDate)}
                       </Typography>
                       <Typography variant='subheading' style={{marginTop: '2%'}}>
                         <b>Department: </b> {capstone.department.name}
@@ -379,7 +343,7 @@ class ViewCapstone extends Component {
                       <Typography variant='subheading' style={{marginTop: '2%'}}>
                         <b>Description: </b> <br/>
                         <Markdown>
-                          {capstone.Description}
+                          {capstone.description}
                         </Markdown>
                       </Typography>
                     </CardContent>
@@ -423,7 +387,7 @@ class ViewCapstone extends Component {
                                   Cancel
                                 </Button>
                                 <Button
-                                  onClick={() => this.handlePhotoSubmit(capstone._id, capstone.creators)}
+                                  onClick={() => this.handlePhotoSubmit(capstone._id, capstone.members)}
                                   color='primary'
                                 >
                                   Submit
@@ -480,7 +444,7 @@ class ViewCapstone extends Component {
                                   Cancel
                                 </Button>
                                 <Button
-                                  onClick={() => this.handlePhotoSubmit(capstone._id, capstone.creators)}
+                                  onClick={() => this.handlePhotoSubmit(capstone._id, capstone.members)}
                                   color='primary'
                                 >
                                   Submit
@@ -531,7 +495,7 @@ class ViewCapstone extends Component {
                                 Cancel
                               </Button>
                               <Button
-                                onClick={() => this.handleUserSubmit(capstone._id, capstone.creators)}
+                                onClick={() => this.handleUserSubmit(capstone._id, capstone.members)}
                                 color='primary'
                               >
                                 Submit
@@ -553,12 +517,9 @@ class ViewCapstone extends Component {
                                 to={`/ViewProfile/${result.username}`}
                                 style={{height: '100%', width: '100%'}}
                               >
-                                <div>
-                                  {ViewCapstone.showPicture(picCreatorArray[i])}
-                                </div>
+                                <img src={picCreatorArray[i]} alt={result.username} width='100%' height='auto' style={{borderRadius: '5px', display: 'block'}}/>
                                 <div className={classes.textBox}>
-                                  {result.FullName === '' && result.username}
-                                  {result.FullName}
+                                  {result.username}
                                 </div>
                               </Button>
                             </div>
