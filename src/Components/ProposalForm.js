@@ -233,7 +233,7 @@ class ProposalForm extends Component {
               </Typography>
               <TextField
                 margin='dense'
-                label='Finacial support'
+                label='Financial support'
                 value={financialSupport}
                 onChange={this.handleChange('financialSupport')}
               />

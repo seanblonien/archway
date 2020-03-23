@@ -254,7 +254,7 @@
         "projectUse": {
           "type": "richtext"
         },
-        "finacialSupport": {
+        "financialSupport": {
           "type": "richtext"
         },
         "projectDeliverables": {
