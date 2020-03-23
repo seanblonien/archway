@@ -63,5 +63,6 @@
   "repository": {
     "type": "git",
     "url": "https://gitlab.ecs.baylor.edu/aars/20200143c9-pariveda03"
-  }
+  },
+  "devDependencies": {}
 }
