@@ -1,0 +1,167 @@
+{
+  "content-type-builder": {
+    "componentcategories": {
+      "editcategory": "content-type-buildercomponentcategorieseditcategory",
+      "deletecategory": "content-type-buildercomponentcategoriesdeletecategory"
+    },
+    "components": {
+      "getcomponents": "content-type-buildercomponentsgetcomponents",
+      "updatecomponent": "content-type-buildercomponentsupdatecomponent",
+      "getcomponent": "content-type-buildercomponentsgetcomponent",
+      "createcomponent": "content-type-buildercomponentscreatecomponent",
+      "deletecomponent": "content-type-buildercomponentsdeletecomponent"
+    },
+    "connections": {
+      "getconnections": "content-type-builderconnectionsgetconnections"
+    },
+    "contenttypes": {
+      "createcontenttype": "content-type-buildercontenttypescreatecontenttype",
+      "deletecontenttype": "content-type-buildercontenttypesdeletecontenttype",
+      "getcontenttypes": "content-type-buildercontenttypesgetcontenttypes",
+      "getcontenttype": "content-type-buildercontenttypesgetcontenttype",
+      "updatecontenttype": "content-type-buildercontenttypesupdatecontenttype"
+    }
+  },
+  "content-manager": {
+    "components": {
+      "updatecomponent": "content-managercomponentsupdatecomponent",
+      "listcomponents": "content-managercomponentslistcomponents",
+      "findcomponent": "content-managercomponentsfindcomponent"
+    },
+    "contentmanager": {
+      "findone": "content-managercontentmanagerfindone",
+      "update": "content-managercontentmanagerupdate",
+      "deletemany": "content-managercontentmanagerdeletemany",
+      "count": "content-managercontentmanagercount",
+      "create": "content-managercontentmanagercreate",
+      "find": "content-managercontentmanagerfind",
+      "delete": "content-managercontentmanagerdelete",
+      "generateuid": "content-managercontentmanagergenerateuid",
+      "checkuidavailability": "content-managercontentmanagercheckuidavailability"
+    },
+    "contenttypes": {
+      "updatecontenttype": "content-managercontenttypesupdatecontenttype",
+      "listcontenttypes": "content-managercontenttypeslistcontenttypes",
+      "findcontenttype": "content-managercontenttypesfindcontenttype"
+    }
+  },
+  "users-permissions": {
+    "auth": {
+      "changepassword": "users-permissionsauthchangepassword",
+      "register": "users-permissionsauthregister",
+      "sendemailconfirmation": "users-permissionsauthsendemailconfirmation",
+      "connect": "users-permissionsauthconnect",
+      "forgotpassword": "users-permissionsauthforgotpassword",
+      "callback": "users-permissionsauthcallback",
+      "emailconfirmation": "users-permissionsauthemailconfirmation"
+    },
+    "user": {
+      "findone": "users-permissionsuserfindone",
+      "update": "users-permissionsuserupdate",
+      "find": "users-permissionsuserfind",
+      "destroy": "users-permissionsuserdestroy",
+      "me": "users-permissionsuserme",
+      "destroyall": "users-permissionsuserdestroyall",
+      "create": "users-permissionsusercreate"
+    },
+    "userspermissions": {
+      "createrole": "users-permissionsuserspermissionscreaterole",
+      "deleterole": "users-permissionsuserspermissionsdeleterole",
+      "getrole": "users-permissionsuserspermissionsgetrole",
+      "getroutes": "users-permissionsuserspermissionsgetroutes",
+      "searchusers": "users-permissionsuserspermissionssearchusers",
+      "getemailtemplate": "users-permissionsuserspermissionsgetemailtemplate",
+      "updateadvancedsettings": "users-permissionsuserspermissionsupdateadvancedsettings",
+      "updateproviders": "users-permissionsuserspermissionsupdateproviders",
+      "getpermissions": "users-permissionsuserspermissionsgetpermissions",
+      "index": "users-permissionsuserspermissionsindex",
+      "getpolicies": "users-permissionsuserspermissionsgetpolicies",
+      "updateemailtemplate": "users-permissionsuserspermissionsupdateemailtemplate",
+      "init": "users-permissionsuserspermissionsinit",
+      "getadvancedsettings": "users-permissionsuserspermissionsgetadvancedsettings",
+      "deleteprovider": "users-permissionsuserspermissionsdeleteprovider",
+      "getroles": "users-permissionsuserspermissionsgetroles",
+      "updaterole": "users-permissionsuserspermissionsupdaterole",
+      "getproviders": "users-permissionsuserspermissionsgetproviders"
+    }
+  },
+  "email": {
+    "email": {
+      "getsettings": "emailemailgetsettings",
+      "send": "emailemailsend",
+      "getenvironments": "emailemailgetenvironments",
+      "updatesettings": "emailemailupdatesettings"
+    }
+  },
+  "upload": {
+    "upload": {
+      "upload": "uploaduploadupload",
+      "updatesettings": "uploaduploadupdatesettings",
+      "findone": "uploaduploadfindone",
+      "search": "uploaduploadsearch",
+      "getenvironments": "uploaduploadgetenvironments",
+      "count": "uploaduploadcount",
+      "getsettings": "uploaduploadgetsettings",
+      "destroy": "uploaduploaddestroy",
+      "find": "uploaduploadfind"
+    }
+  },
+  "application": {
+    "capstones": {
+      "count": "applicationcapstonescount",
+      "create": "applicationcapstonescreate",
+      "find": "applicationcapstonesfind",
+      "delete": "applicationcapstonesdelete",
+      "findone": "applicationcapstonesfindone",
+      "update": "applicationcapstonesupdate"
+    },
+    "departments": {
+      "find": "applicationdepartmentsfind",
+      "findone": "applicationdepartmentsfindone",
+      "count": "applicationdepartmentscount",
+      "create": "applicationdepartmentscreate",
+      "update": "applicationdepartmentsupdate",
+      "delete": "applicationdepartmentsdelete"
+    },
+    "faqs": {
+      "create": "applicationfaqscreate",
+      "find": "applicationfaqsfind",
+      "findone": "applicationfaqsfindone",
+      "update": "applicationfaqsupdate",
+      "delete": "applicationfaqsdelete",
+      "count": "applicationfaqscount"
+    },
+    "sponsors": {
+      "create": "applicationsponsorscreate",
+      "count": "applicationsponsorscount",
+      "update": "applicationsponsorsupdate",
+      "findone": "applicationsponsorsfindone",
+      "find": "applicationsponsorsfind",
+      "delete": "applicationsponsorsdelete"
+    },
+    "proposals": {
+      "find": "applicationproposalsfind",
+      "update": "applicationproposalsupdate",
+      "delete": "applicationproposalsdelete",
+      "create": "applicationproposalscreate",
+      "findone": "applicationproposalsfindone",
+      "count": "applicationproposalscount"
+    },
+    "courses": {
+      "find": "applicationcoursesfind",
+      "findone": "applicationcoursesfindone",
+      "update": "applicationcoursesupdate",
+      "delete": "applicationcoursesdelete",
+      "create": "applicationcoursescreate",
+      "count": "applicationcoursescount"
+    },
+    "sections": {
+      "find": "applicationsectionsfind",
+      "findone": "applicationsectionsfindone",
+      "create": "applicationsectionscreate",
+      "delete": "applicationsectionsdelete",
+      "count": "applicationsectionscount",
+      "update": "applicationsectionsupdate"
+    }
+  }
+}

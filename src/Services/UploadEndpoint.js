@@ -1,4 +1,5 @@
-import formatQuery from '../utils/formatQuery';
+/* eslint-disable import/no-cycle */
+import {formatQuery} from '../utils/utils';
 
 // Represents the Strapi upload endpoint
 export default class UploadEndpoint {

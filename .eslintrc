@@ -16,6 +16,7 @@
     "indent": ["warn", 2, {"SwitchCase":  1}],
     "quotes": "warn",
     "jsx-quotes": ["warn", "prefer-single"],
+    "react/no-typos": "warn",
     "camelcase": "warn",
     "no-console": ["warn", {"allow": ["warn", "error"]}],
     "max-lines": ["warn", 600],
