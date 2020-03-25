@@ -1,6 +1,5 @@
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import {Link as StyledLink} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
@@ -40,7 +39,7 @@ const styles = theme => ({
     '&:hover': {
       color: theme.palette.secondary.main,
     },
-    '&:visted': {
+    '&:visited': {
       color: 'black'
     }
   }
@@ -77,21 +76,19 @@ class FAQ extends Component {
 
           <Grid container className={classes.questions} spacing={2} direction='row' alignItems='flex-start'>
             {categories.map((category) => (
-              <Grid key={category.toString()} item xs={6}>
+              <Grid key={`top${category.toString()}`} item xs={6}>
                 <Typography variant='h5' align='left'>
                   {category}
                 </Typography>
                 {faqs.map((question, index) => (
-                  <div key={index}>
+                  <div key={`top${index}`}>
                     { category === question.category &&
                       <Grid item xs={12} style={{marginLeft: '4%'}}>
 
-                        <Link  to={`/FAQ#question${index}`}>
-                          <StyledLink>
+                        <Link className={classes.link} to={`/FAQ#question${index}`}>
                           <Typography align='left'>
                             {question.question}
                           </Typography>
-                          </StyledLink>
                         </Link>
                       </Grid>}
                   </div>
