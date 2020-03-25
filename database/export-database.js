@@ -32,6 +32,10 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Copy the dump zip file over to the local directory
     await execShellCommand(`docker cp database:/dump.zip ${absPath(fileName)}`);
 
+    // Update the roles and permissions
+    console.log('Updating roles and permissions');
+    await execShellCommand(`node ${absPath('update-roles-permissions.js')}`, false);
+
     console.log('Database export successful!');
   } catch(e) {
     // Log the error to console

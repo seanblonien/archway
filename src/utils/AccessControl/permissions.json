@@ -1,0 +1,167 @@
+{
+  "content-type-builder": {
+    "componentcategories": {
+      "editcategory": "content-type-builder.componentcategories.editcategory",
+      "deletecategory": "content-type-builder.componentcategories.deletecategory"
+    },
+    "components": {
+      "getcomponents": "content-type-builder.components.getcomponents",
+      "updatecomponent": "content-type-builder.components.updatecomponent",
+      "getcomponent": "content-type-builder.components.getcomponent",
+      "createcomponent": "content-type-builder.components.createcomponent",
+      "deletecomponent": "content-type-builder.components.deletecomponent"
+    },
+    "connections": {
+      "getconnections": "content-type-builder.connections.getconnections"
+    },
+    "contenttypes": {
+      "createcontenttype": "content-type-builder.contenttypes.createcontenttype",
+      "deletecontenttype": "content-type-builder.contenttypes.deletecontenttype",
+      "getcontenttypes": "content-type-builder.contenttypes.getcontenttypes",
+      "getcontenttype": "content-type-builder.contenttypes.getcontenttype",
+      "updatecontenttype": "content-type-builder.contenttypes.updatecontenttype"
+    }
+  },
+  "content-manager": {
+    "components": {
+      "updatecomponent": "content-manager.components.updatecomponent",
+      "listcomponents": "content-manager.components.listcomponents",
+      "findcomponent": "content-manager.components.findcomponent"
+    },
+    "contentmanager": {
+      "findone": "content-manager.contentmanager.findone",
+      "update": "content-manager.contentmanager.update",
+      "deletemany": "content-manager.contentmanager.deletemany",
+      "count": "content-manager.contentmanager.count",
+      "create": "content-manager.contentmanager.create",
+      "find": "content-manager.contentmanager.find",
+      "delete": "content-manager.contentmanager.delete",
+      "generateuid": "content-manager.contentmanager.generateuid",
+      "checkuidavailability": "content-manager.contentmanager.checkuidavailability"
+    },
+    "contenttypes": {
+      "updatecontenttype": "content-manager.contenttypes.updatecontenttype",
+      "listcontenttypes": "content-manager.contenttypes.listcontenttypes",
+      "findcontenttype": "content-manager.contenttypes.findcontenttype"
+    }
+  },
+  "users-permissions": {
+    "auth": {
+      "changepassword": "users-permissions.auth.changepassword",
+      "register": "users-permissions.auth.register",
+      "sendemailconfirmation": "users-permissions.auth.sendemailconfirmation",
+      "connect": "users-permissions.auth.connect",
+      "forgotpassword": "users-permissions.auth.forgotpassword",
+      "callback": "users-permissions.auth.callback",
+      "emailconfirmation": "users-permissions.auth.emailconfirmation"
+    },
+    "user": {
+      "findone": "users-permissions.user.findone",
+      "update": "users-permissions.user.update",
+      "find": "users-permissions.user.find",
+      "destroy": "users-permissions.user.destroy",
+      "me": "users-permissions.user.me",
+      "destroyall": "users-permissions.user.destroyall",
+      "create": "users-permissions.user.create"
+    },
+    "userspermissions": {
+      "createrole": "users-permissions.userspermissions.createrole",
+      "deleterole": "users-permissions.userspermissions.deleterole",
+      "getrole": "users-permissions.userspermissions.getrole",
+      "getroutes": "users-permissions.userspermissions.getroutes",
+      "searchusers": "users-permissions.userspermissions.searchusers",
+      "getemailtemplate": "users-permissions.userspermissions.getemailtemplate",
+      "updateadvancedsettings": "users-permissions.userspermissions.updateadvancedsettings",
+      "updateproviders": "users-permissions.userspermissions.updateproviders",
+      "getpermissions": "users-permissions.userspermissions.getpermissions",
+      "index": "users-permissions.userspermissions.index",
+      "getpolicies": "users-permissions.userspermissions.getpolicies",
+      "updateemailtemplate": "users-permissions.userspermissions.updateemailtemplate",
+      "init": "users-permissions.userspermissions.init",
+      "getadvancedsettings": "users-permissions.userspermissions.getadvancedsettings",
+      "deleteprovider": "users-permissions.userspermissions.deleteprovider",
+      "getroles": "users-permissions.userspermissions.getroles",
+      "updaterole": "users-permissions.userspermissions.updaterole",
+      "getproviders": "users-permissions.userspermissions.getproviders"
+    }
+  },
+  "email": {
+    "email": {
+      "getsettings": "email.email.getsettings",
+      "send": "email.email.send",
+      "getenvironments": "email.email.getenvironments",
+      "updatesettings": "email.email.updatesettings"
+    }
+  },
+  "upload": {
+    "upload": {
+      "upload": "upload.upload.upload",
+      "updatesettings": "upload.upload.updatesettings",
+      "findone": "upload.upload.findone",
+      "search": "upload.upload.search",
+      "getenvironments": "upload.upload.getenvironments",
+      "count": "upload.upload.count",
+      "getsettings": "upload.upload.getsettings",
+      "destroy": "upload.upload.destroy",
+      "find": "upload.upload.find"
+    }
+  },
+  "application": {
+    "capstones": {
+      "count": "application.capstones.count",
+      "create": "application.capstones.create",
+      "find": "application.capstones.find",
+      "delete": "application.capstones.delete",
+      "findone": "application.capstones.findone",
+      "update": "application.capstones.update"
+    },
+    "departments": {
+      "find": "application.departments.find",
+      "findone": "application.departments.findone",
+      "count": "application.departments.count",
+      "create": "application.departments.create",
+      "update": "application.departments.update",
+      "delete": "application.departments.delete"
+    },
+    "faqs": {
+      "create": "application.faqs.create",
+      "find": "application.faqs.find",
+      "findone": "application.faqs.findone",
+      "update": "application.faqs.update",
+      "delete": "application.faqs.delete",
+      "count": "application.faqs.count"
+    },
+    "sponsors": {
+      "create": "application.sponsors.create",
+      "count": "application.sponsors.count",
+      "update": "application.sponsors.update",
+      "findone": "application.sponsors.findone",
+      "find": "application.sponsors.find",
+      "delete": "application.sponsors.delete"
+    },
+    "proposals": {
+      "find": "application.proposals.find",
+      "update": "application.proposals.update",
+      "delete": "application.proposals.delete",
+      "create": "application.proposals.create",
+      "findone": "application.proposals.findone",
+      "count": "application.proposals.count"
+    },
+    "courses": {
+      "find": "application.courses.find",
+      "findone": "application.courses.findone",
+      "update": "application.courses.update",
+      "delete": "application.courses.delete",
+      "create": "application.courses.create",
+      "count": "application.courses.count"
+    },
+    "sections": {
+      "find": "application.sections.find",
+      "findone": "application.sections.findone",
+      "create": "application.sections.create",
+      "delete": "application.sections.delete",
+      "count": "application.sections.count",
+      "update": "application.sections.update"
+    }
+  }
+}
