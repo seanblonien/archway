@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route, Router, Switch} from 'react-router-dom';
+import {RolesProvider} from './Contexts/RolesContext';
 import ProtectedRoute from './utils/ProtectedRoute';
 import About from './Components/About';
 import Footer from './Components/Footer';
@@ -29,37 +30,39 @@ import history from './utils/history';
 
 export default function App () {
   return <>
-    <Router history={history}>
-      <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
-        <Header/>
-        <div style={{paddingBottom: '140px'}}>
-          <Switch>
-            <Route path='/login' component={Login}/>
-            <Route path='/callback' component={Callback}/>
-            <Route path='/SearchRedirect/:path/:searchTerm?' component={SearchRedirect}/>
-            <Route path='/Capstones/:searchTerm?' component={Capstone}/>
-            <Route path='/About' component={About}/>
-            <Route path='/Register' component={Register}/>
-            <Route path='/ViewCapstone/:capstoneID' component={ViewCapstone}/>
-            <Route path='/ViewUser/:username' component={ViewUser}/>
-            <Route path='/Sponsors' component={Sponsors}/>
-            <Route path='/ViewSponsors/:searchTerm?' component={ViewSponsors}/>
-            <Route path='/ViewASponsor/:id' component={ViewASponsor}/>
-            <Route path='/ViewAllDepartments' component={ViewAllDepartments}/>
-            <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
-            <Route path='/FAQ' component={FAQ}/>
-            <ProtectedRoute path='/secret' component={Secret}/>
-            <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
-            <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
-            <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
-            <ProtectedRoute path='/ViewYourCapstonesSponsors' component={ViewYourCapstonesSponsors}/>
-            <ProtectedRoute path='/ImportUsers' component={ImportUsers}/>
-            <Route exact path='/' component={Home}/>
-            <Route path='*' component={NotFound}/>
-          </Switch>
+    <RolesProvider>
+      <Router history={history}>
+        <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
+          <Header/>
+          <div style={{paddingBottom: '140px'}}>
+            <Switch>
+              <Route path='/login' component={Login}/>
+              <Route path='/callback' component={Callback}/>
+              <Route path='/SearchRedirect/:path/:searchTerm?' component={SearchRedirect}/>
+              <Route path='/Capstones/:searchTerm?' component={Capstone}/>
+              <Route path='/About' component={About}/>
+              <Route path='/Register' component={Register}/>
+              <Route path='/ViewCapstone/:capstoneID' component={ViewCapstone}/>
+              <Route path='/ViewUser/:username' component={ViewUser}/>
+              <Route path='/Sponsors' component={Sponsors}/>
+              <Route path='/ViewSponsors/:searchTerm?' component={ViewSponsors}/>
+              <Route path='/ViewASponsor/:id' component={ViewASponsor}/>
+              <Route path='/ViewAllDepartments' component={ViewAllDepartments}/>
+              <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
+              <Route path='/FAQ' component={FAQ}/>
+              <ProtectedRoute path='/secret' component={Secret}/>
+              <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
+              <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
+              <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
+              <ProtectedRoute path='/ViewYourCapstonesSponsors' component={ViewYourCapstonesSponsors}/>
+              <ProtectedRoute path='/ImportUsers' component={ImportUsers}/>
+              <Route exact path='/' component={Home}/>
+              <Route path='*' component={NotFound}/>
+            </Switch>
+          </div>
+          <Footer/>
         </div>
-        <Footer/>
-      </div>
-    </Router>
+      </Router>
+    </RolesProvider>
   </>;
 }

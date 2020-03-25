@@ -1,21 +1,29 @@
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import rolesAndPermissions from './rolesAndPermissions.json';
-import roles from './roles.json';
+import React, {useContext} from 'react';
+import RolesContext from '../../Contexts/RolesContext';
+import defaultRoles from './roles.json';
 import permissionValues from './permissionValues.json';
-import roleValues from './roleValues.json';
+import roleValues from './rolesValues.json';
+import Loading from '../../Components/LoadingCircle';
 
 // If the role exists and the permission within that role exists, return
 // the value of that permission.
-const check = (role, permission) => _.has(rolesAndPermissions, role) && _.has(rolesAndPermissions[role], [permission]) && rolesAndPermissions[role][permission];
+const check = (role, permission, roles) => _.has(roles, role) && _.has(roles[role], [permission]) && roles[role][permission];
 
 // Renders the yes() property function if the role can perform the given action.
 // Otherwise, renders the no() property function (nothing by default).
-const Can = ({role, perform, yes, no}) => (
-  check(role, perform)
-    ? yes()
-    : no()
-);
+const Can = ({role, perform, yes, no}) => {
+  const {roles} = useContext(RolesContext);
+  if(roles){
+    return (
+      check(role, perform, roles)
+        ? yes()
+        : no()
+    );
+  }
+  return <Loading/>;
+};
 
 Can.propTypes = {
   yes: PropTypes.func.isRequired,
@@ -26,7 +34,7 @@ Can.propTypes = {
 
 Can.defaultProps = {
   no: () => null,
-  role: roles.Public
+  role: defaultRoles.Public
 };
 
 export default Can;
