@@ -325,6 +325,55 @@
       }
     },
     {
+      "name": "sponsor page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "sponsor_pages",
+      "attributes": {
+        "main_title": {
+          "type": "string"
+        },
+        "main_paragraph": {
+          "type": "text"
+        },
+        "title1": {
+          "type": "string"
+        },
+        "paragraph1": {
+          "type": "text"
+        },
+        "title2": {
+          "type": "string"
+        },
+        "paragraph2": {
+          "type": "text"
+        },
+        "title3": {
+          "type": "string"
+        },
+        "paragraph3": {
+          "type": "text"
+        },
+        "title4": {
+          "type": "string"
+        },
+        "paragraph4": {
+          "type": "text"
+        },
+        "bgimage": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "image1": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        }
+      }
+    },
+    {
       "name": "sponsors",
       "description": "Describes a Sponsor for a Capstone Project",
       "connection": "default",

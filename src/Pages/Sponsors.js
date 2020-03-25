@@ -7,10 +7,11 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import PropTypes from 'prop-types';
-import React from 'react';
-import {university} from '../constants';
+import React, {Component} from 'react';
 import * as url from '../Static/businessmen.jpg';
 import * as url2 from '../Static/students.jpg';
+import api from '../Services/api';
+
 
 const styles = () => ({
   button: {
@@ -41,98 +42,109 @@ const styles = () => ({
   }
 });
 
-const Sponsors = props => {
-  const {classes} = props;
+class Sponsors extends Component {
 
-  return (
-    <div>
-      <div className={classes.bgImage}>
-        <Grid container direction='row' display='inline' justify='flex-end'>
-          <Grid item xs={12} md={4}>
-            <Card className={classes.sidePanel}>
-              <CardContent>
-                <Typography variant='h4' align='center' gutterBottom>
-                  Sponsorship at {university}
-                </Typography>
-                <br/>
-                <Typography variant='body1'>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                </Typography>
-                <br/>
-                <Grid item align='center'>
-                  <Button className={classes.button} size='large'>
-                    Sponsor Signup
-                  </Button>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </div>
+  constructor(props) {
+    super(props);
+    this.state = {
+      pageContent: [],
+    };
+  }
+
+  async componentDidMount() {
+    const pageContent = await api.sponsorpage.find();
+    this.setState({pageContent});
+  }
+
+  render() {
+    const {classes} = this.props;
+    const {pageContent} = this.state;
+
+    return (
       <div>
+        <div className={classes.bgImage}>
+          <Grid container direction='row' display='inline' justify='flex-end'>
+            <Grid item xs={12} md={4}>
+              <Card className={classes.sidePanel}>
+                <CardContent>
+                  <Typography variant='h4' align='center' gutterBottom>
+                    {pageContent.main_title}
+                  </Typography>
+                  <br/>
+                  <Typography variant='body1'>
+                    {pageContent.main_paragraph}
+                  </Typography>
+                  <br/>
+                  <Grid item align='center'>
+                    <Button className={classes.button} size='large'>
+                      Sponsor Signup
+                    </Button>
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </div>
+        <div>
+          <br/>
+          <Grid container direction='row' justify='space-evenly'>
+            <Grid item container direction='column' md={5}>
+              <Grid item>
+                <Container>
+                  <Typography variant='h5'>
+                    {pageContent.title1}
+                  </Typography>
+                  <Typography variant='body1'>
+                    {pageContent.paragraph1}
+                  </Typography>
+                </Container>
+              </Grid>
+              <br/>
+              <Grid item>
+                <Container>
+                  <Typography variant='h5'>
+                    {pageContent.title2}
+                  </Typography>
+                  <Typography variant='body1'>
+                    {pageContent.paragraph2}
+                  </Typography>
+                </Container>
+              </Grid>
+              <br/>
+              <Grid item>
+                <Container>
+                  <Typography variant='h5'>
+                    {pageContent.title3}
+                  </Typography>
+                  <Typography variant='body1'>
+                    {pageContent.paragraph3}
+                  </Typography>
+                </Container>
+              </Grid>
+            </Grid>
+            <Grid item container direction='column' md={5}>
+              <Grid item>
+                <Container>
+                  <Typography variant='h5'>
+                    {pageContent.title4}
+                  </Typography>
+                  <Typography variant='body1'>
+                    {pageContent.paragraph4}
+                  </Typography>
+                  <br/><br/>
+                </Container>
+              </Grid>
+              <Grid item>
+                <div className={classes.studentImage}/>
+              </Grid>
+            </Grid>
+          </Grid>
+        </div>
         <br/>
-        <Grid container direction='row' justify='space-evenly'>
-          <Grid item container direction='column' md={5}>
-            <Grid item>
-              <Container>
-                <Typography variant='h5'>
-                  Benefits to Students
-                </Typography>
-                <Typography variant='body1'>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                </Typography>
-              </Container>
-            </Grid>
-            <br/>
-            <Grid item>
-              <Container>
-                <Typography variant='h5'>
-                  Benefits to Sponsors
-                </Typography>
-                <Typography variant='body1'>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                </Typography>
-              </Container>
-            </Grid>
-            <br/>
-            <Grid item>
-              <Container>
-                <Typography variant='h5'>
-                  What Makes a Good Project
-                </Typography>
-                <Typography variant='body1'>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                </Typography>
-              </Container>
-            </Grid>
-          </Grid>
-          <Grid item container direction='column' md={5}>
-            <Grid item>
-              <Container>
-                <Typography variant='h5'>
-                  How to Become a Sponsor
-                </Typography>
-                <Typography variant='body1'>
-                  <ol>
-                    <li>Sign up for an account</li>
-                    <li>Fill out the proejct proposal</li>
-                    <li>Wait for approval for proposal</li>
-                  </ol>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                </Typography>
-                <br/><br/>
-              </Container>
-            </Grid>
-            <Grid item>
-              <div className={classes.studentImage}/>
-            </Grid>
-          </Grid>
-        </Grid>
       </div>
-      <br/>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Sponsors.propTypes = {
   classes: PropTypes.objectOf(PropTypes.object).isRequired,
