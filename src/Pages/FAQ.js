@@ -1,5 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import {Link as StyledLink} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
@@ -7,11 +8,10 @@ import {HashLink as Link} from 'react-router-hash-link';
 import withStyles from '@material-ui/core/styles/withStyles';
 import compose from 'recompose/compose';
 import api from '../Services/api';
-import {schoolColorPrimary, schoolColorSecondary} from '../constants';
 import LoadingCircle from '../Components/LoadingCircle';
 
 
-const styles = () => ({
+const styles = theme => ({
   title: {
     padding: '3%',
   },
@@ -36,9 +36,9 @@ const styles = () => ({
     marginBottom: '2%',
   },
   link: {
-    color: schoolColorPrimary,
+    color: theme.palette.primary.main,
     '&:hover': {
-      color: schoolColorSecondary,
+      color: theme.palette.secondary.main,
     },
     '&:visted': {
       color: 'black'
@@ -77,18 +77,21 @@ class FAQ extends Component {
 
           <Grid container className={classes.questions} spacing={2} direction='row' alignItems='flex-start'>
             {categories.map((category) => (
-              <Grid item xs={6}>
+              <Grid key={category.toString()} item xs={6}>
                 <Typography variant='h5' align='left'>
                   {category}
                 </Typography>
                 {faqs.map((question, index) => (
-                  <div>
-                    { category === question.Category &&
-                      <Grid xs={12} style={{marginLeft: '4%'}}>
-                        <Link className={classes.link}  to={`/FAQ#question${index}`}>
+                  <div key={index}>
+                    { category === question.category &&
+                      <Grid item xs={12} style={{marginLeft: '4%'}}>
+
+                        <Link  to={`/FAQ#question${index}`}>
+                          <StyledLink>
                           <Typography align='left'>
                             {question.question}
                           </Typography>
+                          </StyledLink>
                         </Link>
                       </Grid>}
                   </div>
@@ -102,14 +105,14 @@ class FAQ extends Component {
           <Grid container alignItems='stretch'>
 
             {categories.map((category) => (
-              <Paper className={classes.section}>
+              <Paper key={category.toString()} className={classes.section}>
                 <Grid item xs={12}>
                   <Typography variant='h4' align='center' className={classes.subtitle}>
                     {category}
                   </Typography>
                   {faqs.map((question, index) => (
-                    <div>
-                      { category === question.Category &&
+                    <div key={index}>
+                      { category === question.category &&
                         <Grid item xs={12} style={{marginLeft: '4%'}}>
                           <Typography variant='h5' id={`question${index}`} align='left'>
                             {question.question}
