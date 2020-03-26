@@ -33,6 +33,10 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Perform the data dump import of the Strapi database
     await execShellCommand('docker exec database mongorestore --uri "mongodb://root:capstone@database:27017/?authSource=admin" --drop -d strapi /dump/strapi');
 
+    // Update the roles and permissions
+    console.log('Updating roles and permissions');
+    await execShellCommand(`node ${absPath('update-roles-permissions.js')}`, false);
+
     console.log('Database import successful!');
   } catch(e) {
     // Log the error to console
