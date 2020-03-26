@@ -14,6 +14,7 @@ import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
 import auth from '../../Auth';
+import { useAuth0 } from "../../react-auth0-spa";
 import {university} from '../../constants';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/history';
@@ -98,6 +99,7 @@ class PrimarySearchAppBar extends Component {
   };
 
   render() {
+    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
     const {anchorEl} = this.state;
     const {classes} = this.props;
     const isMenuOpen = Boolean(anchorEl);
