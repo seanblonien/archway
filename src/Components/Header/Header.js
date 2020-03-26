@@ -14,8 +14,8 @@ import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
 import auth from '../../Auth';
-import { useAuth0 } from "../../react-auth0-spa";
 import {university} from '../../constants';
+import {AuthContext} from '../../Contexts/AuthProvider';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/history';
 import Drawer from './Drawer';
@@ -82,8 +82,9 @@ class PrimarySearchAppBar extends Component {
   }
 
   handleLogout = () =>{
-    auth.logout();
+    const {logout} = this.context;
     this.handleMenuClose();
+    logout();
   };
 
   handleMenuClose = () => {
@@ -99,7 +100,7 @@ class PrimarySearchAppBar extends Component {
   };
 
   render() {
-    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+    const {loginWithPopup, isAuthenticated} = this.context;
     const {anchorEl} = this.state;
     const {classes} = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -112,9 +113,9 @@ class PrimarySearchAppBar extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        {auth.isAuthenticated() && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
-        {!auth.isAuthenticated() && <MenuItem onClick={auth.login}>Login / Register</MenuItem>}
-        {auth.isAuthenticated() && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
+        {!isAuthenticated && <MenuItem onClick={loginWithPopup}>Login / Register</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
       </Menu>
     );
 
@@ -198,6 +199,8 @@ class PrimarySearchAppBar extends Component {
 PrimarySearchAppBar.propTypes = {
   classes: PropTypes.objectOf(PropTypes.object).isRequired,
 };
+
+PrimarySearchAppBar.contextType = AuthContext;
 
 export default compose(
   withStyles(styles),

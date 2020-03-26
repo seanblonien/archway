@@ -29,44 +29,47 @@ import ViewYourCapstones from './Pages/ViewYourCapstones';
 import ViewYourCapstonesSponsors from './Pages/ViewYourCapstonesSponsors';
 import history from './utils/history';
 import Can from './Components/Can';
+import AuthProvider from './Contexts/AuthProvider';
 
 export default function App () {
   return <>
     <RolesProvider>
-      <Can perform={permissions.users_permissions.userspermissions.init}>
-        <Router history={history}>
-          <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
-            <Header/>
-            <div style={{paddingBottom: '140px'}}>
-              <Switch>
-                <Route path='/login' component={Login}/>
-                <Route path='/callback' component={Callback}/>
-                <Route path='/SearchRedirect/:path/:searchTerm?' component={SearchRedirect}/>
-                <Route path='/Capstones/:searchTerm?' component={Capstone}/>
-                <Route path='/About' component={About}/>
-                <Route path='/Register' component={Register}/>
-                <Route path='/ViewCapstone/:capstoneID' component={ViewCapstone}/>
-                <Route path='/ViewUser/:username' component={ViewUser}/>
-                <Route path='/Sponsors' component={Sponsors}/>
-                <Route path='/ViewSponsors/:searchTerm?' component={ViewSponsors}/>
-                <Route path='/ViewASponsor/:id' component={ViewASponsor}/>
-                <Route path='/ViewAllDepartments' component={ViewAllDepartments}/>
-                <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
-                <Route path='/FAQ' component={FAQ}/>
-                <ProtectedRoute path='/secret' component={Secret}/>
-                <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
-                <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
-                <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
-                <ProtectedRoute path='/ViewYourCapstonesSponsors' component={ViewYourCapstonesSponsors}/>
-                <ProtectedRoute path='/ImportUsers' component={ImportUsers}/>
-                <Route exact path='/' component={Home}/>
-                <Route path='*' component={NotFound}/>
-              </Switch>
+      <AuthProvider>
+        <Can perform={permissions.users_permissions.userspermissions.init}>
+          <Router history={history}>
+            <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
+              <Header/>
+              <div style={{paddingBottom: '140px'}}>
+                <Switch>
+                  <Route path='/login' component={Login}/>
+                  <Route path='/callback' component={Callback}/>
+                  <Route path='/SearchRedirect/:path/:searchTerm?' component={SearchRedirect}/>
+                  <Route path='/Capstones/:searchTerm?' component={Capstone}/>
+                  <Route path='/About' component={About}/>
+                  <Route path='/Register' component={Register}/>
+                  <Route path='/ViewCapstone/:capstoneID' component={ViewCapstone}/>
+                  <Route path='/ViewUser/:username' component={ViewUser}/>
+                  <Route path='/Sponsors' component={Sponsors}/>
+                  <Route path='/ViewSponsors/:searchTerm?' component={ViewSponsors}/>
+                  <Route path='/ViewASponsor/:id' component={ViewASponsor}/>
+                  <Route path='/ViewAllDepartments' component={ViewAllDepartments}/>
+                  <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
+                  <Route path='/FAQ' component={FAQ}/>
+                  <ProtectedRoute path='/secret' component={Secret}/>
+                  <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
+                  <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
+                  <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
+                  <ProtectedRoute path='/ViewYourCapstonesSponsors' component={ViewYourCapstonesSponsors}/>
+                  <ProtectedRoute path='/ImportUsers' component={ImportUsers}/>
+                  <Route exact path='/' component={Home}/>
+                  <Route path='*' component={NotFound}/>
+                </Switch>
+              </div>
+              <Footer/>
             </div>
-            <Footer/>
-          </div>
-        </Router>
-      </Can>
+          </Router>
+        </Can>
+      </AuthProvider>
     </RolesProvider>
   </>;
 }
