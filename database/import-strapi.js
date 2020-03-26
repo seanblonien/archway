@@ -24,7 +24,7 @@ const ARGV_REQUIRED_LENGTH = 3;
   // Get the import filename to use
   if(process.argv.length < ARGV_REQUIRED_LENGTH) {
     console.error('Please provide a filename for the strapi import.');
-    return;
+    process.exit(s.errCode);
   }
   const fileName = process.argv[ARGV_INDEX_FILE_PATH];
 
@@ -49,7 +49,7 @@ const ARGV_REQUIRED_LENGTH = 3;
   if(!_.isEmpty(capitalized)) {
     console.error('Content types cannot have capital letters in Strapi!');
     console.error(`See: ${capitalized.map(c => c.name)}`);
-    return;
+    process.exit(s.errCode);
   }
 
   // Add the content type schemas to Strapi
@@ -71,9 +71,10 @@ const ARGV_REQUIRED_LENGTH = 3;
 
     console.log('Checking which content types need to be created');
     // Check to see which content types need to be created
-    const contentTypesPromises = applicationContentTypesToUpdate.map(contentType =>
-      s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL + contentType.name}.${contentType.name}`).catch(e => ({...e, contentType}))
-    );
+    const contentTypesPromises = applicationContentTypesToUpdate.map(contentType => {
+      const name = contentType.name.replace(' ', '-');
+      return s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL + name}.${name}`).catch(e => ({...e, contentType}));
+    });
     const contentTypesResponses = await Promise.all(contentTypesPromises);
     // If request returned error, the content type needs to be created,
     // otherwise, updated
@@ -111,7 +112,8 @@ const ARGV_REQUIRED_LENGTH = 3;
     contentTypeToUpdate.push(...contentTypeToCreate);
     // Update the application (user defined) content types
     for (const contentType of contentTypeToUpdate) {
-      const url = `${s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + contentType.name}.${contentType.name}`;
+      const name = contentType.name.replace(' ', '-');
+      const url = `${s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + name}.${name}`;
       const payload = s.formatContentType(contentType);
       console.log(`\tUpdating ${contentType.name}`);
       await s.axios.put(url, payload);
@@ -119,7 +121,16 @@ const ARGV_REQUIRED_LENGTH = 3;
     }
 
     // Delete any content types not specified locally
-    for(const name of contentTypeNamesToDelete) {
+    // Check to see which content types need to be created
+    const contentTypesToDeletePromises = contentTypeNamesToDelete.map(contentType =>
+      s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL + 
+                          contentType.name.replace(' ', '-')}.
+                          ${contentType.name.replace(' ', '-')}`)
+        .catch(e => ({...e, contentType}))
+    );
+    const contentTypesToDeleteResponse = await Promise.all(contentTypesToDeletePromises);
+    const contentTypesToDelete = contentTypesToDeleteResponse.filter(r => r.response.status === 200);
+    for(const name of contentTypesToDelete) {
       const url = `${s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + name}.${name}`;
       console.log(`\tDeleting ${name}`);
       await s.axios.delete(url);
@@ -135,8 +146,9 @@ const ARGV_REQUIRED_LENGTH = 3;
       console.error(error);
     }
     console.error('Error importing Strapi schema.');
-    return;
+    process.exit(s.errCode);
   }
 
   console.log('Strapi schema import successful!');
+  process.exit(s.successCode);
 })();

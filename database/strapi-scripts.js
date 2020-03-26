@@ -34,7 +34,7 @@ const authenticate = async () => {
     });
   } catch (error) {
     // If already registered
-    if (error.response.status !== 200) {
+    if (error.status !== 200) {
       // Attempt to login
       try {
         loginResponse = await axios.post(STRAPI_ADMIN_LOGIN, {
@@ -100,6 +100,12 @@ const removePluginAttribute = contentTypes => {
   });
 };
 
+// Error code to use when program encounters an error
+const errCode = -1;
+
+// Success code
+const successCode = 0;
+
 module.exports = {
   axios,
   authenticate,
@@ -110,6 +116,8 @@ module.exports = {
   readJSONFromFile,
   writeJSONToFile,
   removePluginAttribute,
+  errCode,
+  successCode,
   STRAPI_BASE_URL,
   STRAPI_CONTENT_TYPE_URL,
   STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL,
