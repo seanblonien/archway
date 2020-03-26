@@ -16,32 +16,38 @@ const ARGV_REQUIRED_LENGTH = 3;
   // Get the export filename to use
   if(process.argv.length < ARGV_REQUIRED_LENGTH) {
     console.error('Please provide a filename for strapi export.');
-    return;
+    process.exit(s.errCode);
   }
   const fileName = process.argv[ARGV_INDEX_FILE_PATH];
 
-  console.log('Logging in to Strapi admin panel...');
-  await s.authenticate();
-  console.log('Login successful!');
+  try {
+    console.log('Logging in to Strapi admin panel...');
+    await s.authenticate();
+    console.log('Login successful!');
 
-  console.log('Fetching all existing content types');
-  const serverContentTypesResponse = await s.axios.get(s.STRAPI_CONTENT_TYPE_URL);
-  // List of the content types on the Strapi server
-  const serverContentTypes = serverContentTypesResponse.data.data.map(t => t.schema);
-  // Remove 'plugin' attribute that cause errors
-  s.removePluginAttribute(serverContentTypes);
-  // Split the content types into 'application' and 'plugins'
-  const serverContentTypesPlugins= serverContentTypes.filter(contentType => contentType.collectionName.startsWith('users-permissions'));
-  const serverContentTypesApplication = serverContentTypes.filter(contentType => !contentType.collectionName.startsWith('users-permissions'));
+    console.log('Fetching all existing content types');
+    const serverContentTypesResponse = await s.axios.get(s.STRAPI_CONTENT_TYPE_URL);
+    // List of the content types on the Strapi server
+    const serverContentTypes = serverContentTypesResponse.data.data.map(t => t.schema);
+    // Remove 'plugin' attribute that cause errors
+    s.removePluginAttribute(serverContentTypes);
+    // Split the content types into 'application' and 'plugins'
+    const serverContentTypesPlugins = serverContentTypes.filter(contentType => contentType.collectionName.startsWith('users-permissions'));
+    const serverContentTypesApplication = serverContentTypes.filter(contentType => !contentType.collectionName.startsWith('users-permissions'));
 
-  // Put the application and plugins content types in a json object
-  const output = {
-    'application': serverContentTypesApplication,
-    'plugins': serverContentTypesPlugins
-  };
+    // Put the application and plugins content types in a json object
+    const output = {
+      'application': serverContentTypesApplication,
+      'plugins': serverContentTypesPlugins
+    };
     // Write that json object to file
-  console.log('Exporting content types to file');
-  s.writeJSONToFile(fileName, output);
+    console.log('Exporting content types to file');
+    s.writeJSONToFile(fileName, output);
 
-  console.log('Strapi schema export successful!!');
+    console.log('Strapi schema export successful!!');
+    process.exit(s.successCode);
+  } catch (e) {
+    console.error(e);
+    process.exit(s.errCode);
+  }
 })();
