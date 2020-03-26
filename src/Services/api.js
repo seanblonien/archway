@@ -22,9 +22,9 @@ const handleResponse = (response) => response;
 // Handles all axios response errors
 const handleResponseError = async (error) => {
   const {response} = error;
-  if(response.status === 401){
-    localStorage.clear();
-  }
+  // if(response.status === 401){
+  //   localStorage.clear();
+  // }
   return Promise.reject(response);
 };
 
