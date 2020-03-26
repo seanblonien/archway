@@ -7,6 +7,8 @@ const s = require('./strapi-scripts');
 
 const PATH_TO_ACCESS_CONTROL = './../src/utils/AccessControl/';
 
+const _ = (str) => str.replace(/-/g, '_');
+
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
   try {
@@ -47,12 +49,12 @@ const PATH_TO_ACCESS_CONTROL = './../src/utils/AccessControl/';
           role.permissions[permPluginKey] = role.permissions[permPluginKey].controllers;
 
           // If the plugin key has not yet been seen, initialize the object
-          if(!perms[permPluginKey]) perms[permPluginKey] = {};
+          if(!perms[_(permPluginKey)]) perms[_(permPluginKey)] = {};
 
           // For each permission group
           for(const [permGroupKey, permGroupValue] of Object.entries(role.permissions[permPluginKey])){
             // If the group key has not yet been seen, initialize the object
-            if(!perms[permPluginKey][permGroupKey]) perms[permPluginKey][permGroupKey] = {};
+            if(!perms[_(permPluginKey)][_(permGroupKey)]) perms[_(permPluginKey)][_(permGroupKey)] = {};
 
             // For each permission
             for(const [permKey] of Object.entries(permGroupValue)){
@@ -62,8 +64,8 @@ const PATH_TO_ACCESS_CONTROL = './../src/utils/AccessControl/';
               permNames.push(permName);
 
               // If the permission key has not yet been seen, initialize it
-              if(!perms[permPluginKey][permGroupKey][permKey]) {
-                perms[permPluginKey][permGroupKey][permKey] = permName;
+              if(!perms[_(permPluginKey)][_(permGroupKey)][_(permKey)]) {
+                perms[_(permPluginKey)][_(permGroupKey)][_(permKey)] = permName;
               } else {
                 // Otherwise all permission values have been read
                 readAllPermissions = true;
