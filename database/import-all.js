@@ -14,13 +14,13 @@ const s = require('./strapi-scripts');
     console.log('=== Importing Strapi ===\n(May take a while)');
     await execShellCommand(...parseCmdAndArgs('node import-strapi.js BaseStrapiExport.json'));
     // Run database import
-    console.log('=== Importing Database ===');
+    console.log('\n=== Importing Database ===');
     await execShellCommand(...parseCmdAndArgs('node import-database.js BaseDatabaseExport.zip'));
     // Run uploads import
-    console.log('=== Importing Uploads ===');
+    console.log('\n=== Importing Uploads ===');
     await execShellCommand(...parseCmdAndArgs('node import-uploads.js BaseUploadsExport.zip'));
 
-    console.log('All imports successful!');
+    console.log('\nAll imports successful!');
     process.exit(s.successCode);
   }catch (e) {
     console.error(e);

@@ -14,13 +14,13 @@ const s = require('./strapi-scripts');
     console.log('=== Exporting Strapi ===');
     await execShellCommand(...parseCmdAndArgs('node export-strapi.js BaseStrapiExport.json'));
     // Run database export
-    console.log('=== Exporting Database ===');
+    console.log('\n=== Exporting Database ===');
     await execShellCommand(...parseCmdAndArgs('node export-database.js BaseDatabaseExport.zip'));
     // Run uploads export
-    console.log('=== Exporting Uploads ===');
+    console.log('\n=== Exporting Uploads ===');
     await execShellCommand(...parseCmdAndArgs('node export-uploads.js BaseUploadsExport.zip'));
 
-    console.log('All exports successful!');
+    console.log('\nAll exports successful!');
     process.exit(s.successCode);
   }catch (e) {
     console.error(`Error: ${e}`);

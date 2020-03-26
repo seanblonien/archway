@@ -37,7 +37,7 @@ const ARGV_REQUIRED_LENGTH = 3;
 
     // Update the roles and permissions
     console.log('Updating roles and permissions');
-    await execShellCommand(`node ${absPath('update-roles-permissions.js')}`, false);
+    await execShellCommand(...parseCmdAndArgs('node update-roles-permissions.js'));
 
     console.log('Database import successful!');
     process.exit(s.successCode);
