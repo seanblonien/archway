@@ -1,5 +1,5 @@
 {
-  "content-type-builder": {
+  "content_type_builder": {
     "componentcategories": {
       "editcategory": "content-type-builder.componentcategories.editcategory",
       "deletecategory": "content-type-builder.componentcategories.deletecategory"
@@ -22,7 +22,7 @@
       "updatecontenttype": "content-type-builder.contenttypes.updatecontenttype"
     }
   },
-  "content-manager": {
+  "content_manager": {
     "components": {
       "updatecomponent": "content-manager.components.updatecomponent",
       "listcomponents": "content-manager.components.listcomponents",
@@ -45,7 +45,7 @@
       "findcontenttype": "content-manager.contenttypes.findcontenttype"
     }
   },
-  "users-permissions": {
+  "users_permissions": {
     "auth": {
       "changepassword": "users-permissions.auth.changepassword",
       "register": "users-permissions.auth.register",

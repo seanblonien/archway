@@ -12,18 +12,34 @@ const check = (role, permission, roles) => _.has(roles, role)
   && _.has(roles[role], [permission])
   && roles[role][permission];
 
-// Renders the yes() property function if the role can perform the given action.
-// Otherwise, renders the no() property function (nothing by default).
+/**
+ * Renders the children of this component if the role can perform the given
+ * permission(s). Otherwise, renders the no() property method (nothing by
+ * default).
+ *
+ * @param role what role that is being used to check for the permission
+ * @param perform what permission(s) to perform
+ * @param children the component that will render if permitted
+ * @param no the component that will render if not permitted
+ * @returns {string} JSX to render
+ */
 const Can = ({role, perform, children, no}) => {
+  // Access the roles
   const {roles} = useContext(RolesContext);
-  return roles && check(role, perform, roles)
+  // Convert single string to array form
+  const performs = [].concat(perform);
+
+  // Check all of the perform permissions
+  return roles && _.isEmpty(performs.filter(p => !check(role, p, roles)))
     ? children
     : no();
 };
 
 Can.propTypes = {
   children: PropTypes.node.isRequired,
-  perform: PropTypes.oneOf(permissionValues).isRequired,
+  perform: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.oneOf(permissionValues).isRequired).isRequired,
+    PropTypes.string.isRequired]).isRequired,
   no: PropTypes.func,
   role: PropTypes.oneOf(roleValues),
 };

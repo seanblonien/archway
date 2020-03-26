@@ -33,7 +33,7 @@ import Can from './Components/Can';
 export default function App () {
   return <>
     <RolesProvider>
-      <Can perform={permissions['users-permissions'].userspermissions.init}>
+      <Can perform={permissions.users_permissions.userspermissions.init}>
         <Router history={history}>
           <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
             <Header/>
