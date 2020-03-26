@@ -1,4 +1,4 @@
-// Returns the first n words from the string
+/* eslint-disable import/no-cycle */
 import _ from 'lodash';
 import defaultUserImg from '../Static/defaultUser.png';
 import {strapiURL} from '../constants';
@@ -7,6 +7,7 @@ import defaultSponsorImg from '../Static/defaultSponsor.svg';
 import defaultDepartmentImg from '../Static/defaultDepartment.svg';
 import api from '../Services/api';
 
+// Returns the first n words from the string
 export const getFirstNWords = (str, n) => {
   if(str) {
     const str1 = str.split(' ');
@@ -42,3 +43,13 @@ export const transformUserFields = async (user) => {
   const p = [...Array(6)].map(() => (~~(Math.random() * 36)).toString(36)).join('');
   if (!user.password) user.password = p;
 };
+
+/**
+ * Format query params
+ *
+ * @param params
+ * @returns {string}
+ */
+export const formatQuery = (params) => `?${Object.keys(params)
+  .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+  .join('&')}`;

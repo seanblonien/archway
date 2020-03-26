@@ -1,82 +1,51 @@
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Grid from '@material-ui/core/Grid';
-import {withStyles} from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
+import {HashLink as Link} from 'react-router-hash-link';
+import withStyles from '@material-ui/core/styles/withStyles';
 import compose from 'recompose/compose';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 
+
 const styles = theme => ({
-  card: {
-    raised: true,
-  },
-  button: {
-    border: '2px solid currentColor',
-    borderRadius: 0,
-    height: 'auto',
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 5}px`,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
   title: {
-    fontSize: 18,
+    padding: '3%',
   },
-  pos: {
-    marginBottom: 100,
+  questions: {
+    marginBottom: '5%',
+    maxWidth: 800
   },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
+  subtitle: {
+    padding: '1%',
   },
-});
+  section: {
+    background: 'lightgrey',
+    marginLeft: '5%',
+    marginRight: '5%',
+    marginBottom: '3%',
+    width: '100%'
 
-const ExpansionPanel = withStyles({
-  root: {
-    border: '1px solid rgba(0,0,0,.125)',
-    boxShadow: 'none',
-    '&:not(:last-child)': {
-      borderBottom: 0,
-    },
-    '&:before': {
-      display: 'none',
-    },
-  },
-  expanded: {
-    margin: 'auto',
-  },
-})(MuiExpansionPanel);
-
-const ExpansionPanelSummary = withStyles({
-  root: {
-    backgroundColor: 'rgba(0,0,0,.03)',
-    borderBottom: '1px solid rgba(0,0,0,.125)',
-    marginBottom: -1,
-    minHeight: 56,
-    '&$expanded': {
-      minHeight: 56,
-    },
   },
   content: {
-    '&$expanded': {
-      margin: '12px 0',
+    padding: 10,
+    marginLeft: '4%',
+    marginBottom: '2%',
+  },
+  link: {
+    color: theme.palette.primary.main,
+    '&:hover': {
+      color: theme.palette.secondary.main,
     },
-  },
-  expanded: {},
-})(props => <MuiExpansionPanelSummary {...props}/>);
+    '&:visited': {
+      color: 'black'
+    }
+  }
 
-ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+});
 
-const ExpansionPanelDetails = withStyles(theme => ({
-  root: {
-    padding: theme.spacing.unit * 2,
-  },
-}))(MuiExpansionPanelDetails);
 
 class FAQ extends Component {
   constructor(props) {
@@ -84,62 +53,78 @@ class FAQ extends Component {
     this.state = {
       loading: true,
       faqs: [],
-      categories: []
+      categories: [],
     };
   }
 
   async componentDidMount() {
     const allFaqs = await api.faqs.find();
 
-    const categories = allFaqs.map(faq => faq.category);
+    const categories = Array.from(new Set(allFaqs.map(faq => faq.category)));
 
     this.setState({loading: false, faqs: allFaqs, categories});
   }
 
   render() {
-    const {loading, categories, faqs} = this.state;
+    const {classes} = this.props;
+    const {loading, faqs, categories} = this.state;
 
     if (!loading) {
       return (
-        <div>
-          <Typography align='center'>
-            <h1>FAQ</h1>
-          </Typography>
+        <div align='center'>
+          <Typography className={classes.title} variant='h2' align='center'>Frequently Asked Questions</Typography>
 
-          {categories.map((category) => (
-            <Grid container>
-              <Grid xs={12}>
-                <ExpansionPanel square>
-                  <ExpansionPanelSummary>
+          <Grid container className={classes.questions} spacing={2} direction='row' alignItems='flex-start'>
+            {categories.map((category) => (
+              <Grid key={`top${category.toString()}`} item xs={6}>
+                <Typography variant='h5' align='left'>
+                  {category}
+                </Typography>
+                {faqs.map((question, index) => (
+                  <div key={`top${index}`}>
+                    { category === question.category &&
+                      <Grid item xs={12} style={{marginLeft: '4%'}}>
+
+                        <Link className={classes.link} to={`/FAQ#question${index}`}>
+                          <Typography align='left'>
+                            {question.question}
+                          </Typography>
+                        </Link>
+                      </Grid>}
+                  </div>
+                ))}
+              </Grid>
+
+            ))}
+          </Grid>
+
+
+          <Grid container alignItems='stretch'>
+
+            {categories.map((category) => (
+              <Paper key={category.toString()} className={classes.section}>
+                <Grid item xs={12}>
+                  <Typography variant='h4' align='center' className={classes.subtitle}>
                     {category}
-                  </ExpansionPanelSummary>
-
-                  {faqs.map((question) => (
-                    <div>
+                  </Typography>
+                  {faqs.map((question, index) => (
+                    <div key={index}>
                       { category === question.category &&
-                        <Grid xs={12} style={{marginLeft: '4%'}}>
-                          <ExpansionPanel square>
-                            <ExpansionPanelSummary>
-                              <Typography>
-                                {question.question}
-                              </Typography>
-                            </ExpansionPanelSummary>
-
-                            <ExpansionPanelDetails>
-                              <Markdown>
-                                {question.answer}
-                              </Markdown>
-                            </ExpansionPanelDetails>
-                          </ExpansionPanel>
+                        <Grid item xs={12} style={{marginLeft: '4%'}}>
+                          <Typography variant='h5' id={`question${index}`} align='left'>
+                            {question.question}
+                          </Typography>
+                          <Markdown className={classes.content} align='left'>
+                            {question.answer}
+                          </Markdown>
                         </Grid>}
                     </div>
                   ))}
+                </Grid>
+              </Paper>
+            ))}
+          </Grid>
 
-                </ExpansionPanel>
-              </Grid>
-            </Grid>
-
-          ))}
         </div>
       );
     }

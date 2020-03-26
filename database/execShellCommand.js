@@ -7,14 +7,14 @@ const {exec} = require('child_process');
 
 // Executes a shell command and logs stdout to console if successful.
 // On error, and error will be thrown with the stderr output.
-const execShellCommand = cmd => {
+const execShellCommand = (cmd, output = true) => {
   console.log(`Executing command '${cmd}'`);
   return new Promise((resolve) => {
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
         throw new Error(stderr);
       }
-      if(stdout) console.log(stdout);
+      if(stdout && output) console.log(stdout);
       resolve();
     });
   });

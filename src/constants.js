@@ -1,3 +1,5 @@
+import perms from './utils/AccessControl/permissions.json';
+
 export const strapiURL = 'http://localhost:1337';
 
 export const userImport = {
@@ -56,6 +58,9 @@ export const USER_IMPORT_TYPE = {
 
 // Put the name of your university here
 export const university = 'Baylor';
+
+// Object of strapi user permissions
+export const permissions = perms;
 
 // These colors make up the theme of the website. Use a site like https://www.hexcolortool.com/ to find your school's colors in hex
 export const schoolColorPrimary = '#154734';
