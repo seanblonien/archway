@@ -3,8 +3,8 @@
  * uploads) with the corresponding BaseExports files.
  */
 /* eslint-disable no-console */
-const {execShellCommand} = require('./execShellCommand');
-const {absPath} = require('./execShellCommand');
+const {execShellCommand, parseCmdAndArgs} = require('./execShellCommand');
+const s = require('./strapi-scripts');
 
 // Anonymous method that is directly called to allow for async/await usage
 (async () => {
@@ -12,16 +12,18 @@ const {absPath} = require('./execShellCommand');
   try {
     // Run Strapi import
     console.log('=== Importing Strapi ===\n(May take a while)');
-    await execShellCommand(`node ${absPath('import-strapi.js')} ${absPath('BaseStrapiExport.json')}`);
+    await execShellCommand(...parseCmdAndArgs('node import-strapi.js BaseStrapiExport.json'));
     // Run database import
-    console.log('=== Importing Database ===');
-    await execShellCommand(`node ${absPath('import-database.js')} ${absPath('BaseDatabaseExport.zip')}`);
+    console.log('\n=== Importing Database ===');
+    await execShellCommand(...parseCmdAndArgs('node import-database.js BaseDatabaseExport.zip'));
     // Run uploads import
-    console.log('=== Importing Uploads ===');
-    await execShellCommand(`node ${absPath('import-uploads.js')} ${absPath('BaseUploadsExport.zip')}`);
+    console.log('\n=== Importing Uploads ===');
+    await execShellCommand(...parseCmdAndArgs('node import-uploads.js BaseUploadsExport.zip'));
 
-    console.log('All imports successful!');
+    console.log('\nAll imports successful!');
+    process.exit(s.successCode);
   }catch (e) {
-    console.error(`Error: ${e}`);
+    console.error(e);
+    process.exit(s.errCode);
   }
 })();

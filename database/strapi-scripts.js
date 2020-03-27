@@ -12,6 +12,7 @@ const STRAPI_CONTENT_TYPE_URL = `${STRAPI_BASE_URL}/content-type-builder/content
 const STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL = `${STRAPI_CONTENT_TYPE_URL}/application::`;
 const STRAPI_CONTENT_TYPE_UPDATE_PLUGIN_URL = `${STRAPI_CONTENT_TYPE_URL}/plugins::`;
 const STRAPI_CONTENT_TYPE_GET_URL = `${STRAPI_BASE_URL}/content-manager/content-types/application::`;
+const STRAPI_ROLES = `${STRAPI_BASE_URL}/users-permissions/roles`;
 const STRAPI_ADMIN_REGISTER = `${STRAPI_BASE_URL}/admin/auth/local/register`;
 const STRAPI_ADMIN_LOGIN = `${STRAPI_BASE_URL}/admin/auth/local`;
 const STRAPI_ADMIN_USERNAME = 'admin';
@@ -33,7 +34,7 @@ const authenticate = async () => {
     });
   } catch (error) {
     // If already registered
-    if (error.response.status !== 200) {
+    if (error.status !== 200) {
       // Attempt to login
       try {
         loginResponse = await axios.post(STRAPI_ADMIN_LOGIN, {
@@ -71,6 +72,12 @@ const awaitRestart = async () => {
   return true;
 };
 
+// Gets all roles within Strapi
+const getRoles = () => axios.get(STRAPI_ROLES);
+
+// Gets a single role within Strapi
+const getRole = (id) => axios.get(`${STRAPI_ROLES}/${id}`);
+
 // Reads in the given file assumed to be in the local directory
 const readJSONFromFile = filename => fs.readFileSync(path.resolve(__dirname, filename), 'utf8');
 
@@ -82,6 +89,7 @@ const writeJSONToFile = (filename, jsonObj) => {
     'utf8');
 };
 
+// Removes the 'plugin' property from all of the given content types
 const removePluginAttribute = contentTypes => {
   contentTypes.forEach(contentType => {
     Object.keys(contentType.attributes).forEach(t => {
@@ -92,14 +100,24 @@ const removePluginAttribute = contentTypes => {
   });
 };
 
+// Error code to use when program encounters an error
+const errCode = -1;
+
+// Success code
+const successCode = 0;
+
 module.exports = {
   axios,
   authenticate,
+  getRoles,
+  getRole,
   formatContentType,
   awaitRestart,
   readJSONFromFile,
   writeJSONToFile,
   removePluginAttribute,
+  errCode,
+  successCode,
   STRAPI_BASE_URL,
   STRAPI_CONTENT_TYPE_URL,
   STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL,

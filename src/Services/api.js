@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import axios from 'axios';
 import Endpoint from './Endpoint';
 import UploadEndpoint from './UploadEndpoint';
@@ -56,6 +57,7 @@ const API = {
   // Other API endpoint methods
 
   getRoles: () => axios.get('/users-permissions/roles'),
+  getRole: (id) => axios.get(`/users-permissions/roles/${id}`),
   login: (identifier, password) =>
     axios.post('/auth/local', {
       identifier,
