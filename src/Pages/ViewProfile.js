@@ -5,9 +5,11 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import React, {Component} from 'react';
-import {imageURL} from '../utils/utils';
+import React, { Component } from 'react';
+import { imageURL } from '../utils/utils';
 import api from '../Services/api';
+import { permissions } from '../constants';
+import Can from '../Components/Can';
 
 class ViewProfile extends Component {
   constructor(props) {
@@ -25,66 +27,66 @@ class ViewProfile extends Component {
   }
 
   async componentDidMount() {
-    const {match} = this.props;
+    const { match } = this.props;
 
     // Get the data for the user in question
-    const response = await api.users.find({username: match.params.username});
+    const response = await api.users.find({ username: match.params.username });
     const user = response[0];
 
     // Get the user's profile picture
-    this.setState({user});
+    this.setState({ user });
   }
 
   handleCancel = () => {
-    this.setState({editing: false});
+    this.setState({ editing: false });
   };
 
   handleChange = event => {
-    const {user} = this.state;
-    const {target} = event;
-    const {value} = target;
-    const {name} = target;
-    this.setState({user: {...user, [name]: value}});
+    const { user } = this.state;
+    const { target } = event;
+    const { value } = target;
+    const { name } = target;
+    this.setState({ user: { ...user, [name]: value } });
   };
 
   handleEdit = () => {
-    this.setState({editing: true});
+    this.setState({ editing: true });
   };
 
   handleRemoveProfilePic = async () => {
-    const {user} = this.state;
-    if(user.picture) {
+    const { user } = this.state;
+    if (user.picture) {
       await api.uploads.delete(user.picture.id);
     }
   };
 
   handleSubmit = async (event) => {
     // todo: add authentication
-    const {user} = this.state;
+    const { user } = this.state;
     await api.users.update(user.id, user);
-    this.setState({editing: false});
+    this.setState({ editing: false });
     event.preventDefault();
   };
 
   render() {
-    const {editing, user} = this.state;
+    const { editing, user } = this.state;
 
     return (
       <Box width='50%' mx='auto'>
         <Box my={2}>
-          {(editing)?
+          {(editing) ?
             (
               <Typography variant='h3'>Profile Settings</Typography>
-            ):
+            ) :
             (
               <Typography variant='h3'>Profile: {user.Fullname}</Typography>
             )
           }
         </Box>
-        <Divider/>
+        <Divider />
         <Box my={2}>
           <Grid container direction='row' justify='space-between' spacing={2}>
-            <Grid item xs={4} style={{width: '300px'}}>
+            <Grid item xs={4} style={{ width: '300px' }}>
               <img
                 src={imageURL.user(user.picture)} alt='profile'
                 style={{
@@ -102,39 +104,39 @@ class ViewProfile extends Component {
                   Choose File...
                   <input
                     type='file'
-                    style={{display: 'none'}}
+                    style={{ display: 'none' }}
                   />
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant = 'contained' onClick={this.handleRemoveProfilePic}>
+                <Button variant='contained' onClick={this.handleRemoveProfilePic}>
                   Remove Profile Picture
                 </Button>
               </Grid>
             </Grid>
           </Grid>
         </Box>
-        <Divider/>
+        <Divider />
         <Box my={2}>
           {(editing) &&
-                        (
-                          <Typography variant='h4'>Main Settings</Typography>
-                        )
+            (
+              <Typography variant='h4'>Main Settings</Typography>
+            )
           }
           <Grid container direction='row' justify='left' spacing={2}>
             <Grid item xs={12}>
-              {(editing)?
+              {(editing) ?
                 (
                   <TextField
                     name='Fullname'
                     label='Full name'
                     margin='dense'
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     onChange={this.handleChange}
                     value={user.Fullname}
                   />
 
-                ):
+                ) :
                 (
                   <div>
                     <Typography>Name: </Typography>
@@ -144,18 +146,18 @@ class ViewProfile extends Component {
               }
             </Grid>
             <Grid item xs={12}>
-              {(editing)?
+              {(editing) ?
                 (
                   <TextField
                     name='email'
                     label='Email'
                     margin='dense'
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     onChange={this.handleChange}
                     value={user.email}
                   />
 
-                ):
+                ) :
                 (
                   <div>
                     <Typography>Email: </Typography>
@@ -165,16 +167,16 @@ class ViewProfile extends Component {
               }
             </Grid>
             <Grid item xs={12}>
-              {(editing)?
+              {(editing) ?
                 (
                   <TextField
                     name='phone'
                     label='Phone'
                     margin='dense'
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                   />
 
-                ):
+                ) :
                 (
                   <div>
                     <Typography>Phone: </Typography>
@@ -184,16 +186,16 @@ class ViewProfile extends Component {
               }
             </Grid>
             <Grid item xs={12}>
-              {(editing)?
+              {(editing) ?
                 (
                   <TextField
                     name='linkedin'
                     label='LinkedIn'
                     margin='dense'
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                   />
 
-                ):
+                ) :
                 (
                   <div>
                     <Typography>LinkedIn: </Typography>
@@ -208,8 +210,23 @@ class ViewProfile extends Component {
             </Grid>
           </Grid>
         </Box>
+        
+        <Can perform={permissions.application.proposals.create}>
+          <Divider />
+          <Box my={2}>
+            {(editing) &&
+              (
+                <Typography variant='h4'>Sponsor Settings</Typography>
+              )
+            }
+            <Grid container direction='row' justify='left' spacing={2}>
+              <p>Sponsor Settings here</p>
+            </Grid>
+          </Box>
+        </Can>
+
         <Box my={2}>
-          {(editing)?
+          {(editing) ?
             (
               <Grid container direction='row' justify='space-between' spacing={2}>
                 <Grid item>
@@ -223,14 +240,13 @@ class ViewProfile extends Component {
                   </Button>
                 </Grid>
               </Grid>
-            ):
+            ) :
             (   // TODO: Only the logged in user should be able to edit their profile
               <Button variant='contained' onClick={this.handleEdit}>
                 Edit Profile
               </Button>
             )
           }
-
         </Box>
       </Box>
     );
