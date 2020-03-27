@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React, { Component } from 'react';
@@ -21,8 +22,10 @@ class ViewProfile extends Component {
         username: '',
         email: '',
         Fullname: '',
-        picture: ''
+        picture: '',
+        sponsorOrganization: '',
       },
+      sponsors: [],
     };
   }
 
@@ -35,6 +38,12 @@ class ViewProfile extends Component {
 
     // Get the user's profile picture
     this.setState({ user });
+
+    // Get the list of sponsors
+    const sponsors = await api.sponsors.find({});
+    this.setState({ sponsors });
+
+    console.log(this.state);
   }
 
   handleCancel = () => {
@@ -69,7 +78,7 @@ class ViewProfile extends Component {
   };
 
   render() {
-    const { editing, user } = this.state;
+    const { editing, user, sponsors } = this.state;
 
     return (
       <Box width='50%' mx='auto'>
@@ -135,7 +144,6 @@ class ViewProfile extends Component {
                     onChange={this.handleChange}
                     value={user.Fullname}
                   />
-
                 ) :
                 (
                   <div>
@@ -156,7 +164,6 @@ class ViewProfile extends Component {
                     onChange={this.handleChange}
                     value={user.email}
                   />
-
                 ) :
                 (
                   <div>
@@ -175,7 +182,6 @@ class ViewProfile extends Component {
                     margin='dense'
                     style={{ width: '100%' }}
                   />
-
                 ) :
                 (
                   <div>
@@ -194,7 +200,6 @@ class ViewProfile extends Component {
                     margin='dense'
                     style={{ width: '100%' }}
                   />
-
                 ) :
                 (
                   <div>
@@ -210,7 +215,7 @@ class ViewProfile extends Component {
             </Grid>
           </Grid>
         </Box>
-        
+
         <Can perform={permissions.application.proposals.create}>
           <Divider />
           <Box my={2}>
@@ -220,7 +225,25 @@ class ViewProfile extends Component {
               )
             }
             <Grid container direction='row' justify='left' spacing={2}>
-              <p>Sponsor Settings here</p>
+              <Grid item xs={12}>
+                {(editing) ?
+                  (
+                    <Select>
+                      {sponsors.map(sponsor => (
+                        <option key={sponsor._id} value={sponsor.name}>
+                          {sponsor.name}
+                        </option>
+                      ))}
+                    </Select>
+                  ) :
+                  (
+                    <div>
+                      <Typography>Organization: </Typography>
+                      <Typography>{user.sponsorOrganization.name}</Typography>
+                    </div>
+                  )
+                }
+              </Grid>
             </Grid>
           </Box>
         </Can>
@@ -250,8 +273,6 @@ class ViewProfile extends Component {
         </Box>
       </Box>
     );
-
-    // TODO: add sponsor profile settings
   }
 }
 
