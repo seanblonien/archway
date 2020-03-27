@@ -8,37 +8,20 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import * as url from '../Static/businessmen.jpg';
-import * as url2 from '../Static/students.jpg';
 import api from '../Services/api';
-
+import LoadingCircle from '../Components/LoadingCircle';
+import {getImageFromStrapi} from '../utils/utils';
 
 const styles = () => ({
   button: {
     color: 'white',
     border: '2px solid white'
   },
-  bgImage: {
-    width: '100%',
-    height: '800px',
-    backgroundImage: `url(${url})`,
-    backgroundSize: 'cover'
-  },
-  studentImage: {
-    backgroundImage: `url(${url2})`,
-    backgroundSize: 'cover',
-    width: '100%',
-    height: '400px'
-  },
   sidePanel: {
     height: '800px',
     backgroundColor: 'black',
     color: 'white',
     opacity: '0.7'
-  },
-  gridBox: {
-    border: '8px solid blue',
-    borderRadius: 0,
   }
 });
 
@@ -47,22 +30,24 @@ class Sponsors extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       pageContent: [],
     };
   }
 
   async componentDidMount() {
     const pageContent = await api.sponsorpage.find();
-    this.setState({pageContent});
+    this.setState({loading: false, pageContent});
   }
 
   render() {
     const {classes} = this.props;
-    const {pageContent} = this.state;
+    const {loading, pageContent} = this.state;
 
-    return (
+    return loading ?
+      <LoadingCircle/> :
       <div>
-        <div className={classes.bgImage}>
+        <div style={{width: '100%', height: '800px', backgroundImage: getImageFromStrapi(pageContent.bgimage.url), backgroundSize: 'cover'}}>
           <Grid container direction='row' display='inline' justify='flex-end'>
             <Grid item xs={12} md={4}>
               <Card className={classes.sidePanel}>
@@ -135,14 +120,13 @@ class Sponsors extends Component {
                 </Container>
               </Grid>
               <Grid item>
-                <div className={classes.studentImage}/>
+                <div style={{backgroundImage: getImageFromStrapi(pageContent.image1.url), backgroundSize: 'cover', width: '100%', height: '400px'}}/>
               </Grid>
             </Grid>
           </Grid>
         </div>
         <br/>
-      </div>
-    );
+      </div>;
   }
 }
 

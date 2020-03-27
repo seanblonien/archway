@@ -33,6 +33,8 @@ export const imageURL = {
   capstone: (image) => checkImage(image, defaultCapstoneImg),
 };
 
+export const getImageFromStrapi = (image) => `url(${strapiURL}${image})`;
+
 /* eslint-disable no-bitwise */
 export const transformUserFields = async (user) => {
   const {data: {roles}} = await api.getRoles();
