@@ -71,7 +71,7 @@ class ViewYourCapstonesSponsors extends Component {
 
     if (!loading) {
       return (
-        <div className='Blogpost'>
+        <div>
           <Grid container justify='center'>
             <Grid item md={10} xs={12}>
               <Grid container direction='row' alignItems='flex-end' justify='space-between'>

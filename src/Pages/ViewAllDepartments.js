@@ -14,6 +14,9 @@ class ViewAllDepartments extends Component {
   async componentDidMount() {
     const departments = await api.departments.find();
     this.setState({departments});
+
+    let departmentNames = [];
+    departments.map()
   }
 
   render() {

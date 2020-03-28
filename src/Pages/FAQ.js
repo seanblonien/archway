@@ -8,26 +8,16 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import compose from 'recompose/compose';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
+import '../utils/style.css';
 
 
 const styles = theme => ({
-  title: {
-    padding: '3%',
-  },
   questions: {
     marginBottom: '5%',
     maxWidth: 800
   },
   subtitle: {
     padding: '1%',
-  },
-  section: {
-    background: 'lightgrey',
-    marginLeft: '5%',
-    marginRight: '5%',
-    marginBottom: '3%',
-    width: '100%'
-
   },
   content: {
     padding: 10,
@@ -72,7 +62,7 @@ class FAQ extends Component {
     if (!loading) {
       return (
         <div align='center'>
-          <Typography className={classes.title} variant='h2' align='center'>Frequently Asked Questions</Typography>
+          <Typography className='pageTitle' variant="h2">Frequently Asked Questions</Typography>
 
           <Grid container className={classes.questions} spacing={2} direction='row' alignItems='flex-start'>
             {categories.map((category) => (
@@ -102,7 +92,7 @@ class FAQ extends Component {
           <Grid container alignItems='stretch'>
 
             {categories.map((category) => (
-              <Paper key={category.toString()} className={classes.section}>
+              <Paper key={category.toString()} className='largePaper'>
                 <Grid item xs={12}>
                   <Typography variant='h4' align='center' className={classes.subtitle}>
                     {category}

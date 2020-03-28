@@ -12,6 +12,7 @@ import compose from 'recompose/compose';
 import history from '../utils/history';
 import LoadingCircle from './LoadingCircle';
 import api from '../Services/api';
+import '../utils/style.css';
 
 const styles = {
   card: {
@@ -61,8 +62,8 @@ class About extends Component {
           <Grid container justify='center'>
             <Grid item xs={12} md={10}>
               <Card className={classes.card}>
-                <Typography align='center' style={{marginBottom: '1%'}}>
-                  <b>About Page</b>
+                <Typography variant='h2' className='pageTitle'>
+                  About Us
                 </Typography>
                 <Divider/>
                 <CardContent>

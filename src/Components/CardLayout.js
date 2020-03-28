@@ -3,10 +3,11 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Cards from './Cards';
+import '../utils/style.css';
 
 const cardLayout = ({title, listItems, childURL, imageURLFunction}) => (
-  <div style={{padding: 50}}>
-    <Typography align='center' variant='h2' gutterBottom>
+  <div className='mainContentBorder'>
+    <Typography className='pageTitle' variant='h2' gutterBottom>
       {title}
     </Typography>
     <br/>
