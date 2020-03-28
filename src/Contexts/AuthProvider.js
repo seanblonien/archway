@@ -7,9 +7,12 @@ import {
   Auth0RedirectCallback
 } from '../constants';
 import history from '../utils/history';
+import hash from 'object-hash';
+import jwtDecode from 'jwt-decode';
 
 export const AuthContext = React.createContext({});
-
+const LOGIN_SUCCESS_PAGE = '/secret';
+const LOGIN_FAILURE_PAGE = '/';
 export default class AuthProvider extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +33,7 @@ export default class AuthProvider extends Component {
 
     if (history.location.search.includes('code=') &&
       history.location.search.includes('state=')) {
+      console.log("haha");
       const {appState} = await auth0Client.handleRedirectCallback();
       onRedirectCallback(appState);
     }
@@ -44,6 +48,36 @@ export default class AuthProvider extends Component {
 
     this.setState({loading: false});
   }
+
+  handleAuthentication = () => {
+    console.log("handling authentication...");
+    if (!StorageManager.getItem('nickname')) {
+      this.auth0Client.parseHash(async (err, authResults) => {
+        if (authResults && authResults.accessToken && authResults.idToken) {
+          const expiresAt = JSON.stringify((authResults.expiresIn) * 1000 + new Date().getTime());
+          StorageManager.setItem('access_token', authResults.accessToken);
+          StorageManager.setItem('id_token', authResults.idToken);
+          StorageManager.setItem('expires_at', expiresAt);
+
+          const testVar = this.getProfile();
+
+          if (testVar !== {}) {
+            Object.keys(testVar).forEach(key => {
+              if (testVar[key] && (key === 'sub' || key === 'name' || key === 'nickname'))
+                StorageManager.setItem(key, testVar[key]);
+            });
+          }
+
+          // In either case, we should have a jwt token returned to us and we can
+          // reference it from localStorage.
+          history.location.hash = '';
+          history.location.pathname = LOGIN_SUCCESS_PAGE;
+        } else if (err) {
+          history.location.pathname = LOGIN_FAILURE_PAGE;
+        }
+      });
+    }
+  };
 
   loginWithPopup = async (params = {}) => {
     const {auth0Client} = this.state;
@@ -72,7 +106,7 @@ export default class AuthProvider extends Component {
   render() {
     const {children, returnTo} = this.props;
     const {isAuthenticated, user, loading, popupOpen, auth0Client} = this.state;
-    const {loginWithPopup, handleRedirectCallback} = this;
+    const {loginWithPopup, handleRedirectCallback, handleAuthentication} = this;
 
     return (
       <AuthContext.Provider
@@ -83,6 +117,7 @@ export default class AuthProvider extends Component {
           popupOpen,
           loginWithPopup,
           handleRedirectCallback,
+          handleAuthentication,
           getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
           loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
           getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),

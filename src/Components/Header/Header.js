@@ -96,7 +96,10 @@ class PrimarySearchAppBar extends Component {
   };
 
   handleToAccount = () => {
-    history.push(`/ViewProfile/${auth.getNickname()}`);
+    const {loading, user, isAuthenticated} = this.context;
+    console.log(user);
+    console.log(isAuthenticated);
+    history.push(`/ViewProfile/${user.nickname}`);
   };
 
   render() {
