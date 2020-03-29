@@ -18,6 +18,8 @@ import api from '../Services/api';
 import FilterBar from '../Components/FilterBar';
 import LoadingCircle from '../Components/LoadingCircle';
 import history from '../utils/history';
+import '../utils/style.css';
+import CardLayout from "../Components/CardLayout";
 
 const styles = {
   // Custom color for icon
@@ -98,11 +100,14 @@ class Capstone extends Component {
           {/* Page heading */}
           <Grid container justify='center'>
             <Grid item md={10} xs={12}>
-              <Typography variant='h4' style={{marginTop: '16px'}}>Capstone Projects</Typography>
+              <Typography variant='h2' className='pageTitle'>Capstone Projects</Typography>
               <Divider/>
               <br/>
             </Grid>
           </Grid>
+
+          <CardLayout title='Capstone Projects' listItems={capstones} childURL='/ViewACapstone/' imageURLFunction={imageURL.capstone}/>
+
 
           <Grid container justify='center' style={{marginBottom: '16px'}}>
             <Grid item xs={12} md={10}>

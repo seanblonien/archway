@@ -1,0 +1,29 @@
+.pageTitle {
+    padding: 2%;
+    color: black;
+    text-align: center;
+}
+.pageSubtitle {
+
+}
+.mainContentBorder {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.largePaper {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 3%;
+    width: 100%;
+    background-color: lightgray !important;
+}
+.smallPaper {
+
+}
+.link {
+
+}
+.card {
+    max-height: 450px;
+    max-width: 300px;
+}

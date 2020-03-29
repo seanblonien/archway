@@ -11,6 +11,10 @@
           "type": "string",
           "required": true
         },
+        "name": {
+          "type": "string",
+          "required": false
+        },
         "isFeatured": {
           "type": "boolean",
           "default": false
@@ -27,6 +31,9 @@
           "type": "richtext",
           "required": true,
           "maxLength": 10000
+        },
+        "preview": {
+          "type": "string"
         },
         "coverPhoto": {
           "type": "media",
@@ -68,7 +75,7 @@
         },
         "thumbnail": {
           "type": "media",
-          "multiple": true,
+          "multiple": false,
           "required": false
         }
       }
@@ -350,10 +357,18 @@
           "multiple": false,
           "required": false
         },
+        "thumbnail": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
         "description": {
           "type": "richtext",
           "required": false,
           "maxLength": 10000
+        },
+        "preview": {
+          "type": "string"
         },
         "isFeatured": {
           "type": "boolean"
