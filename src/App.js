@@ -29,6 +29,7 @@ import ViewYourCapstones from './Pages/ViewYourCapstones';
 import ViewYourCapstonesSponsors from './Pages/ViewYourCapstonesSponsors';
 import history from './utils/history';
 import Can from './Components/Can';
+import ReviewProposals from "./Pages/ReviewProposals";
 
 export default function App () {
   return <>
@@ -58,6 +59,7 @@ export default function App () {
                 <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
                 <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
                 <ProtectedRoute path='/ViewYourCapstonesSponsors' component={ViewYourCapstonesSponsors}/>
+                <Route path='/ReviewProposals' component={ReviewProposals}/>
                 <ProtectedRoute path='/ImportUsers' component={ImportUsers}/>
                 <Route exact path='/' component={Home}/>
                 <Route path='*' component={NotFound}/>
