@@ -50,11 +50,28 @@ export default class AuthProvider extends Component {
     const {auth0Client} = this.state;
     if (!StorageManager.getItem('nickname')) {
       const accessToken = auth0Client.getTokenSilently();
-      console.log(accessToken);
-      accessToken.then(accessToken => {console.log(accessToken)});
       const idToken = auth0Client.getIdTokenClaims();
-      console.log(idToken);
-      idToken.then(idToken => {console.log(idToken)});
+      idToken.then(idToken => {
+        accessToken.then(accessToken => {
+          if (accessToken && idToken) {
+            console.log("access token: " + accessToken);
+            Object.keys(idToken).forEach(key => {
+              console.log("adding [" + key + ": " + idToken[key] + "] to local storage");
+            });
+            console.log(new Date().getTime());
+            // commented out until we can get the strapi implementation working as well
+            // StorageManager.setItem('access_token', accessToken);
+            // StorageManager.setItem('id_token', idToken['__raw']);
+            // StorageManager.setItem('expires_at', idToken['exp']);
+            // StorageManager.setItem('sub', idToken['sub']);
+            // StorageManager.setItem('name', idToken['name']);
+            // StorageManager.setItem('nickname', idToken['nickname']);
+            history.push = LOGIN_SUCCESS_PAGE;
+          } else {
+            history.push = LOGIN_FAILURE_PAGE;
+          }
+        });
+      });
 
       // if (accessToken && idToken) {
       //   const expiresAt = JSON.stringify((expiresIn) * 1000 + new Date().getTime());
@@ -78,7 +95,7 @@ export default class AuthProvider extends Component {
       // } else {
       //   history.location.pathname = LOGIN_FAILURE_PAGE;
       // }
-      history.push("/");
+      // history.push("/");
     }
   };
 
@@ -106,6 +123,11 @@ export default class AuthProvider extends Component {
     const user = await auth0Client.getUser();
     console.log(user);
     this.setState({loading: false, isAuthenticated: true, user});
+  };
+
+  isAuthenticated = () => {
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    return new Date().getTime() < expiresAt;
   };
 
   render() {
