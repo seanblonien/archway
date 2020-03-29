@@ -63,7 +63,8 @@ export const university = 'Baylor';
 export const Auth0InitOptions = {
   domain: 'archwaycapstone.auth0.com',
   client_id: 'V9OTevHpl8fIrm4ZV8sXbzH1c7CkRtxA',
-  redirect_uri: 'http://localhost:80/callback'
+  redirect_uri: 'http://localhost:80/callback',
+  audience: 'https://archwaycapstone.auth0.com/userinfo'
 };
 
 export const Auth0LogoutReturnTo = window.location.origin;

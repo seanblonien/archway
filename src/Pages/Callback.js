@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
+import StorageManager from '../Contexts/StorageManager';
 import {AuthContext} from '../Contexts/AuthProvider';
-import auth from '../Auth';
 
 /**
  * This class is a React component that handles the callback functionality
@@ -8,12 +8,10 @@ import auth from '../Auth';
  */
 export default class Callback extends Component {
   componentDidMount() {
-    localStorage.clear();
+    // StorageManager.clearLocalStorage();
     console.log("about to handle authentication...");
-    const {handleAuthentication} = this.context;
-    handleAuthentication();
+    this.context.handleAuthentication();
     // auth.handleAuthentication();
-
   }
 
   render() {
@@ -24,3 +22,4 @@ export default class Callback extends Component {
     );
   }
 }
+Callback.contextType = AuthContext;

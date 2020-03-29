@@ -4,11 +4,9 @@ import createAuth0Client from '@auth0/auth0-spa-js';
 import {
   Auth0InitOptions,
   Auth0LogoutReturnTo,
-  Auth0RedirectCallback
 } from '../constants';
 import history from '../utils/history';
-import hash from 'object-hash';
-import jwtDecode from 'jwt-decode';
+import StorageManager from './StorageManager';
 
 export const AuthContext = React.createContext({});
 const LOGIN_SUCCESS_PAGE = '/secret';
@@ -26,16 +24,14 @@ export default class AuthProvider extends Component {
   }
 
   async componentDidMount() {
-    const {onRedirectCallback, initOptions} = this.props;
+    const {initOptions} = this.props;
 
     const auth0Client = await createAuth0Client(initOptions);
     this.setState({auth0Client});
 
     if (history.location.search.includes('code=') &&
       history.location.search.includes('state=')) {
-      console.log("haha");
-      const {appState} = await auth0Client.handleRedirectCallback();
-      onRedirectCallback(appState);
+      this.handleRedirectCallback();
     }
 
     const isAuthenticated = await auth0Client.isAuthenticated();
@@ -51,37 +47,43 @@ export default class AuthProvider extends Component {
 
   handleAuthentication = () => {
     console.log("handling authentication...");
+    const {auth0Client} = this.state;
     if (!StorageManager.getItem('nickname')) {
-      this.auth0Client.parseHash(async (err, authResults) => {
-        if (authResults && authResults.accessToken && authResults.idToken) {
-          const expiresAt = JSON.stringify((authResults.expiresIn) * 1000 + new Date().getTime());
-          StorageManager.setItem('access_token', authResults.accessToken);
-          StorageManager.setItem('id_token', authResults.idToken);
-          StorageManager.setItem('expires_at', expiresAt);
+      const accessToken = auth0Client.getTokenSilently();
+      console.log(accessToken);
+      accessToken.then(accessToken => {console.log(accessToken)});
+      const idToken = auth0Client.getIdTokenClaims();
+      console.log(idToken);
+      idToken.then(idToken => {console.log(idToken)});
 
-          const testVar = this.getProfile();
-
-          if (testVar !== {}) {
-            Object.keys(testVar).forEach(key => {
-              if (testVar[key] && (key === 'sub' || key === 'name' || key === 'nickname'))
-                StorageManager.setItem(key, testVar[key]);
-            });
-          }
-
-          // In either case, we should have a jwt token returned to us and we can
-          // reference it from localStorage.
-          history.location.hash = '';
-          history.location.pathname = LOGIN_SUCCESS_PAGE;
-        } else if (err) {
-          history.location.pathname = LOGIN_FAILURE_PAGE;
-        }
-      });
+      // if (accessToken && idToken) {
+      //   const expiresAt = JSON.stringify((expiresIn) * 1000 + new Date().getTime());
+      // StorageManager.setItem('access_token', accessToken);
+      // StorageManager.setItem('id_token', idToken);
+      //   StorageManager.setItem('expires_at', expiresAt);
+      //
+      //   const testVar = StorageManager.getProfile();
+      //
+      //   if (testVar !== {}) {
+      //     Object.keys(testVar).forEach(key => {
+      //       if (testVar[key] && (key === 'sub' || key === 'name' || key === 'nickname'))
+      //         StorageManager.setItem(key, testVar[key]);
+      //     });
+      //   }
+      //
+      //   // In either case, we should have a jwt token returned to us and we can
+      //   // reference it from localStorage.
+      //   history.location.hash = '';
+      //   history.location.pathname = LOGIN_SUCCESS_PAGE;
+      // } else {
+      //   history.location.pathname = LOGIN_FAILURE_PAGE;
+      // }
+      history.push("/");
     }
   };
 
   loginWithPopup = async (params = {}) => {
     const {auth0Client} = this.state;
-
     this.setState({popupOpen: true});
     try {
       await auth0Client.loginWithPopup(params);
@@ -90,16 +92,19 @@ export default class AuthProvider extends Component {
     } finally {
       this.setState({popupOpen: false});
     }
+    this.handleRedirectCallback();
     const user = await auth0Client.getUser();
+    console.log(user);
     this.setState({user, isAuthenticated: true});
   };
 
   handleRedirectCallback = async () => {
     const {auth0Client} = this.state;
-
     this.setState({loading: true});
-    await auth0Client.handleRedirectCallback();
+    // await auth0Client.handleRedirectCallback();
+    history.push("/callback");
     const user = await auth0Client.getUser();
+    console.log(user);
     this.setState({loading: false, isAuthenticated: true, user});
   };
 
@@ -132,7 +137,6 @@ export default class AuthProvider extends Component {
 }
 
 AuthProvider.propTypes = {
-  onRedirectCallback: PropTypes.func,
   children: PropTypes.node.isRequired,
   returnTo: PropTypes.string,
   initOptions: PropTypes.shape({
@@ -143,7 +147,6 @@ AuthProvider.propTypes = {
 };
 
 AuthProvider.defaultProps = {
-  onRedirectCallback: () => Auth0RedirectCallback(),
   returnTo: Auth0LogoutReturnTo,
   initOptions: Auth0InitOptions
 };
