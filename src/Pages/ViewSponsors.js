@@ -1,23 +1,14 @@
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
 import {withStyles} from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import InfoIcon from '@material-ui/icons/Info';
 import Fuse from 'fuse.js';
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import history from '../utils/history';
 import '../utils/style.css';
-import CardLayout from "../Components/CardLayout";
+import CardLayout from '../Components/CardLayout';
 
 const styles = {
   card: {
@@ -68,7 +59,6 @@ class ViewSponsors extends Component {
   };
 
   render() {
-    const {classes} = this.props;
     const {loading, searchTerm, sponsors} = this.state;
 
     if (!loading) {
@@ -98,7 +88,7 @@ class ViewSponsors extends Component {
       }
 
       return (
-          <CardLayout title='Our Sponsors' listItems={sponsors} childURL='/ViewASponsor/' imageURLFunction={imageURL.sponsor}/>
+        <CardLayout title='Our Sponsors' listItems={match} childURL='/ViewASponsor/' imageURLFunction={imageURL.sponsor}/>
       );
     }
 

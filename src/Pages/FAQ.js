@@ -61,7 +61,7 @@ class FAQ extends Component {
     if (!loading) {
       return (
         <div align='center'>
-          <Typography className='pageTitle' variant="h2">Frequently Asked Questions</Typography>
+          <Typography className='pageTitle' variant='h2'>Frequently Asked Questions</Typography>
 
           <Grid container className={classes.questions} spacing={2} direction='row' alignItems='flex-start'>
             {categories.map((category) => (

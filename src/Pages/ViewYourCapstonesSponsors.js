@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import {withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,17 +18,6 @@ import ProposalForm from '../Components/ProposalForm';
 import '../utils/style.css';
 
 class ViewYourCapstonesSponsors extends Component {
-  static getColumns(props) {
-    if(props.width === 'xl') {
-      return 4;
-    }if(props.width === 'lg') {
-      return 4;
-    }if(props.width ==='md') {
-      return 3;
-    }
-    return 2;
-  }
-
   constructor(props) {
     super(props);
 
@@ -47,7 +35,6 @@ class ViewYourCapstonesSponsors extends Component {
   }
 
   render() {
-    const {classes} = this.props;
     const {loading, proposals} = this.state;
 
     if (!loading) {

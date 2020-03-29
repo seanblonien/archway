@@ -81,7 +81,7 @@ const Home = ({classes}) => (
             <Typography variant='h2' style={{color: 'white'}}>Capstones</Typography>
             <div>
               <Button
-                className="largeButton"
+                className='largeButton'
                 variant='contained'
                 color='secondary'
                 component={RouterLink}
@@ -90,7 +90,7 @@ const Home = ({classes}) => (
                 Check out Current Capstones
               </Button>
               <Button
-                className="largeButton"
+                className='largeButton'
                 variant='contained'
                 color='secondary'
                 component={RouterLink}
@@ -99,7 +99,7 @@ const Home = ({classes}) => (
                 Check Out Our Sponsors
               </Button>
               <Button
-                className="largeButton"
+                className='largeButton'
                 variant='contained'
                 color='secondary'
                 component={RouterLink}
