@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {getFirstNWords} from '../utils/utils';
+import '../utils/style.css';
+
 
 class Cards extends Component {
 
@@ -16,7 +18,7 @@ class Cards extends Component {
 
     return listItems.map((item, i) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={item.name}>
-        <Card style={{height: 425,}}>
+        <Card className='card'>
           <CardActionArea component={Link} to={childURL + item._id}>
             <CardMedia
               component='img'

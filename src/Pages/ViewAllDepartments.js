@@ -16,7 +16,6 @@ class ViewAllDepartments extends Component {
     this.setState({departments});
 
     let departmentNames = [];
-    departments.map()
   }
 
   render() {

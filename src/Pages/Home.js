@@ -16,6 +16,7 @@ import {
   permissions
 } from '../constants';
 import Can from '../Components/Can';
+import '../utils/style.css';
 
 const insideStyles = {
   background: schoolColorPrimary,
@@ -47,17 +48,6 @@ const surroundStyle = {
 };
 
 const styles = () => ({
-  card: {
-    marginTop: '1%',
-  },
-  topButton: {
-    color:'black',
-    width: 350,
-    height: 50,
-    left: '-14%',
-    variant: 'contained',
-    fontSize: 16
-  },
   featuredPaper:{
     background: schoolColorSecondary,
     color: 'black',
@@ -76,19 +66,6 @@ const styles = () => ({
     maxWidth: 600,
     textAlign: 'center',
   },
-  paper: {
-    height: 140,
-    width: 100,
-  },
-  gridListContainer: {
-    marginTop: '2%',
-    marginLeft: '2%',
-    marginRight: '2%',
-    display: 'flex',
-    flexWrap: 'wrap',
-    align: 'center',
-    overflow: 'hidden',
-  },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
   },
@@ -104,7 +81,7 @@ const Home = ({classes}) => (
             <Typography variant='h2' style={{color: 'white'}}>Capstones</Typography>
             <div>
               <Button
-                className={classes.topButton}
+                className="largeButton"
                 variant='contained'
                 color='secondary'
                 component={RouterLink}
@@ -113,7 +90,7 @@ const Home = ({classes}) => (
                 Check out Current Capstones
               </Button>
               <Button
-                className={classes.topButton}
+                className="largeButton"
                 variant='contained'
                 color='secondary'
                 component={RouterLink}
@@ -122,7 +99,7 @@ const Home = ({classes}) => (
                 Check Out Our Sponsors
               </Button>
               <Button
-                className={classes.topButton}
+                className="largeButton"
                 variant='contained'
                 color='secondary'
                 component={RouterLink}

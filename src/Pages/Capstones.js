@@ -97,44 +97,7 @@ class Capstone extends Component {
         <div>
           <FilterBar/>
 
-          {/* Page heading */}
-          <Grid container justify='center'>
-            <Grid item md={10} xs={12}>
-              <Typography variant='h2' className='pageTitle'>Capstone Projects</Typography>
-              <Divider/>
-              <br/>
-            </Grid>
-          </Grid>
-
-          <CardLayout title='Capstone Projects' listItems={capstones} childURL='/ViewACapstone/' imageURLFunction={imageURL.capstone}/>
-
-
-          <Grid container justify='center' style={{marginBottom: '16px'}}>
-            <Grid item xs={12} md={10}>
-              <GridList cellHeight={250} cols={Capstone.getColumns(this.props)}>
-                {/* Creates a gridlist tile for each capstone */}
-                {match.map((result, i) => match[i].coverPhoto && match[i].coverPhoto.url != null ? (
-                  <GridListTile key={match[i].coverPhoto.url} onClick={() => this.handleTileClick(result._id)}>
-                    {/* The display photo for each gridlisttile */}
-                    <img src={imageURL.capstone(match[i].coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
-                    <GridListTileBar
-                      title={result.title}
-                      subtitle={`Made by: ${result.moderator.username}`}
-                      actionIcon={
-                        <IconButton
-                          className={classes.icon}
-                          component={Link}
-                          to={`/ViewCapstone/${result._id}`}
-                        >
-                          <InfoIcon/>
-                        </IconButton>
-                      }
-                    />
-                  </GridListTile>
-                ) : '')}
-              </GridList>
-            </Grid>
-          </Grid>
+          <CardLayout title='Capstone Projects' listItems={capstones} childURL='/ViewCapstone/' imageURLFunction={imageURL.capstone}/>
         </div>
       );
     }

@@ -33,7 +33,6 @@ const styles = theme => ({
       color: 'black'
     }
   }
-
 });
 
 
