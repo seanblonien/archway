@@ -33,3 +33,7 @@
     align-self: center;
     overflow: hidden;
 }
+.table {
+    margin-left: 5%;
+    margin-right: 5%;
+}

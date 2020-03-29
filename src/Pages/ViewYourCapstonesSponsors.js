@@ -16,26 +16,7 @@ import compose from 'recompose/compose';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import ProposalForm from '../Components/ProposalForm';
-
-const styles = {
-  card: {
-    raised: true,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 18,
-  },
-  pos: {
-    marginBottom: 100,
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
-  },
-};
+import '../utils/style.css';
 
 class ViewYourCapstonesSponsors extends Component {
   static getColumns(props) {
@@ -84,7 +65,7 @@ class ViewYourCapstonesSponsors extends Component {
               </Grid>
               <br/>
               {proposals.length > 0 &&
-                <TableContainer component={Paper} className={classes.table}>
+                <TableContainer component={Paper} className='table'>
                   <Table aria-label='simple table'>
                     <TableHead>
                       <TableRow>
@@ -112,6 +93,7 @@ class ViewYourCapstonesSponsors extends Component {
               }
             </Grid>
           </Grid>
+
           <Grid container justify='center'>
             <Grid item md={10} xs={12}>
               <Typography variant='h4' style={{marginTop: '16px'}}>Current Company Projects</Typography>
@@ -137,6 +119,5 @@ class ViewYourCapstonesSponsors extends Component {
 }
 
 export default compose(
-  withStyles(styles),
   withWidth(),
 )(ViewYourCapstonesSponsors);
