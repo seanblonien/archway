@@ -7,7 +7,7 @@
       "kind": "collectionType",
       "collectionName": "capstones",
       "attributes": {
-        "title": {
+        "name": {
           "type": "string",
           "required": true
         },
