@@ -22,9 +22,12 @@ import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../Services/api';
 import SimpleDialog from '../Components/AddUserDialog';
-import ArchwayDatePicker from '../Components/ArchwayDatePicker';
 import DragAndDropZone from '../Components/DragAndDropZone/DragAndDropZone';
 import PageTitleTypography from '../Components/PageTitleTypography';
+import DateFnsUtils from '@date-io/date-fns';
+import EventNoteIcon from '@material-ui/icons/EventNote';
+import {DesktopDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+
 
 const styles = theme => ({
   list: {
@@ -58,9 +61,8 @@ class CreateCapstone extends Component {
     super(props);
     this.state = {
       title: '',
-      startDate: '',
-      endDate: '',
-      description: '',
+      startDate: new Date(),
+      endDate: new Date(),
       coverPhoto: '',
       Department: '',
       Username: '',
@@ -148,9 +150,34 @@ class CreateCapstone extends Component {
     this.setState({typedName: event.target.value});
   };
 
+  handleStartDate = (startDate) => {
+    this.setState({startDate: startDate}, () => {
+      if (this.state.startDate.getTime() > this.state.endDate.getTime()) {
+        this.setState({endDate: startDate});
+      }
+    });
+  };
+
+  handleEndDate = (endDate) => {
+    this.setState({endDate: endDate}, () => {
+      if (this.state.endDate.getTime() < this.state.startDate.getTime()) {
+        this.setState({startDate: endDate});
+      }
+    });
+  };
+
+  handleDescription = (event) => {
+    this.setState({description: event.target.value});
+  };
+
+  handleTitle = (event) => {
+    this.setState({title: event.target.value});
+  };
+
   handleNewUser = (newUser) => {
     this.setState({...newUser});
   };
+
 
   handleSelectSponsor = (event) => {
     this.setState({selectedSponsor: event.target.value});
@@ -219,14 +246,14 @@ class CreateCapstone extends Component {
                 <Grid container  justify='left' spacing={3}>
                   <Grid item xs={12}>
                     {/* Form for capstone name */}
-                    <Tooltip title='Add' arrow>
-
+                    <Tooltip title='Name of Capstone' arrow>
                       <FormControl margin='dense' required fullWidth>
                         <TextField
                           id='outlined-textarea'
                           label='Title'
                           placeholder='Type the title for the capstone project'
                           multiline
+                          onChange={this.handleTitle}
                           variant='outlined'
                         />
                       </FormControl>
@@ -234,20 +261,47 @@ class CreateCapstone extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid container  justify='center' spacing={2} direction='row'>
-                      <Grid item xs={6}>
-                        <ArchwayDatePicker label='Start Date'/>
-
+                      {/* Start & End Date*/}
+                        <Grid item xs={6}>
+                          <Tooltip title='Select A Date' arrow>
+                            <MuiPickersUtilsProvider  utils={DateFnsUtils}>
+                            <DesktopDatePicker
+                                autoOk
+                                variant='outlined'
+                                label='Start Date'
+                                placeholder='2018/01/01'
+                                format='yyyy/MM/dd'
+                                mask='____/__/__'
+                                keyboardIcon={<EventNoteIcon/>}
+                                value={this.state.startDate}
+                                onChange={date => this.handleStartDate(date)}
+                            />
+                          </MuiPickersUtilsProvider>
+                          </Tooltip>
                       </Grid>
-
-                      <Grid item xs={6}>
-                        <ArchwayDatePicker label='End Date'/>
-
+                        <Grid item xs={6}>
+                        <Tooltip title='Select A Date' arrow>
+                          <MuiPickersUtilsProvider  utils={DateFnsUtils}>
+                            <DesktopDatePicker
+                                autoOk
+                                variant='outlined'
+                                label='End Date'
+                                placeholder='2018/01/01'
+                                format='yyyy/MM/dd'
+                                mask='____/__/__'
+                                keyboardIcon={<EventNoteIcon/>}
+                                value={this.state.endDate}
+                                onChange={date => this.handleEndDate(date)}
+                            />
+                          </MuiPickersUtilsProvider>
+                        </Tooltip>
                       </Grid>
                     </Grid>
 
                   </Grid>
 
                   <Grid item xs={12}>
+                    {/* select department */}
                     <FormControl margin='dense' fullWidth variant='filled'>
                       <InputLabel ref={null}>Department</InputLabel>
                       <Select
@@ -275,6 +329,7 @@ class CreateCapstone extends Component {
                         placeholder='Type the description'
                         multiline
                         variant='outlined'
+                        onChange={this.handleDescription}
                       />
                     </FormControl>
 

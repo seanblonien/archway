@@ -4,7 +4,7 @@ import {DesktopDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
-const AdvancedKeyboardExample = ({label}) => {
+const AdvancedKeyboardExample = ({label, handleStartDate}) => {
   const [selectedDate, handleDateChange] = useState(new Date());
 
   return (

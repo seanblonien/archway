@@ -54,7 +54,7 @@ export default function App () {
                 <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
                 <Route path='/FAQ' component={FAQ}/>
                 <ProtectedRoute path='/secret' component={Secret}/>
-                <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
+                <Route path='/CreateCapstone' component={CreateCapstone}/>
                 <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
                 <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
                 <ProtectedRoute path='/ViewYourCapstonesSponsors' component={ViewYourCapstonesSponsors}/>
