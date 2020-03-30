@@ -13,7 +13,6 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
-import auth from '../../Auth';
 import {university} from '../../constants';
 import {AuthContext} from '../../Contexts/AuthProvider';
 import universityLogo from '../../Static/univ_logo.svg';
@@ -96,7 +95,7 @@ class PrimarySearchAppBar extends Component {
   };
 
   handleToAccount = () => {
-    const {loading, user, isAuthenticated} = this.context;
+    const {user, isAuthenticated} = this.context;
     console.log(user);
     console.log(isAuthenticated);
     history.push(`/ViewProfile/${user.nickname}`);

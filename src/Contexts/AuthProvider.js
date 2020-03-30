@@ -104,27 +104,38 @@ export default class AuthProvider extends Component {
     this.setState({popupOpen: true});
     try {
       await auth0Client.loginWithPopup(params);
+      this.handleRedirectCallback();
+      // commented out because repeated code in handleRedirectCallback
+      // const user = await auth0Client.getUser();
+      // console.log(user);
+      // if (user !== undefined) {
+      //   this.setState({user, isAuthenticated: true});
+      // } else {
+      //   console.error('There was an error in authentication.');
+      //   this.setState({isAuthenticated: false});
+      // }
     } catch (error) {
       console.error(error);
     } finally {
       this.setState({popupOpen: false});
     }
-    this.handleRedirectCallback();
-    const user = await auth0Client.getUser();
-    console.log(user);
-    this.setState({user, isAuthenticated: true});
   };
 
   handleRedirectCallback = async () => {
     const {auth0Client} = this.state;
     this.setState({loading: true});
-    // await auth0Client.handleRedirectCallback();
     history.push("/callback");
     const user = await auth0Client.getUser();
     console.log(user);
-    this.setState({loading: false, isAuthenticated: true, user});
+    if(user !== undefined) {
+      this.setState({loading: false, isAuthenticated: true, user});
+    } else {
+      console.error('There was an error in authentication.');
+      this.setState({loading: false, isAuthenticated: false});
+    }
   };
 
+  // REDO THIS FUNCTION BECAUSE IT NEEDS TO BE AUTHENTICATED WITH STRAPI
   isAuthenticated = () => {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
