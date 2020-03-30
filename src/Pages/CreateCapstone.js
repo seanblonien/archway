@@ -27,6 +27,7 @@ import PageTitleTypography from '../Components/PageTitleTypography';
 import DateFnsUtils from '@date-io/date-fns';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import {DesktopDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 
 const styles = theme => ({
@@ -76,6 +77,7 @@ class CreateCapstone extends Component {
       Participants: [],
       typedName: '',
       typedEmail: '',
+      selectedUser: '',
       dialogOpen: false
     };
   }
@@ -89,7 +91,9 @@ class CreateCapstone extends Component {
     this.setState({capstones, sponsorList, departmentList});
 
     const response = await api.users.find();
-    this.setState({Users: response.data, AllUsers: response.data});
+    this.setState({Users: response, AllUsers: response}, () => {
+      console.log(this.state.Users);
+    });
   }
 
   handleChange = name => event => {
@@ -113,6 +117,12 @@ class CreateCapstone extends Component {
     this.setState({Department: event.target.value});
   };
 
+  handleSelectedUser = (event, values) => {
+    this.setState({selectedUser: values}, () => {
+      console.log(this.state.selectedUser);
+    });
+  };
+
   handleClickDialogClose = () => {
     this.setState({dialogOpen: false});
   };
@@ -132,11 +142,10 @@ class CreateCapstone extends Component {
   };
 
   handleConfirmTeammate = () => {
-    const {typedName, typedEmail, Participants} = this.state;
-    if (typedName !== '' && typedEmail !== '') {
-      const teamMember = {name: typedName, email: typedEmail};
-      if (!Participants.includes(teamMember)) {
-        const joinedParticipants = Participants.concat(teamMember);
+    const user = this.state.selectedUser;
+    if (user !== '') {
+      if (!this.state.Participants.includes(user)) {
+        const joinedParticipants = this.state.Participants.concat(user);
         this.setState({Participants: joinedParticipants});
       }
     }
@@ -156,6 +165,7 @@ class CreateCapstone extends Component {
         this.setState({endDate: startDate});
       }
     });
+    console.log(this.state.Users);
   };
 
   handleEndDate = (endDate) => {
@@ -352,32 +362,17 @@ class CreateCapstone extends Component {
                       {/* name, email confirm */}
                       <Grid item xs={12}>
                         <Grid container alignItems='center' justify='left' spacing={3} direction='row'>
-                          <Grid item xs={3}>
-                            <FormControl fullWidth>
-                              <TextField
-                                id='outlined-textarea'
-                                label='Name'
-                                placeholder='Teammate Name'
-                                variant='outlined'
-                                onChange={this.handleInputName}
-                              />
-                            </FormControl>
-
-
+                          <Grid item xs={8}>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={this.state.AllUsers}
+                                getOptionLabel={(option) => option.Fullname}
+                                style={{ width: 300 }}
+                                onChange={this.handleSelectedUser}
+                                renderInput={(params) => <TextField {...params} label="Search for Team Members" variant="outlined" />}
+                            />
                           </Grid>
-                          <Grid item xs={5}>
-                            <FormControl fullWidth>
 
-                              <TextField
-                                id='outlined-textarea'
-                                label='Email'
-                                placeholder='Teammate Email'
-                                variant='outlined'
-                                onChange={this.handleInputEmail}
-                              />
-                            </FormControl>
-
-                          </Grid>
                           <Grid item>
 
                             <Button variant='outlined' color='primary' onClick={this.handleConfirmTeammate}>
@@ -403,7 +398,7 @@ class CreateCapstone extends Component {
                             </Avatar>
                           </ListItemAvatar>
                           <ListItemText
-                            primary={participant.name}
+                            primary={participant.Fullname}
                           />
                         </ListItem>))
 
