@@ -15,7 +15,7 @@ import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import ProposalForm from '../Components/ProposalForm';
+import ViewAProposal from '../Components/ViewAProposal';
 
 class ReviewProposals extends Component {
     static getColumns(props) {
@@ -57,9 +57,6 @@ class ReviewProposals extends Component {
                                 <Grid item align='left'>
                                     <Typography variant='h4' style={{marginTop: '16px'}}>Pending Proposals</Typography>
                                 </Grid>
-                                <Grid item align='right'>
-                                    <ProposalForm/>
-                                </Grid>
                             </Grid>
                             <br/>
                             {proposals.length > 0 &&
@@ -80,7 +77,7 @@ class ReviewProposals extends Component {
                                                 </TableCell>
                                                 <TableCell align='right'>{proposal.status}</TableCell>
                                                 <TableCell align='right'>
-                                                    <Button>View</Button>
+                                                    <ViewAProposal></ViewAProposal>
                                                     <Button>Approve</Button>
                                                     <Button>Deny</Button>
                                                 </TableCell>
@@ -101,7 +98,6 @@ class ReviewProposals extends Component {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell>Project title</TableCell>
-                                            <TableCell align='right'>Status</TableCell>
                                             <TableCell align='right'>Actions</TableCell>
                                         </TableRow>
                                     </TableHead>
@@ -111,11 +107,8 @@ class ReviewProposals extends Component {
                                                 <TableCell component='th' scope='row'>
                                                     {proposal.projectTitle}
                                                 </TableCell>
-                                                <TableCell align='right'>{proposal.status}</TableCell>
                                                 <TableCell align='right'>
                                                     <Button>View</Button>
-                                                    <Button>Approve</Button>
-                                                    <Button>Deny</Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))}
