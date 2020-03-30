@@ -2,7 +2,8 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import InputLabel from '@material-ui/core/InputLabel';
+import Markdown from 'markdown-to-jsx';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -24,6 +25,18 @@ class ViewProfile extends Component {
         Fullname: '',
         picture: '',
         sponsorOrganization: '',
+        role: '',
+        description: '',
+      },
+      unchangedUser: {
+        _id: '',
+        username: '',
+        email: '',
+        Fullname: '',
+        picture: '',
+        sponsorOrganization: '',
+        role: '',
+        description: '',
       },
       sponsors: [],
     };
@@ -35,19 +48,21 @@ class ViewProfile extends Component {
     // Get the data for the user in question
     const response = await api.users.find({ username: match.params.username });
     const user = response[0];
+    const unchangedUser = response[0];
 
     // Get the user's profile picture
     this.setState({ user });
+    this.setState({ unchangedUser });
 
     // Get the list of sponsors
     const sponsors = await api.sponsors.find({});
     this.setState({ sponsors });
-
-    console.log(this.state);
   }
 
   handleCancel = () => {
+    const {unchangedUser} = this.state;
     this.setState({ editing: false });
+    this.setState({ user: unchangedUser});
   };
 
   handleChange = event => {
@@ -74,6 +89,7 @@ class ViewProfile extends Component {
     const { user } = this.state;
     await api.users.update(user.id, user);
     this.setState({ editing: false });
+    this.setState({ unchangedUser: user });
     event.preventDefault();
   };
 
@@ -82,15 +98,22 @@ class ViewProfile extends Component {
 
     return (
       <Box width='50%' mx='auto'>
-        <Box my={2}>
-          {(editing) ?
-            (
-              <Typography variant='h3'>Profile Settings</Typography>
-            ) :
-            (
-              <Typography variant='h3'>Profile: {user.Fullname}</Typography>
-            )
-          }
+        <Box mt={2}>
+          <Grid container direction='row' justify='space-between' alignItems='flex-end' spacing={2}>
+            <Grid item xs={10}>
+              {(editing) ?
+                (
+                  <Typography variant='h3' align='left'>Profile Settings</Typography>
+                ) :
+                (
+                  <Typography variant='h3' align='left'>Profile: {user.Fullname}</Typography>
+                )
+              }
+            </Grid>
+            <Grid item xs={2}>
+              <Typography align='right'>{user.role.name}</Typography>
+            </Grid>
+          </Grid>          
         </Box>
         <Divider />
         <Box my={2}>
@@ -177,75 +200,75 @@ class ViewProfile extends Component {
               {(editing) ?
                 (
                   <TextField
-                    name='phone'
-                    label='Phone'
+                    name='description'
+                    label='Bio'
                     margin='dense'
                     style={{ width: '100%' }}
+                    multiline
+                    onChange={this.handleChange}
+                    value={user.description}
                   />
                 ) :
                 (
                   <div>
-                    <Typography>Phone: </Typography>
-                    <Typography>1234567890</Typography>
-                  </div>
-                )
-              }
-            </Grid>
-            <Grid item xs={12}>
-              {(editing) ?
-                (
-                  <TextField
-                    name='linkedin'
-                    label='LinkedIn'
-                    margin='dense'
-                    style={{ width: '100%' }}
-                  />
-                ) :
-                (
-                  <div>
-                    <Typography>LinkedIn: </Typography>
-                    <Typography>
-                      <Link href='https://www.linkedin.com/in/jrt0799/'>
-                        https://www.linkedin.com/in/jrt0799/
-                      </Link>
-                    </Typography>
+                    <Typography style={{padding: '0px 0px 12px 0px'}}>Bio: </Typography>
+                    <Markdown 
+                      style={{
+                        border: '1px solid black', borderRadius: '12px',
+                        width: '100%', height: 'auto',
+                        padding: '12px'
+                      }}
+                    >
+                      {user.description}
+                    </Markdown>
                   </div>
                 )
               }
             </Grid>
           </Grid>
         </Box>
-
-        <Can perform={permissions.application.proposals.create}>
-          <Divider />
-          <Box my={2}>
-            {(editing) &&
-              (
-                <Typography variant='h4'>Sponsor Settings</Typography>
-              )
-            }
-            <Grid container direction='row' justify='left' spacing={2}>
-              <Grid item xs={12}>
-                {(editing) ?
-                  (
-                    <Select>
-                      {sponsors.map(sponsor => (
-                        <option key={sponsor._id} value={sponsor.name}>
-                          {sponsor.name}
-                        </option>
-                      ))}
-                    </Select>
-                  ) :
-                  (
-                    <div>
-                      <Typography>Organization: </Typography>
-                      <Typography>{user.sponsorOrganization.name}</Typography>
-                    </div>
-                  )
-                }
+        <Can perform={permissions.application.proposals.create} role={user.role.name}>
+          <div>
+            <Divider />
+            <Box my={2}>
+              {(editing) &&
+                (
+                  <Typography variant='h4'>Sponsor Settings</Typography>
+                )
+              }
+              <Grid container direction='row' justify='left' spacing={2}>
+                <Grid item xs={12}>
+                  {(editing) ?
+                    (
+                      <div>
+                        <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
+                        <Select 
+                          name='sponsorOrganization'
+                          labelId='sponsor-organization-select-label'
+                          margin='dense'
+                          style={{ width: '100%' }}
+                          onChange={this.handleChange}
+                          value={user.sponsorOrganization}
+                        >
+                          {sponsors.map(sponsor => (
+                            <option key={sponsor._id} value={sponsor}>
+                              {sponsor.name}
+                            </option>
+                          ))}
+                        </Select>
+                      </div>
+                    ) :
+                    (
+                      <div>
+                        <Typography>Organization: </Typography>
+                        <Typography>{user.sponsorOrganization && user.sponsorOrganization.name}</Typography>
+                      </div>
+                    )
+                  }
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
+            </Box>
+          </div>
         </Can>
 
         <Box my={2}>
