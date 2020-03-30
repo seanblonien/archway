@@ -11,10 +11,6 @@
           "type": "string",
           "required": true
         },
-        "name": {
-          "type": "string",
-          "required": false
-        },
         "isFeatured": {
           "type": "boolean",
           "default": false
