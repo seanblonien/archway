@@ -53,3 +53,23 @@ export const transformUserFields = async (user) => {
 export const formatQuery = (params) => `?${Object.keys(params)
   .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
   .join('&')}`;
+
+/**
+ * Formats a given file file for uploading to strapi as it relates to an entry.
+ * An entry is an instance of a content type. For example, a singular user is an entry.
+ *
+ * @param file the file to upload for
+ * @param entryModel the model or content type name (i.e. user, capstone)
+ * @param entryID the ID of the entry to associate this file with (i.e. a user ID)
+ * @param entryField the field in the entry for the file
+ * @param entryPlugin (optional) the plugin name for the model or content type
+ */
+export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPlugin = '') => {
+  const entryUpload = new FormData();
+  entryUpload.append('files', file);
+  entryUpload.append('ref', entryModel);
+  entryUpload.append('source', entryPlugin);
+  entryUpload.append('refId', entryID);
+  entryUpload.append('field', entryField);
+  return entryUpload;
+};

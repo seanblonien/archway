@@ -8,7 +8,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React, { Component } from 'react';
-import { imageURL } from '../utils/utils';
+import {formatEntryUpload, imageURL} from '../utils/utils';
 import api from '../Services/api';
 import { permissions } from '../constants';
 import Can from '../Components/Can';
@@ -81,15 +81,13 @@ class ViewProfile extends Component {
   handleUploadImage = async () => {
     const { user, selectedFile } = this.state;
     try{
-      const data = new FormData();
-      data.append('files', selectedFile);
-      data.append('ref', 'user');
-      data.append('refID', user.id);
-      data.append('field', 'picture');
-      await api.uploads.upload(data);
+      const fileUpload = formatEntryUpload(selectedFile, 'user', user.id, 'picture', 'users-permissions');
+      await api.uploads.upload(fileUpload);
     } catch(e){
       console.log(e);
     }
+    // TODO if successful, close the 'choose file' form, update URL without refreshing
+    // TODO if error, render some sort of message saying the error
   }
 
   handleEdit = () => {
@@ -132,7 +130,7 @@ class ViewProfile extends Component {
             <Grid item xs={2}>
               <Typography align='right'>{user.role.name}</Typography>
             </Grid>
-          </Grid>          
+          </Grid>
         </Box>
         <Divider />
         <Box my={2}>
@@ -163,7 +161,7 @@ class ViewProfile extends Component {
                   </Button>
                 </Grid>
                 <Grid item>
-                  {selectedFile && 
+                  {selectedFile &&
                     <div>
                       <Typography>{selectedFile && selectedFile.name}</Typography>
                       <Button variant='contained' component='label' onClick={this.handleUploadImage}>
@@ -269,7 +267,7 @@ class ViewProfile extends Component {
                     (
                       <div>
                         <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
-                        <Select 
+                        <Select
                           name='sponsorOrganization'
                           labelId='sponsor-organization-select-label'
                           margin='dense'
