@@ -44,74 +44,89 @@ class ViewProfile extends Component {
   }
 
   async componentDidMount() {
-    const { match } = this.props;
+    const {match} = this.props;
 
     // Get the data for the user in question
-    const response = await api.users.find({ username: match.params.username });
+    const response = await api.users.find({username: match.params.username});
     const user = response[0];
     const unchangedUser = response[0];
 
     // Get the user's profile picture
-    this.setState({ user });
-    this.setState({ unchangedUser });
+    this.setState({user});
+    this.setState({unchangedUser});
 
     // Get the list of sponsors
     const sponsors = await api.sponsors.find({});
-    this.setState({ sponsors });
+    this.setState({sponsors});
   }
 
   handleCancel = () => {
     const {unchangedUser} = this.state;
-    this.setState({ editing: false });
-    this.setState({ user: unchangedUser});
+    this.setState({editing: false});
+    this.setState({user: unchangedUser});
   };
 
   handleChange = event => {
-    const { user } = this.state;
-    const { target } = event;
-    const { value } = target;
-    const { name } = target;
-    this.setState({ user: { ...user, [name]: value } });
+    const {user} = this.state;
+    const {target} = event;
+    const {value} = target;
+    const {name} = target;
+    this.setState({user: {...user, [name]: value}});
   };
 
   handleSelectImage = event => {
-    this.setState({ selectedFile : event.target.files[0] });
+    this.setState({selectedFile : event.target.files[0]});
   }
 
   handleUploadImage = async () => {
-    const { user, selectedFile } = this.state;
+    const {user, selectedFile} = this.state;
+    const {match} = this.props;
+
     try{
+      // Upload the new picture
       const fileUpload = formatEntryUpload(selectedFile, 'user', user.id, 'picture', 'users-permissions');
       await api.uploads.upload(fileUpload);
+      this.setState({selectedFile: null});
     } catch(e){
       console.log(e);
+    }
+
+    try{
+      // Update the screen
+      const response = await api.users.find({username: match.params.username});
+      const pic = response[0].picture;
+
+      this.setState({user: {...user, picture: pic}});
+    } catch(e){
+      console.log(e); // TODO render error message
     }
     // TODO if successful, close the 'choose file' form, update URL without refreshing
     // TODO if error, render some sort of message saying the error
   }
 
-  handleEdit = () => {
-    this.setState({ editing: true });
-  };
-
   handleRemoveProfilePic = async () => {
-    const { user } = this.state;
+    const {user} = this.state;
     if (user.picture) {
       await api.uploads.delete(user.picture.id);
+      this.setState({user: {...user, picture: null}});
     }
+  };
+
+  handleEdit = () => {
+    this.setState({editing: true});
   };
 
   handleSubmit = async (event) => {
     // todo: add authentication
-    const { user } = this.state;
+    const {user} = this.state;
     await api.users.update(user.id, user);
-    this.setState({ editing: false });
-    this.setState({ unchangedUser: user });
+    this.setState({editing: false});
+    this.setState({unchangedUser: user});
     event.preventDefault();
   };
 
   render() {
-    const { editing, user, sponsors, selectedFile } = this.state;
+    const {editing, user, sponsors, selectedFile} = this.state;
 
     return (
       <Box width='50%' mx='auto'>
@@ -132,10 +147,10 @@ class ViewProfile extends Component {
             </Grid>
           </Grid>
         </Box>
-        <Divider />
+        <Divider/>
         <Box my={2}>
           <Grid container direction='row' justify='space-between' spacing={2}>
-            <Grid item xs={4} style={{ width: '300px' }}>
+            <Grid item xs={4}>
               <img
                 src={imageURL.user(user.picture)} alt='profile'
                 style={{
@@ -156,37 +171,42 @@ class ViewProfile extends Component {
                       type='file'
                       name='file'
                       onChange={this.handleSelectImage}
-                      style={{ display: 'none' }}
+                      style={{display: 'none'}}
                     />
                   </Button>
                 </Grid>
                 <Grid item>
-                  {selectedFile &&
-                    <div>
-                      <Typography>{selectedFile && selectedFile.name}</Typography>
-                      <Button variant='contained' component='label' onClick={this.handleUploadImage}>
-                        Upload Image
-                      </Button>
-                    </div>
+                  {selectedFile && 
+                    <Button variant='contained' component='label' onClick={this.handleUploadImage}>
+                      Upload Image
+                    </Button>
                   }
                 </Grid>
               </Grid>
+              {selectedFile &&
+                <Grid item>
+                  <Typography>{selectedFile && selectedFile.name}</Typography>
+                </Grid>
+              }
               <Grid item>
-                <Button variant='contained' onClick={this.handleRemoveProfilePic}>
-                  Remove Profile Picture
-                </Button>
+                {user.picture ?
+                  <Button variant='contained' onClick={this.handleRemoveProfilePic}>
+                    Remove Profile Picture
+                  </Button> :
+                  <Button variant='contained' disabled>Remove Profile Picture</Button>
+                }
               </Grid>
             </Grid>
           </Grid>
         </Box>
-        <Divider />
+        <Divider/>
         <Box my={2}>
           {(editing) &&
             (
               <Typography variant='h4'>Main Settings</Typography>
             )
           }
-          <Grid container direction='row' justify='left' spacing={2}>
+          <Grid container direction='row' spacing={2}>
             <Grid item xs={12}>
               {(editing) ?
                 (
@@ -194,7 +214,7 @@ class ViewProfile extends Component {
                     name='Fullname'
                     label='Full name'
                     margin='dense'
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     onChange={this.handleChange}
                     value={user.Fullname}
                   />
@@ -214,7 +234,7 @@ class ViewProfile extends Component {
                     name='email'
                     label='Email'
                     margin='dense'
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     onChange={this.handleChange}
                     value={user.email}
                   />
@@ -234,7 +254,7 @@ class ViewProfile extends Component {
                     name='description'
                     label='Bio'
                     margin='dense'
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     multiline
                     onChange={this.handleChange}
                     value={user.description}
@@ -254,14 +274,14 @@ class ViewProfile extends Component {
         </Box>
         <Can perform={permissions.application.proposals.create} role={user.role.name}>
           <div>
-            <Divider />
+            <Divider/>
             <Box my={2}>
               {(editing) &&
                 (
                   <Typography variant='h4'>Sponsor Settings</Typography>
                 )
               }
-              <Grid container direction='row' justify='left' spacing={2}>
+              <Grid container direction='row' spacing={2}>
                 <Grid item xs={12}>
                   {(editing) ?
                     (
@@ -271,7 +291,7 @@ class ViewProfile extends Component {
                           name='sponsorOrganization'
                           labelId='sponsor-organization-select-label'
                           margin='dense'
-                          style={{ width: '100%' }}
+                          style={{width: '100%'}}
                           onChange={this.handleChange}
                           value={user.sponsorOrganization}
                         >
