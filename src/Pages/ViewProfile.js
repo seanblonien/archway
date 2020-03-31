@@ -19,7 +19,7 @@ class ViewProfile extends Component {
     this.state = {
       editing: false,
       user: {
-        _id: '',
+        id: '',
         username: '',
         email: '',
         Fullname: '',
@@ -29,7 +29,7 @@ class ViewProfile extends Component {
         description: '',
       },
       unchangedUser: {
-        _id: '',
+        id: '',
         username: '',
         email: '',
         Fullname: '',
@@ -39,6 +39,7 @@ class ViewProfile extends Component {
         description: '',
       },
       sponsors: [],
+      selectedFile: null,
     };
   }
 
@@ -73,6 +74,24 @@ class ViewProfile extends Component {
     this.setState({ user: { ...user, [name]: value } });
   };
 
+  handleSelectImage = event => {
+    this.setState({ selectedFile : event.target.files[0] });
+  }
+
+  handleUploadImage = async () => {
+    const { user, selectedFile } = this.state;
+    try{
+      const data = new FormData();
+      data.append('files', selectedFile);
+      data.append('ref', 'user');
+      data.append('refID', user.id);
+      data.append('field', 'picture');
+      await api.uploads.upload(data);
+    } catch(e){
+      console.log(e);
+    }
+  }
+
   handleEdit = () => {
     this.setState({ editing: true });
   };
@@ -94,7 +113,7 @@ class ViewProfile extends Component {
   };
 
   render() {
-    const { editing, user, sponsors } = this.state;
+    const { editing, user, sponsors, selectedFile } = this.state;
 
     return (
       <Box width='50%' mx='auto'>
@@ -131,14 +150,28 @@ class ViewProfile extends Component {
               <Grid item>
                 <Typography>Upload profile picture</Typography>
               </Grid>
-              <Grid item>
-                <Button variant='contained' component='label'>
-                  Choose File...
-                  <input
-                    type='file'
-                    style={{ display: 'none' }}
-                  />
-                </Button>
+              <Grid item container direction='row' spacing={2}>
+                <Grid item>
+                  <Button variant='contained' component='label'>
+                    Choose File...
+                    <input
+                      type='file'
+                      name='file'
+                      onChange={this.handleSelectImage}
+                      style={{ display: 'none' }}
+                    />
+                  </Button>
+                </Grid>
+                <Grid item>
+                  {selectedFile && 
+                    <div>
+                      <Typography>{selectedFile && selectedFile.name}</Typography>
+                      <Button variant='contained' component='label' onClick={this.handleUploadImage}>
+                        Upload Image
+                      </Button>
+                    </div>
+                  }
+                </Grid>
               </Grid>
               <Grid item>
                 <Button variant='contained' onClick={this.handleRemoveProfilePic}>
@@ -212,15 +245,9 @@ class ViewProfile extends Component {
                 (
                   <div>
                     <Typography style={{padding: '0px 0px 12px 0px'}}>Bio: </Typography>
-                    <Markdown 
-                      style={{
-                        border: '1px solid black', borderRadius: '12px',
-                        width: '100%', height: 'auto',
-                        padding: '12px'
-                      }}
-                    >
-                      {user.description}
-                    </Markdown>
+                    <Box border={1} borderRadius={12} padding={2}>
+                      <Markdown>{user.description? user.description : ''}</Markdown>
+                    </Box>
                   </div>
                 )
               }
@@ -251,7 +278,7 @@ class ViewProfile extends Component {
                           value={user.sponsorOrganization}
                         >
                           {sponsors.map(sponsor => (
-                            <option key={sponsor._id} value={sponsor}>
+                            <option key={sponsor.id} value={sponsor}>
                               {sponsor.name}
                             </option>
                           ))}
