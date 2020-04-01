@@ -337,30 +337,6 @@
         "main_paragraph": {
           "type": "text"
         },
-        "title1": {
-          "type": "string"
-        },
-        "paragraph1": {
-          "type": "text"
-        },
-        "title2": {
-          "type": "string"
-        },
-        "paragraph2": {
-          "type": "text"
-        },
-        "title3": {
-          "type": "string"
-        },
-        "paragraph3": {
-          "type": "text"
-        },
-        "title4": {
-          "type": "string"
-        },
-        "paragraph4": {
-          "type": "text"
-        },
         "bgimage": {
           "type": "media",
           "multiple": false,
@@ -370,6 +346,12 @@
           "type": "media",
           "multiple": false,
           "required": false
+        },
+        "leftcolumn": {
+          "type": "text"
+        },
+        "rightcolumn": {
+          "type": "text"
         }
       }
     },

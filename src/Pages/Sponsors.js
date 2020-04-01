@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import Markdown from 'markdown-to-jsx';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import {getImageFromStrapi} from '../utils/utils';
@@ -76,46 +77,18 @@ class Sponsors extends Component {
             <Grid item container direction='column' md={5}>
               <Grid item>
                 <Container>
-                  <Typography variant='h5'>
-                    {pageContent.title1}
-                  </Typography>
-                  <Typography variant='body1'>
-                    {pageContent.paragraph1}
-                  </Typography>
-                </Container>
-              </Grid>
-              <br/>
-              <Grid item>
-                <Container>
-                  <Typography variant='h5'>
-                    {pageContent.title2}
-                  </Typography>
-                  <Typography variant='body1'>
-                    {pageContent.paragraph2}
-                  </Typography>
-                </Container>
-              </Grid>
-              <br/>
-              <Grid item>
-                <Container>
-                  <Typography variant='h5'>
-                    {pageContent.title3}
-                  </Typography>
-                  <Typography variant='body1'>
-                    {pageContent.paragraph3}
-                  </Typography>
+                  <Markdown>
+                    {pageContent.leftcolumn}
+                  </Markdown>
                 </Container>
               </Grid>
             </Grid>
             <Grid item container direction='column' md={5}>
               <Grid item>
                 <Container>
-                  <Typography variant='h5'>
-                    {pageContent.title4}
-                  </Typography>
-                  <Typography variant='body1'>
-                    {pageContent.paragraph4}
-                  </Typography>
+                  <Markdown>
+                    {pageContent.rightcolumn}
+                  </Markdown>
                   <br/><br/>
                 </Container>
               </Grid>
