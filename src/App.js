@@ -2,6 +2,7 @@ import React from 'react';
 import {Route, Router, Switch} from 'react-router-dom';
 import {permissions} from './constants';
 import {RolesProvider} from './Contexts/RolesContext';
+import Dashboard from './Pages/Dashboard';
 import ProtectedRoute from './utils/ProtectedRoute';
 import About from './Components/About';
 import Footer from './Components/Footer';
@@ -53,6 +54,7 @@ export default function App () {
                 <Route path='/ViewAllDepartments' component={ViewAllDepartments}/>
                 <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
                 <Route path='/FAQ' component={FAQ}/>
+                <ProtectedRoute path='/dashboard' component={Dashboard}/>
                 <ProtectedRoute path='/secret' component={Secret}/>
                 <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
                 <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
