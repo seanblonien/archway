@@ -7,7 +7,6 @@ import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import history from '../utils/history';
-import '../utils/style.css';
 import CardLayout from '../Components/CardLayout';
 
 const styles = {

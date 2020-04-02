@@ -7,7 +7,6 @@ import api from '../Services/api';
 import FilterBar from '../Components/FilterBar';
 import LoadingCircle from '../Components/LoadingCircle';
 import history from '../utils/history';
-import '../utils/style.css';
 import CardLayout from '../Components/CardLayout';
 
 class Capstone extends Component {

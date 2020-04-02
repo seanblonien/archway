@@ -8,8 +8,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import compose from 'recompose/compose';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import '../utils/style.css';
-
+import gStyle from '../utils/styles.module.css';
 
 const styles = theme => ({
   questions: {
@@ -61,7 +60,7 @@ class FAQ extends Component {
     if (!loading) {
       return (
         <div align='center'>
-          <Typography className='pageTitle' variant='h2'>Frequently Asked Questions</Typography>
+          <Typography className={gStyle.pageTitle} variant='h2'>Frequently Asked Questions</Typography>
 
           <Grid container className={classes.questions} spacing={2} direction='row' alignItems='flex-start'>
             {categories.map((category) => (
@@ -91,7 +90,7 @@ class FAQ extends Component {
           <Grid container alignItems='stretch'>
 
             {categories.map((category) => (
-              <Paper key={category.toString()} className='largePaper'>
+              <Paper key={category.toString()} className={gStyle.largePaper}>
                 <Grid item xs={12}>
                   <Typography variant='h4' align='center' className={classes.subtitle}>
                     {category}

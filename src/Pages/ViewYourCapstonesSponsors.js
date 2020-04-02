@@ -15,7 +15,7 @@ import compose from 'recompose/compose';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import ProposalForm from '../Components/ProposalForm';
-import '../utils/style.css';
+import gStyle from '../utils/styles.module.css';
 
 class ViewYourCapstonesSponsors extends Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class ViewYourCapstonesSponsors extends Component {
               </Grid>
               <br/>
               {proposals.length > 0 &&
-                <TableContainer component={Paper} className='table'>
+                <TableContainer component={Paper} className={gStyle.table}>
                   <Table aria-label='simple table'>
                     <TableHead>
                       <TableRow>
