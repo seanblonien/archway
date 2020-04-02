@@ -11,6 +11,7 @@ import Markdown from 'markdown-to-jsx';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import {getBgImageFromStrapi} from '../utils/utils';
+import MediaMarkdown from '../utils/MediaMarkdown';
 
 const styles = () => ({
   button: {
@@ -82,13 +83,10 @@ class Sponsors extends Component {
             </Grid>
             <Grid item container direction='column' md={5}>
               <Grid item>
-                <Markdown>
+                <MediaMarkdown>
                   {pageContent.rightcolumn}
-                </Markdown>
+                </MediaMarkdown>
                 <br/><br/>
-              </Grid>
-              <Grid item>
-                <div style={{backgroundImage: getBgImageFromStrapi(pageContent.image1.url), backgroundSize: 'cover', width: '100%', height: '400px'}}/>
               </Grid>
             </Grid>
           </Grid>

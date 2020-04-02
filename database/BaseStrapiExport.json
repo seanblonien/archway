@@ -350,11 +350,6 @@
           "type": "media",
           "multiple": false,
           "required": false
-        },
-        "image1": {
-          "type": "media",
-          "multiple": false,
-          "required": false
         }
       }
     },
