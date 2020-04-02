@@ -37,7 +37,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     console.log('Updating roles and permissions');
     await execShellCommand(...parseCmdAndArgs('node update-roles-permissions.js'));
 
-    console.log('Database export successful!');
+    console.log('\nDatabase export successful!');
     process.exit(s.successCode);
   } catch(e) {
     // Log the error to console

@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import {withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,39 +15,9 @@ import compose from 'recompose/compose';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import ProposalForm from '../Components/ProposalForm';
-
-const styles = {
-  card: {
-    raised: true,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 18,
-  },
-  pos: {
-    marginBottom: 100,
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
-  },
-};
+import gStyle from '../utils/styles.module.css';
 
 class ViewYourCapstonesSponsors extends Component {
-  static getColumns(props) {
-    if(props.width === 'xl') {
-      return 4;
-    }if(props.width === 'lg') {
-      return 4;
-    }if(props.width ==='md') {
-      return 3;
-    }
-    return 2;
-  }
-
   constructor(props) {
     super(props);
 
@@ -66,12 +35,11 @@ class ViewYourCapstonesSponsors extends Component {
   }
 
   render() {
-    const {classes} = this.props;
     const {loading, proposals} = this.state;
 
     if (!loading) {
       return (
-        <div className='Blogpost'>
+        <div>
           <Grid container justify='center'>
             <Grid item md={10} xs={12}>
               <Grid container direction='row' alignItems='flex-end' justify='space-between'>
@@ -84,7 +52,7 @@ class ViewYourCapstonesSponsors extends Component {
               </Grid>
               <br/>
               {proposals.length > 0 &&
-                <TableContainer component={Paper} className={classes.table}>
+                <TableContainer component={Paper} className={gStyle.table}>
                   <Table aria-label='simple table'>
                     <TableHead>
                       <TableRow>
@@ -112,6 +80,7 @@ class ViewYourCapstonesSponsors extends Component {
               }
             </Grid>
           </Grid>
+
           <Grid container justify='center'>
             <Grid item md={10} xs={12}>
               <Typography variant='h4' style={{marginTop: '16px'}}>Current Company Projects</Typography>
@@ -137,6 +106,5 @@ class ViewYourCapstonesSponsors extends Component {
 }
 
 export default compose(
-  withStyles(styles),
   withWidth(),
 )(ViewYourCapstonesSponsors);

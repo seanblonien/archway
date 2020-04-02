@@ -7,7 +7,7 @@
       "kind": "collectionType",
       "collectionName": "capstones",
       "attributes": {
-        "title": {
+        "name": {
           "type": "string",
           "required": true
         },
@@ -27,6 +27,9 @@
           "type": "richtext",
           "required": true,
           "maxLength": 10000
+        },
+        "preview": {
+          "type": "string"
         },
         "coverPhoto": {
           "type": "media",
@@ -68,7 +71,7 @@
         },
         "thumbnail": {
           "type": "media",
-          "multiple": true,
+          "multiple": false,
           "required": false
         }
       }
@@ -381,10 +384,18 @@
           "multiple": false,
           "required": false
         },
+        "thumbnail": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
         "description": {
           "type": "richtext",
           "required": false,
           "maxLength": 10000
+        },
+        "preview": {
+          "type": "string"
         },
         "isFeatured": {
           "type": "boolean"

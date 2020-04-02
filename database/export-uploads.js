@@ -28,7 +28,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Copy the uploads zip to the local directory with the given filename
     await execShellCommand(...parseCmdAndArgs(`docker cp strapi:/uploads.zip ${fileName}`));
 
-    console.log('Uploads export successful!');
+    console.log('\nUploads export successful!');
     process.exit(s.successCode);
   } catch(e) {
     // Log the error to console

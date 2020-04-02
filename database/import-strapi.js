@@ -124,8 +124,8 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Check to see which content types need to be created
     const contentTypesToDeletePromises = contentTypeNamesToDelete.map(contentType =>
       s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL + 
-                          contentType.name.replace(' ', '-')}.
-                          ${contentType.name.replace(' ', '-')}`)
+                          contentType.replace(' ', '-')}.
+                          ${contentType.replace(' ', '-')}`)
         .catch(e => ({...e, contentType}))
     );
     const contentTypesToDeleteResponse = await Promise.all(contentTypesToDeletePromises);
@@ -138,7 +138,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     }
     console.log('Finished updating content types');
   } catch (error) {
-    if(error.response.data.error){
+    if(error.response && error.response.data.error){
       const key = Object.keys(error.response.data.error)[0];
       const value = error.response.data.error[key][0];
       console.error(`${error}\n${value}`);
@@ -149,6 +149,6 @@ const ARGV_REQUIRED_LENGTH = 3;
     process.exit(s.errCode);
   }
 
-  console.log('Strapi schema import successful!');
+  console.log('\nStrapi schema import successful!');
   process.exit(s.successCode);
 })();
