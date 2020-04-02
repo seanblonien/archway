@@ -87,6 +87,9 @@ class Sponsors extends Component {
                 </Markdown>
                 <br/><br/>
               </Grid>
+              <Grid item>
+                <div style={{backgroundImage: getBgImageFromStrapi(pageContent.image1.url), backgroundSize: 'cover', width: '100%', height: '400px'}}/>
+              </Grid>
             </Grid>
           </Grid>
         </div>
