@@ -164,9 +164,9 @@
       "update": "application.sections.update"
     },
     "sponsor_page": {
+      "find": "application.sponsor-page.find",
       "update": "application.sponsor-page.update",
-      "delete": "application.sponsor-page.delete",
-      "find": "application.sponsor-page.find"
+      "delete": "application.sponsor-page.delete"
     },
     "theme": {
       "find": "application.theme.find",

@@ -334,6 +334,18 @@
       "kind": "singleType",
       "collectionName": "sponsor_pages",
       "attributes": {
+        "main_title": {
+          "type": "string"
+        },
+        "main_paragraph": {
+          "type": "text"
+        },
+        "leftcolumn": {
+          "type": "richtext"
+        },
+        "rightcolumn": {
+          "type": "richtext"
+        },
         "bgimage": {
           "type": "media",
           "multiple": false,
@@ -343,18 +355,6 @@
           "type": "media",
           "multiple": false,
           "required": false
-        },
-        "leftcolumn": {
-          "type": "richtext"
-        },
-        "rightcolumn": {
-          "type": "richtext"
-        },
-        "main_title": {
-          "type": "string"
-        },
-        "main_paragraph": {
-          "type": "text"
         }
       }
     },
