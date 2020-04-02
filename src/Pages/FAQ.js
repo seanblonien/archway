@@ -1,13 +1,13 @@
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
 import {HashLink as Link} from 'react-router-hash-link';
-import withStyles from '@material-ui/core/styles/withStyles';
 import compose from 'recompose/compose';
-import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
+import api from '../Services/api';
+import MediaMarkdown from '../utils/MediaMarkdown';
 import gStyle from '../utils/styles.module.css';
 
 const styles = theme => ({
@@ -102,9 +102,9 @@ class FAQ extends Component {
                           <Typography variant='h5' id={`question${index}`} align='left'>
                             {question.question}
                           </Typography>
-                          <Markdown className={classes.content} align='left'>
+                          <MediaMarkdown className={classes.content} align='left'>
                             {question.answer}
-                          </Markdown>
+                          </MediaMarkdown>
                         </Grid>}
                     </div>
                   ))}
