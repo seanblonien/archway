@@ -15,7 +15,7 @@ import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import api from '../Services/api';
+import api from '../../Services/api';
 
 const styles = {
     form: {
@@ -37,8 +37,7 @@ class ViewAProposal extends Component {
     }
 
     async componentDidMount() {
-        const departmentList = await api.departments.find();
-        this.setState({departmentList});
+
     }
 
 
@@ -51,6 +50,7 @@ class ViewAProposal extends Component {
     };
 
     render() {
+        const { proposal } = this.props;
 
         return (
             <div>
@@ -64,7 +64,44 @@ class ViewAProposal extends Component {
                     fullWidth
                     maxWidth='md'
                 >
-                    <DialogTitle id='form-dialog-title'>Pending Proposal</DialogTitle>
+                    <DialogTitle id='form-dialog-title'>{proposal.projectTitle}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Contact: {proposal.email}  {proposal.phone}
+                        </DialogContentText>
+                        <DialogContentText>
+                            Name:
+                        </DialogContentText>
+                        <DialogContentText>
+                            Sponsor: {proposal.sponsors[0].name}
+                        </DialogContentText>
+                        <DialogContentText>
+                            Department(s):
+                        </DialogContentText>
+                        <DialogContentText>
+                            Description: {proposal.projectDescription}
+                        </DialogContentText>
+                        <DialogContentText>
+                            Deliverables: {proposal.projectDeliverables}
+                        </DialogContentText>
+                        {proposal.intellectualProperty &&
+                        <DialogContentText>
+                            Intellectual Property Agreement Required
+                        </DialogContentText>
+                        }
+                        {proposal.nondisclosure &&
+                        <DialogContentText>
+                            Intellectual Property Agreement Required
+                        </DialogContentText>
+                        }
+                        <DialogContentText>
+                            Financial Contribution: {proposal.financialSupport}
+                        </DialogContentText>
+                        <DialogContentText>
+                            Intended Project Use: {proposal.projectUse}
+                        </DialogContentText>
+                    </DialogContent>
+
 
                 </Dialog>
             </div>

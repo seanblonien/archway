@@ -15,7 +15,7 @@ import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import ProposalForm from '../Components/ProposalForm';
+import ProposalForm from '../Components/Proposals/ProposalForm';
 
 const styles = {
   card: {

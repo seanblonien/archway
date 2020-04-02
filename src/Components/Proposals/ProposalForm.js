@@ -15,7 +15,7 @@ import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import api from '../Services/api';
+import api from '../../Services/api';
 
 const styles = {
   form: {
@@ -36,9 +36,9 @@ class ProposalForm extends Component {
       departmentList: [],
       email: '',
       phone: '',
-      title: '',
-      description: '',
-      deliverables: '',
+      projectTitle: '',
+      projectDescription: '',
+      projectDeliverables: '',
       intellectualProperty: false,
       nondisclosure: false,
       financialSupport: '',
@@ -49,6 +49,10 @@ class ProposalForm extends Component {
   async componentDidMount() {
     const departmentList = await api.departments.find();
     this.setState({departmentList});
+
+    if (this.props.proposal !== null) {
+      //fill in form here
+    }
   }
 
   handleChange = name => event => {
@@ -76,53 +80,57 @@ class ProposalForm extends Component {
   };
 
   handleSave = async () => {
-    const {email, phone, title, description, deliverables, intellectualProperty,
+    const {email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
       nondisclosure, financialSupport, projectUse, Department} = this.state;
 
     // TODO update to check for create/update
     await api.proposals.create({
       email,
       phone,
-      title,
-      description,
-      deliverables,
+      projectTitle,
+      projectDescription,
+      projectDeliverables,
       intellectualProperty,
       nondisclosure,
       financialSupport,
       projectUse,
-      Department: Department.id,
-      status: 'Not Submitted',
-      date: new Date()
+      department: Department.id,
+      status: 'notSubmitted',
+      dateSubmitted: new Date()
     });
 
     this.setState({open: false});
   };
 
   handleSubmit = async () => {
-    const {email, phone, title, description, deliverables, intellectualProperty,
+    const {email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
       nondisclosure, financialSupport, projectUse, Department} = this.state;
 
-    await api.proposals.create({
-      email,
-      phone,
-      title,
-      description,
-      deliverables,
-      intellectualProperty,
-      nondisclosure,
-      financialSupport,
-      projectUse,
-      Department: Department.id,
-      status: 'Submitted',
-      date: new Date()
-    });
+    if (this.props.proposal === null) {
+      await api.proposals.create({
+        email,
+        phone,
+        projectTitle,
+        projectDescription,
+        projectDeliverables,
+        intellectualProperty,
+        nondisclosure,
+        financialSupport,
+        projectUse,
+        Department: Department.id,
+        status: 'submittedUnapproved',
+        date: new Date()
+      });
+    } else {
+      //await api.proposals.update()
+    }
 
     this.setState({open: false});
   };
 
   render() {
     const {classes} = this.props;
-    const {open, email, phone, title, description, deliverables, intellectualProperty,
+    const {open, email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
       nondisclosure, financialSupport, projectUse, Department, departmentList} = this.state;
 
     return (
@@ -133,11 +141,11 @@ class ProposalForm extends Component {
         <Dialog
           open={open}
           onClose={this.handleClose}
-          aria-labelledby='form-dialog-title'
+          aria-labelledby='form-dialog-projectTitle'
           fullWidth
           maxWidth='md'
         >
-          <DialogTitle id='form-dialog-title'>Proposal Request Form</DialogTitle>
+          <DialogTitle id='form-dialog-projectTitle'>Proposal Request Form</DialogTitle>
           <DialogContent>
             <div className={classes.section}>
               <Grid container>
@@ -175,8 +183,8 @@ class ProposalForm extends Component {
                 margin='dense'
                 label='Project Title'
                 fullWidth
-                value={title}
-                onChange={this.handleChange('title')}
+                value={projectTitle}
+                onChange={this.handleChange('projectTitle')}
               />
               <FormControl className={classes.formMargin}>
                 <InputLabel>Department</InputLabel>
@@ -198,16 +206,16 @@ class ProposalForm extends Component {
                 rows='4'
                 fullWidth
                 label='Project Description'
-                value={description}
-                onChange={this.handleChange('description')}
+                value={projectDescription}
+                onChange={this.handleChange('projectDescription')}
               />
               <TextField
                 multiline
                 rows='4'
                 fullWidth
                 label='Project Deliverables'
-                value={deliverables}
-                onChange={this.handleChange('deliverables')}
+                value={projectDeliverables}
+                onChange={this.handleChange('projectDeliverables')}
               />
             </div>
             <div className={classes.section}>
