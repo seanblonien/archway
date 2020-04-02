@@ -31,7 +31,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Unzip the uploads
     await execShellCommand(...parseCmdAndArgs('docker exec strapi unzip /uploads.zip -d /'));
 
-    console.log('Uploads import successful!');
+    console.log('\nUploads import successful!');
     process.exit(s.successCode);
   } catch(e) {
     // Log the error to console
