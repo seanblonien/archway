@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {strapiURL} from '../constants';
 
+// Formats markdown to use Strapi's absolute URL on any /uploads files.
+//
+// Allows any embedded image to use query parameters for height/width,
+// i.e., ?height=500&width=500 at the end of an embedded files/images.
 const MediaMarkdown = ({children}) => {
   // Image component will parse a src URL's width/height parameters and size the
   // image accordingly while stripping off the query parameters
