@@ -7,13 +7,13 @@ import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
-import {imageURL} from '../utils/utils';
-import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
+import api from '../Services/api';
+import MediaMarkdown from '../utils/MediaMarkdown';
+import {imageURL} from '../utils/utils';
 
 const styles = theme => ({
   card: {
@@ -108,9 +108,9 @@ class ViewASponsor extends Component {
                         <img src={imageURL.sponsor(sponsor.logo)} className={classes.sponsorImage} alt='Display'/>
                       </Typography>
                       <CardContent>
-                        <Markdown>
+                        <MediaMarkdown>
                           {sponsor.description}
-                        </Markdown>
+                        </MediaMarkdown>
                       </CardContent>
 
                       <Grid container justify='center'>
@@ -146,9 +146,9 @@ class ViewASponsor extends Component {
                               <CardContent>
                                 <SubHeadingTextTypography text={result.title}/>
                                 <Divider/>
-                                <Markdown>
+                                <MediaMarkdown>
                                   {result.description}
-                                </Markdown>
+                                </MediaMarkdown>
                               </CardContent>
                             </Card>
                           </Grid>
