@@ -9,6 +9,7 @@ import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
 import FeaturedCapstones from '../Components/FeaturedCapstones';
 import FeaturedSponsors from '../Components/FeaturedSponsors';
+import HomeInfo from '../Components/HomeInfo';
 import {
   schoolColorPrimary,
   schoolColorSecondary,
@@ -127,24 +128,8 @@ const Home = ({classes}) => (
 
       <Grid item xs={6}>
         <Paper elevation={3} className={classes.infoTextPaper}>
-          <Typography variant='h4'>More Information</Typography>
           <Box p={2}>
-            <Typography paragraph variant='body1'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
-            </Typography>
+            <HomeInfo/>
           </Box>
         </Paper>
       </Grid>
