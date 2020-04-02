@@ -1,6 +1,12 @@
-import {red} from '@material-ui/core/colors';
 import {createMuiTheme} from '@material-ui/core/styles';
-import {schoolColorPrimary, schoolColorSecondary} from './constants';
+import {
+  colorActive,
+  colorBackground,
+  colorError, colorHover,
+  colorSelected,
+  schoolColorPrimary,
+  schoolColorSecondary
+} from './constants';
 
 // The global theme for this app
 const theme = createMuiTheme({
@@ -12,11 +18,16 @@ const theme = createMuiTheme({
       main: schoolColorSecondary,
     },
     error: {
-      main: red.A400,
+      main: colorError,
     },
     background: {
-      default: '#fcfcfc',
+      default: colorBackground,
     },
+    action: {
+      active: colorActive,
+      hover: colorHover,
+      selected: colorSelected
+    }
   },
 });
 
