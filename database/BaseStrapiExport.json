@@ -331,12 +331,6 @@
       "kind": "singleType",
       "collectionName": "sponsor_pages",
       "attributes": {
-        "main_title": {
-          "type": "string"
-        },
-        "main_paragraph": {
-          "type": "text"
-        },
         "bgimage": {
           "type": "media",
           "multiple": false,
@@ -348,9 +342,15 @@
           "required": false
         },
         "leftcolumn": {
-          "type": "text"
+          "type": "richtext"
         },
         "rightcolumn": {
+          "type": "richtext"
+        },
+        "main_title": {
+          "type": "string"
+        },
+        "main_paragraph": {
           "type": "text"
         }
       }
@@ -407,6 +407,21 @@
           "dominant": false,
           "targetAttribute": "sponsorOrganization",
           "unique": false
+        }
+      }
+    },
+    {
+      "name": "theme",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "themes",
+      "attributes": {
+        "primary": {
+          "type": "string"
+        },
+        "secondary": {
+          "type": "string"
         }
       }
     }

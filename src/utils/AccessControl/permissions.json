@@ -167,6 +167,11 @@
       "update": "application.sponsor-page.update",
       "delete": "application.sponsor-page.delete",
       "find": "application.sponsor-page.find"
+    },
+    "theme": {
+      "find": "application.theme.find",
+      "update": "application.theme.update",
+      "delete": "application.theme.delete"
     }
   }
 }

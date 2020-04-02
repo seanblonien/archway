@@ -33,7 +33,9 @@ export const imageURL = {
   capstone: (image) => checkImage(image, defaultCapstoneImg),
 };
 
-export const getImageFromStrapi = (image) => `url(${strapiURL}${image})`;
+// Gets an image from strapi and reformats it so that it can be used as a
+// background image of a div
+export const getBgImageFromStrapi = (image) => `url(${strapiURL}${image})`;
 
 /* eslint-disable no-bitwise */
 export const transformUserFields = async (user) => {
