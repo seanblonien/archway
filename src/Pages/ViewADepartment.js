@@ -3,12 +3,12 @@ import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import Markdown from 'markdown-to-jsx';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
-import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
+import api from '../Services/api';
+import MediaMarkdown from '../utils/MediaMarkdown';
 
 const styles = {
   card: {
@@ -63,7 +63,7 @@ class ViewADepartment extends Component {
           </Typography>
 
           <Typography>
-            <Markdown>{department.description}</Markdown>
+            <MediaMarkdown>{department.description}</MediaMarkdown>
           </Typography>
 
 

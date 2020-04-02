@@ -15,7 +15,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import _ from 'lodash';
-import Markdown from 'markdown-to-jsx';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import React, {Component} from 'react';
 import {Carousel} from 'react-responsive-carousel';
@@ -29,12 +28,13 @@ import {
   TwitterShareButton
 } from 'react-share';
 import compose from 'recompose/compose';
-import {imageURL} from '../utils/utils';
-import api from '../Services/api';
 import auth from '../Auth';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
+import api from '../Services/api';
+import MediaMarkdown from '../utils/MediaMarkdown';
+import {imageURL} from '../utils/utils';
 
 const styles = () => ({
   card: {
@@ -342,9 +342,9 @@ class ViewCapstone extends Component {
                       </Typography>
                       <Typography variant='subheading' style={{marginTop: '2%'}}>
                         <b>Description: </b> <br/>
-                        <Markdown>
+                        <MediaMarkdown>
                           {capstone.description}
-                        </Markdown>
+                        </MediaMarkdown>
                       </Typography>
                     </CardContent>
                   </Card>
