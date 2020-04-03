@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Markdown from 'markdown-to-jsx';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import {getBgImageFromStrapi} from '../utils/utils';
@@ -53,13 +52,9 @@ class Sponsors extends Component {
             <Grid item xs={12} md={4}>
               <Card className={classes.sidePanel}>
                 <CardContent>
-                  <Typography variant='h4' align='center' gutterBottom>
-                    {pageContent.main_title}
-                  </Typography>
-                  <br/>
-                  <Typography variant='body1'>
+                  <MediaMarkdown>
                     {pageContent.main_paragraph}
-                  </Typography>
+                  </MediaMarkdown>
                   <br/>
                   <Grid item align='center'>
                     <Button className={classes.button} size='large'>
@@ -76,9 +71,9 @@ class Sponsors extends Component {
           <Grid container direction='row' justify='space-evenly'>
             <Grid item container direction='column' md={5}>
               <Grid item>
-                <Markdown>
+                <MediaMarkdown>
                   {pageContent.leftcolumn}
-                </Markdown>
+                </MediaMarkdown>
               </Grid>
             </Grid>
             <Grid item container direction='column' md={5}>

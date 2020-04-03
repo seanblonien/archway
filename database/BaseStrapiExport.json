@@ -204,6 +204,18 @@
       }
     },
     {
+      "name": "home page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "home_pages",
+      "attributes": {
+        "infoparagraph": {
+          "type": "richtext"
+        }
+      }
+    },
+    {
       "name": "proposals",
       "description": "Describes a proposal made by a sponsor",
       "connection": "default",
@@ -334,12 +346,6 @@
       "kind": "singleType",
       "collectionName": "sponsor_pages",
       "attributes": {
-        "main_title": {
-          "type": "string"
-        },
-        "main_paragraph": {
-          "type": "text"
-        },
         "leftcolumn": {
           "type": "richtext"
         },
@@ -350,6 +356,9 @@
           "type": "media",
           "multiple": false,
           "required": false
+        },
+        "main_paragraph": {
+          "type": "richtext"
         }
       }
     },

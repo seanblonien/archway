@@ -172,6 +172,11 @@
       "find": "application.theme.find",
       "update": "application.theme.update",
       "delete": "application.theme.delete"
+    },
+    "home_page": {
+      "update": "application.home-page.update",
+      "find": "application.home-page.find",
+      "delete": "application.home-page.delete"
     }
   }
 }
