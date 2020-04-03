@@ -162,16 +162,6 @@
       "delete": "application.sections.delete",
       "count": "application.sections.count",
       "update": "application.sections.update"
-    },
-    "sponsor_page": {
-      "update": "application.sponsor-page.update",
-      "delete": "application.sponsor-page.delete",
-      "find": "application.sponsor-page.find"
-    },
-    "theme": {
-      "find": "application.theme.find",
-      "update": "application.theme.update",
-      "delete": "application.theme.delete"
     }
   }
 }
