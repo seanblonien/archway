@@ -27,6 +27,7 @@ class ViewProfile extends Component {
         sponsorOrganization: '',
         role: '',
         description: '',
+        jobTitle: '',
       },
       unchangedUser: {
         id: '',
@@ -37,6 +38,7 @@ class ViewProfile extends Component {
         sponsorOrganization: '',
         role: '',
         description: '',
+        jobTitle: '',
       },
       sponsors: [],
       selectedFile: null,
@@ -307,6 +309,26 @@ class ViewProfile extends Component {
                       <div>
                         <Typography>Organization: </Typography>
                         <Typography>{user.sponsorOrganization && user.sponsorOrganization.name}</Typography>
+                      </div>
+                    )
+                  }
+                </Grid>
+                <Grid item xs={12}>
+                  {(editing) ?
+                    (
+                      <TextField
+                        name='jobTitle'
+                        label='Job Title'
+                        margin='dense'
+                        style={{width: '100%'}}
+                        onChange={this.handleChange}
+                        value={user.jobTitle}
+                      />
+                    ) :
+                    (
+                      <div>
+                        <Typography>Job Title: </Typography>
+                        <Typography>{user.jobTitle}</Typography>
                       </div>
                     )
                   }
