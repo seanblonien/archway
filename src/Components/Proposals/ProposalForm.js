@@ -32,28 +32,31 @@ class ProposalForm extends Component {
   constructor(props) {
     super(props);
 
-    const {proposal} = this.props;
+    this.state = {
+      open: false,
+      departments: [],
+      departmentList: [],
+      email: '',
+      phone: '',
+      projectTitle: '',
+      projectDescription: '',
+      projectDeliverables: '',
+      intellectualProperty: false,
+      nondisclosure: false,
+      financialSupport: '',
+      projectUse: '',
+      id: ''
+    };
+  }
 
-    if (proposal === null) {
-      this.state = {
-        open: false,
-        Department: '',
-        departmentList: [],
-        email: '',
-        phone: '',
-        projectTitle: '',
-        projectDescription: '',
-        projectDeliverables: '',
-        intellectualProperty: false,
-        nondisclosure: false,
-        financialSupport: '',
-        projectUse: ''
-      };
-    } else {
-      this.state = {
-        open: false,
-        Department: '',
-        departmentList: [],
+  async componentDidMount() {
+    const departmentList = await api.departments.find();
+    this.setState({departmentList});
+
+    if (this.props.proposal !== null) {
+      const {proposal} = this.props;
+      this.setState({
+        departments: proposal.departments,
         email: proposal.email,
         phone: proposal.phone,
         projectTitle: proposal.projectTitle,
@@ -62,30 +65,29 @@ class ProposalForm extends Component {
         intellectualProperty: proposal.intellectualProperty,
         nondisclosure: proposal.nondisclosure,
         financialSupport: proposal.financialSupport,
-        projectUse: proposal.projectUse
-      };
+        projectUse: proposal.projectUse,
+        id: proposal._id
+      })
     }
-  }
-
-  async componentDidMount() {
-    const departmentList = await api.departments.find();
-    this.setState({departmentList});
   }
 
   handleChange = name => event => {
     const {departmentList} = this.state;
     this.setState({[name]: event.target.value});
 
-    if (name === 'Department') {
+    if (name === 'departments') {
       const department = departmentList.find(d => d.name === event.target.value);
+      let departments = this.state.departments;
+      departments.push(department);
+
       if(department){
-        this.setState({[name]: department});
+        this.setState({[name]: departments});
       }
     }
   };
 
   handleCheck = name => event => {
-    this.setState({[name]: event.target.checked});
+    this.setState({ ...state, [event.target.name]: event.target.checked });
   };
 
   handleClickOpen = () => {
@@ -98,34 +100,23 @@ class ProposalForm extends Component {
 
   handleSave = async () => {
     const {email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
-      nondisclosure, financialSupport, projectUse, Department} = this.state;
+      nondisclosure, financialSupport, projectUse, departments, id} = this.state;
 
-    // TODO update to check for create/update
-    await api.proposals.create({
-      email,
-      phone,
-      projectTitle,
-      projectDescription,
-      projectDeliverables,
-      intellectualProperty,
-      nondisclosure,
-      financialSupport,
-      projectUse,
-      department: Department.id,
-      status: 'notSubmitted',
-      dateSubmitted: new Date()
-    });
-
-    this.setState({open: false});
-  };
-
-  handleSubmit = async () => {
-    const {email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
-      nondisclosure, financialSupport, projectUse, Department} = this.state;
-
-    const {proposal} = this.props;
-
-    if (proposal === null) {
+    if (id !== '') {
+      await api.proposals.update(id, {
+        email,
+        phone,
+        projectTitle,
+        projectDescription,
+        projectDeliverables,
+        intellectualProperty,
+        nondisclosure,
+        financialSupport,
+        projectUse,
+        departments,
+        status: 'notSubmitted',
+      });
+    } else {
       await api.proposals.create({
         email,
         phone,
@@ -136,13 +127,49 @@ class ProposalForm extends Component {
         nondisclosure,
         financialSupport,
         projectUse,
-        Department: Department.id,
+        departments,
+        status: 'notSubmitted',
+      });
+    }
+
+    this.setState({open: false});
+  };
+
+  handleSubmit = async () => {
+    const {email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
+      nondisclosure, financialSupport, projectUse, departments, id} = this.state;
+
+
+    if (id === '') {
+      await api.proposals.create({
+        email,
+        phone,
+        projectTitle,
+        projectDescription,
+        projectDeliverables,
+        intellectualProperty,
+        nondisclosure,
+        financialSupport,
+        projectUse,
+        departments,
         status: 'submittedUnapproved',
-        date: new Date()
+        dateSubmitted: new Date()
       });
     } else {
-      //await api.proposals.update()
-
+      await api.proposals.update(id, {
+        email,
+        phone,
+        projectTitle,
+        projectDescription,
+        projectDeliverables,
+        intellectualProperty,
+        nondisclosure,
+        financialSupport,
+        projectUse,
+        departments,
+        status: 'submittedUnapproved',
+        dateSubmitted: new Date()
+      });
     }
 
     this.setState({open: false});
@@ -151,7 +178,7 @@ class ProposalForm extends Component {
   render() {
     const {classes, title} = this.props;
     const {open, email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
-      nondisclosure, financialSupport, projectUse, Department, departmentList} = this.state;
+      nondisclosure, financialSupport, projectUse, departments, departmentList} = this.state;
 
     return (
       <div>
@@ -207,11 +234,11 @@ class ProposalForm extends Component {
                 onChange={this.handleChange('projectTitle')}
               />
               <FormControl className={classes.formMargin}>
-                <InputLabel>Department</InputLabel>
+                <InputLabel>Departments</InputLabel>
                 <Select
                   native
-                  value={Department.name}
-                  onChange={this.handleChange('Department')}
+                  value={ departments.name}
+                  onChange={this.handleChange('departments')}
                 >
                   <option value=''> </option>
                   {departmentList.map(dept => (
