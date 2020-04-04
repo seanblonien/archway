@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import {red} from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
 import LoadingCircle from './LoadingCircle';
 import api from '../Services/api';
@@ -28,19 +27,25 @@ class ThemeManager extends Component {
       <ThemeProvider
         theme={createMuiTheme(
           {
+            university: `${customTheme.universityName}`,
             palette: {
               primary: {
-                main: `${customTheme.primary}`,
+                main: `${customTheme.primaryColor}`,
               },
               secondary: {
-                main: `${customTheme.secondary}`,
+                main: `${customTheme.secondaryColor}`,
               },
               error: {
-                main: red.A400,
+                main: `${customTheme.errorColor}`,
               },
               background: {
-                default: '#fcfcfc',
+                default: `${customTheme.backgroundColor}`,
               },
+              action: {
+                active: `${customTheme.activeColor}`,
+                hover: `${customTheme.hoverColor}`,
+                selected: `${customTheme.selectedColor}`,
+              }
             },
           }
         )}

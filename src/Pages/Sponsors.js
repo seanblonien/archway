@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {university} from '../constants';
 import * as url from '../Static/businessmen.jpg';
 import * as url2 from '../Static/students.jpg';
 
@@ -52,7 +51,7 @@ const Sponsors = props => {
             <Card className={classes.sidePanel}>
               <CardContent>
                 <Typography variant='h4' align='center' gutterBottom>
-                  Sponsorship at {university}
+                  Sponsorship at Baylor
                 </Typography>
                 <br/>
                 <Typography variant='body1'>
