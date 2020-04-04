@@ -276,7 +276,7 @@
         "sponsoringCompany": {
           "type": "string"
         }
-      },
+      }
     },
     {
       "name": "sections",
