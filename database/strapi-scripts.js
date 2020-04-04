@@ -18,6 +18,7 @@ const STRAPI_ADMIN_LOGIN = `${STRAPI_BASE_URL}/admin/auth/local`;
 const STRAPI_ADMIN_USERNAME = 'admin';
 const STRAPI_ADMIN_PASSWORD = 'capstone';
 const STRAPI_ADMIN_EMAIL = 'seanb2016@gmail.com';
+const RESPONSE_TIMEOUT = 1000;
 
 // Authenticates with the Strapi server and sets authorization token in the
 // request headers
@@ -65,7 +66,7 @@ const awaitRestart = async () => {
   let response = null;
   while (response == null) {
     try {
-      response = await axios.get(STRAPI_BASE_URL);
+      response = await axios.get(STRAPI_BASE_URL, {timeout: RESPONSE_TIMEOUT});
     } catch (error) {
     }
   }

@@ -44,7 +44,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     console.log('Exporting content types to file');
     s.writeJSONToFile(fileName, output);
 
-    console.log('Strapi schema export successful!!');
+    console.log('\nStrapi schema export successful!!');
     process.exit(s.successCode);
   } catch (e) {
     console.error(e);

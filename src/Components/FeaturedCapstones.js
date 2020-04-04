@@ -12,6 +12,7 @@ import LoadingCircle from './LoadingCircle';
 import history from '../utils/history';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
+import gStyle from '../utils/styles.module.css';
 
 class FeaturedCapstones extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class FeaturedCapstones extends Component {
       <Grid item xs={6} align='right'>
         <Paper className={classes.featuredPaper}>
           <Typography variant='h4'>Featured Capstones</Typography>
-          <div className={classes.gridListContainer}>
+          <div className={gStyle.gridListContainer}>
             <GridList cellHeight={180} cols={2}>
               {featuredCapstones.map((result, i) => (
                 <GridListTile
