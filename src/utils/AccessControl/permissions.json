@@ -162,6 +162,21 @@
       "delete": "application.sections.delete",
       "count": "application.sections.count",
       "update": "application.sections.update"
+    },
+    "sponsor_page": {
+      "find": "application.sponsor-page.find",
+      "update": "application.sponsor-page.update",
+      "delete": "application.sponsor-page.delete"
+    },
+    "theme": {
+      "find": "application.theme.find",
+      "update": "application.theme.update",
+      "delete": "application.theme.delete"
+    },
+    "home_page": {
+      "update": "application.home-page.update",
+      "find": "application.home-page.find",
+      "delete": "application.home-page.delete"
     }
   }
 }
