@@ -204,6 +204,18 @@
       }
     },
     {
+      "name": "home page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "home_pages",
+      "attributes": {
+        "infoparagraph": {
+          "type": "richtext"
+        }
+      }
+    },
+    {
       "name": "proposals",
       "description": "Describes a proposal made by a sponsor",
       "connection": "default",
@@ -328,6 +340,29 @@
       }
     },
     {
+      "name": "sponsor page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "sponsor_pages",
+      "attributes": {
+        "leftcolumn": {
+          "type": "richtext"
+        },
+        "rightcolumn": {
+          "type": "richtext"
+        },
+        "bgimage": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "main_paragraph": {
+          "type": "richtext"
+        }
+      }
+    },
+    {
       "name": "sponsors",
       "description": "Describes a Sponsor for a Capstone Project",
       "connection": "default",
@@ -387,6 +422,21 @@
           "dominant": false,
           "targetAttribute": "sponsorOrganization",
           "unique": false
+        }
+      }
+    },
+    {
+      "name": "theme",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "themes",
+      "attributes": {
+        "primary": {
+          "type": "string"
+        },
+        "secondary": {
+          "type": "string"
         }
       }
     }
