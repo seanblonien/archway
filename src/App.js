@@ -29,7 +29,7 @@ import ViewYourCapstones from './Pages/ViewYourCapstones';
 import ViewYourCapstonesSponsors from './Pages/ViewYourCapstonesSponsors';
 import history from './utils/history';
 import Can from './Components/Can';
-import ReviewProposals from "./Pages/ReviewProposals";
+import ReviewProposals from './Pages/ReviewProposals';
 
 export default function App () {
   return <>

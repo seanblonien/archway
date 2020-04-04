@@ -13,6 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../../Services/api';
@@ -30,29 +31,45 @@ const styles = {
 class ProposalForm extends Component {
   constructor(props) {
     super(props);
-    this.state ={
-      open: false,
-      Department: '',
-      departmentList: [],
-      email: '',
-      phone: '',
-      projectTitle: '',
-      projectDescription: '',
-      projectDeliverables: '',
-      intellectualProperty: false,
-      nondisclosure: false,
-      financialSupport: '',
-      projectUse: ''
-    };
+
+    const {proposal} = this.props;
+
+    if (proposal === null) {
+      this.state = {
+        open: false,
+        Department: '',
+        departmentList: [],
+        email: '',
+        phone: '',
+        projectTitle: '',
+        projectDescription: '',
+        projectDeliverables: '',
+        intellectualProperty: false,
+        nondisclosure: false,
+        financialSupport: '',
+        projectUse: ''
+      };
+    } else {
+      this.state = {
+        open: false,
+        Department: '',
+        departmentList: [],
+        email: proposal.email,
+        phone: proposal.phone,
+        projectTitle: proposal.projectTitle,
+        projectDescription: proposal.projectDescription,
+        projectDeliverables: proposal.projectDeliverables,
+        intellectualProperty: proposal.intellectualProperty,
+        nondisclosure: proposal.nondisclosure,
+        financialSupport: proposal.financialSupport,
+        projectUse: proposal.projectUse
+      };
+    }
   }
 
   async componentDidMount() {
     const departmentList = await api.departments.find();
     this.setState({departmentList});
-
-    if (this.props.proposal !== null) {
-      //fill in form here
-    }
   }
 
   handleChange = name => event => {
@@ -106,7 +123,9 @@ class ProposalForm extends Component {
     const {email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
       nondisclosure, financialSupport, projectUse, Department} = this.state;
 
-    if (this.props.proposal === null) {
+    const {proposal} = this.props;
+
+    if (proposal === null) {
       await api.proposals.create({
         email,
         phone,
@@ -123,20 +142,21 @@ class ProposalForm extends Component {
       });
     } else {
       //await api.proposals.update()
+
     }
 
     this.setState({open: false});
   };
 
   render() {
-    const {classes} = this.props;
+    const {classes, title} = this.props;
     const {open, email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
       nondisclosure, financialSupport, projectUse, Department, departmentList} = this.state;
 
     return (
       <div>
         <Button variant='outlined' color='primary' onClick={this.handleClickOpen}>
-          New Proposal
+          {title}
         </Button>
         <Dialog
           open={open}
@@ -275,6 +295,11 @@ class ProposalForm extends Component {
 
   }
 }
+
+ProposalForm.propTypes = {
+  proposal: PropTypes.isRequired,
+  title: PropTypes.isRequired,
+};
 
 export default compose(
   withStyles(styles)
