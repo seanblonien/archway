@@ -369,6 +369,13 @@
           "dominant": false,
           "targetAttribute": "sponsors",
           "unique": false
+        },
+        "personnel": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "sponsorOrganization",
+          "unique": false
         }
       }
     }
@@ -551,6 +558,16 @@
           "dominant": false,
           "targetAttribute": "students",
           "unique": false
+        },
+        "sponsorOrganization": {
+          "nature": "manyToOne",
+          "target": "application::sponsors.sponsors",
+          "dominant": false,
+          "targetAttribute": "personnel",
+          "unique": false
+        },
+        "jobTitle": {
+          "type": "string"
         }
       }
     }
