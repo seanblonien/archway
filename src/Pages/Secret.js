@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import api from '../Services/api';
-import auth from '../Auth';
+import auth from '../Contexts/AuthProvider';
 import history from '../utils/history';
 
 export default class Secret extends Component {

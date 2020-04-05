@@ -14,7 +14,7 @@ import CreateCapstone from './Pages/CreateCapstone';
 import FAQ from './Pages/FAQ';
 import Home from './Pages/Home';
 import ImportUsers from './Pages/ImportUsers';
-import Login from './Pages/login';
+import LoginPage from './Pages/LoginPage';
 import NotFound from './Pages/NotFound';
 import Secret from './Pages/Secret';
 import Sponsors from './Pages/Sponsors';
@@ -41,7 +41,7 @@ export default function App () {
               <Header/>
               <div style={{paddingBottom: '140px'}}>
                 <Switch>
-                  <Route path='/login' component={Login}/>
+                  <Route path='/login' component={LoginPage}/>
                   <Route path='/callback' component={Callback}/>
                   <Route path='/SearchRedirect/:path/:searchTerm?' component={SearchRedirect}/>
                   <Route path='/Capstones/:searchTerm?' component={Capstone}/>

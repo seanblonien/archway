@@ -5,7 +5,7 @@ import UploadEndpoint from './UploadEndpoint';
 
 // Handles all axios request interception
 const handleRequest = (config) => {
-  const token = localStorage.getItem('id_token');
+  const token = localStorage.getItem('token');
   if(token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -57,13 +57,17 @@ const API = {
 
   getRoles: () => axios.get('/users-permissions/roles'),
   getRole: (id) => axios.get(`/users-permissions/roles/${id}`),
+
   login: (identifier, password) =>
     axios.post('/auth/local', {
       identifier,
       password
     }),
+
   register: (user) =>
-    axios.post('/auth/local/register', user)
+    axios.post('/auth/local/register', user),
+
+  forgotPassword: (email) => axios.post('', email)
 };
 
 export default API;

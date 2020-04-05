@@ -1,17 +1,21 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import auth from '../Auth';
+import {AuthContext} from '../Contexts/AuthProvider';
 
-const PrivateRoute = ({component: Component}, ...rest) => (
-  <Route
-    {...rest} render={(props) => (
-      auth.isAuthenticated()
-        ? <Component {...props}/>
-        : <Redirect to={{pathname: '/', state: {from: props.location}}}/>
-    )}
-  />
-);
+const PrivateRoute = ({component: Component}, ...rest) => {
+  const {isAuthenticated} = useContext(AuthContext);
+
+  return (
+    <Route
+      {...rest} render={(props) => (
+        isAuthenticated
+          ? <Component {...props}/>
+          : <Redirect to={{pathname: '/', state: {from: props.location}}}/>
+      )}
+    />
+  );
+};
 
 PrivateRoute.propTypes = {
   component: PropTypes.elementType.isRequired,

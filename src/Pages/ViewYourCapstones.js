@@ -15,7 +15,7 @@ import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
-import auth from '../Auth';
+import {AuthContext} from '../Contexts/AuthProvider';
 import LoadingCircle from '../Components/LoadingCircle';
 import history from '../utils/history';
 
@@ -62,16 +62,17 @@ class ViewYourCapstones extends Component {
 
 
   async componentDidMount() {
-    const userID = auth.getUser()._id;
+    const {user} = this.context;
     // get capstones that are moderated by user
-    const response = await api.users.findOne(userID);
+    const response = await api.users.findOne(user.id);
     this.setState({capstones: response.data.capstones});
   }
 
   handleDelete = async (e, resultID) => {
+    const {user} = this.context;
     await api.capstones.delete(resultID);
 
-    const userID = auth.getUser()._id;
+    const userID = user.id;
     // get capstones that are moderated by user
     const response = await api.users.findOne(userID);
     this.setState({capstones: response.data.capstones});
@@ -193,6 +194,8 @@ class ViewYourCapstones extends Component {
     return <LoadingCircle/>;
   }
 }
+
+ViewYourCapstones.contextType = AuthContext;
 
 export default compose(
   withStyles(styles),

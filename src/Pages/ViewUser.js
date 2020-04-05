@@ -21,7 +21,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
-import auth from '../Auth';
+import {AuthContext} from '../Contexts/AuthProvider';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
@@ -92,8 +92,7 @@ class ViewUser extends Component {
     const picURL = imageURL.user(pic.data.picture);
 
     this.setState({departmentList, loading: false, picture: picURL});
-
-    const userObj = auth.getUser();
+    const userObj = this.context.user;
     if(userObj && userObj.username === match.params.username) {
       this.setState({
         editable: true
@@ -143,7 +142,8 @@ class ViewUser extends Component {
     const {Bio, Department, Fullname, hasPicture} = this.state;
 
     this.handleClose();
-    const userID = auth.getUser()._id;
+    const {user} = this.context;
+    const userID = user.id;
 
     // Make the changes
     await api.users.update(userID, {
@@ -382,6 +382,8 @@ class ViewUser extends Component {
     return <LoadingCircle/>;
   }
 }
+
+ViewUser.contextType = AuthContext;
 
 ViewUser.propTypes = {
   classes: PropTypes.objectOf(PropTypes.object).isRequired,
