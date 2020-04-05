@@ -7,7 +7,7 @@
       "kind": "collectionType",
       "collectionName": "capstones",
       "attributes": {
-        "title": {
+        "name": {
           "type": "string",
           "required": true
         },
@@ -27,6 +27,9 @@
           "type": "richtext",
           "required": true,
           "maxLength": 10000
+        },
+        "preview": {
+          "type": "string"
         },
         "coverPhoto": {
           "type": "media",
@@ -68,7 +71,7 @@
         },
         "thumbnail": {
           "type": "media",
-          "multiple": true,
+          "multiple": false,
           "required": false
         }
       }
@@ -201,6 +204,18 @@
       }
     },
     {
+      "name": "home page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "home_pages",
+      "attributes": {
+        "infoparagraph": {
+          "type": "richtext"
+        }
+      }
+    },
+    {
       "name": "proposals",
       "description": "Describes a proposal made by a sponsor",
       "connection": "default",
@@ -325,6 +340,29 @@
       }
     },
     {
+      "name": "sponsor page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "sponsor_pages",
+      "attributes": {
+        "leftcolumn": {
+          "type": "richtext"
+        },
+        "rightcolumn": {
+          "type": "richtext"
+        },
+        "bgimage": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "main_paragraph": {
+          "type": "richtext"
+        }
+      }
+    },
+    {
       "name": "sponsors",
       "description": "Describes a Sponsor for a Capstone Project",
       "connection": "default",
@@ -350,10 +388,18 @@
           "multiple": false,
           "required": false
         },
+        "thumbnail": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
         "description": {
           "type": "richtext",
           "required": false,
           "maxLength": 10000
+        },
+        "preview": {
+          "type": "string"
         },
         "isFeatured": {
           "type": "boolean"
@@ -369,6 +415,28 @@
           "dominant": false,
           "targetAttribute": "sponsors",
           "unique": false
+        },
+        "personnel": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "sponsorOrganization",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "theme",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "themes",
+      "attributes": {
+        "primary": {
+          "type": "string"
+        },
+        "secondary": {
+          "type": "string"
         }
       }
     }
@@ -550,6 +618,13 @@
           "target": "application::sections.sections",
           "dominant": false,
           "targetAttribute": "students",
+          "unique": false
+        },
+        "sponsorOrganization": {
+          "nature": "manyToOne",
+          "target": "application::sponsors.sponsors",
+          "dominant": false,
+          "targetAttribute": "personnel",
           "unique": false
         }
       }

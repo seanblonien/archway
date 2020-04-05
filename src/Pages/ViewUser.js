@@ -16,7 +16,6 @@ import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {imageURL} from '../utils/utils';
@@ -25,7 +24,10 @@ import {AuthContext} from '../Contexts/AuthProvider';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
+import api from '../Services/api';
 import history from '../utils/history';
+import MediaMarkdown from '../utils/MediaMarkdown';
+import {imageURL} from '../utils/utils';
 
 const styles = () => ({
   card: {
@@ -365,9 +367,9 @@ class ViewUser extends Component {
                       <CardContent>
                         <SubHeadingTextTypography text={result.title}/>
                         <Divider/>
-                        <Markdown>
+                        <MediaMarkdown>
                           {result.description}
-                        </Markdown>
+                        </MediaMarkdown>
                       </CardContent>
                     </Card>
                   </Grid>
