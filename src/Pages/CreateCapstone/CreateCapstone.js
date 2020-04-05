@@ -20,14 +20,16 @@ import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import Filter from 'bad-words';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import api from '../Services/api';
-import SimpleDialog from '../Components/AddUserDialog';
-import DragAndDropZone from '../Components/DragAndDropZone/DragAndDropZone';
-import PageTitleTypography from '../Components/PageTitleTypography';
+import api from '../../Services/api';
+import SimpleDialog from '../../Components/AddUserDialog';
+import DragAndDropZone from '../../Components/DragAndDropZone/DragAndDropZone';
+import PageTitleTypography from '../../Components/PageTitleTypography';
 import DateFnsUtils from '@date-io/date-fns';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import {DesktopDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Dropzone from 'react-dropzone'
+
 
 
 const styles = theme => ({
@@ -65,6 +67,8 @@ class CreateCapstone extends Component {
       startDate: new Date(),
       endDate: new Date(),
       coverPhoto: '',
+      thumbnail: '',
+      media: [],
       Department: '',
       Username: '',
       capstones: [],
@@ -75,6 +79,8 @@ class CreateCapstone extends Component {
       AllUsers: [],
       Users: [],
       Participants: [],
+      selectedProfessor: '',
+      selectedTA: '',
       typedName: '',
       typedEmail: '',
       selectedUser: '',
@@ -121,6 +127,14 @@ class CreateCapstone extends Component {
     this.setState({selectedUser: values}, () => {
       console.log(this.state.selectedUser);
     });
+  };
+
+  handleSelectedProfessor = (event, values) => {
+    this.setState({selectProfessor: values});
+  };
+
+  handleSelectedTA = (event, values) => {
+    this.setState({selectedTA: values});
   };
 
   handleClickDialogClose = () => {
@@ -191,6 +205,24 @@ class CreateCapstone extends Component {
 
   handleSelectSponsor = (event) => {
     this.setState({selectedSponsor: event.target.value});
+  };
+
+  handleAcceptImageThumbnail = (image) => {
+    console.log(image);
+    console.log(this.state);
+    this.setState({thumbnail: image});
+  };
+
+  handleAcceptImageCoverPhoto = (image) => {
+    console.log(image);
+    console.log(this.state);
+    this.setState({coverPhoto: image});
+  };
+
+  handleAcceptImageMedia = (image) => {
+    console.log(image);
+    console.log(this.state);
+    this.setState({media: image});
   };
 
   handleSubmit = async () => {
@@ -269,6 +301,7 @@ class CreateCapstone extends Component {
                       </FormControl>
                     </Tooltip>
                   </Grid>
+
                   <Grid item xs={12}>
                     <Grid container  justify='center' spacing={2} direction='row'>
                       {/* Start & End Date*/}
@@ -307,7 +340,6 @@ class CreateCapstone extends Component {
                         </Tooltip>
                       </Grid>
                     </Grid>
-
                   </Grid>
 
                   <Grid item xs={12}>
@@ -344,6 +376,7 @@ class CreateCapstone extends Component {
                     </FormControl>
 
                   </Grid>
+
                 </Grid>
               </CardContent>
             </Card>
@@ -359,7 +392,6 @@ class CreateCapstone extends Component {
                   <Grid item xs={12}>
                     <Grid container  justify='center' alignItems='center'>
 
-                      {/* name, email confirm */}
                       <Grid item xs={12}>
                         <Grid container alignItems='center' justify='left' spacing={3} direction='row'>
                           <Grid item xs={8}>
@@ -383,8 +415,8 @@ class CreateCapstone extends Component {
                             <Button variant='outlined' color='primary' onClick={this.handleClickDialogOpen}>
                               Add a new user
                             </Button>
-                            <SimpleDialog selectedValue={this.handleNewUser} open={dialogOpen} onClose={this.handleClickDialogClose}/>
                             {/* <AddUser/> */}
+                            <SimpleDialog selectedValue={this.handleNewUser} open={dialogOpen} onClose={this.handleClickDialogClose}/>
                           </Grid>
                         </Grid>
 
@@ -429,31 +461,16 @@ class CreateCapstone extends Component {
                       <Grid item xs={12}>
                         <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
                           <Grid item xs={3}>
-                            <FormControl fullWidth>
-                              <TextField
-                                id='outlined-textarea'
-                                label='Professor Name'
-                                placeholder='Professor Name'
-                                variant='outlined'
-                                onChange={this.handleInputName}
-                              />
-                            </FormControl>
-
-
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={this.state.AllUsers}
+                                getOptionLabel={(option) => option.Fullname}
+                                style={{ width: 300 }}
+                                onChange={this.handleSelectedProfessor}
+                                renderInput={(params) => <TextField {...params} label="Search for Professor" variant="outlined" />}
+                            />
                           </Grid>
-                          <Grid item xs={5}>
-                            <FormControl fullWidth>
 
-                              <TextField
-                                id='outlined-textarea'
-                                label='Professor Email'
-                                placeholder='Professor Email'
-                                variant='outlined'
-                                onChange={this.handleInputEmail}
-                              />
-                            </FormControl>
-
-                          </Grid>
                           <Grid item>
 
                             <Button variant='outlined' color='primary' onClick={this.handleConfirmTeammate}>
@@ -466,30 +483,14 @@ class CreateCapstone extends Component {
                       <Grid item xs={12}>
                         <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
                           <Grid item xs={3}>
-                            <FormControl fullWidth>
-                              <TextField
-                                id='outlined-textarea'
-                                label='TA Name'
-                                placeholder='TA Name'
-                                variant='outlined'
-                                onChange={this.handleInputName}
-                              />
-                            </FormControl>
-
-
-                          </Grid>
-                          <Grid item xs={5}>
-                            <FormControl fullWidth>
-
-                              <TextField
-                                id='outlined-textarea'
-                                label='TA Email'
-                                placeholder='TA Email'
-                                variant='outlined'
-                                onChange={this.handleInputEmail}
-                              />
-                            </FormControl>
-
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={this.state.AllUsers}
+                                getOptionLabel={(option) => option.Fullname}
+                                style={{ width: 300 }}
+                                onChange={this.handleSelectedTA}
+                                renderInput={(params) => <TextField {...params} label="Search for TA" variant="outlined" />}
+                            />
                           </Grid>
                           <Grid item>
 
@@ -563,7 +564,7 @@ class CreateCapstone extends Component {
                 <Card className={classes.card}>
 
                   <CardContent>
-                    <DragAndDropZone/>
+                    <DragAndDropZone acceptImage={this.handleAcceptImageThumbnail.bind(this)}/>
                   </CardContent>
                 </Card>
               </Grid>
@@ -571,7 +572,7 @@ class CreateCapstone extends Component {
                 <Card className={classes.card}>
 
                   <CardContent>
-                    <DragAndDropZone/>
+                    <DragAndDropZone acceptImage={this.handleAcceptImageCoverPhoto.bind(this)}/>
                   </CardContent>
                 </Card>
               </Grid>
@@ -581,7 +582,7 @@ class CreateCapstone extends Component {
             {/* Submit button */}
             <Card className={classes.card}>
               <CardContent>
-                <DragAndDropZone/>
+                <DragAndDropZone acceptImage={this.handleAcceptImageMedia.bind(this)}/>
               </CardContent>
             </Card>
 

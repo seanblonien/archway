@@ -10,7 +10,7 @@ import Register from './Components/RegisterModal';
 import SearchRedirect from './Components/SearchRedirect';
 import Callback from './Pages/Callback';
 import Capstone from './Pages/Capstones';
-import CreateCapstone from './Pages/CreateCapstone';
+import CreateCapstone from './Pages/CreateCapstone/CreateCapstone';
 import FAQ from './Pages/FAQ';
 import Home from './Pages/Home';
 import ImportUsers from './Pages/ImportUsers';
