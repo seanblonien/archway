@@ -3,12 +3,10 @@ import axios from 'axios';
 import Endpoint from './Endpoint';
 import UploadEndpoint from './UploadEndpoint';
 import StorageManager from '../Contexts/StorageManager';
-import {AuthContext} from '../Contexts/AuthProvider';
-import {useContext} from 'react';
 
-const {token} = useContext(AuthContext);
 // Handles all axios request interception
 const handleRequest = (config) => {
+  const token = StorageManager.getItem('token');
   if(token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
