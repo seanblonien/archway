@@ -1,36 +1,14 @@
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
 import withWidth from '@material-ui/core/withWidth/withWidth';
-import BusinessIcon from '@material-ui/icons/Business';
-import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import Filter from 'bad-words';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../../Services/api';
-import SimpleDialog from '../../Components/AddUserDialog';
-import DragAndDropZone from '../../Components/DragAndDropZone/DragAndDropZone';
-import PageTitleTypography from '../../Components/PageTitleTypography';
-import DateFnsUtils from '@date-io/date-fns';
-import EventNoteIcon from '@material-ui/icons/EventNote';
-import {DesktopDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Dropzone from 'react-dropzone'
-
-
+import BasicInformation from "./BasicInformation";
+import MemberInformation from "./MemberInformation";
+import SponsorAndMediaInformation from "./SponsorAndMediaInformation";
 
 const styles = theme => ({
   list: {
@@ -145,8 +123,8 @@ class CreateCapstone extends Component {
     this.setState({dialogOpen: true});
   };
 
-  handleConfirmSponsor = () => {
-    const {selectedSponsor, checkedSponsors} = this.state;
+  handleConfirmSponsor = (selectedSponsor) => {
+    const {checkedSponsors} = this.state;
     if(selectedSponsor !== '') {
       if (!checkedSponsors.includes(selectedSponsor)) {
         const joinedSponsor = checkedSponsors.concat(selectedSponsor);
@@ -155,22 +133,16 @@ class CreateCapstone extends Component {
     }
   };
 
-  handleConfirmTeammate = () => {
-    const user = this.state.selectedUser;
+  handleConfirmTeammate = (selectedUser) => {
+    const user = selectedUser;
     if (user !== '') {
       if (!this.state.Participants.includes(user)) {
         const joinedParticipants = this.state.Participants.concat(user);
-        this.setState({Participants: joinedParticipants});
+        this.setState({Participants: joinedParticipants}, () => {
+          console.log(this.state.Participants);
+        });
       }
     }
-  };
-
-  handleInputEmail = (event) => {
-    this.setState({typedEmail: event.target.value});
-  };
-
-  handleInputName = (event) => {
-    this.setState({typedName: event.target.value});
   };
 
   handleStartDate = (startDate) => {
@@ -269,7 +241,17 @@ class CreateCapstone extends Component {
     const profane = filter.isProfane(title) || filter.isProfane(description);
     const validName = capstones.map(c => c.title.toUpperCase()).includes(title.toUpperCase());
 
-    return title && description && coverPhoto && Department && (checkedSponsors.length > 0) && validName && !profane;
+    let res = title && description && coverPhoto && Department && (checkedSponsors.length > 0) && !validName && !profane;
+    console.log("title: " +  title);
+    console.log("des: " +  description);
+    console.log("cover: " +  coverPhoto);
+    console.log("depart: " +  Department);
+    console.log("spon" +  checkedSponsors);
+    console.log("valid:" + validName);
+    console.log("pro? " + profane);
+    console.log(res);
+
+    return res;
   };
 
   render() {
@@ -281,312 +263,42 @@ class CreateCapstone extends Component {
       <div>
         {/* Page header */}
         <Grid container justify='center'>
-          <Grid item xs={12} md={10}>
-            <Card className={classes.card}>
-              <CardContent>
-                <PageTitleTypography text='Create Capstone' align='left' size='h4'/>
-                <Grid container  justify='left' spacing={3}>
-                  <Grid item xs={12}>
-                    {/* Form for capstone name */}
-                    <Tooltip title='Name of Capstone' arrow>
-                      <FormControl margin='dense' required fullWidth>
-                        <TextField
-                          id='outlined-textarea'
-                          label='Title'
-                          placeholder='Type the title for the capstone project'
-                          multiline
-                          onChange={this.handleTitle}
-                          variant='outlined'
-                        />
-                      </FormControl>
-                    </Tooltip>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Grid container  justify='center' spacing={2} direction='row'>
-                      {/* Start & End Date*/}
-                        <Grid item xs={6}>
-                          <Tooltip title='Select A Date' arrow>
-                            <MuiPickersUtilsProvider  utils={DateFnsUtils}>
-                            <DesktopDatePicker
-                                autoOk
-                                variant='outlined'
-                                label='Start Date'
-                                placeholder='2018/01/01'
-                                format='yyyy/MM/dd'
-                                mask='____/__/__'
-                                keyboardIcon={<EventNoteIcon/>}
-                                value={this.state.startDate}
-                                onChange={date => this.handleStartDate(date)}
-                            />
-                          </MuiPickersUtilsProvider>
-                          </Tooltip>
-                      </Grid>
-                        <Grid item xs={6}>
-                        <Tooltip title='Select A Date' arrow>
-                          <MuiPickersUtilsProvider  utils={DateFnsUtils}>
-                            <DesktopDatePicker
-                                autoOk
-                                variant='outlined'
-                                label='End Date'
-                                placeholder='2018/01/01'
-                                format='yyyy/MM/dd'
-                                mask='____/__/__'
-                                keyboardIcon={<EventNoteIcon/>}
-                                value={this.state.endDate}
-                                onChange={date => this.handleEndDate(date)}
-                            />
-                          </MuiPickersUtilsProvider>
-                        </Tooltip>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    {/* select department */}
-                    <FormControl margin='dense' fullWidth variant='filled'>
-                      <InputLabel ref={null}>Department</InputLabel>
-                      <Select
-                        labelId='demo-customized-select-label'
-                        id='demo-customized-select'
-                        value={Department}
-                        onChange={this.handleChangeDepartment}
-                      >
-                        <MenuItem value=''>
-                          <em>None</em>
-                        </MenuItem>
-                        {departmentList.map(dept => (
-                          <MenuItem value={dept.name}>{dept.name}</MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <FormControl margin='dense' required fullWidth>
-                      <TextField
-                        id='outlined-textarea'
-                        label='Description'
-                        rows='4'
-                        placeholder='Type the description'
-                        multiline
-                        variant='outlined'
-                        onChange={this.handleDescription}
-                      />
-                    </FormControl>
-
-                  </Grid>
-
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={10}>
-            <Card className={classes.card}>
-              <CardContent>
-                <Grid container  justify='left' alignItems='center' spacing={2}>
-                  <Grid item xs={12}>
-                    <PageTitleTypography text='Team Member Information' align='left' size='h5'/>
-                    <Divider/>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid container  justify='center' alignItems='center'>
-
-                      <Grid item xs={12}>
-                        <Grid container alignItems='center' justify='left' spacing={3} direction='row'>
-                          <Grid item xs={8}>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                options={this.state.AllUsers}
-                                getOptionLabel={(option) => option.Fullname}
-                                style={{ width: 300 }}
-                                onChange={this.handleSelectedUser}
-                                renderInput={(params) => <TextField {...params} label="Search for Team Members" variant="outlined" />}
-                            />
-                          </Grid>
-
-                          <Grid item>
-
-                            <Button variant='outlined' color='primary' onClick={this.handleConfirmTeammate}>
-                              Confirm
-                            </Button>
-                          </Grid>
-                          <Grid item>
-                            <Button variant='outlined' color='primary' onClick={this.handleClickDialogOpen}>
-                              Add a new user
-                            </Button>
-                            {/* <AddUser/> */}
-                            <SimpleDialog selectedValue={this.handleNewUser} open={dialogOpen} onClose={this.handleClickDialogClose}/>
-                          </Grid>
-                        </Grid>
-
-                      </Grid>
-                      {/* team list */}
-                      <Grid item xs={9}>
-                        {Participants.map(participant =>(<ListItem>
-                          <ListItemAvatar>
-                            <Avatar>
-                              <EmojiPeopleIcon/>
-                            </Avatar>
-                          </ListItemAvatar>
-                          <ListItemText
-                            primary={participant.Fullname}
-                          />
-                        </ListItem>))
-
-                        }
-                      </Grid>
-
-                    </Grid>
-                  </Grid>
-
-                </Grid>
-              </CardContent>
-            </Card>
-
-          </Grid>
-          <Grid item xs={12} md={10}>
-            <Card className={classes.card}>
-              <CardContent>
-                <Grid container  justify='left' alignItems='center' spacing={2}>
-                  <Grid item xs={12}>
-                    <PageTitleTypography text='Team Member Information' align='left' size='h5'/>
-                    <Divider/>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Grid container  justify='center' alignItems='center' spacing={2}>
-
-                      {/* name, email confirm */}
-                      <Grid item xs={12}>
-                        <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
-                          <Grid item xs={3}>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                options={this.state.AllUsers}
-                                getOptionLabel={(option) => option.Fullname}
-                                style={{ width: 300 }}
-                                onChange={this.handleSelectedProfessor}
-                                renderInput={(params) => <TextField {...params} label="Search for Professor" variant="outlined" />}
-                            />
-                          </Grid>
-
-                          <Grid item>
-
-                            <Button variant='outlined' color='primary' onClick={this.handleConfirmTeammate}>
-                              Confirm
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
-                          <Grid item xs={3}>
-                            <Autocomplete
-                                id="combo-box-demo"
-                                options={this.state.AllUsers}
-                                getOptionLabel={(option) => option.Fullname}
-                                style={{ width: 300 }}
-                                onChange={this.handleSelectedTA}
-                                renderInput={(params) => <TextField {...params} label="Search for TA" variant="outlined" />}
-                            />
-                          </Grid>
-                          <Grid item>
-
-                            <Button variant='outlined' color='primary' onClick={this.handleConfirmTeammate}>
-                              Confirm
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={10}>
-            <Card className={classes.card}>
-              <CardContent>
-                <PageTitleTypography text='Sponsor Information' align='left' size='h5'/>
-                <Divider/>
-                <Grid container  justify='center'>
-                  <Grid item xs={12}>
-
-                    <Grid container  justify='center' spacing={2} alignItems='center'>
-                      <Grid item xs={9}>
-                        <FormControl margin='dense' fullWidth variant='filled'>
-                          <InputLabel ref={null}>Sponsor</InputLabel>
-                          <Select
-                            labelId='demo-customized-select-label'
-                            id='demo-customized-select'
-                            value={selectedSponsor}
-                            onChange={this.handleSelectSponsor}
-                          >
-                            <MenuItem value=''>
-                              <em>None</em>
-                            </MenuItem>
-                            {sponsorList.map(sponsor => (
-                              <MenuItem value={sponsor.name}>{sponsor.name}</MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs>
-                        <Button variant='outlined' color='primary' onClick={this.handleConfirmSponsor}>
-                          Confirm
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Divider/>
-                  {checkedSponsors.map(sponsor =>(<ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <BusinessIcon/>
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={sponsor}
-                    />
-                  </ListItem>))
-                  }
-                </Grid>
-
-              </CardContent>
-            </Card>
-
-          </Grid>
-          <Grid item xs={12} md={10}>
-            <Grid container  justify='center' spacing={2} alignItems='center'>
-              <Grid item xs={3}>
-                <Card className={classes.card}>
-
-                  <CardContent>
-                    <DragAndDropZone acceptImage={this.handleAcceptImageThumbnail.bind(this)}/>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={9}>
-                <Card className={classes.card}>
-
-                  <CardContent>
-                    <DragAndDropZone acceptImage={this.handleAcceptImageCoverPhoto.bind(this)}/>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={10}>
-            {/* Submit button */}
-            <Card className={classes.card}>
-              <CardContent>
-                <DragAndDropZone acceptImage={this.handleAcceptImageMedia.bind(this)}/>
-              </CardContent>
-            </Card>
-
-          </Grid>
+          <BasicInformation
+            classes={classes}
+            handleTitle={this.handleTitle.bind(this)}
+            startDate={this.state.startDate}
+            handleStartDate={this.handleStartDate.bind(this)}
+            endDate={this.state.endDate}
+            handleEndDate={this.handleEndDate.bind(this)}
+            Department={this.state.Department}
+            handleChangeDepartment={this.handleChangeDepartment.bind(this)}
+            departmentList={this.state.departmentList}
+            handleDescription={this.handleDescription.bind(this)}
+          />
+          <MemberInformation
+            classes={classes}
+            AllUsers={this.state.AllUsers}
+            handleConfirmTeammate={this.handleConfirmTeammate.bind(this)}
+            handleClickDialogOpen={this.handleClickDialogOpen.bind(this)}
+            handleNewUser={this.handleNewUser.bind(this)}
+            dialogOpen={this.state.dialogOpen}
+            handleClickDialogClose={this.handleClickDialogClose.bind(this)}
+            Participants={this.state.Participants}
+            handleSelectedProfessor={this.handleSelectedProfessor.bind(this)}
+            handleSelectedTA={this.handleSelectedTA.bind(this)}
+            selectedUser={this.state.selectedUser}
+          />
+          <SponsorAndMediaInformation
+            classes={classes}
+            selectedSponsor={this.state.selectedSponsor}
+            handleSelectSponsor={this.handleSelectSponsor.bind(this)}
+            checkedSponsors={this.state.checkedSponsors}
+            sponsorList={this.state.sponsorList}
+            handleConfirmSponsor={this.handleConfirmSponsor.bind(this)}
+            handleAcceptImageThumbnail={this.handleAcceptImageThumbnail.bind(this)}
+            handleAcceptImageCoverPhoto={this.handleAcceptImageCoverPhoto.bind(this)}
+            handleAcceptImageMedia={this.handleAcceptImageMedia.bind(this)}
+          />
           <Grid item xs={12} md={10}>
             <Grid container justify='space-around' spacing={3} alignItems='center'>
               <Grid item xs={3}>
