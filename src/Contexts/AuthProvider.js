@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import history from '../utils/history';
+import api from '../Services/api';
 import StorageManager from './StorageManager';
 
 export const AuthContext = React.createContext({});
@@ -10,42 +10,105 @@ export default class AuthProvider extends Component {
     this.state = {
       isAuthenticated: false,
       user: undefined,
-      jwt: undefined,
-      loading: true,
+      token: undefined,
     };
   }
 
   async componentDidMount() {
     // TODO set/load local storage user/jwt
-
+    const user = StorageManager.getItem('user');
+    const token = StorageManager.getItem('token');
+    if(user && token){
+      let response = null;
+      while(response == null){
+        try{
+          response = await api.authenticate();
+          console.log('Successfully logged in.');
+          this.setUserInStorage(user, token);
+        } catch(error) {
+          //handle error
+          console.log(error);
+          this.clearCookies();
+        }
+      }
+    } else {
+      this.clearCookies();
+    }
   }
 
-  // REDO THIS FUNCTION BECAUSE IT NEEDS TO BE AUTHENTICATED WITH STRAPI
-  isAuthenticated = () => {
-    // TODO use state
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return new Date().getTime() < expiresAt;
+  clearCookies = () => {
+    this.setState({
+      isAuthenticated: false,
+      user: undefined,
+      token: undefined,
+    });
+    StorageManager.clearLocalStorage();
+    console.log('Successfully cleared local storage.');
   };
 
   logout = () => {
     // TODO clear local storage user/jwt
+    console.log('Logging out...');
+    this.clearCookies();
   };
 
-  login = (user) => {
+  setUserInStorage = (user, token) => {
+    console.log('User profile', user);
+    StorageManager.setItem('user', user);
+    console.log('User token', token);
+    StorageManager.setItem('token', token);
+    this.setState({
+      isAuthenticated: true,
+      user: user,
+      token: token,
+    });
+  } ;
+
+  login = async (identifier, password) => {
     // TODO set local storage user/jwt
+    let response = null;
+    while(response == null) {
+      try {
+        response = await api.login(identifier, password);
+        console.log('Successfully logged in.');
+        this.setUserInStorage(response.data.user, response.data.jwt)
+      } catch(error) {
+        //handle error
+        console.log(error);
+      }
+    }
   };
 
-  register = (user) => {
-
+  register = async (user) => {
+    let response = null;
+    while(response == null){
+      try {
+        response = await api.register(user);
+        console.log('Successfully registered. Will redirect to log you in.');
+        this.setUserInStorage(response.data.user, response.data.jwt)
+      } catch(error) {
+        //handle error
+        console.log(error);
+      }
+    }
   };
 
-  forgotPassword = (email) => {
-
+  forgotPassword = async (email) => {
+    let response = null;
+    while(response == null){
+      try {
+        response = await api.forgotPassword(email);
+        console.log(response);
+      } catch (error) {
+        //handle error
+        console.log(error);
+      }
+    }
   };
 
   render() {
     const {children} = this.props;
-    const {isAuthenticated, user} = this.state;
+    const {isAuthenticated, user, token} = this.state;
     const {logout, login, register, forgotPassword} = this;
 
     return (
@@ -53,6 +116,7 @@ export default class AuthProvider extends Component {
         value={{
           isAuthenticated,
           user,
+          token,
           logout,
           login,
           register,

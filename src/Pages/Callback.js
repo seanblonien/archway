@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import StorageManager from '../Contexts/StorageManager';
 import {AuthContext} from '../Contexts/AuthProvider';
+import StorageManager from '../Contexts/StorageManager';
 
 /**
  * This class is a React component that handles the callback functionality
