@@ -34,16 +34,21 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const {login} = useContext(AuthContext);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [state, setState] = useState({identifier: '', password: '', remember: true});
   const classes = useStyles();
+
+  const handleChange = (event) => {
+    const {checked, value, name} = event.target;
+    setState({...state, [name]: checked || value});
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(email, password);
+    const {identifier, password, remember} = state;
+    login(identifier, password, remember);
   };
 
+  const {identifier, password, remember} = state;
   return (
     <Box alignItems='center' m={5} className={classes.root}>
       <div className={classes.paper}>
@@ -56,17 +61,31 @@ const Login = () => {
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container direction='column'>
             <TextField
-              label='Email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              label='Username'
+              name='identifier'
+              type='text'
+              autoComplete='username'
+              autoFocus
+              value={identifier}
+              onChange={handleChange}
             />
             <TextField
               label='Password'
+              name='password'
+              type='password'
+              autoComplete='current-password'
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
             />
             <FormControlLabel
-              control={<Checkbox value='remember' color='primary'/>}
+              control={
+                <Checkbox
+                  value='remember'
+                  color='primary'
+                  checked={remember}
+                  onChange={handleChange}
+                />
+              }
               label='Remember me'
             />
             <Button

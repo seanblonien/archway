@@ -1,5 +1,4 @@
 import perms from './utils/AccessControl/permissions.json';
-import history from './utils/history';
 
 export const strapiURL = 'http://localhost:1337';
 
@@ -59,25 +58,6 @@ export const USER_IMPORT_TYPE = {
 
 // Put the name of your university here
 export const university = 'Baylor';
-
-export const Auth0InitOptions = {
-  domain: 'archwaycapstone.auth0.com',
-  client_id: 'V9OTevHpl8fIrm4ZV8sXbzH1c7CkRtxA',
-  redirect_uri: 'http://localhost:80/callback',
-  audience: 'https://archwaycapstone.auth0.com/userinfo'
-};
-
-export const Auth0LogoutReturnTo = window.location.origin;
-
-// A function that routes the user to the right place
-// after login
-export const Auth0RedirectCallback = appState => {
-  history.push(
-    appState && appState.targetUrl
-      ? appState.targetUrl
-      : history.location.pathname
-  );
-};
 
 // Object of strapi user permissions
 export const permissions = perms;

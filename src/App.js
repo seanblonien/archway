@@ -8,7 +8,6 @@ import Footer from './Components/Footer';
 import Header from './Components/Header/Header';
 import Register from './Components/RegisterModal';
 import SearchRedirect from './Components/SearchRedirect';
-import Callback from './Pages/Callback';
 import Capstone from './Pages/Capstones';
 import CreateCapstone from './Pages/CreateCapstone';
 import FAQ from './Pages/FAQ';
@@ -41,7 +40,6 @@ export default function App () {
               <div style={{paddingBottom: '140px'}}>
                 <Switch>
                   <Route path='/login' component={LoginPage}/>
-                  <Route path='/callback' component={Callback}/>
                   <Route path='/SearchRedirect/:path/:searchTerm?' component={SearchRedirect}/>
                   <Route path='/Capstones/:searchTerm?' component={Capstone}/>
                   <Route path='/About' component={About}/>
@@ -54,8 +52,8 @@ export default function App () {
                   <Route path='/ViewAllDepartments' component={ViewAllDepartments}/>
                   <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
                   <Route path='/FAQ' component={FAQ}/>
+                  <Route path='/ViewProfile/:username' component={ViewProfile}/>
                   <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
-                  <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
                   <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
                   <ProtectedRoute path='/ViewYourCapstonesSponsors' component={ViewYourCapstonesSponsors}/>
                   <ProtectedRoute path='/ImportUsers' component={ImportUsers}/>

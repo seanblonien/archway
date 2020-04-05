@@ -29,7 +29,7 @@ const Can = ({role, perform, children, no}) => {
   const {isAuthenticated, user} = useContext(AuthContext);
   // Update the
   if(isAuthenticated && role === defaultRoles.Public){
-    role = user.role.name;
+    role = user && user.role ?  user.role.name : role;
   }
   // Access the roles
   const {roles} = useContext(RolesContext);

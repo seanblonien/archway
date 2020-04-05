@@ -95,14 +95,12 @@ class PrimarySearchAppBar extends Component {
   };
 
   handleToAccount = () => {
-    const {user, isAuthenticated} = this.context;
-    console.log(user);
-    console.log(isAuthenticated);
-    history.push(`/ViewProfile/${user.nickname}`);
+    const {user} = this.context;
+    history.push(`/ViewProfile/${user.username}`);
   };
 
   render() {
-    const {loginWithPopup, isAuthenticated} = this.context;
+    const {isAuthenticated} = this.context;
     const {anchorEl} = this.state;
     const {classes} = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -116,7 +114,7 @@ class PrimarySearchAppBar extends Component {
         onClose={this.handleMenuClose}
       >
         {isAuthenticated && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
-        {!isAuthenticated && <MenuItem onClick={loginWithPopup}>Login / Register</MenuItem>}
+        {!isAuthenticated && <MenuItem onClick={() => history.push('/login')}>Login / Register</MenuItem>}
         {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
       </Menu>
     );

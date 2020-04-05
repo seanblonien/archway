@@ -21,7 +21,7 @@ export default class AuthProvider extends Component {
   componentDidMount() {
     const user = StorageManager.getItem('user');
     const token = StorageManager.getItem('token');
-    this.setState({user, token});
+    this.setUserInStorage(user, token);
   }
 
   logout = () => {
@@ -32,27 +32,34 @@ export default class AuthProvider extends Component {
   setUserInStorage = (user, token) => {
     StorageManager.setItem('user', user);
     StorageManager.setItem('token', token);
+  };
+
+  handleAuthenticationResponse = (response, useStorage, redirect) => {
+    const {user, jwt: token} = response.data;
+    if(useStorage) {
+      this.setUserInStorage(user, token);
+    }
     this.setState({
       isAuthenticated: true,
       user,
       token,
     });
-  } ;
+    history.push(redirect);
+  };
 
-  login = async (identifier, password) => {
+  login = async (identifier, password, useStorage = true) => {
     try {
       const response = await api.login(identifier, password);
-      this.setUserInStorage(response.data.user, response.data.jwt);
-      history.push('/');
+      this.handleAuthenticationResponse(response, useStorage, '/');
     } catch(error) {
       console.log(error);
     }
   };
 
-  register = async (user) => {
+  register = async (user, useStorage = true) => {
     try {
       const response = await api.register(user);
-      this.setUserInStorage(response.data.user, response.data.jwt);
+      this.handleAuthenticationResponse(response, useStorage, '/');
     } catch(error) {
       console.log(error);
     }
