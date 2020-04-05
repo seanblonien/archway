@@ -36,7 +36,7 @@ export default class AuthProvider extends Component {
   };
 
   register = (user) => {
-    
+
   };
 
   forgotPassword = (email) => {

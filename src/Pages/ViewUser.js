@@ -24,10 +24,8 @@ import {AuthContext} from '../Contexts/AuthProvider';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
-import api from '../Services/api';
 import history from '../utils/history';
 import MediaMarkdown from '../utils/MediaMarkdown';
-import {imageURL} from '../utils/utils';
 
 const styles = () => ({
   card: {
