@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {useContext} from 'react';
+import {AuthContext} from '../Contexts/AuthProvider';
 import RolesContext from '../Contexts/RolesContext';
 import defaultRoles from '../utils/AccessControl/roles.json';
 import permissionValues from '../utils/AccessControl/permissionValues.json';
@@ -24,6 +26,11 @@ const check = (role, permission, roles) => _.has(roles, role)
  * @returns {string} JSX to render
  */
 const Can = ({role, perform, children, no}) => {
+  const {isAuthenticated, user} = useContext(AuthContext);
+  // Update the
+  if(isAuthenticated && role === defaultRoles.Public){
+    role = user.role.name;
+  }
   // Access the roles
   const {roles} = useContext(RolesContext);
   // Convert single string to array form

@@ -8,8 +8,8 @@ export const AuthContext = React.createContext({});
 
 const initialState = {
   isAuthenticated: false,
-  user: undefined,
-  token: undefined,
+  user: null,
+  token: null,
 };
 
 export default class AuthProvider extends Component {
@@ -18,7 +18,7 @@ export default class AuthProvider extends Component {
     this.state = initialState;
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const user = StorageManager.getItem('user');
     const token = StorageManager.getItem('token');
     this.setState({user, token});
