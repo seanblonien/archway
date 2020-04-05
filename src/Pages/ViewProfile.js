@@ -12,6 +12,7 @@ import {formatEntryUpload, imageURL} from '../utils/utils';
 import api from '../Services/api';
 import { permissions } from '../constants';
 import Can from '../Components/Can';
+import Message from '../Components/Message';
 
 class ViewProfile extends Component {
   constructor(props) {
@@ -42,6 +43,8 @@ class ViewProfile extends Component {
       },
       sponsors: [],
       selectedFile: null,
+      errorMessage: '',
+      errorMessageOpen: false,
     };
   }
 
@@ -60,6 +63,12 @@ class ViewProfile extends Component {
     // Get the list of sponsors
     const sponsors = await api.sponsors.find({});
     this.setState({sponsors});
+  }
+
+  messageOpenCallback = (messageOpen) => {
+    // Reset error message
+    this.setState({errorMessage: ''});
+    this.setState({errorMessageOpen: messageOpen});
   }
 
   handleCancel = () => {
@@ -89,8 +98,10 @@ class ViewProfile extends Component {
       const fileUpload = formatEntryUpload(selectedFile, 'user', user.id, 'picture', 'users-permissions');
       await api.uploads.upload(fileUpload);
       this.setState({selectedFile: null});
-    } catch(e){
-      console.log(e);
+    } catch(err){
+      const msg = 'The server responded with a status of '.concat(err.data.statusCode).concat(' (').concat(err.data.message).concat(')');
+      this.setState({errorMessage: msg});
+      this.setState({errorMessageOpen: true});
     }
 
     try{
@@ -100,17 +111,21 @@ class ViewProfile extends Component {
 
       this.setState({user: {...user, picture: pic}});
     } catch(e){
-      console.log(e); // TODO render error message
+      this.setState({errorMessage: 'ERROR!'});
+      this.setState({errorMessageOpen: true});
     }
-    // TODO if successful, close the 'choose file' form, update URL without refreshing
-    // TODO if error, render some sort of message saying the error
   }
 
   handleRemoveProfilePic = async () => {
     const {user} = this.state;
     if (user.picture) {
-      await api.uploads.delete(user.picture.id);
-      this.setState({user: {...user, picture: null}});
+      try{
+        await api.uploads.delete(user.picture.id);
+        this.setState({user: {...user, picture: null}});
+      } catch(e){
+        this.setState({errorMessage: 'ERROR!'});
+        this.setState({errorMessageOpen: true});
+      }
     }
   };
 
@@ -119,19 +134,25 @@ class ViewProfile extends Component {
   };
 
   handleSubmit = async (event) => {
-    // todo: add authentication
+    // TODO: Only the logged in user should be able to edit their profile
     const {user} = this.state;
-    await api.users.update(user.id, user);
-    this.setState({editing: false});
-    this.setState({unchangedUser: user});
+
+    try{
+      await api.users.update(user.id, user);
+      this.setState({editing: false});
+      this.setState({unchangedUser: user});
+    } catch(e){
+      this.setState({errorMessage: e, errorMessageOpen: true});
+    }
     event.preventDefault();
   };
 
   render() {
-    const {editing, user, sponsors, selectedFile} = this.state;
+    const {editing, user, sponsors, selectedFile, errorMessage, errorMessageOpen} = this.state;
 
     return (
       <Box width='50%' mx='auto'>
+        {errorMessageOpen && <Message title='Something went wrong...' message={errorMessage} callback={this.messageOpenCallback}/>}
         <Box mt={2}>
           <Grid container direction='row' justify='space-between' alignItems='flex-end' spacing={2}>
             <Grid item xs={10}>
@@ -354,7 +375,7 @@ class ViewProfile extends Component {
                 </Grid>
               </Grid>
             ) :
-            (   // TODO: Only the logged in user should be able to edit their profile
+            (
               <Button variant='contained' onClick={this.handleEdit}>
                 Edit Profile
               </Button>
