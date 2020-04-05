@@ -1,28 +1,24 @@
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {Link} from 'react-router-dom';
+import Login from '../Components/Login';
 import {AuthContext} from '../Contexts/AuthProvider';
 
 const LoginPage = ({name}) => {
   const {isAuthenticated, login} = useContext(AuthContext);
 
   return (
-    <div>
-      <p className='App-intro'>
-        Hello, {name}<br/>
-        Do you want to see the secret area? <Link to='/secret'>Click here </Link>
-      </p>
-
-      {isAuthenticated &&
-        <div>
-          <hr/>
-          Please login first
-          <hr/>
-          <button onClick={login} type='button'>Login</button>
-        </div>
-      }
-
-    </div>
+    <Grid
+      container
+      direction='column'
+      alignItems='center'
+    >
+      <Grid item xs={12} sm={8} md={6} xl={6} component={Paper} elevation={6} my={10}>
+        <Login/>
+      </Grid>
+    </Grid>
   );
 };
 

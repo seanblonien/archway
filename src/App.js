@@ -16,7 +16,6 @@ import Home from './Pages/Home';
 import ImportUsers from './Pages/ImportUsers';
 import LoginPage from './Pages/LoginPage';
 import NotFound from './Pages/NotFound';
-import Secret from './Pages/Secret';
 import Sponsors from './Pages/Sponsors';
 import ViewADepartment from './Pages/ViewADepartment';
 import ViewAllDepartments from './Pages/ViewAllDepartments';
@@ -55,7 +54,6 @@ export default function App () {
                   <Route path='/ViewAllDepartments' component={ViewAllDepartments}/>
                   <Route path='/ViewADepartment/:id' component={ViewADepartment}/>
                   <Route path='/FAQ' component={FAQ}/>
-                  <ProtectedRoute path='/secret' component={Secret}/>
                   <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
                   <ProtectedRoute path='/ViewProfile/:username' component={ViewProfile}/>
                   <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
