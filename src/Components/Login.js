@@ -4,7 +4,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, {useContext, useState} from 'react';
@@ -40,9 +39,9 @@ const Login = () => {
   const [error, setError] = useState('');
   const classes = useStyles();
 
-  const handleLogin = () => {
-    const response = login(email, password);
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(email, password);
   };
 
   return (
@@ -54,7 +53,7 @@ const Login = () => {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container direction='column'>
             <TextField
               label='Email'
@@ -76,20 +75,19 @@ const Login = () => {
               variant='contained'
               color='primary'
               className={classes.submit}
-              onClick={handleLogin}
             >
               Sign In
             </Button>
 
             <Grid container direction='column'>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href='#' variant='body2'>
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href='#' variant='body2'>
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>

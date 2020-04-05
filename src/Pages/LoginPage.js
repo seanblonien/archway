@@ -1,14 +1,9 @@
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React from 'react';
 import Login from '../Components/Login';
-import {AuthContext} from '../Contexts/AuthProvider';
 
-const LoginPage = ({name}) => {
-  const {isAuthenticated, login} = useContext(AuthContext);
-
+const LoginPage = () => {
   return (
     <Grid
       container
@@ -20,10 +15,6 @@ const LoginPage = ({name}) => {
       </Grid>
     </Grid>
   );
-};
-
-LoginPage.propTypes = {
-  name: PropTypes.string.isRequired,
 };
 
 export default LoginPage;
