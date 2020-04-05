@@ -2,14 +2,16 @@
 import axios from 'axios';
 import Endpoint from './Endpoint';
 import UploadEndpoint from './UploadEndpoint';
+import StorageManager from '../Contexts/StorageManager';
+import {AuthContext} from '../Contexts/AuthProvider';
+import {useContext} from 'react';
 
+const {token} = useContext(AuthContext);
 // Handles all axios request interception
 const handleRequest = (config) => {
-  const token = localStorage.getItem('token');
   if(token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-
   return config;
 };
 
@@ -68,7 +70,8 @@ const API = {
   register: (user) =>
     axios.post('/auth/local/register', user),
 
-  forgotPassword: (email) => axios.post('', email)
+  forgotPassword: (email) => axios.post('', email),
+  authenticate: () => axios.get('/posts')
 };
 
 export default API;
