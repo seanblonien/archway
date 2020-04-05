@@ -4,7 +4,7 @@ import api from '../Services/api';
 import StorageManager from './StorageManager';
 import history from '../utils/history';
 
-export const AuthContext = React.createContext({});
+const AuthContext = React.createContext({});
 
 const initialState = {
   isAuthenticated: false,
@@ -12,7 +12,7 @@ const initialState = {
   token: null,
 };
 
-export default class AuthProvider extends Component {
+export class AuthProvider extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -100,3 +100,5 @@ export default class AuthProvider extends Component {
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired
 };
+
+export default AuthContext;

@@ -27,7 +27,7 @@ import ViewYourCapstones from './Pages/ViewYourCapstones';
 import ViewYourCapstonesSponsors from './Pages/ViewYourCapstonesSponsors';
 import history from './utils/history';
 import Can from './Components/Can';
-import AuthProvider from './Contexts/AuthProvider';
+import {AuthProvider} from './Contexts/AuthContext';
 
 export default function App () {
   return <>

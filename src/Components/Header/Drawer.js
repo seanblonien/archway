@@ -19,7 +19,7 @@ import ViewYourCapstonesIcon from '@material-ui/icons/TableChartTwoTone';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {AuthContext} from '../../Contexts/AuthProvider';
+import AuthContext from '../../Contexts/AuthContext';
 
 const styles = {
   list: {

@@ -30,7 +30,7 @@ import {
 import compose from 'recompose/compose';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
-import {AuthContext} from '../Contexts/AuthProvider';
+import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';

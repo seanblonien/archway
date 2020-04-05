@@ -14,7 +14,7 @@ import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
 import {university} from '../../constants';
-import {AuthContext} from '../../Contexts/AuthProvider';
+import AuthContext from '../../Contexts/AuthContext';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/history';
 import Drawer from './Drawer';
