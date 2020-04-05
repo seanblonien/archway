@@ -8,11 +8,11 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React, { Component } from 'react';
-import {formatEntryUpload, imageURL} from '../utils/utils';
 import api from '../Services/api';
 import { permissions } from '../constants';
 import Can from '../Components/Can';
 import Message from '../Components/Message';
+import ProfilePic from '../Components/ProfilePic';
 
 class ViewProfile extends Component {
   constructor(props) {
@@ -42,9 +42,8 @@ class ViewProfile extends Component {
         jobTitle: '',
       },
       sponsors: [],
-      selectedFile: null,
-      errorMessage: '',
-      errorMessageOpen: false,
+      message: '',
+      messageOpen: false,
     };
   }
 
@@ -65,10 +64,22 @@ class ViewProfile extends Component {
     this.setState({sponsors});
   }
 
-  messageOpenCallback = (messageOpen) => {
+  messageOpenCallback = (open) => {
     // Reset error message
-    this.setState({errorMessage: ''});
-    this.setState({errorMessageOpen: messageOpen});
+    this.setState({message: ''});
+    this.setState({messageOpen: open});
+  }
+
+  updatePicture = (pic) => {
+    // Update the picture on the screen
+    const {user} = this.state;
+    this.setState({user: {...user, picture: pic}});
+  }
+
+  updateMessage = (msg) => {
+    // Triggers a message to be shown
+    this.setState({message: msg});
+    this.setState({messageOpen: true});
   }
 
   handleCancel = () => {
@@ -85,50 +96,6 @@ class ViewProfile extends Component {
     this.setState({user: {...user, [name]: value}});
   };
 
-  handleSelectImage = event => {
-    this.setState({selectedFile : event.target.files[0]});
-  }
-
-  handleUploadImage = async () => {
-    const {user, selectedFile} = this.state;
-    const {match} = this.props;
-
-    try{
-      // Upload the new picture
-      const fileUpload = formatEntryUpload(selectedFile, 'user', user.id, 'picture', 'users-permissions');
-      await api.uploads.upload(fileUpload);
-      this.setState({selectedFile: null});
-    } catch(err){
-      const msg = 'The server responded with a status of '.concat(err.data.statusCode).concat(' (').concat(err.data.message).concat(')');
-      this.setState({errorMessage: msg});
-      this.setState({errorMessageOpen: true});
-    }
-
-    try{
-      // Update the screen
-      const response = await api.users.find({username: match.params.username});
-      const pic = response[0].picture;
-
-      this.setState({user: {...user, picture: pic}});
-    } catch(e){
-      this.setState({errorMessage: 'ERROR!'});
-      this.setState({errorMessageOpen: true});
-    }
-  }
-
-  handleRemoveProfilePic = async () => {
-    const {user} = this.state;
-    if (user.picture) {
-      try{
-        await api.uploads.delete(user.picture.id);
-        this.setState({user: {...user, picture: null}});
-      } catch(e){
-        this.setState({errorMessage: 'ERROR!'});
-        this.setState({errorMessageOpen: true});
-      }
-    }
-  };
-
   handleEdit = () => {
     this.setState({editing: true});
   };
@@ -142,17 +109,18 @@ class ViewProfile extends Component {
       this.setState({editing: false});
       this.setState({unchangedUser: user});
     } catch(e){
-      this.setState({errorMessage: e, errorMessageOpen: true});
+      this.setState({message: e, messageOpen: true});
     }
     event.preventDefault();
   };
 
   render() {
-    const {editing, user, sponsors, selectedFile, errorMessage, errorMessageOpen} = this.state;
+    const {editing, user, sponsors, message, messageOpen} = this.state;
+    const {match} = this.props;
 
     return (
       <Box width='50%' mx='auto'>
-        {errorMessageOpen && <Message title='Something went wrong...' message={errorMessage} callback={this.messageOpenCallback}/>}
+        {messageOpen && <Message title='Something went wrong...' message={message} callback={this.messageOpenCallback}/>}
         <Box mt={2}>
           <Grid container direction='row' justify='space-between' alignItems='flex-end' spacing={2}>
             <Grid item xs={10}>
@@ -171,57 +139,7 @@ class ViewProfile extends Component {
           </Grid>
         </Box>
         <Divider/>
-        <Box my={2}>
-          <Grid container direction='row' justify='space-between' spacing={2}>
-            <Grid item xs={4}>
-              <img
-                src={imageURL.user(user.picture)} alt='profile'
-                style={{
-                  border: '4px solid black', borderRadius: '12px',
-                  width: '100%', height: 'auto'
-                }}
-              />
-            </Grid>
-            <Grid item xs={8} sm container direction='column' spacing={2}>
-              <Grid item>
-                <Typography>Upload profile picture</Typography>
-              </Grid>
-              <Grid item container direction='row' spacing={2}>
-                <Grid item>
-                  <Button variant='contained' component='label'>
-                    Choose File...
-                    <input
-                      type='file'
-                      name='file'
-                      onChange={this.handleSelectImage}
-                      style={{display: 'none'}}
-                    />
-                  </Button>
-                </Grid>
-                <Grid item>
-                  {selectedFile && 
-                    <Button variant='contained' component='label' onClick={this.handleUploadImage}>
-                      Upload Image
-                    </Button>
-                  }
-                </Grid>
-              </Grid>
-              {selectedFile &&
-                <Grid item>
-                  <Typography>{selectedFile && selectedFile.name}</Typography>
-                </Grid>
-              }
-              <Grid item>
-                {user.picture ?
-                  <Button variant='contained' onClick={this.handleRemoveProfilePic}>
-                    Remove Profile Picture
-                  </Button> :
-                  <Button variant='contained' disabled>Remove Profile Picture</Button>
-                }
-              </Grid>
-            </Grid>
-          </Grid>
-        </Box>
+        <ProfilePic user={user} username={match.params.username} picture={this.updatePicture} message={this.updateMessage}/>
         <Divider/>
         <Box my={2}>
           {(editing) &&
