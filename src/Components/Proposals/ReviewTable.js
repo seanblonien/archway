@@ -45,6 +45,10 @@ class ReviewTable extends Component {
     });
   };
 
+  handlePageChange() {
+    this.setState({page: this.state.page+1});
+  }
+
   mapStatus = (status) => {
     if (status === 'notSubmitted') {
       return <div>Not Submitted</div>;
@@ -120,7 +124,8 @@ class ReviewTable extends Component {
                     count={Math.ceil(proposals.length/10)}
                     rowsPerPage={10}
                     page={page}
-                    rowsPerPageOptions={10}
+                    rowsPerPageOptions={[10]}
+                    onChangePage={this.handlePageChange}
                   />
                 </TableRow>
               </TableFooter>
@@ -133,9 +138,9 @@ class ReviewTable extends Component {
 }
 
 ReviewTable.propTypes = {
-  proposals: PropTypes.isRequired,
-  action: PropTypes.isRequired,
-  title: PropTypes.isRequired
+  proposals: PropTypes.array,
+  action: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default compose(

@@ -86,7 +86,7 @@ class ViewAProposal extends Component {
 }
 
 ViewAProposal.propTypes = {
-  proposal: PropTypes.isRequired
+  proposal: PropTypes.object
 };
 
 export default compose(

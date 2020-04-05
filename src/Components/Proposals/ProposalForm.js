@@ -17,6 +17,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../../Services/api';
+import history from "../../utils/history";
 
 const styles = {
   form: {
@@ -36,13 +37,16 @@ class ProposalForm extends Component {
       open: false,
       departments: [],
       departmentList: [],
+      departmentNamesSel: [],
+      contactName: '',
+      sponsoringCompany: '',
       email: '',
       phone: '',
       projectTitle: '',
       projectDescription: '',
       projectDeliverables: '',
-      intellectualProperty: false,
-      nondisclosure: false,
+      isIntellectualPropertyRequired: false,
+      isNondisclosureRequired: false,
       financialSupport: '',
       projectUse: '',
       id: ''
@@ -52,18 +56,22 @@ class ProposalForm extends Component {
   async componentDidMount() {
     const departmentList = await api.departments.find();
     this.setState({departmentList});
+    const {proposal} = this.props;
+
 
     if (this.props.proposal !== null) {
-      const {proposal} = this.props;
+      const selectNames = Array.from(proposal.departments.map(d => d.name));
+
       this.setState({
         departments: proposal.departments,
+        departmentNamesSel: selectNames,
         email: proposal.email,
         phone: proposal.phone,
         projectTitle: proposal.projectTitle,
         projectDescription: proposal.projectDescription,
         projectDeliverables: proposal.projectDeliverables,
-        intellectualProperty: proposal.intellectualProperty,
-        nondisclosure: proposal.nondisclosure,
+        isIntellectualPropertyRequired: proposal.isIntellectualPropertyRequired,
+        isNondisclosureRequired: proposal.isNondisclosureRequired,
         financialSupport: proposal.financialSupport,
         projectUse: proposal.projectUse,
         id: proposal._id
@@ -73,21 +81,28 @@ class ProposalForm extends Component {
 
   handleChange = name => event => {
     const {departmentList} = this.state;
-    this.setState({[name]: event.target.value});
 
     if (name === 'departments') {
       const department = departmentList.find(d => d.name === event.target.value);
+
       let departments = this.state.departments;
       departments.push(department);
 
-      if(department){
+      let departmentNames = this.state.departmentNamesSel;
+      departmentNames.push(department.name);
+
+      if(department && event.target.selected){
         this.setState({[name]: departments});
+        this.setState({departmentNamesSel: departmentNames})
       }
+
+    } else {
+      this.setState({[name]: event.target.value});
     }
   };
 
   handleCheck = name => event => {
-    this.setState({ ...state, [event.target.name]: event.target.checked });
+    this.setState({[name]: event.target.checked});
   };
 
   handleClickOpen = () => {
@@ -99,8 +114,8 @@ class ProposalForm extends Component {
   };
 
   handleSave = async () => {
-    const {email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
-      nondisclosure, financialSupport, projectUse, departments, id} = this.state;
+    const {email, phone, projectTitle, projectDescription, projectDeliverables, isIntellectualPropertyRequired,
+      isNondisclosureRequired, financialSupport, projectUse, departments, id} = this.state;
 
     if (id !== '') {
       await api.proposals.update(id, {
@@ -109,8 +124,8 @@ class ProposalForm extends Component {
         projectTitle,
         projectDescription,
         projectDeliverables,
-        intellectualProperty,
-        nondisclosure,
+        isIntellectualPropertyRequired,
+        isNondisclosureRequired,
         financialSupport,
         projectUse,
         departments,
@@ -123,8 +138,8 @@ class ProposalForm extends Component {
         projectTitle,
         projectDescription,
         projectDeliverables,
-        intellectualProperty,
-        nondisclosure,
+        isIntellectualPropertyRequired,
+        isNondisclosureRequired,
         financialSupport,
         projectUse,
         departments,
@@ -136,8 +151,8 @@ class ProposalForm extends Component {
   };
 
   handleSubmit = async () => {
-    const {email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
-      nondisclosure, financialSupport, projectUse, departments, id} = this.state;
+    const {email, phone, projectTitle, projectDescription, projectDeliverables, isIntellectualPropertyRequired,
+      isNondisclosureRequired, financialSupport, projectUse, departments, id} = this.state;
 
 
     if (id === '') {
@@ -147,13 +162,12 @@ class ProposalForm extends Component {
         projectTitle,
         projectDescription,
         projectDeliverables,
-        intellectualProperty,
-        nondisclosure,
+        isIntellectualPropertyRequired,
+        isNondisclosureRequired,
         financialSupport,
         projectUse,
         departments,
-        status: 'submittedUnapproved',
-        dateSubmitted: new Date()
+        status: 'submittedPending',
       });
     } else {
       await api.proposals.update(id, {
@@ -162,13 +176,12 @@ class ProposalForm extends Component {
         projectTitle,
         projectDescription,
         projectDeliverables,
-        intellectualProperty,
-        nondisclosure,
+        isIntellectualPropertyRequired,
+        isNondisclosureRequired,
         financialSupport,
         projectUse,
         departments,
-        status: 'submittedUnapproved',
-        dateSubmitted: new Date()
+        status: 'submittedPending',
       });
     }
 
@@ -177,8 +190,8 @@ class ProposalForm extends Component {
 
   render() {
     const {classes, title} = this.props;
-    const {open, email, phone, projectTitle, projectDescription, projectDeliverables, intellectualProperty,
-      nondisclosure, financialSupport, projectUse, departments, departmentList} = this.state;
+    const {open, contactName, sponsoringCompany, email, phone, projectTitle, projectDescription, projectDeliverables, isIntellectualPropertyRequired,
+      isNondisclosureRequired, financialSupport, projectUse, departmentNamesSel, departmentList} = this.state;
 
     return (
       <div>
@@ -195,16 +208,25 @@ class ProposalForm extends Component {
           <DialogTitle id='form-dialog-projectTitle'>Proposal Request Form</DialogTitle>
           <DialogContent>
             <div className={classes.section}>
-              <Grid container>
-                <Grid item xs={6}>
-                  <DialogContentText>
-                    Name: Emily Tracey
-                  </DialogContentText>
-                  <DialogContentText>
-                    Company: Baylor University
-                  </DialogContentText>
+              <Grid container spacing={3}>
+                <Grid item xs={5}>
+                  <TextField
+                    autoFocus
+                    margin='dense'
+                    label='Contact Name'
+                    fullWidth
+                    value={contactName}
+                    onChange={this.handleChange('contactName')}
+                  />
+                  <TextField
+                    margin='dense'
+                    label='Sponsoring Organization Name'
+                    fullWidth
+                    value={sponsoringCompany}
+                    onChange={this.handleChange('sponsoringCompany')}
+                  />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                   <TextField
                     autoFocus
                     margin='dense'
@@ -237,12 +259,13 @@ class ProposalForm extends Component {
                 <InputLabel>Departments</InputLabel>
                 <Select
                   native
-                  value={ departments.name}
+                  multiple
+                  value={departmentNamesSel}
                   onChange={this.handleChange('departments')}
                 >
                   <option value=''> </option>
                   {departmentList.map(dept => (
-                    <option value={dept.name}>{dept.name}</option>
+                    <option key={dept.name} value={dept.name}>{dept.name}</option>
                   ))}
                 </Select>
               </FormControl>
@@ -270,21 +293,20 @@ class ProposalForm extends Component {
                 <Typography>Special Considerations</Typography>
                 <FormControlLabel
                   control={
-                    <Checkbox checked={intellectualProperty}  onChange={this.handleCheck('intellectualProperty')}/>
+                    <Checkbox checked={isIntellectualPropertyRequired}  onChange={this.handleCheck('isIntellectualPropertyRequired')}/>
                   }
                   label='Intellectual Property Agreement Required'
                 />
                 <FormControlLabel
                   control={
-                    <Checkbox checked={nondisclosure} onChange={this.handleCheck('nondisclosure')}/>
+                    <Checkbox checked={isNondisclosureRequired} onChange={this.handleCheck('isNondisclosureRequired')}/>
                   }
                   label='Non-Disclosure Agreement Required'
                 />
               </Grid>
             </div>
             <div className={classes.section}>
-              <Typography>Enter financial support that the sponsoring organization is willing to give.
-                (Standard project fee is 5,000)
+              <Typography>Describe the financial support that the organization is willing to provide
               </Typography>
               <TextField
                 margin='dense'
@@ -324,8 +346,8 @@ class ProposalForm extends Component {
 }
 
 ProposalForm.propTypes = {
-  proposal: PropTypes.isRequired,
-  title: PropTypes.isRequired,
+  proposal: PropTypes.object,
+  title: PropTypes.string,
 };
 
 export default compose(

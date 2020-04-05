@@ -24,7 +24,7 @@ class ReviewProposals extends Component {
     for (const proposal of proposals) {
       if (proposal.status === 'submittedApproved') {
         approved.push(proposal);
-      } else if (proposal.status === 'submittedUnapproved') {
+      } else if (proposal.status === 'submittedPending') {
         pending.push(proposal);
       }
     }
