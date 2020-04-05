@@ -4,8 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {formatEntryUpload, imageURL} from '../utils/utils';
-import api from '../Services/api';
+import {formatEntryUpload, imageURL} from '../../utils/utils';
+import api from '../../Services/api';
 
 class ProfilePic extends Component {
   constructor(props) {

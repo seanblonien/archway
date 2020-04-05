@@ -1,18 +1,16 @@
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import Markdown from 'markdown-to-jsx';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import api from '../Services/api';
-import { permissions } from '../constants';
-import Can from '../Components/Can';
 import Message from '../Components/Message';
-import ProfilePic from '../Components/ProfilePic';
+import ProfileHeader from '../Components/Profile/ProfileHeader';
+import ProfilePic from '../Components/Profile/ProfilePic';
+import MainProfile from '../Components/Profile/MainProfile';
+import MainProfileEdit from '../Components/Profile/MainProfileEdit';
+import SponsorProfile from '../Components/Profile/SponsorProfile';
+import SponsorProfileEdit from '../Components/Profile/SponsorProfileEdit';
+import CancelSubmit from '../Components/Profile/CancelSubmit';
+import EditButton from '../Components/Profile/EditButton';
 
 class ViewProfile extends Component {
   constructor(props) {
@@ -41,7 +39,6 @@ class ViewProfile extends Component {
         description: '',
         jobTitle: '',
       },
-      sponsors: [],
       message: '',
       messageOpen: false,
     };
@@ -58,13 +55,15 @@ class ViewProfile extends Component {
     // Get the user's profile picture
     this.setState({user});
     this.setState({unchangedUser});
-
-    // Get the list of sponsors
-    const sponsors = await api.sponsors.find({});
-    this.setState({sponsors});
   }
 
-  messageOpenCallback = (open) => {
+  updateMessage = (msg) => {
+    // Triggers a message to be shown
+    this.setState({message: msg});
+    this.setState({messageOpen: true});
+  }
+
+  updateMessageOpen = (open) => {
     // Reset error message
     this.setState({message: ''});
     this.setState({messageOpen: open});
@@ -76,24 +75,15 @@ class ViewProfile extends Component {
     this.setState({user: {...user, picture: pic}});
   }
 
-  updateMessage = (msg) => {
-    // Triggers a message to be shown
-    this.setState({message: msg});
-    this.setState({messageOpen: true});
+  updateUser = (name, value) => {
+    const {user} = this.state;
+    this.setState({user: {...user, [name]: value}});
   }
 
   handleCancel = () => {
     const {unchangedUser} = this.state;
     this.setState({editing: false});
     this.setState({user: unchangedUser});
-  };
-
-  handleChange = event => {
-    const {user} = this.state;
-    const {target} = event;
-    const {value} = target;
-    const {name} = target;
-    this.setState({user: {...user, [name]: value}});
   };
 
   handleEdit = () => {
@@ -115,191 +105,32 @@ class ViewProfile extends Component {
   };
 
   render() {
-    const {editing, user, sponsors, message, messageOpen} = this.state;
+    const {editing, user, message, messageOpen} = this.state;
     const {match} = this.props;
 
     return (
       <Box width='50%' mx='auto'>
-        {messageOpen && <Message title='Something went wrong...' message={message} callback={this.messageOpenCallback}/>}
-        <Box mt={2}>
-          <Grid container direction='row' justify='space-between' alignItems='flex-end' spacing={2}>
-            <Grid item xs={10}>
-              {(editing) ?
-                (
-                  <Typography variant='h3' align='left'>Profile Settings</Typography>
-                ) :
-                (
-                  <Typography variant='h3' align='left'>Profile: {user.Fullname}</Typography>
-                )
-              }
-            </Grid>
-            <Grid item xs={2}>
-              <Typography align='right'>{user.role.name}</Typography>
-            </Grid>
-          </Grid>
-        </Box>
+        {messageOpen && <Message title='Something went wrong...' message={message} callback={this.updateMessageOpen}/>}
+        <ProfileHeader user={user} edit={editing}/>
         <Divider/>
         <ProfilePic user={user} username={match.params.username} picture={this.updatePicture} message={this.updateMessage}/>
         <Divider/>
-        <Box my={2}>
-          {(editing) &&
-            (
-              <Typography variant='h4'>Main Settings</Typography>
-            )
-          }
-          <Grid container direction='row' spacing={2}>
-            <Grid item xs={12}>
-              {(editing) ?
-                (
-                  <TextField
-                    name='Fullname'
-                    label='Full name'
-                    margin='dense'
-                    style={{width: '100%'}}
-                    onChange={this.handleChange}
-                    value={user.Fullname}
-                  />
-                ) :
-                (
-                  <div>
-                    <Typography>Name: </Typography>
-                    <Typography>{user.Fullname}</Typography>
-                  </div>
-                )
-              }
-            </Grid>
-            <Grid item xs={12}>
-              {(editing) ?
-                (
-                  <TextField
-                    name='email'
-                    label='Email'
-                    margin='dense'
-                    style={{width: '100%'}}
-                    onChange={this.handleChange}
-                    value={user.email}
-                  />
-                ) :
-                (
-                  <div>
-                    <Typography>Email: </Typography>
-                    <Typography>{user.email}</Typography>
-                  </div>
-                )
-              }
-            </Grid>
-            <Grid item xs={12}>
-              {(editing) ?
-                (
-                  <TextField
-                    name='description'
-                    label='Bio'
-                    margin='dense'
-                    style={{width: '100%'}}
-                    multiline
-                    onChange={this.handleChange}
-                    value={user.description}
-                  />
-                ) :
-                (
-                  <div>
-                    <Typography style={{padding: '0px 0px 12px 0px'}}>Bio: </Typography>
-                    <Box border={1} borderRadius={12} padding={2}>
-                      <Markdown>{user.description? user.description : ''}</Markdown>
-                    </Box>
-                  </div>
-                )
-              }
-            </Grid>
-          </Grid>
-        </Box>
-        <Can perform={permissions.application.proposals.create} role={user.role.name}>
-          <div>
-            <Divider/>
-            <Box my={2}>
-              {(editing) &&
-                (
-                  <Typography variant='h4'>Sponsor Settings</Typography>
-                )
-              }
-              <Grid container direction='row' spacing={2}>
-                <Grid item xs={12}>
-                  {(editing) ?
-                    (
-                      <div>
-                        <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
-                        <Select
-                          name='sponsorOrganization'
-                          labelId='sponsor-organization-select-label'
-                          margin='dense'
-                          style={{width: '100%'}}
-                          onChange={this.handleChange}
-                          value={user.sponsorOrganization}
-                        >
-                          {sponsors.map(sponsor => (
-                            <option key={sponsor.id} value={sponsor}>
-                              {sponsor.name}
-                            </option>
-                          ))}
-                        </Select>
-                      </div>
-                    ) :
-                    (
-                      <div>
-                        <Typography>Organization: </Typography>
-                        <Typography>{user.sponsorOrganization && user.sponsorOrganization.name}</Typography>
-                      </div>
-                    )
-                  }
-                </Grid>
-                <Grid item xs={12}>
-                  {(editing) ?
-                    (
-                      <TextField
-                        name='jobTitle'
-                        label='Job Title'
-                        margin='dense'
-                        style={{width: '100%'}}
-                        onChange={this.handleChange}
-                        value={user.jobTitle}
-                      />
-                    ) :
-                    (
-                      <div>
-                        <Typography>Job Title: </Typography>
-                        <Typography>{user.jobTitle}</Typography>
-                      </div>
-                    )
-                  }
-                </Grid>
-              </Grid>
-            </Box>
-          </div>
-        </Can>
-
-        <Box my={2}>
-          {(editing) ?
-            (
-              <Grid container direction='row' justify='space-between' spacing={2}>
-                <Grid item>
-                  <Button variant='contained' onClick={this.handleCancel}>
-                    Cancel
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant='contained' onClick={this.handleSubmit}>
-                    Update Profile
-                  </Button>
-                </Grid>
-              </Grid>
-            ) :
-            (
-              <Button variant='contained' onClick={this.handleEdit}>
-                Edit Profile
-              </Button>
-            )
-          }
-        </Box>
+        {(editing) ?
+          (
+            <div>
+              <MainProfileEdit user={user} update={this.updateUser}/>
+              <SponsorProfileEdit user={user} update={this.updateUser}/>
+              <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
+            </div>
+          ) : 
+          (
+            <div>
+              <MainProfile user={user}/>
+              <SponsorProfile user={user}/>
+              <EditButton edit={this.handleEdit}/>
+            </div>
+          )
+        }
       </Box>
     );
   }
