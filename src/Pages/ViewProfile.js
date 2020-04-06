@@ -11,6 +11,7 @@ import SponsorProfile from '../Components/Profile/SponsorProfile';
 import SponsorProfileEdit from '../Components/Profile/SponsorProfileEdit';
 import CancelSubmit from '../Components/Profile/CancelSubmit';
 import EditButton from '../Components/Profile/EditButton';
+import AuthContext from '../Contexts/AuthContext';
 
 class ViewProfile extends Component {
   constructor(props) {
@@ -107,6 +108,7 @@ class ViewProfile extends Component {
   render() {
     const {editing, user, message, messageOpen} = this.state;
     const {match} = this.props;
+    const {isAuthenticated} = this.context;
 
     return (
       <Box width='50%' mx='auto'>
@@ -127,7 +129,7 @@ class ViewProfile extends Component {
             <div>
               <MainProfile user={user}/>
               <SponsorProfile user={user}/>
-              <EditButton edit={this.handleEdit}/>
+              {(isAuthenticated) && <EditButton edit={this.handleEdit}/>}
             </div>
           )
         }
@@ -135,5 +137,7 @@ class ViewProfile extends Component {
     );
   }
 }
+
+ViewProfile.contextType = AuthContext;
 
 export default ViewProfile;
