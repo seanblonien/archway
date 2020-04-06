@@ -42,6 +42,7 @@ class CreateCapstone extends Component {
     super(props);
     this.state = {
       title: '',
+      isFeatured: false,
       startDate: new Date(),
       endDate: new Date(),
       coverPhoto: '',
@@ -197,6 +198,10 @@ class CreateCapstone extends Component {
     this.setState({media: image});
   };
 
+  handleChangeSwitchFeature = (event) => {
+    this.setState({isFeatured: event.target.checked})
+  };
+
   handleSubmit = async () => {
     const {coverPhoto, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers} = this.state;
     if (coverPhoto == null) {
@@ -256,8 +261,6 @@ class CreateCapstone extends Component {
 
   render() {
     const {classes} = this.props;
-    const {Department, departmentList, dialogOpen, Participants, selectedSponsor,
-      sponsorList, checkedSponsors} = this.state;
 
     return(
       <div>
@@ -266,6 +269,8 @@ class CreateCapstone extends Component {
           <BasicInformation
             classes={classes}
             handleTitle={this.handleTitle.bind(this)}
+            isFeatured={this.state.isFeatured}
+            handleChangeSwitchFeature={this.handleChangeSwitchFeature.bind(this)}
             startDate={this.state.startDate}
             handleStartDate={this.handleStartDate.bind(this)}
             endDate={this.state.endDate}

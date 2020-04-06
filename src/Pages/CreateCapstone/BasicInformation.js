@@ -15,6 +15,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import compose from "recompose/compose";
 import {withStyles} from "@material-ui/core/styles";
 import withWidth from "@material-ui/core/withWidth/withWidth";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 
 
 const styles = theme => ({
@@ -59,6 +61,11 @@ const BasicInformation = (props) => {
       handleDescription
   */
 
+  const handleChangeSwitch = (event) => {
+    console.log(event.target.name);
+  };
+
+
   return (
     <Grid item xs={12} md={10}>
       <Card className={props.classes.card}>
@@ -67,25 +74,44 @@ const BasicInformation = (props) => {
           <Grid container justify='left' spacing={3}>
             <Grid item xs={12}>
               {/* Form for capstone name */}
-              <Tooltip title='Name of Capstone' arrow>
-                <FormControl margin='dense' required fullWidth>
-                  <TextField
-                    id='outlined-textarea'
-                    label='Title'
-                    placeholder='Type the title for the capstone project'
-                    multiline
-                    onChange={props.handleTitle}
-                    variant='outlined'
+              <Grid container justify='left' spacing={3} direction='row'>
+                <Grid item xs={9}>
+
+                <Tooltip title='Name of Capstone' arrow>
+                  <FormControl margin='dense' required fullWidth>
+                    <TextField
+                      id='outlined-textarea'
+                      label='Title'
+                      placeholder='Type the title for the capstone project'
+                      multiline
+                      onChange={props.handleTitle}
+                      variant='outlined'
+                    />
+                  </FormControl>
+                </Tooltip>
+                </Grid>
+                <Grid item xs={2}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={props.isFeatured}
+                        name="is featured"
+                        color="primary"
+                        onChange={props.handleChangeSwitchFeature}
+                      />
+                    }
+                    label="Featured"
                   />
-                </FormControl>
-              </Tooltip>
+                </Grid>
+
+                </Grid>
             </Grid>
 
             <Grid item xs={12}>
               <Grid container justify='center' spacing={2} direction='row'>
                 {/* Start & End Date*/}
-                <Grid item xs={6}>
-                  <Tooltip title='Select A Date' arrow>
+                <Tooltip title='Select A Date' arrow>
+                  <Grid item xs={6}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <DesktopDatePicker
                         autoOk
@@ -99,10 +125,10 @@ const BasicInformation = (props) => {
                         onChange={date => props.handleStartDate(date)}
                       />
                     </MuiPickersUtilsProvider>
-                  </Tooltip>
-                </Grid>
-                <Grid item xs={6}>
-                  <Tooltip title='Select A Date' arrow>
+                  </Grid>
+                </Tooltip>
+                <Tooltip title='Select A Date' arrow>
+                  <Grid item xs={6}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <DesktopDatePicker
                         autoOk
@@ -115,32 +141,36 @@ const BasicInformation = (props) => {
                         value={props.endDate}
                         onChange={date => props.handleEndDate(date)}
                       />
-                    </MuiPickersUtilsProvider>
-                  </Tooltip>
-                </Grid>
+                      </MuiPickersUtilsProvider>
+                  </Grid>
+                </Tooltip>
+
               </Grid>
             </Grid>
 
-            <Grid item xs={12}>
-              {/* select department */}
-              <FormControl margin='dense' fullWidth variant='filled'>
-                <InputLabel ref={null}>Department</InputLabel>
-                <Select
-                  labelId='demo-customized-select-label'
-                  id='demo-customized-select'
-                  value={props.Department}
-                  onChange={props.handleChangeDepartment}
-                >
-                  <MenuItem value=''>
-                    <em>None</em>
-                  </MenuItem>
-                  {props.departmentList.map(dept => (
-                    <MenuItem value={dept.name}>{dept.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
+            <Tooltip title='Select A Department' arrow>
+              <Grid item xs={12}>
+                {/* select department */}
+                <FormControl margin='dense' fullWidth variant='filled'>
+                  <InputLabel ref={null}>Department</InputLabel>
+                  <Select
+                    labelId='demo-customized-select-label'
+                    id='demo-customized-select'
+                    value={props.Department}
+                    onChange={props.handleChangeDepartment}
+                  >
+                    <MenuItem value=''>
+                      <em>None</em>
+                    </MenuItem>
+                    {props.departmentList.map(dept => (
+                      <MenuItem value={dept.name}>{dept.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Tooltip>
 
+            <Tooltip title='Fill description' arrow>
             <Grid item xs={12}>
               <FormControl margin='dense' required fullWidth>
                 <TextField
@@ -153,8 +183,8 @@ const BasicInformation = (props) => {
                   onChange={props.handleDescription}
                 />
               </FormControl>
-
             </Grid>
+            </Tooltip>
 
           </Grid>
         </CardContent>

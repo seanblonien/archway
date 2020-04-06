@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -15,7 +15,7 @@ import Avatar from "@material-ui/core/Avatar";
 import BusinessIcon from "@material-ui/icons/Business";
 import ListItemText from "@material-ui/core/ListItemText";
 import DragAndDropZone from "../../Components/DragAndDropZone/DragAndDropZone";
-import MemberInformation from "./MemberInformation";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const SponsorAndMediaInformation = (props) => {
 
@@ -31,7 +31,6 @@ const SponsorAndMediaInformation = (props) => {
   * handleAcceptImageMedia
   */
 
-  const [selectedSponsor, setSelectedSponsor] = useState('')
 
   return (
     <Grid container justify='center'>
@@ -44,6 +43,8 @@ const SponsorAndMediaInformation = (props) => {
               <Grid item xs={12}>
 
                 <Grid container  justify='center' spacing={2} alignItems='center'>
+                  <Tooltip title='Select a Sponsor' arrow>
+
                   <Grid item xs={9}>
                     <FormControl margin='dense' fullWidth variant='filled'>
                       <InputLabel ref={null}>Sponsor</InputLabel>
@@ -62,6 +63,7 @@ const SponsorAndMediaInformation = (props) => {
                       </Select>
                     </FormControl>
                   </Grid>
+                  </Tooltip>
                   <Grid item xs>
                     <Button variant='outlined' color='primary' onClick={() => props.handleConfirmSponsor(props.selectedSponsor)}>
                       Confirm
@@ -93,7 +95,9 @@ const SponsorAndMediaInformation = (props) => {
             <Card className={props.classes.card}>
 
               <CardContent>
-                <DragAndDropZone acceptImage={props.handleAcceptImageThumbnail.bind(this)}/>
+                <DragAndDropZone acceptImage={props.handleAcceptImageThumbnail.bind(this)}
+                                 prompt="Drop or click to upload a thumbnail"
+                />
               </CardContent>
             </Card>
           </Grid>
@@ -101,7 +105,9 @@ const SponsorAndMediaInformation = (props) => {
             <Card className={props.classes.card}>
 
               <CardContent>
-                <DragAndDropZone acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}/>
+                <DragAndDropZone acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}
+                                 prompt="Drop or click to upload a cover photo"
+                />
               </CardContent>
             </Card>
           </Grid>
@@ -111,7 +117,9 @@ const SponsorAndMediaInformation = (props) => {
         {/* Submit button */}
         <Card className={props.classes.card}>
           <CardContent>
-            <DragAndDropZone acceptImage={props.handleAcceptImageMedia.bind(this)}/>
+            <DragAndDropZone acceptImage={props.handleAcceptImageMedia.bind(this)}
+                             prompt="Drop or click to upload a picture"
+            />
           </CardContent>
         </Card>
 

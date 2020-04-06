@@ -13,6 +13,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import ListItemText from "@material-ui/core/ListItemText";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const MemberInformation = ( props ) => {
@@ -53,26 +54,29 @@ const MemberInformation = ( props ) => {
 
                   <Grid item xs={12}>
                     <Grid container alignItems='center' justify='left' spacing={3} direction='row'>
-                      <Grid item xs={8}>
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={props.AllUsers}
-                          getOptionLabel={(option) => option.Fullname}
-                          style={{ width: 300 }}
-                          onChange={handleSelectUser}
-                          renderInput={(params) => <TextField {...params} label="Search for Team Members" variant="outlined" />}
-                        />
-                      </Grid>
+                      <Tooltip title='Search for name' arrow>
+                        <Grid item xs={8}>
+                          <Autocomplete
+                            id="combo-box-demo"
+                            options={props.AllUsers}
+                            getOptionLabel={(option) => option.Fullname}
+                            style={{ width: 300 }}
+                            onChange={handleSelectUser}
+                            renderInput={(params) => <TextField {...params} label="Search for Team Members" variant="outlined" />}
+                          />
+                        </Grid>
+                      </Tooltip>
                       <Grid item>
-
                         <Button variant='outlined' color='primary' onClick={() => props.handleConfirmTeammate(selectUser)}>
                           Confirm
                         </Button>
                       </Grid>
                       <Grid item>
-                        <Button variant='outlined' color='primary' onClick={props.handleClickDialogOpen}>
-                          Add a new user
-                        </Button>
+                        <Tooltip title='Add if not existing' arrow>
+                          <Button variant='outlined' color='primary' onClick={props.handleClickDialogOpen}>
+                            Add a new user
+                          </Button>
+                        </Tooltip>
                         {/* <AddUser/> */}
                         <SimpleDialog selectedValue={props.handleNewUser} open={props.dialogOpen} onClose={props.handleClickDialogClose}/>
                       </Grid>
@@ -108,7 +112,7 @@ const MemberInformation = ( props ) => {
           <CardContent>
             <Grid container  justify='left' alignItems='center' spacing={2}>
               <Grid item xs={12}>
-                <PageTitleTypography text='Team Member Information' align='left' size='h5'/>
+                <PageTitleTypography text='Staff Information' align='left' size='h5'/>
                 <Divider/>
               </Grid>
 
@@ -117,6 +121,8 @@ const MemberInformation = ( props ) => {
 
                   <Grid item xs={12}>
                     <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
+                      <Tooltip title='Search for name' arrow>
+
                       <Grid item xs={3}>
                         <Autocomplete
                           id="combo-box-demo"
@@ -127,6 +133,7 @@ const MemberInformation = ( props ) => {
                           renderInput={(params) => <TextField {...params} label="Search for Professor" variant="outlined" />}
                         />
                       </Grid>
+                      </Tooltip>
 
                       <Grid item>
 
@@ -139,7 +146,10 @@ const MemberInformation = ( props ) => {
 
                   <Grid item xs={12}>
                     <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
+                      <Tooltip title='Search for name' arrow>
+
                       <Grid item xs={3}>
+
                         <Autocomplete
                           id="combo-box-demo"
                           options={props.AllUsers}
@@ -149,6 +159,7 @@ const MemberInformation = ( props ) => {
                           renderInput={(params) => <TextField {...params} label="Search for TA" variant="outlined" />}
                         />
                       </Grid>
+                      </Tooltip>
                       <Grid item>
 
                         <Button variant='outlined' color='primary' onClick={props.handleConfirmTeammate}>

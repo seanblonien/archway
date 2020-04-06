@@ -28,7 +28,7 @@ export default function Accept(props) {
 
       {acceptedFiles.length === 0 ?
         <div>
-          <p>Drag and drop some files here, or click to select files</p>
+          <p>{props.prompt}</p>
         </div>
         :
         <div>
