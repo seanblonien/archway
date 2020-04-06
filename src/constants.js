@@ -56,14 +56,5 @@ export const USER_IMPORT_TYPE = {
   'manual': 3
 };
 
-// Put the name of your university here
-export const university = 'Baylor';
-
 // Object of strapi user permissions
 export const permissions = perms;
-
-// These colors make up the theme of the website. Use a site like https://www.hexcolortool.com/ to find your school's colors in hex
-export const schoolColorPrimary = '#154734';
-export const schoolColorSecondary = '#FFB81C';
-
-export const homepageBackground = 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Baylor_University_June_2016_19_%28Founders_Mall_and_Pat_Neff_Hall%29.jpg';

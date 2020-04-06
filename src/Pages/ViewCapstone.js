@@ -15,7 +15,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import _ from 'lodash';
-import Markdown from 'markdown-to-jsx';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import React, {Component} from 'react';
 import {Carousel} from 'react-responsive-carousel';
@@ -31,10 +30,11 @@ import {
 import compose from 'recompose/compose';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
-import auth from '../Auth';
+import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
+import MediaMarkdown from '../utils/MediaMarkdown';
 
 const styles = () => ({
   card: {
@@ -157,12 +157,12 @@ class ViewCapstone extends Component {
   }
 
   async componentDidMount() {
+    const {user} = this.context;
     const users1 = await api.users.find();
 
     // If we're logged-in, store the user Id and update the count values.
-    const userObj = auth.getUser();
-    if (userObj) {
-      this.setState({Username: userObj._id});
+    if (user) {
+      this.setState({Username: user._id});
     }
 
     const capstone = await this.getCapstone();
@@ -342,9 +342,9 @@ class ViewCapstone extends Component {
                       </Typography>
                       <Typography variant='subheading' style={{marginTop: '2%'}}>
                         <b>Description: </b> <br/>
-                        <Markdown>
+                        <MediaMarkdown>
                           {capstone.description}
-                        </Markdown>
+                        </MediaMarkdown>
                       </Typography>
                     </CardContent>
                   </Card>
@@ -548,6 +548,8 @@ class ViewCapstone extends Component {
     return <LoadingCircle/>;
   }
 }
+
+ViewCapstone.contextType = AuthContext;
 
 export default compose(
   withStyles(styles),
