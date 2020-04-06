@@ -16,16 +16,16 @@ import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
-import auth from '../Auth';
+import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
 import history from '../utils/history';
+import MediaMarkdown from '../utils/MediaMarkdown';
 
 const styles = () => ({
   card: {
@@ -92,8 +92,7 @@ class ViewUser extends Component {
     const picURL = imageURL.user(pic.data.picture);
 
     this.setState({departmentList, loading: false, picture: picURL});
-
-    const userObj = auth.getUser();
+    const {user : userObj} = this.context;
     if(userObj && userObj.username === match.params.username) {
       this.setState({
         editable: true
@@ -143,7 +142,8 @@ class ViewUser extends Component {
     const {Bio, Department, Fullname, hasPicture} = this.state;
 
     this.handleClose();
-    const userID = auth.getUser()._id;
+    const {user} = this.context;
+    const userID = user.id;
 
     // Make the changes
     await api.users.update(userID, {
@@ -365,9 +365,9 @@ class ViewUser extends Component {
                       <CardContent>
                         <SubHeadingTextTypography text={result.title}/>
                         <Divider/>
-                        <Markdown>
+                        <MediaMarkdown>
                           {result.description}
-                        </Markdown>
+                        </MediaMarkdown>
                       </CardContent>
                     </Card>
                   </Grid>
@@ -382,6 +382,8 @@ class ViewUser extends Component {
     return <LoadingCircle/>;
   }
 }
+
+ViewUser.contextType = AuthContext;
 
 ViewUser.propTypes = {
   classes: PropTypes.objectOf(PropTypes.object).isRequired,
