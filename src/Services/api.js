@@ -50,6 +50,7 @@ const API = {
   users:  new Endpoint('users', axios),
   theme: new Endpoint('theme', axios),
   homepage: new Endpoint('home-page', axios),
+  sponsorpage: new Endpoint('sponsor-page', axios),
 
   // Other non-content type Strapi API endpoints
 

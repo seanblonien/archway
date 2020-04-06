@@ -163,20 +163,20 @@
       "count": "application.sections.count",
       "update": "application.sections.update"
     },
-    "home_page": {
-      "find": "application.home-page.find",
-      "update": "application.home-page.update",
-      "delete": "application.home-page.delete"
-    },
     "sponsor_page": {
       "find": "application.sponsor-page.find",
-      "delete": "application.sponsor-page.delete",
-      "update": "application.sponsor-page.update"
+      "update": "application.sponsor-page.update",
+      "delete": "application.sponsor-page.delete"
     },
     "theme": {
+      "find": "application.theme.find",
       "update": "application.theme.update",
-      "delete": "application.theme.delete",
-      "find": "application.theme.find"
+      "delete": "application.theme.delete"
+    },
+    "home_page": {
+      "update": "application.home-page.update",
+      "find": "application.home-page.find",
+      "delete": "application.home-page.delete"
     }
   }
 }
