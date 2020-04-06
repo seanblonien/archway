@@ -27,24 +27,24 @@ class ThemeManager extends Component {
       <ThemeProvider
         theme={createMuiTheme(
           {
-            university: `${customTheme.universityName}`,
+            university: customTheme.universityName,
             palette: {
               primary: {
-                main: `${customTheme.primaryColor}`,
+                main: customTheme.primaryColor,
               },
               secondary: {
-                main: `${customTheme.secondaryColor}`,
+                main: customTheme.secondaryColor,
               },
               error: {
-                main: `${customTheme.errorColor}`,
+                main: customTheme.errorColor,
               },
               background: {
-                default: `${customTheme.backgroundColor}`,
+                default: customTheme.backgroundColor,
               },
               action: {
-                active: `${customTheme.activeColor}`,
-                hover: `${customTheme.hoverColor}`,
-                selected: `${customTheme.selectedColor}`,
+                active: customTheme.activeColor,
+                hover: customTheme.hoverColor,
+                selected: customTheme.selectedColor,
               }
             },
           }
