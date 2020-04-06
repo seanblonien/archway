@@ -16,6 +16,7 @@ import {permissions} from '../constants';
 import Can from '../Components/Can';
 import gStyle from '../utils/styles.module.css';
 import api from '../Services/api';
+import {getBgImageFromStrapi} from '../utils/utils';
 
 const insideStyles = theme => ({
   background: theme.palette.primary.main,
@@ -94,7 +95,7 @@ class Home extends Component {
       :
       <div>
         <div>
-          <Parallax bgImage='https://www.baylor.edu/content/imglib/3/4/7/4/347452.jpg' strength={500}>
+          <Parallax style={{backgroundImage: getBgImageFromStrapi(pageContent.bgimage.url), backgroundSize: 'cover'}} strength={500}>
             <div style={{height: 650}}>
               <div style={surroundStyle}>
                 <div style={insideStyles(theme)}>
