@@ -22,9 +22,10 @@ const handleResponse = (response) => response;
 // Handles all axios response errors
 const handleResponseError = async (error) => {
   const {response} = error;
-  // if(response.status === 401){
-  //   localStorage.clear();
-  // }
+  // 401 means bad token/bad authentication values
+  if(response.status === 401){
+    StorageManager.clearLocalStorage();
+  }
   return Promise.reject(response);
 };
 

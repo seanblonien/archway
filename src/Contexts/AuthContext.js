@@ -21,7 +21,13 @@ export class AuthProvider extends Component {
   componentDidMount() {
     const user = StorageManager.getItem('user');
     const token = StorageManager.getItem('token');
-    this.setUserInStorage(user, token);
+    if(user && token) {
+      this.setState({
+        isAuthenticated: true,
+        user,
+        token,
+      });
+    }
   }
 
   logout = () => {
