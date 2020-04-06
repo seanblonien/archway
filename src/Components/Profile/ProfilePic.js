@@ -58,7 +58,7 @@ class ProfilePic extends Component {
   };
 
   render() {
-    const {user} = this.props;
+    const {user, canEdit} = this.props;
     const {selectedFile} = this.state;
 
     return (
@@ -73,44 +73,46 @@ class ProfilePic extends Component {
               }}
             />
           </Grid>
-          <Grid item xs={8} sm container direction='column' spacing={2}>
-            <Grid item>
-              <Typography>Upload profile picture</Typography>
-            </Grid>
-            <Grid item container direction='row' spacing={2}>
+          {canEdit &&
+            <Grid item xs={8} sm container direction='column' spacing={2}>
               <Grid item>
-                <Button variant='contained' component='label'>
-                  Choose File...
-                  <input
-                    type='file'
-                    name='file'
-                    onChange={this.handleSelectImage}
-                    style={{display: 'none'}}
-                  />
-                </Button>
+                <Typography>Upload profile picture</Typography>
               </Grid>
-              <Grid item>
-                {selectedFile &&
-                  <Button variant='contained' component='label' onClick={this.handleUploadImage}>
-                    Upload Image
+              <Grid item container direction='row' spacing={2}>
+                <Grid item>
+                  <Button variant='contained' component='label'>
+                    Choose File...
+                    <input
+                      type='file'
+                      name='file'
+                      onChange={this.handleSelectImage}
+                      style={{display: 'none'}}
+                    />
                   </Button>
+                </Grid>
+                <Grid item>
+                  {selectedFile &&
+                    <Button variant='contained' component='label' onClick={this.handleUploadImage}>
+                      Upload Image
+                    </Button>
+                  }
+                </Grid>
+              </Grid>
+              {selectedFile &&
+                <Grid item>
+                  <Typography>{selectedFile && selectedFile.name}</Typography>
+                </Grid>
+              }
+              <Grid item>
+                {user.picture ?
+                  <Button variant='contained' onClick={this.handleRemoveProfilePic}>
+                    Remove Profile Picture
+                  </Button> :
+                  <Button variant='contained' disabled>Remove Profile Picture</Button>
                 }
               </Grid>
             </Grid>
-            {selectedFile &&
-              <Grid item>
-                <Typography>{selectedFile && selectedFile.name}</Typography>
-              </Grid>
-            }
-            <Grid item>
-              {user.picture ?
-                <Button variant='contained' onClick={this.handleRemoveProfilePic}>
-                  Remove Profile Picture
-                </Button> :
-                <Button variant='contained' disabled>Remove Profile Picture</Button>
-              }
-            </Grid>
-          </Grid>
+          }
         </Grid>
       </Box>
     );
@@ -122,6 +124,7 @@ ProfilePic.propTypes = {
   username: PropTypes.string.isRequired,
   picture: PropTypes.func.isRequired,
   message: PropTypes.func.isRequired,
+  canEdit: PropTypes.bool.isRequired,
 };
 
 export default ProfilePic;

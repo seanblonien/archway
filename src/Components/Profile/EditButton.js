@@ -11,19 +11,24 @@ class SponsorProfile extends Component {
   }
 
   render() {
-    const {edit} = this.props;
+    const {canEdit, edit} = this.props;
 
     return (
-      <Box my={2}>
-        <Button variant='contained' onClick={edit}>
-          Edit Profile
-        </Button>
-      </Box>
+      <div>
+        {canEdit &&
+          <Box my={2}>
+            <Button variant='contained' onClick={edit}>
+              Edit Profile
+            </Button>
+          </Box>
+        }
+      </div>
     );
   }
 }
 
 SponsorProfile.propTypes = {
+  canEdit: PropTypes.bool.isRequired,
   edit: PropTypes.func.isRequired,
 };
 

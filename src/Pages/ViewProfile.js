@@ -18,7 +18,7 @@ class ViewProfile extends Component {
     super(props);
     this.state = {
       editing: false,
-      user: {
+      profile: {
         id: '',
         username: '',
         email: '',
@@ -29,7 +29,7 @@ class ViewProfile extends Component {
         description: '',
         jobTitle: '',
       },
-      unchangedUser: {
+      unchangedProfile: {
         id: '',
         username: '',
         email: '',
@@ -48,14 +48,14 @@ class ViewProfile extends Component {
   async componentDidMount() {
     const {match} = this.props;
 
-    // Get the data for the user in question
+    // Get the data for the profile in question
     const response = await api.users.find({username: match.params.username});
-    const user = response[0];
-    const unchangedUser = response[0];
+    const profile = response[0];
+    const unchangedProfile = response[0];
 
-    // Get the user's profile picture
-    this.setState({user});
-    this.setState({unchangedUser});
+    // Get the profile's profile picture
+    this.setState({profile});
+    this.setState({unchangedProfile});
   }
 
   updateMessage = (msg) => {
@@ -72,19 +72,19 @@ class ViewProfile extends Component {
 
   updatePicture = (pic) => {
     // Update the picture on the screen
-    const {user} = this.state;
-    this.setState({user: {...user, picture: pic}});
+    const {profile} = this.state;
+    this.setState({profile: {...profile, picture: pic}});
   }
 
-  updateUser = (name, value) => {
-    const {user} = this.state;
-    this.setState({user: {...user, [name]: value}});
+  updateProfile = (name, value) => {
+    const {profile} = this.state;
+    this.setState({profile: {...profile, [name]: value}});
   }
 
   handleCancel = () => {
-    const {unchangedUser} = this.state;
+    const {unchangedProfile} = this.state;
     this.setState({editing: false});
-    this.setState({user: unchangedUser});
+    this.setState({profile: unchangedProfile});
   };
 
   handleEdit = () => {
@@ -92,13 +92,13 @@ class ViewProfile extends Component {
   };
 
   handleSubmit = async (event) => {
-    // TODO: Only the logged in user should be able to edit their profile
-    const {user} = this.state;
+    // TODO: Only the logged in profile should be able to edit their profile
+    const {profile} = this.state;
 
     try{
-      await api.users.update(user.id, user);
+      await api.users.update(profile.id, profile);
       this.setState({editing: false});
-      this.setState({unchangedUser: user});
+      this.setState({unchangedProfile: profile});
     } catch(e){
       this.setState({message: e, messageOpen: true});
     }
@@ -106,30 +106,31 @@ class ViewProfile extends Component {
   };
 
   render() {
-    const {editing, user, message, messageOpen} = this.state;
+    const {editing, profile, message, messageOpen} = this.state;
     const {match} = this.props;
-    const {isAuthenticated} = this.context;
+    const {user, isAuthenticated} = this.context;
+    const canEdit = isAuthenticated && user.username === profile.username;
 
     return (
       <Box width='50%' mx='auto'>
         {messageOpen && <Message title='Something went wrong...' message={message} callback={this.updateMessageOpen}/>}
-        <ProfileHeader user={user} edit={editing}/>
+        <ProfileHeader user={profile} edit={editing}/>
         <Divider/>
-        <ProfilePic user={user} username={match.params.username} picture={this.updatePicture} message={this.updateMessage}/>
+        <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} message={this.updateMessage} canEdit={canEdit}/>
         <Divider/>
         {(editing) ?
           (
             <div>
-              <MainProfileEdit user={user} update={this.updateUser}/>
-              <SponsorProfileEdit user={user} update={this.updateUser}/>
+              <MainProfileEdit user={profile} update={this.updateProfile}/>
+              <SponsorProfileEdit user={profile} update={this.updateProfile}/>
               <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
             </div>
           ) : 
           (
             <div>
-              <MainProfile user={user}/>
-              <SponsorProfile user={user}/>
-              {(isAuthenticated) && <EditButton edit={this.handleEdit}/>}
+              <MainProfile user={profile}/>
+              <SponsorProfile user={profile}/>
+              <EditButton edit={this.handleEdit} canEdit={canEdit}/>
             </div>
           )
         }
