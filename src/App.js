@@ -55,7 +55,7 @@ export default function App () {
                   <Route path='/ViewProfile/:username' component={ViewProfile}/>
                   <ProtectedRoute path='/CreateCapstone' component={CreateCapstone}/>
                   <ProtectedRoute path='/ViewYourCapstones' component={ViewYourCapstones}/>
-                  <Route path='/ReviewProposals' component={ReviewProposals}/>
+                  <ProtectedRoute path='/ReviewProposals' component={ReviewProposals}/>
                   <ProtectedRoute path='/ImportUsers' component={ImportUsers}/>
                   <Route exact path='/' component={Home}/>
                   <Route path='*' component={NotFound}/>

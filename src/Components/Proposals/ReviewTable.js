@@ -24,9 +24,9 @@ class ReviewTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 0
+      page: 0,
+      rowsPerPage: 10
     }
-
   }
 
   handleDelete = async (e, id) => {
@@ -45,15 +45,19 @@ class ReviewTable extends Component {
     });
   };
 
-  handlePageChange() {
-    this.setState({page: this.state.page+1});
+  handlePageChange = (event, newPage) => {
+    this.setState({page: newPage});
+  }
+
+  handleRowChange = (event) => {
+    this.setState({page: 0, rowsPerPage: event.target.value});
   }
 
   mapStatus = (status) => {
     if (status === 'notSubmitted') {
       return <div>Not Submitted</div>;
     }
-    if (status === 'submittedUnapproved') {
+    if (status === 'submittedPending') {
       return <div>Waiting for Approval</div>;
     }
     if (status === 'submittedApproved') {
@@ -67,7 +71,7 @@ class ReviewTable extends Component {
 
   render() {
     const {proposals, action, title} = this.props;
-    const {page} = this.state;
+    const {page, rowsPerPage} = this.state;
 
     return (
       <div>
@@ -88,44 +92,48 @@ class ReviewTable extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {proposals.map((proposal, index) => (
-                  <TableRow key={index}>
-                    <TableCell component='th' scope='row'>
-                      {proposal.projectTitle}
-                    </TableCell>
-                    <TableCell align='right'>{this.mapStatus(proposal.status)}</TableCell>
-                    <TableCell align='right'>
-                      {action === 'review' &&
+                {proposals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((proposal) => {
+                  return (
+                    <TableRow key={proposal.name}>
+                      <TableCell component='th' scope='row'>
+                        {proposal.projectTitle}
+                      </TableCell>
+                      <TableCell align='right'>{this.mapStatus(proposal.status)}</TableCell>
+                      <TableCell align='right'>
+                        {action === 'review' &&
                         <div>
                           <ViewAProposal proposal={proposal}/>
                           <Button onClick={(e) => this.handleApprove(e, proposal._id)}>Approve</Button>
                           <Button onClick={(e) => this.handleDeny(e, proposal._id)}>Deny</Button>
                         </div>
-                      }
-                      {action === 'approved' &&
+                        }
+                        {action === 'approved' &&
                         <div>
                           <ViewAProposal proposal={proposal}/>
                         </div>
-                      }
-                      {action === 'personal' &&
+                        }
+                        {action === 'personal' &&
                         <div>
                           <ProposalForm title='Edit' proposal={proposal}>Edit</ProposalForm>
                           <Button onClick={(e) => this.handleDelete(e, proposal.id)}>Delete</Button>
                         </div>
-                      }
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        }
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
               <TableFooter>
                 <TableRow>
                   <TablePagination
                     colSpan={3}
-                    count={Math.ceil(proposals.length/10)}
-                    rowsPerPage={10}
+                    count={proposals.length}
+                    rowsPerPage={rowsPerPage}
                     page={page}
-                    rowsPerPageOptions={[10]}
+                    rowsPerPageOptions={[5, 10, 20]}
                     onChangePage={this.handlePageChange}
+                    onChangeRowsPerPage={this.handleRowChange}
+                    component="div"
                   />
                 </TableRow>
               </TableFooter>

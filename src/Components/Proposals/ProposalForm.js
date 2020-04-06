@@ -10,6 +10,8 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
+import Input from "@material-ui/core/Input";
+import MenuItem from "@material-ui/core/MenuItem";
 import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -18,6 +20,7 @@ import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../../Services/api';
 import history from "../../utils/history";
+import AuthContext from "../../Contexts/AuthContext";
 
 const styles = {
   form: {
@@ -36,6 +39,7 @@ class ProposalForm extends Component {
     this.state = {
       open: false,
       departments: [],
+      creator: '',
       departmentList: [],
       departmentNamesSel: [],
       contactName: '',
@@ -54,10 +58,10 @@ class ProposalForm extends Component {
   }
 
   async componentDidMount() {
+    const {user} = this.context;
     const departmentList = await api.departments.find();
-    this.setState({departmentList});
+    this.setState({departmentList, creator: user});
     const {proposal} = this.props;
-
 
     if (this.props.proposal !== null) {
       const selectNames = Array.from(proposal.departments.map(d => d.name));
@@ -82,19 +86,21 @@ class ProposalForm extends Component {
   handleChange = name => event => {
     const {departmentList} = this.state;
 
+    debugger;
     if (name === 'departments') {
-      const department = departmentList.find(d => d.name === event.target.value);
-
-      let departments = this.state.departments;
-      departments.push(department);
-
-      let departmentNames = this.state.departmentNamesSel;
-      departmentNames.push(department.name);
-
-      if(department && event.target.selected){
-        this.setState({[name]: departments});
-        this.setState({departmentNamesSel: departmentNames})
+      let departments = [];
+      for (let department of departmentList) {
+        for (let sel of event.target.value) {
+          if (department.name === sel) {
+            departments.push(department);
+          }
+        }
       }
+
+      let departmentNames = event.target.value;
+
+      this.setState({[name]: departments});
+      this.setState({departmentNamesSel: departmentNames})
 
     } else {
       this.setState({[name]: event.target.value});
@@ -115,7 +121,8 @@ class ProposalForm extends Component {
 
   handleSave = async () => {
     const {email, phone, projectTitle, projectDescription, projectDeliverables, isIntellectualPropertyRequired,
-      isNondisclosureRequired, financialSupport, projectUse, departments, id} = this.state;
+      isNondisclosureRequired, financialSupport, projectUse, departments, id, creator
+    } = this.state;
 
     if (id !== '') {
       await api.proposals.update(id, {
@@ -130,6 +137,7 @@ class ProposalForm extends Component {
         projectUse,
         departments,
         status: 'notSubmitted',
+        creator
       });
     } else {
       await api.proposals.create({
@@ -144,6 +152,7 @@ class ProposalForm extends Component {
         projectUse,
         departments,
         status: 'notSubmitted',
+        creator
       });
     }
 
@@ -152,7 +161,7 @@ class ProposalForm extends Component {
 
   handleSubmit = async () => {
     const {email, phone, projectTitle, projectDescription, projectDeliverables, isIntellectualPropertyRequired,
-      isNondisclosureRequired, financialSupport, projectUse, departments, id} = this.state;
+      isNondisclosureRequired, financialSupport, projectUse, departments, id, creator} = this.state;
 
 
     if (id === '') {
@@ -168,6 +177,7 @@ class ProposalForm extends Component {
         projectUse,
         departments,
         status: 'submittedPending',
+        creator
       });
     } else {
       await api.proposals.update(id, {
@@ -182,6 +192,7 @@ class ProposalForm extends Component {
         projectUse,
         departments,
         status: 'submittedPending',
+        creator
       });
     }
 
@@ -255,17 +266,22 @@ class ProposalForm extends Component {
                 value={projectTitle}
                 onChange={this.handleChange('projectTitle')}
               />
+            </div>
+            <div className={classes.section}>
+              <Typography variant='subtitle2'>Departments</Typography>
               <FormControl className={classes.formMargin}>
-                <InputLabel>Departments</InputLabel>
                 <Select
-                  native
+                  labelId="demo-mutiple-name-label"
+                  id="demo-mutiple-name"
                   multiple
                   value={departmentNamesSel}
                   onChange={this.handleChange('departments')}
+                  input={<Input />}
                 >
-                  <option value=''> </option>
-                  {departmentList.map(dept => (
-                    <option key={dept.name} value={dept.name}>{dept.name}</option>
+                  {departmentList.map((dept) => (
+                    <MenuItem key={dept.name} value={dept.name}>
+                      {dept.name}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -344,6 +360,8 @@ class ProposalForm extends Component {
 
   }
 }
+
+ProposalForm.contextType = AuthContext;
 
 ProposalForm.propTypes = {
   proposal: PropTypes.object,

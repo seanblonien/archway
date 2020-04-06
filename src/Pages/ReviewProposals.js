@@ -17,6 +17,7 @@ class ReviewProposals extends Component {
   }
 
   async componentDidMount() {
+    //const user = this.context;
     const proposals = await api.proposals.find();
     const approved = [];
     const pending = [];
