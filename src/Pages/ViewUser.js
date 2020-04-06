@@ -92,7 +92,7 @@ class ViewUser extends Component {
     const picURL = imageURL.user(pic.data.picture);
 
     this.setState({departmentList, loading: false, picture: picURL});
-    const userObj = this.context.user;
+    const {user : userObj} = this.context;
     if(userObj && userObj.username === match.params.username) {
       this.setState({
         editable: true

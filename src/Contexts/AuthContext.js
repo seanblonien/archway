@@ -52,7 +52,7 @@ export class AuthProvider extends Component {
       const response = await api.login(identifier, password);
       this.handleAuthenticationResponse(response, useStorage, '/');
     } catch(error) {
-      console.log(error);
+      // TODO
     }
   };
 
@@ -61,16 +61,15 @@ export class AuthProvider extends Component {
       const response = await api.register(user);
       this.handleAuthenticationResponse(response, useStorage, '/');
     } catch(error) {
-      console.log(error);
+      // TODO
     }
   };
 
   forgotPassword = async (email) => {
     try {
-      const response = await api.forgotPassword(email);
-      console.log(response);
+      await api.forgotPassword(email);
     } catch (error) {
-      console.log(error);
+      // TODO
     }
   };
 
