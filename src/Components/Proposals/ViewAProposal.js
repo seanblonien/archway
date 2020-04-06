@@ -53,10 +53,10 @@ class ViewAProposal extends Component {
           <DialogTitle id='form-dialog-title'>{proposal.projectTitle}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Contact: {proposal.email}  {proposal.phone}
+              Name:
             </DialogContentText>
             <DialogContentText>
-              Name:
+              Contact: {proposal.email}  {proposal.phone}
             </DialogContentText>
             <DialogContentText>
               Sponsoring Company:
