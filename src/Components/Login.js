@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(2, 0, 2),
+    margin: theme.spacing(1, 0, 1),
   },
 }));
 
@@ -38,8 +38,8 @@ const Login = () => {
   const classes = useStyles();
 
   const handleChange = (event) => {
-    const {checked, value, name} = event.target;
-    setState({...state, [name]: checked || value});
+    const {checked, value, name, type} = event.target;
+    setState({...state, [name]: type === 'checkbox' ? checked : value});
   };
 
   const handleSubmit = (e) => {
@@ -59,55 +59,66 @@ const Login = () => {
           Sign in
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
-          <Grid container direction='column'>
-            <TextField
-              label='Username'
-              name='identifier'
-              type='text'
-              autoComplete='username'
-              autoFocus
-              value={identifier}
-              onChange={handleChange}
-            />
-            <TextField
-              label='Password'
-              name='password'
-              type='password'
-              autoComplete='current-password'
-              value={password}
-              onChange={handleChange}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  value='remember'
-                  color='primary'
-                  checked={remember}
-                  onChange={handleChange}
-                />
-              }
-              label='Remember me'
-            />
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-
-            <Grid container direction='column'>
-              <Grid item xs>
-                <Link href='/' variant='body2'>
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href='/' variant='body2'>
-                  {'Don\'t have an account? Sign Up'}
-                </Link>
+          <Grid container direction='column' spacing={1}>
+            <Grid item>
+              <TextField
+                fullWidth
+                label='Username'
+                name='identifier'
+                type='text'
+                autoComplete='username'
+                autoFocus
+                value={identifier}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                label='Password'
+                name='password'
+                type='password'
+                autoComplete='current-password'
+                value={password}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name='remember'
+                    color='primary'
+                    checked={remember}
+                    onChange={handleChange}
+                  />
+                }
+                label='Remember me'
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                color='primary'
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+            </Grid>
+            <Grid item>
+              <Grid container direction='column'>
+                <Grid item xs>
+                  <Link href='/' variant='body2'>
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href='/' variant='body2'>
+                    {'Don\'t have an account? Sign Up'}
+                  </Link>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
