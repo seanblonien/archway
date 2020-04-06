@@ -33,6 +33,7 @@ export class AuthProvider extends Component {
   logout = () => {
     this.setState(initialState);
     StorageManager.clearLocalStorage();
+    history.push('/');
   };
 
   setUserInStorage = (user, token) => {
