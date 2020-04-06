@@ -6,7 +6,6 @@
     "@date-io/date-fns": "^2.4.0",
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.47",
     "@material-ui/pickers": "^4.0.0-alpha.3",
     "@weknow/react-bubble-chart-d3": "^1.0.12",
     "axios": "^0.19.2",
@@ -24,19 +23,8 @@
     "eslint-plugin-react-hooks": "^3.0.0",
     "fuse.js": "^3.6.1",
     "history": "^4.10.1",
-<<<<<<< HEAD
-    "install": "^0.13.0",
-    "jwt-decode": "^2.2.0",
-=======
->>>>>>> f152fbf25cde3770f2114ae968fa91de97a285ab
     "lodash": "^4.17.15",
     "markdown-to-jsx": "^6.11.0",
-<<<<<<< HEAD
-    "moment": "^2.24.0",
-    "npm": "^6.14.4",
-    "object-hash": "^2.0.3",
-=======
->>>>>>> f152fbf25cde3770f2114ae968fa91de97a285ab
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
     "pure-react-carousel": "^1.26.0",
