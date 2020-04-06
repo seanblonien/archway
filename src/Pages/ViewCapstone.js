@@ -28,13 +28,13 @@ import {
   TwitterShareButton
 } from 'react-share';
 import compose from 'recompose/compose';
-import auth from '../Auth';
+import {imageURL} from '../utils/utils';
+import api from '../Services/api';
+import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
-import api from '../Services/api';
 import MediaMarkdown from '../utils/MediaMarkdown';
-import {imageURL} from '../utils/utils';
 
 const styles = () => ({
   card: {
@@ -157,12 +157,12 @@ class ViewCapstone extends Component {
   }
 
   async componentDidMount() {
+    const {user} = this.context;
     const users1 = await api.users.find();
 
     // If we're logged-in, store the user Id and update the count values.
-    const userObj = auth.getUser();
-    if (userObj) {
-      this.setState({Username: userObj._id});
+    if (user) {
+      this.setState({Username: user._id});
     }
 
     const capstone = await this.getCapstone();
@@ -548,6 +548,8 @@ class ViewCapstone extends Component {
     return <LoadingCircle/>;
   }
 }
+
+ViewCapstone.contextType = AuthContext;
 
 export default compose(
   withStyles(styles),

@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
-import auth from '../../Auth';
+import AuthContext from '../../Contexts/AuthContext';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/history';
 import Drawer from './Drawer';
@@ -80,8 +80,9 @@ class PrimarySearchAppBar extends Component {
   }
 
   handleLogout = () =>{
-    auth.logout();
+    const {logout} = this.context;
     this.handleMenuClose();
+    logout();
   };
 
   handleMenuClose = () => {
@@ -93,10 +94,12 @@ class PrimarySearchAppBar extends Component {
   };
 
   handleToAccount = () => {
-    history.push(`/ViewProfile/${auth.getNickname()}`);
+    const {user} = this.context;
+    history.push(`/ViewProfile/${user.username}`);
   };
 
   render() {
+    const {isAuthenticated} = this.context;
     const {anchorEl} = this.state;
     const {classes, theme} = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -109,9 +112,9 @@ class PrimarySearchAppBar extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        {auth.isAuthenticated() && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
-        {!auth.isAuthenticated() && <MenuItem onClick={auth.login}>Login / Register</MenuItem>}
-        {auth.isAuthenticated() && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
+        {!isAuthenticated && <MenuItem onClick={() => history.push('/login')}>Login / Register</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
       </Menu>
     );
 
@@ -196,6 +199,8 @@ PrimarySearchAppBar.propTypes = {
   classes: PropTypes.objectOf(PropTypes.object).isRequired,
   theme: PropTypes.objectOf(PropTypes.object).isRequired,
 };
+
+PrimarySearchAppBar.contextType = AuthContext;
 
 export default compose(
   withStyles(styles),

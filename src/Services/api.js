@@ -2,14 +2,14 @@
 import axios from 'axios';
 import Endpoint from './Endpoint';
 import UploadEndpoint from './UploadEndpoint';
+import StorageManager from '../Contexts/StorageManager';
 
 // Handles all axios request interception
 const handleRequest = (config) => {
-  const token = localStorage.getItem('id_token');
+  const token = StorageManager.getItem('token');
   if(token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-
   return config;
 };
 
@@ -22,8 +22,9 @@ const handleResponse = (response) => response;
 // Handles all axios response errors
 const handleResponseError = async (error) => {
   const {response} = error;
+  // 401 means bad token/bad authentication values
   if(response.status === 401){
-    localStorage.clear();
+    StorageManager.clearLocalStorage();
   }
   return Promise.reject(response);
 };
@@ -60,13 +61,18 @@ const API = {
 
   getRoles: () => axios.get('/users-permissions/roles'),
   getRole: (id) => axios.get(`/users-permissions/roles/${id}`),
+
   login: (identifier, password) =>
     axios.post('/auth/local', {
       identifier,
       password
     }),
+
   register: (user) =>
-    axios.post('/auth/local/register', user)
+    axios.post('/auth/local/register', user),
+
+  forgotPassword: (email) => axios.post('', email),
+  authenticate: () => axios.get('/posts')
 };
 
 export default API;

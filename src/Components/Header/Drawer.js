@@ -19,7 +19,7 @@ import ViewYourCapstonesIcon from '@material-ui/icons/TableChartTwoTone';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import auth from '../../Auth';
+import AuthContext from '../../Contexts/AuthContext';
 
 const styles = {
   list: {
@@ -44,6 +44,7 @@ class HeaderDrawer extends Component {
     render() {
       const {classes} = this.props;
       const {left} = this.state;
+      const {isAuthenticated} = this.context;
 
       const sideList = (
         <div className={classes.list}>
@@ -64,21 +65,21 @@ class HeaderDrawer extends Component {
               <ListItemText primary='About'/>
             </ListItem>
 
-            {auth.isAuthenticated() &&
+            {isAuthenticated &&
               <ListItem button component={Link} to='/CreateCapstone'>
                 <CreateIcon/>
                 <ListItemText primary='Create Capstone'/>
               </ListItem>
             }
 
-            {auth.isAuthenticated() &&
+            {isAuthenticated &&
               <ListItem button component={Link} to='/ImportUsers'>
                 <Publish/>
                 <ListItemText primary='Import New Users'/>
               </ListItem>
             }
 
-            {auth.isAuthenticated() &&
+            {isAuthenticated &&
               <ListItem button component={Link} to='/ViewYourCapstones'>
                 <ViewYourCapstonesIcon/>
                 <ListItemText primary='View Your Capstones'/>
@@ -137,5 +138,7 @@ class HeaderDrawer extends Component {
 HeaderDrawer.propTypes = {
   classes: PropTypes.objectOf(PropTypes.object).isRequired,
 };
+
+HeaderDrawer.contextType = AuthContext;
 
 export default withStyles(styles)(HeaderDrawer);
