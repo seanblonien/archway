@@ -9,7 +9,7 @@
     "@material-ui/pickers": "^4.0.0-alpha.3",
     "@weknow/react-bubble-chart-d3": "^1.0.12",
     "axios": "^0.19.2",
-    "babel-eslint": "10.0.3",
+    "babel-eslint": "~10.0.3",
     "bad-words": "^3.0.3",
     "date-fns": "^2.11.0",
     "eslint-config-airbnb": "^18.1.0",
