@@ -134,7 +134,6 @@ const BasicInformation = (props) => {
                         autoOk
                         variant='outlined'
                         label='End Date'
-                        placeholder='2018/01/01'
                         format='yyyy/MM/dd'
                         mask='____/__/__'
                         keyboardIcon={<EventNoteIcon/>}
