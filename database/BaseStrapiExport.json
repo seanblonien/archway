@@ -139,22 +139,14 @@
         "url": {
           "type": "string"
         },
-        "contact": {
+        "email": {
           "type": "email"
         },
         "description": {
           "type": "richtext",
           "default": "10000"
         },
-        "preview": {
-          "type": "string"
-        },
         "thumbnail": {
-          "type": "media",
-          "multiple": false,
-          "required": false
-        },
-        "coverPhoto": {
           "type": "media",
           "multiple": false,
           "required": false
@@ -179,6 +171,17 @@
           "dominant": false,
           "targetAttribute": "department",
           "unique": false
+        },
+        "phone": {
+          "type": "string"
+        },
+        "preview": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "media",
+          "multiple": false,
+          "required": false
         }
       }
     },
