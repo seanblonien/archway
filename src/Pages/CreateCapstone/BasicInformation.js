@@ -1,22 +1,22 @@
 import React from 'react';
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import PageTitleTypography from "../../Components/PageTitleTypography";
-import Grid from "@material-ui/core/Grid";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import {DesktopDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import EventNoteIcon from "@material-ui/icons/EventNote";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import compose from "recompose/compose";
-import {withStyles} from "@material-ui/core/styles";
-import withWidth from "@material-ui/core/withWidth/withWidth";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import {DesktopDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import EventNoteIcon from '@material-ui/icons/EventNote';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import compose from 'recompose/compose';
+import {withStyles} from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth/withWidth';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import PageTitleTypography from '../../Components/PageTitleTypography';
 
 
 const styles = theme => ({
@@ -77,39 +77,39 @@ const BasicInformation = (props) => {
               <Grid container justify='left' spacing={3} direction='row'>
                 <Grid item xs={9}>
 
-                <Tooltip title='Name of Capstone' arrow>
-                  <FormControl margin='dense' required fullWidth>
-                    <TextField
-                      id='outlined-textarea'
-                      label='Title'
-                      placeholder='Type the title for the capstone project'
-                      multiline
-                      onChange={props.handleTitle}
-                      variant='outlined'
-                    />
-                  </FormControl>
-                </Tooltip>
+                  <Tooltip title='Name of Capstone' arrow>
+                    <FormControl margin='dense' required fullWidth>
+                      <TextField
+                        id='outlined-textarea'
+                        label='Title'
+                        placeholder='Type the title for the capstone project'
+                        multiline
+                        onChange={props.handleTitle}
+                        variant='outlined'
+                      />
+                    </FormControl>
+                  </Tooltip>
                 </Grid>
                 <Grid item xs={2}>
                   <FormControlLabel
                     control={
                       <Switch
                         checked={props.isFeatured}
-                        name="is featured"
-                        color="primary"
+                        name='is featured'
+                        color='primary'
                         onChange={props.handleChangeSwitchFeature}
                       />
                     }
-                    label="Featured"
+                    label='Featured'
                   />
                 </Grid>
 
-                </Grid>
+              </Grid>
             </Grid>
 
             <Grid item xs={12}>
               <Grid container justify='center' spacing={2} direction='row'>
-                {/* Start & End Date*/}
+                {/* Start & End Date */}
                 <Tooltip title='Select A Date' arrow>
                   <Grid item xs={6}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -141,7 +141,7 @@ const BasicInformation = (props) => {
                         value={props.endDate}
                         onChange={date => props.handleEndDate(date)}
                       />
-                      </MuiPickersUtilsProvider>
+                    </MuiPickersUtilsProvider>
                   </Grid>
                 </Tooltip>
 
@@ -171,26 +171,26 @@ const BasicInformation = (props) => {
             </Tooltip>
 
             <Tooltip title='Fill description' arrow>
-            <Grid item xs={12}>
-              <FormControl margin='dense' required fullWidth>
-                <TextField
-                  id='outlined-textarea'
-                  label='Description'
-                  rows='4'
-                  placeholder='Type the description'
-                  multiline
-                  variant='outlined'
-                  onChange={props.handleDescription}
-                />
-              </FormControl>
-            </Grid>
+              <Grid item xs={12}>
+                <FormControl margin='dense' required fullWidth>
+                  <TextField
+                    id='outlined-textarea'
+                    label='Description'
+                    rows='4'
+                    placeholder='Type the description'
+                    multiline
+                    variant='outlined'
+                    onChange={props.handleDescription}
+                  />
+                </FormControl>
+              </Grid>
             </Tooltip>
 
           </Grid>
         </CardContent>
       </Card>
     </Grid>
-  )
+  );
 
 };
 

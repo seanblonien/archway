@@ -30,6 +30,7 @@ import Can from './Components/Can';
 import {AuthProvider} from './Contexts/AuthContext';
 
 export default function App () {
+  // Then run sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
   return <>
     <RolesProvider>
       <AuthProvider>

@@ -60,12 +60,8 @@ const API = {
   // Other API endpoint methods
 
   getRoles: () => axios.get('/users-permissions/roles'),
-<<<<<<< HEAD
-  getRole: (id) => axios.get(`/users- permissions/roles/${id}`),
-=======
   getRole: (id) => axios.get(`/users-permissions/roles/${id}`),
 
->>>>>>> f152fbf25cde3770f2114ae968fa91de97a285ab
   login: (identifier, password) =>
     axios.post('/auth/local', {
       identifier,

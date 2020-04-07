@@ -6,9 +6,9 @@ import Filter from 'bad-words';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../../Services/api';
-import BasicInformation from "./BasicInformation";
-import MemberInformation from "./MemberInformation";
-import SponsorAndMediaInformation from "./SponsorAndMediaInformation";
+import BasicInformation from './BasicInformation';
+import MemberInformation from './MemberInformation';
+import SponsorAndMediaInformation from './SponsorAndMediaInformation';
 
 const styles = theme => ({
   list: {
@@ -147,7 +147,7 @@ class CreateCapstone extends Component {
   };
 
   handleStartDate = (startDate) => {
-    this.setState({startDate: startDate}, () => {
+    this.setState({startDate}, () => {
       if (this.state.startDate.getTime() > this.state.endDate.getTime()) {
         this.setState({endDate: startDate});
       }
@@ -156,7 +156,7 @@ class CreateCapstone extends Component {
   };
 
   handleEndDate = (endDate) => {
-    this.setState({endDate: endDate}, () => {
+    this.setState({endDate}, () => {
       if (this.state.endDate.getTime() < this.state.startDate.getTime()) {
         this.setState({startDate: endDate});
       }
@@ -199,7 +199,7 @@ class CreateCapstone extends Component {
   };
 
   handleChangeSwitchFeature = (event) => {
-    this.setState({isFeatured: event.target.checked})
+    this.setState({isFeatured: event.target.checked});
   };
 
   handleSubmit = async () => {
@@ -246,14 +246,14 @@ class CreateCapstone extends Component {
     const profane = filter.isProfane(title) || filter.isProfane(description);
     const validName = capstones.map(c => c.title.toUpperCase()).includes(title.toUpperCase());
 
-    let res = title && description && coverPhoto && Department && (checkedSponsors.length > 0) && !validName && !profane;
-    console.log("title: " +  title);
-    console.log("des: " +  description);
-    console.log("cover: " +  coverPhoto);
-    console.log("depart: " +  Department);
-    console.log("spon" +  checkedSponsors);
-    console.log("valid:" + validName);
-    console.log("pro? " + profane);
+    const res = title && description && coverPhoto && Department && (checkedSponsors.length > 0) && !validName && !profane;
+    console.log(`title: ${title}`);
+    console.log(`des: ${description}`);
+    console.log(`cover: ${coverPhoto}`);
+    console.log(`depart: ${Department}`);
+    console.log(`spon${checkedSponsors}`);
+    console.log(`valid:${validName}`);
+    console.log(`pro? ${profane}`);
     console.log(res);
 
     return res;

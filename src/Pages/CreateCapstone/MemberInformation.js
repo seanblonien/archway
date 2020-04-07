@@ -1,19 +1,19 @@
-import React, {useState} from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import PageTitleTypography from "../../Components/PageTitleTypography";
-import Divider from "@material-ui/core/Divider";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import SimpleDialog from "../../Components/AddUserDialog";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
-import ListItemText from "@material-ui/core/ListItemText";
-import Tooltip from "@material-ui/core/Tooltip";
+import React, {useState} from 'react';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
+import SimpleDialog from '../../Components/AddUserDialog';
+import PageTitleTypography from '../../Components/PageTitleTypography';
 
 
 const MemberInformation = ( props ) => {
@@ -57,12 +57,12 @@ const MemberInformation = ( props ) => {
                       <Tooltip title='Search for name' arrow>
                         <Grid item xs={8}>
                           <Autocomplete
-                            id="combo-box-demo"
+                            id='combo-box-demo'
                             options={props.AllUsers}
                             getOptionLabel={(option) => option.Fullname}
-                            style={{ width: 300 }}
+                            style={{width: 300}}
                             onChange={handleSelectUser}
-                            renderInput={(params) => <TextField {...params} label="Search for Team Members" variant="outlined" />}
+                            renderInput={(params) => <TextField {...params} label='Search for Team Members' variant='outlined'/>}
                           />
                         </Grid>
                       </Tooltip>
@@ -123,16 +123,16 @@ const MemberInformation = ( props ) => {
                     <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
                       <Tooltip title='Search for name' arrow>
 
-                      <Grid item xs={3}>
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={props.AllUsers}
-                          getOptionLabel={(option) => option.Fullname}
-                          style={{ width: 300 }}
-                          onChange={props.handleSelectedProfessor}
-                          renderInput={(params) => <TextField {...params} label="Search for Professor" variant="outlined" />}
-                        />
-                      </Grid>
+                        <Grid item xs={3}>
+                          <Autocomplete
+                            id='combo-box-demo'
+                            options={props.AllUsers}
+                            getOptionLabel={(option) => option.Fullname}
+                            style={{width: 300}}
+                            onChange={props.handleSelectedProfessor}
+                            renderInput={(params) => <TextField {...params} label='Search for Professor' variant='outlined'/>}
+                          />
+                        </Grid>
                       </Tooltip>
 
                       <Grid item>
@@ -148,17 +148,17 @@ const MemberInformation = ( props ) => {
                     <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
                       <Tooltip title='Search for name' arrow>
 
-                      <Grid item xs={3}>
+                        <Grid item xs={3}>
 
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={props.AllUsers}
-                          getOptionLabel={(option) => option.Fullname}
-                          style={{ width: 300 }}
-                          onChange={props.handleSelectedTA}
-                          renderInput={(params) => <TextField {...params} label="Search for TA" variant="outlined" />}
-                        />
-                      </Grid>
+                          <Autocomplete
+                            id='combo-box-demo'
+                            options={props.AllUsers}
+                            getOptionLabel={(option) => option.Fullname}
+                            style={{width: 300}}
+                            onChange={props.handleSelectedTA}
+                            renderInput={(params) => <TextField {...params} label='Search for TA' variant='outlined'/>}
+                          />
+                        </Grid>
                       </Tooltip>
                       <Grid item>
 
