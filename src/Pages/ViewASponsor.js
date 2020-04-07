@@ -11,9 +11,13 @@ import React, {Component} from 'react';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
+import SponsorForm from '../Components/SponsorForm';
 import api from '../Services/api';
 import MediaMarkdown from '../utils/MediaMarkdown';
 import {imageURL} from '../utils/utils';
+import {permissions} from "../constants";
+import Can from '../Components/Can';
+import AuthContext from "../Contexts/AuthContext";
 
 const styles = theme => ({
   card: {
@@ -70,19 +74,27 @@ class ViewASponsor extends Component {
     super(props);
     this.state = {
       loading: true,
-      sponsor: []
+      sponsor: [],
+      canEdit: false
     };
   }
 
   async componentDidMount() {
     const {match} = this.props;
     const sponsor = await api.sponsors.findOne(match.params.id);
+    const {user} = this.context;
     this.setState({loading: false, sponsor});
+
+    for (const person of sponsor.personnel) {
+      if (person.id === user.id) {
+        this.setState({canEdit: true});
+      }
+    }
   }
 
   render() {
     const {classes} = this.props;
-    const {loading, sponsor} = this.state;
+    const {loading, sponsor, canEdit} = this.state;
 
     if (!loading) {
       return (
@@ -93,6 +105,12 @@ class ViewASponsor extends Component {
                 <Grid xs={12}>
                   <Card>
                     <PageTitleTypography text={sponsor.name}/>
+                    {canEdit &&
+                    <Can perform={permissions.application.sponsors.update}>
+                      <SponsorForm title='Edit Sponsor' sponsor={sponsor}
+                                   type='edit'/>
+                    </Can>
+                    }
                     <Divider style={{marginTop: '2%'}}/>
                   </Card>
                 </Grid>
@@ -167,5 +185,7 @@ class ViewASponsor extends Component {
     return <LoadingCircle/>;
   }
 }
+
+ViewASponsor.contextType = AuthContext;
 
 export default (withStyles(styles)(withWidth()(ViewASponsor)));
