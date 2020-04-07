@@ -12,13 +12,10 @@ import FeaturedCapstones from '../Components/FeaturedCapstones';
 import FeaturedSponsors from '../Components/FeaturedSponsors';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../utils/MediaMarkdown';
-import {permissions} from '../constants';
+import {permissions, strapiURL} from '../constants';
 import Can from '../Components/Can';
 import gStyle from '../utils/styles.module.css';
 import api from '../Services/api';
-import {getBgImageFromStrapi} from '../utils/utils';
-import {strapiURL} from '../constants';
-
 
 const insideStyles = theme => ({
   background: theme.palette.primary.main,
