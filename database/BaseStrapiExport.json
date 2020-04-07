@@ -139,22 +139,14 @@
         "url": {
           "type": "string"
         },
-        "contact": {
+        "email": {
           "type": "email"
         },
         "description": {
           "type": "richtext",
           "default": "10000"
         },
-        "preview": {
-          "type": "string"
-        },
         "thumbnail": {
-          "type": "media",
-          "multiple": false,
-          "required": false
-        },
-        "coverPhoto": {
           "type": "media",
           "multiple": false,
           "required": false
@@ -179,6 +171,12 @@
           "dominant": false,
           "targetAttribute": "department",
           "unique": false
+        },
+        "phone": {
+          "type": "string"
+        },
+        "preview": {
+          "type": "string"
         }
       }
     },
@@ -212,6 +210,11 @@
       "attributes": {
         "infoparagraph": {
           "type": "richtext"
+        },
+        "bgimage": {
+          "type": "media",
+          "multiple": false,
+          "required": false
         }
       }
     },
@@ -432,10 +435,28 @@
       "kind": "singleType",
       "collectionName": "themes",
       "attributes": {
-        "primary": {
+        "primaryColor": {
           "type": "string"
         },
-        "secondary": {
+        "secondaryColor": {
+          "type": "string"
+        },
+        "backgroundColor": {
+          "type": "string"
+        },
+        "errorColor": {
+          "type": "string"
+        },
+        "activeColor": {
+          "type": "string"
+        },
+        "hoverColor": {
+          "type": "string"
+        },
+        "selectedColor": {
+          "type": "string"
+        },
+        "universityName": {
           "type": "string"
         }
       }

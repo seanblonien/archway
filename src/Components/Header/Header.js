@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {withStyles} from '@material-ui/core/styles';
+import {withStyles, withTheme} from '@material-ui/core/styles';
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import Toolbar from '@material-ui/core/Toolbar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -13,8 +13,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
-import auth from '../../Auth';
-import {university} from '../../constants';
+import AuthContext from '../../Contexts/AuthContext';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/history';
 import Drawer from './Drawer';
@@ -81,8 +80,9 @@ class PrimarySearchAppBar extends Component {
   }
 
   handleLogout = () =>{
-    auth.logout();
+    const {logout} = this.context;
     this.handleMenuClose();
+    logout();
   };
 
   handleMenuClose = () => {
@@ -94,12 +94,14 @@ class PrimarySearchAppBar extends Component {
   };
 
   handleToAccount = () => {
-    history.push(`/ViewProfile/${auth.getNickname()}`);
+    const {user} = this.context;
+    history.push(`/ViewProfile/${user.username}`);
   };
 
   render() {
+    const {isAuthenticated} = this.context;
     const {anchorEl} = this.state;
-    const {classes} = this.props;
+    const {classes, theme} = this.props;
     const isMenuOpen = Boolean(anchorEl);
 
     const renderMenu = (
@@ -110,9 +112,9 @@ class PrimarySearchAppBar extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        {auth.isAuthenticated() && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
-        {!auth.isAuthenticated() && <MenuItem onClick={auth.login}>Login / Register</MenuItem>}
-        {auth.isAuthenticated() && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
+        {!isAuthenticated && <MenuItem onClick={() => history.push('/login')}>Login / Register</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
       </Menu>
     );
 
@@ -125,14 +127,14 @@ class PrimarySearchAppBar extends Component {
               <Drawer/>
             </div>
             <Button style={{color: 'white', fontSize: '25px'}} component={Link} to='/'>
-              <img src={universityLogo} alt={university} title={university} height='40' width='40' style={{paddingRight: 7}}/>
-              {university} | Archway
+              <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40' style={{paddingRight: 7}}/>
+              {theme.university} | Archway
             </Button>
             <div className={classes.sectionDesktop}>
               <Button style={{color: 'white', fontSize: '15px'}} component={Link} to='/About'>
                 <SubMenu
                   title='About'
-                  items={['FAQ', String(university), 'Archway']}
+                  items={['FAQ', String(theme.university), 'Archway']}
                   links={['/FAQ', '/About', '/About']}
                 />
               </Button>
@@ -195,9 +197,13 @@ class PrimarySearchAppBar extends Component {
 
 PrimarySearchAppBar.propTypes = {
   classes: PropTypes.objectOf(PropTypes.object).isRequired,
+  theme: PropTypes.objectOf(PropTypes.object).isRequired,
 };
+
+PrimarySearchAppBar.contextType = AuthContext;
 
 export default compose(
   withStyles(styles),
-  withRouter
+  withRouter,
+  withTheme
 )(PrimarySearchAppBar);
