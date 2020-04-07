@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import {DesktopDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -113,7 +113,7 @@ const BasicInformation = (props) => {
                 <Tooltip title='Select A Date' arrow>
                   <Grid item xs={6}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <DesktopDatePicker
+                      <KeyboardDatePicker
                         autoOk
                         variant='outlined'
                         label='Start Date'
@@ -130,7 +130,7 @@ const BasicInformation = (props) => {
                 <Tooltip title='Select A Date' arrow>
                   <Grid item xs={6}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <DesktopDatePicker
+                      <KeyboardDatePicker
                         autoOk
                         variant='outlined'
                         label='End Date'
