@@ -1,6 +1,7 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {routesDefaultProps, routesPropTypes} from '../PropTypesConfig';
 
 const StandardRoute = ({path, routes, component: Component}) => (
   <Route
@@ -13,15 +14,9 @@ const StandardRoute = ({path, routes, component: Component}) => (
 StandardRoute.propTypes = {
   component: PropTypes.element.isRequired,
   path: PropTypes.string.isRequired,
-  routes: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-    component: PropTypes.element.isRequired
-  }))
+  ...routesPropTypes,
 };
 
-StandardRoute.defaultProps = {
-  routes: []
-};
+StandardRoute.defaultProps = routesDefaultProps;
 
 export default StandardRoute;

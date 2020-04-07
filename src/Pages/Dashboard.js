@@ -1,12 +1,13 @@
 import {Box, ListItemText, Typography, Paper, ListItem, List, Grid} from '@material-ui/core';
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {routesDefaultProps, routesPropTypes} from '../utils/PropTypesConfig';
 import RouteWithSubRoutes from '../utils/Routing/RouteWithSubRoutes';
 
 const Dashboard = ({routes}) => (
   <Grid container alignContent='flex-start' alignItems='flex-start'>
     <Grid item xs={3}>
-      <Paper  mx={5}>
+      <Paper mx={5}>
         <Typography variant='h3'>
           Dashboard Navigation
         </Typography>
@@ -30,5 +31,8 @@ const Dashboard = ({routes}) => (
     </Grid>
   </Grid>
 );
+
+Dashboard.propTypes = routesPropTypes;
+Dashboard.defaultProps = routesDefaultProps;
 
 export default Dashboard;

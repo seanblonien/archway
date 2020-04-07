@@ -1,3 +1,4 @@
+// Any prop-types structure that is duplicated in the app can be shared here
 import PropTypes from 'prop-types';
 
 export const locationPropTypes = {
@@ -10,4 +11,16 @@ export const locationPropTypes = {
 
 export const locationDefaultProps = {
   location: {pathname: '/', search: '', hash: ''}
+};
+
+export const routesPropTypes = {
+  routes: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
+    component: PropTypes.element.isRequired
+  })),
+};
+
+export const routesDefaultProps = {
+  routes: []
 };
