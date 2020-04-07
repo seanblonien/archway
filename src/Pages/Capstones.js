@@ -6,7 +6,7 @@ import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import FilterBar from '../Components/FilterBar';
 import LoadingCircle from '../Components/LoadingCircle';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
 import CardLayout from '../Components/CardLayout';
 
 class Capstone extends Component {

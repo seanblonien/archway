@@ -7,7 +7,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../Services/api';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
 
 const styles = theme => ({
   root: {

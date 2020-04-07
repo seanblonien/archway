@@ -17,7 +17,7 @@ import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
 
 const styles = {
   card: {

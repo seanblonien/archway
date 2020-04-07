@@ -4,7 +4,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
 import api from '../Services/api';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
 import Can from './Can';
 import LoadingCircle from './LoadingCircle';
 import {permissions} from '../constants';

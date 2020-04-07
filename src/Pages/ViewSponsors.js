@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
 import CardLayout from '../Components/CardLayout';
 
 const styles = {

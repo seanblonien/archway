@@ -15,7 +15,7 @@ import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
 import AuthContext from '../../Contexts/AuthContext';
 import universityLogo from '../../Static/univ_logo.svg';
-import history from '../../utils/history';
+import history from '../../utils/Routing/history';
 import Drawer from './Drawer';
 import SearchBar from './SearchBar';
 import SubMenu from './SubMenu';
@@ -93,11 +93,6 @@ class PrimarySearchAppBar extends Component {
     this.setState({anchorEl: event.currentTarget});
   };
 
-  handleToAccount = () => {
-    const {user} = this.context;
-    history.push(`/ViewProfile/${user.username}`);
-  };
-
   render() {
     const {isAuthenticated} = this.context;
     const {anchorEl} = this.state;
@@ -112,7 +107,7 @@ class PrimarySearchAppBar extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        {isAuthenticated && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={() => history.push('/dashboard')}>Dashboard</MenuItem>}
         {!isAuthenticated && <MenuItem onClick={() => history.push('/login')}>Login / Register</MenuItem>}
         {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
       </Menu>

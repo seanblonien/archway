@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../Services/api';
 import StorageManager from './StorageManager';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
 
 const AuthContext = React.createContext({});
 

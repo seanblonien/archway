@@ -1,29 +1,9 @@
 import {Box, ListItemText, Typography, Paper, ListItem, List, Grid} from '@material-ui/core';
 import React from 'react';
-import {Link, Route} from 'react-router-dom';
-import CreateCapstone from './CreateCapstone';
-import ImportUsers from './ImportUsers';
-import ViewYourCapstones from './ViewYourCapstones';
+import {Link} from 'react-router-dom';
+import RouteWithSubRoutes from '../utils/Routing/RouteWithSubRoutes';
 
-const routes = [
-  {
-    name: 'View Capstones',
-    path: '/view-capstones',
-    Component: ViewYourCapstones
-  },
-  {
-    name: 'Create Capstone',
-    path: '/create-capstones',
-    Component: CreateCapstone
-  },
-  {
-    name: 'Import Users',
-    path: '/import-users',
-    Component: ImportUsers
-  },
-];
-
-const Dashboard = ({match}) => (
+const Dashboard = ({routes}) => (
   <Grid container alignContent='flex-start' alignItems='flex-start'>
     <Grid item xs={3}>
       <Paper  mx={5}>
@@ -32,7 +12,7 @@ const Dashboard = ({match}) => (
         </Typography>
         <List>
           {routes.map(({name, path}) =>
-            <ListItem key={name} component={Link} to={`${match.path}${path}`}>
+            <ListItem key={name} component={Link} to={path}>
               <ListItemText>
                 {name}
               </ListItemText>
@@ -43,8 +23,8 @@ const Dashboard = ({match}) => (
     </Grid>
     <Grid item xs={9}>
       <Box>
-        {routes.map(({path, Component}) =>
-          <Route key={path} path={`${match.path}${path}`} component={Component}/>
+        {routes.map((route) =>
+          <RouteWithSubRoutes key={route.path} {...route}/>
         )}
       </Box>
     </Grid>
