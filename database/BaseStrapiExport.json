@@ -177,11 +177,6 @@
         },
         "preview": {
           "type": "string"
-        },
-        "cover": {
-          "type": "media",
-          "multiple": false,
-          "required": false
         }
       }
     },
