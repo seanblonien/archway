@@ -8,7 +8,7 @@ import CreateCapstone from '../../Pages/CreateCapstone';
 import Dashboard from '../../Pages/Dashboard';
 import FAQ from '../../Pages/FAQ';
 import Home from '../../Pages/Home';
-import LoginPage from '../../Pages/LoginPage';
+import AuthPage from '../../Pages/AuthPage';
 import NotFound from '../../Pages/NotFound';
 import Sponsors from '../../Pages/Sponsors';
 import ViewADepartment from '../../Pages/ViewADepartment';
@@ -17,7 +17,6 @@ import ViewASponsor from '../../Pages/ViewASponsor';
 import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
-import ViewYourCapstones from '../../Pages/ViewYourCapstones';
 
 const routes = {
   dashboard: {
@@ -25,11 +24,12 @@ const routes = {
     path: '/dashboard',
     component: Dashboard,
     protected: true,
-    routes: ['viewyourcapstones', 'createcapstone', 'importusers'],
-    viewyourcapstones: {
-      name: 'View Your Capstones',
-      path: '/dashboard/view-your-capstones',
-      component: ViewYourCapstones
+    routeNames: ['viewprofile','createcapstone','importusers'],
+    viewprofile: {
+      name: 'View Profile',
+      path: '/dashboard/viewprofile/:username',
+      genPath: (username ) => `/dashboard/viewprofile/${username}`,
+      component: ViewProfile
     },
     createcapstone: {
       name: 'Create Capstone',
@@ -45,8 +45,8 @@ const routes = {
   auth: {
     name: 'auth',
     path: '/auth',
-    component: LoginPage,
-    routes: ['login', 'register'],
+    component: AuthPage,
+    routeNames: ['login', 'register'],
     login: {
       name: 'Login',
       path: '/auth/login',
@@ -83,8 +83,8 @@ const routes = {
   },
   viewprofile: {
     name: 'View Profile',
-    path: '/ViewProfile/:username',
-    genPath: (username ) => `/ViewProfile/${username}`,
+    path: '/viewprofile/:username',
+    genPath: (username ) => `/viewprofile/${username}`,
     component: ViewProfile
   },
   sponsors: {

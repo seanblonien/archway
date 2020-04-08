@@ -22,10 +22,14 @@ export const routeShapePropTypes = {
 
 const routePropTypes = PropTypes.shape(routeShapePropTypes);
 
+export const routeNamesPropTypes = {
+  routeNames: PropTypes.arrayOf(PropTypes.string)
+};
+
 export const routesPropTypes = {
-  routes: PropTypes.objectOf(routePropTypes).isRequired,
+  routes: PropTypes.objectOf(routePropTypes)
 };
 
 export const parentRoutePropTypes = {
-  parent: routePropTypes,
+  parent: routePropTypes
 };

@@ -1,17 +1,23 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
-import {parentRoutePropTypes, routeShapePropTypes} from '../PropTypesConfig';
+import {parentRoutePropTypes, routeNamesPropTypes, routesPropTypes} from '../PropTypesConfig';
 
-const StandardRoute = ({path, routes, parentRoute, component: Component, ...rest}) => (
+const StandardRoute = ({path, routeNames, parentRoute, component: Component, ...rest}) => (
   <Route
     {...rest} path={path} render={(props) => (
-      <Component {...props} routes={routes && routes.map(route => parentRoute[route])}/>
+      <Component
+        {...props} routes={routeNames && routeNames.reduce((obj, route) => {
+          obj[route] = parentRoute[route];
+          return obj;
+        }, {})}
+      />
     )}
   />
 );
 
 StandardRoute.propTypes = {
-  ...routeShapePropTypes,
+  ...routeNamesPropTypes,
+  ...routesPropTypes,
   ...parentRoutePropTypes,
 };
 
