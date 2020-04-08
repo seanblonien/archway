@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../Services/api';
+import routes from '../utils/Routing/routes';
 import StorageManager from './StorageManager';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
 
 const AuthContext = React.createContext({});
 
@@ -33,7 +34,7 @@ export class AuthProvider extends Component {
   logout = () => {
     this.setState(initialState);
     StorageManager.clearLocalStorage();
-    history.push('/');
+    history.push(routes.home.path);
   };
 
   setUserInStorage = (user, token) => {
@@ -57,7 +58,7 @@ export class AuthProvider extends Component {
   login = async (identifier, password, useStorage = true) => {
     try {
       const response = await api.login(identifier, password);
-      this.handleAuthenticationResponse(response, useStorage, '/');
+      this.handleAuthenticationResponse(response, useStorage, routes.home.path);
     } catch(error) {
       // TODO
     }
@@ -66,7 +67,7 @@ export class AuthProvider extends Component {
   register = async (user, useStorage = true) => {
     try {
       const response = await api.register(user);
-      this.handleAuthenticationResponse(response, useStorage, '/');
+      this.handleAuthenticationResponse(response, useStorage, routes.home.path);
     } catch(error) {
       // TODO
     }

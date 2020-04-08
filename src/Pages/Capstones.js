@@ -2,11 +2,11 @@ import withWidth from '@material-ui/core/withWidth';
 import Fuse from 'fuse.js';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import FilterBar from '../Components/FilterBar';
 import LoadingCircle from '../Components/LoadingCircle';
-import history from '../utils/history';
 import CardLayout from '../Components/CardLayout';
 
 class Capstone extends Component {
@@ -26,10 +26,6 @@ class Capstone extends Component {
     const capstones = await api.capstones.find();
     this.setState({loading: false, capstones});
   }
-
-  handleTileClick = (title) => {
-    history.push(`/ViewCapstone/${title}`);
-  };
 
   render() {
     const {loading, searchTerm, capstones} = this.state;
@@ -62,8 +58,7 @@ class Capstone extends Component {
       return (
         <div>
           <FilterBar/>
-
-          <CardLayout title='Capstone Projects' listItems={match} childURL='/ViewCapstone/' imageURLFunction={imageURL.capstone}/>
+          <CardLayout title='Capstone Projects' listItems={match} childURL={routes.viewcapstone.genPath} imageURLFunction={imageURL.capstone}/>
         </div>
       );
     }

@@ -7,7 +7,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../Services/api';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
+import routes from '../utils/Routing/routes';
 
 const styles = theme => ({
   root: {
@@ -53,9 +54,8 @@ class NativeSelects extends Component {
   }
 
   handleChange = name => event => {
-    const path = `/SearchRedirect/Capstones/${event.target.value}`;
     this.setState({[name]: event.target.value});
-    history.push(path);
+    history.push(routes.searchredirect.genPath('Capstones', event.target.value));
   };
 
   render() {
