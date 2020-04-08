@@ -19,113 +19,111 @@ import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
 import ViewYourCapstones from '../../Pages/ViewYourCapstones';
 
-const routes = [
-  {
+const routes = {
+  dashboard: {
     name: 'Dashboard',
     path: '/dashboard',
     component: Dashboard,
     protected: true,
-    routes: [
-      {
-        name: 'View Your Capstones',
-        path: '/dashboard/view-your-capstones',
-        component: ViewYourCapstones
-      },
-      {
-        name: 'Create Capstone',
-        path: '/dashboard/create-capstones',
-        component: CreateCapstone
-      },
-      {
-        name: 'Import Users',
-        path: '/dashboard/import-users',
-        component: ImportUsers
-      },
-    ]
+    routes: ['viewyourcapstones', 'createcapstone', 'importusers'],
+    viewyourcapstones: {
+      name: 'View Your Capstones',
+      path: '/dashboard/view-your-capstones',
+      component: ViewYourCapstones
+    },
+    createcapstone: {
+      name: 'Create Capstone',
+      path: '/dashboard/create-capstones',
+      component: CreateCapstone
+    },
+    importusers: {
+      name: 'Import Users',
+      path: '/dashboard/import-users',
+      component: ImportUsers
+    },
   },
-  {
+  auth: {
     name: 'auth',
     path: '/auth',
     component: LoginPage,
-    routes: [
-      {
-        name: 'Login',
-        path: '/auth/login',
-        component: Login
-      },
-      {
-        name: 'Register',
-        path: '/auth/register',
-        component: RegisterModal
-      },
-    ]
+    routes: ['login', 'register'],
+    login: {
+      name: 'Login',
+      path: '/auth/login',
+      component: Login
+    },
+    register: {
+      name: 'Register',
+      path: '/auth/register',
+      component: RegisterModal
+    },
   },
-  {
+  searchredirect: {
     name: 'Search Redirect',
     path: '/SearchRedirect/:path/:searchTerm?',
     component: SearchRedirect
   },
-  {
+  capstones: {
     name: 'Capstones',
     path: '/Capstones/:searchTerm?',
     component: Capstone
   },
-  {
+  about: {
     name: 'About',
     path: '/about',
     component: About
   },
-  {
+  viewcapstone: {
     name: 'View Capstone',
     path: '/ViewCapstone/:capstoneID',
     component: ViewCapstone
   },
-  {
+  viewprofile: {
     name: 'View Profile',
     path: '/ViewProfile/:username',
     component: ViewProfile
   },
-  {
+  sponsors: {
     name: 'Sponsors',
     path: '/sponsors',
     component: Sponsors
   },
-  {
+  viewsponsors: {
     name: 'View Sponsors',
     path: '/ViewSponsors/:searchTerm?',
     component: ViewSponsors
   },
-  {
+  viewsponsor: {
     name: 'View Sponsor',
     path: '/ViewASponsor/:id',
     component: ViewASponsor
   },
-  {
+  viewdepartments: {
     name: 'View Departments',
     path: '/ViewAllDepartments',
     component: ViewAllDepartments
   },
-  {
+  viewdepartment: {
     name: 'View Department',
     path: '/ViewADepartment/:id',
     component: ViewADepartment
   },
-  {
+  faq: {
     name: 'FAQ',
     path: '/FAQ',
     component: FAQ
   },
-  {
+  home: {
     name: 'Home',
     path: '/',
     component: Home,
     exact: true
   },
-  {
+  notfound: {
     name: 'Not Found',
     path: '*',
     component: NotFound
   },
-];
+};
 
 export default routes;
