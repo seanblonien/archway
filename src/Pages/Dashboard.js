@@ -1,8 +1,8 @@
 import {Box, ListItemText, Typography, Paper, ListItem, List, Grid} from '@material-ui/core';
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {routesDefaultProps, routesPropTypes} from '../utils/PropTypesConfig';
-import RouteWithSubRoutes from '../utils/Routing/RouteWithSubRoutes';
+import {routesPropTypes} from '../utils/PropTypesConfig';
+import RoutesToRender from '../utils/Routing/RoutesToRender';
 
 const Dashboard = ({routes}) => (
   <Grid container alignContent='flex-start' alignItems='flex-start'>
@@ -24,15 +24,12 @@ const Dashboard = ({routes}) => (
     </Grid>
     <Grid item xs={9}>
       <Box>
-        {routes.map((route) =>
-          <RouteWithSubRoutes key={route.path} {...route}/>
-        )}
+        <RoutesToRender routes={routes}/>
       </Box>
     </Grid>
   </Grid>
 );
 
 Dashboard.propTypes = routesPropTypes;
-Dashboard.defaultProps = routesDefaultProps;
 
 export default Dashboard;

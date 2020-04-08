@@ -7,6 +7,7 @@ import {permissions} from './constants';
 import {AuthProvider} from './Contexts/AuthContext';
 import {RolesProvider} from './Contexts/RolesContext';
 import history from './utils/Routing/history';
+import routes from './utils/Routing/routes';
 import RoutesToRender from './utils/Routing/RoutesToRender';
 
 export default function App () {
@@ -18,7 +19,7 @@ export default function App () {
             <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
               <Header/>
               <div style={{paddingBottom: '140px'}}>
-                <RoutesToRender/>
+                <RoutesToRender routes={routes} switch/>
               </div>
               <Footer/>
             </div>

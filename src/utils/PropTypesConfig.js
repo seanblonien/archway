@@ -13,14 +13,16 @@ export const locationDefaultProps = {
   location: {pathname: '/', search: '', hash: ''}
 };
 
+const routePropTypes = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
+  component: PropTypes.element.isRequired
+});
+
 export const routesPropTypes = {
-  routes: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-    component: PropTypes.element.isRequired
-  })),
+  routes: PropTypes.arrayOf(routePropTypes).isRequired,
 };
 
-export const routesDefaultProps = {
-  routes: []
+export const parentRoutePropTypes = {
+  parent: routePropTypes,
 };
