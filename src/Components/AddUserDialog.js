@@ -13,7 +13,8 @@ function SimpleDialog(props) {
 
   return (
     <Dialog
-      fullWidth
+      fullWidth='lg'
+
       onClose={handleClose} aria-labelledby='simple-dialog-title' open={open}
     >
       <DialogTitle id='simple-dialog-title'>Add New User</DialogTitle>
