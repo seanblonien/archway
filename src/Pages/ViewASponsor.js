@@ -111,6 +111,9 @@ class ViewASponsor extends Component {
                                    type='edit'/>
                     </Can>
                     }
+                    <Can perform={permissions.application.sponsors.create}>
+                      <SponsorForm title='Create New Sponsor' type='create'/>
+                    </Can>
                     <Divider style={{marginTop: '2%'}}/>
                   </Card>
                 </Grid>

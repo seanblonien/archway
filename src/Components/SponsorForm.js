@@ -21,6 +21,8 @@ class SponsorForm extends React.Component {
 
     this.state = {
       open: false,
+      type: '',
+      user: '',
       name: '',
       url: '',
       description: '',
@@ -33,6 +35,8 @@ class SponsorForm extends React.Component {
 
   componentDidMount() {
     const {type} = this.props;
+    const {user} = this.context;
+    this.setState({type: type, user: user});
     if (type === 'edit') {
       this.initFields();
     }
@@ -66,22 +70,33 @@ class SponsorForm extends React.Component {
       url,
       description,
       preview
-    })
+    });
 
     this.setState({open: false});
     window.location.reload();
   };
 
-  handleCreate = () => {
+  handleCreate = async () => {
+    const {name, url, description, preview, coverPhto, logo, thumbnail, user} = this.state;
 
-  }
+    await api.sponsors.create({
+      name,
+      url,
+      description,
+      preview,
+      personnel: [user]
+    });
+
+    this.setState({open: false});
+    window.location.reload();
+  };
 
   handleChange = name => event => {
     this.setState({[name]: event.target.value});
-  }
+  };
 
   render() {
-    const {open, name, url, description, preview, coverPhto, logo, thumbnail} = this.state;
+    const {open, type, name, url, description, preview, coverPhto, logo, thumbnail} = this.state;
     const {title} = this.props;
 
     return (
@@ -161,9 +176,16 @@ class SponsorForm extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleSave} color="primary">
+            {type === 'edit' &&
+            < Button onClick={this.handleSave} color="primary">
               Save
+              </Button>
+            }
+            {type === 'create' &&
+            < Button onClick={this.handleCreate} color="primary">
+              Create
             </Button>
+            }
           </DialogActions>
         </Dialog>
       </div>
