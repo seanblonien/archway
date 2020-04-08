@@ -16,6 +16,7 @@ import compose from 'recompose/compose';
 import AuthContext from '../../Contexts/AuthContext';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
 import Drawer from './Drawer';
 import SearchBar from './SearchBar';
 import SubMenu from './SubMenu';
@@ -107,8 +108,8 @@ class PrimarySearchAppBar extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        {isAuthenticated && <MenuItem onClick={() => history.push('/dashboard')}>Dashboard</MenuItem>}
-        {!isAuthenticated && <MenuItem onClick={() => history.push('/login')}>Login / Register</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={() => history.push(routes.dashboard.path)}>Dashboard</MenuItem>}
+        {!isAuthenticated && <MenuItem onClick={() => history.push(routes.auth.login.path)}>Login / Register</MenuItem>}
         {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
       </Menu>
     );
@@ -121,30 +122,30 @@ class PrimarySearchAppBar extends Component {
             <div className={classes.sectionMobile}>
               <Drawer/>
             </div>
-            <Button style={{color: 'white', fontSize: '25px'}} component={Link} to='/'>
+            <Button style={{color: 'white', fontSize: '25px'}} component={Link} to={routes.home.path}>
               <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40' style={{paddingRight: 7}}/>
               {theme.university} | Archway
             </Button>
             <div className={classes.sectionDesktop}>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to='/About'>
+              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.about.path}>
                 <SubMenu
                   title='About'
                   items={['FAQ', String(theme.university), 'Archway']}
-                  links={['/FAQ', '/About', '/About']}
+                  links={[routes.faq.path, routes.about.path, routes.about.path]}
                 />
               </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to='/Sponsors'>
+              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.sponsors.path}>
                 <SubMenu
                   title='Sponsors'
                   items={['Become a Sponsor', 'View Current Sponsors']}
-                  links={['/Sponsors', '/ViewSponsors']}
+                  links={[routes.sponsors.path, routes.viewsponsors.genPath()]}
                 />
               </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to='/Capstones'>
+              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.genPath()}>
                 <SubMenu
                   title='Projects'
                   items={['All Capstones','All Departments']}
-                  links={['/Capstones', '/ViewAllDepartments']}
+                  links={[routes.capstones.genPath(), routes.viewdepartments.path]}
                 />
               </Button>
             </div>

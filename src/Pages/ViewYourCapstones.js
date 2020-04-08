@@ -13,6 +13,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import AuthContext from '../Contexts/AuthContext';
@@ -76,11 +77,11 @@ class ViewYourCapstones extends Component {
     // get capstones that are moderated by user
     const response = await api.users.findOne(userID);
     this.setState({capstones: response.data.capstones});
-    history.push('/');
+    history.push(routes.home.path);
   };
 
   handleTileClick = (title) => {
-    history.push(`/ViewCapstone/${title}`);
+    history.push(routes.viewcapstone.genPath(title));
   };
 
   render() {

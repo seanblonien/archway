@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
 import api from '../Services/api';
 import history from '../utils/Routing/history';
+import routes from '../utils/Routing/routes';
 import Can from './Can';
 import LoadingCircle from './LoadingCircle';
 import {permissions} from '../constants';
@@ -26,7 +27,7 @@ class FeaturedSponsors extends Component {
   }
 
   handleSponsorClick = (sponsorName) => {
-    history.push(`/ViewASponsor/${sponsorName}`);
+    history.push(routes.viewsponsor.genPath(sponsorName));
   };
 
   render () {

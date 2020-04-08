@@ -18,6 +18,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import AuthContext from '../Contexts/AuthContext';
@@ -110,7 +111,7 @@ class ViewUser extends Component {
   };
 
   handleCapstoneClick = (title) => {
-    history.push(`/ViewCapstone/${title}`);
+    history.push(routes.viewcapstone.genPath(title));
   };
 
   handleChange = name => event => {

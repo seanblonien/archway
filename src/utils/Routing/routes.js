@@ -61,11 +61,13 @@ const routes = {
   searchredirect: {
     name: 'Search Redirect',
     path: '/SearchRedirect/:path/:searchTerm?',
+    genPath: (path, searchterm) => `/SearchRedirect/${path}/${searchterm}`,
     component: SearchRedirect
   },
   capstones: {
     name: 'Capstones',
     path: '/Capstones/:searchTerm?',
+    genPath: (searchterm = '') => `/Capstones/${searchterm}`,
     component: Capstone
   },
   about: {
@@ -76,11 +78,13 @@ const routes = {
   viewcapstone: {
     name: 'View Capstone',
     path: '/ViewCapstone/:capstoneID',
+    genPath: (capstoneID ) => `/ViewCapstone/${capstoneID}`,
     component: ViewCapstone
   },
   viewprofile: {
     name: 'View Profile',
     path: '/ViewProfile/:username',
+    genPath: (username ) => `/ViewProfile/${username}`,
     component: ViewProfile
   },
   sponsors: {
@@ -91,11 +95,13 @@ const routes = {
   viewsponsors: {
     name: 'View Sponsors',
     path: '/ViewSponsors/:searchTerm?',
+    genPath: (searchTerm = '') => `/ViewSponsors/${searchTerm}`,
     component: ViewSponsors
   },
   viewsponsor: {
     name: 'View Sponsor',
     path: '/ViewASponsor/:id',
+    genPath: (id) => `/ViewASponsor/${id}`,
     component: ViewASponsor
   },
   viewdepartments: {
@@ -106,6 +112,7 @@ const routes = {
   viewdepartment: {
     name: 'View Department',
     path: '/ViewADepartment/:id',
+    genPath: (id) => `/ViewADepartment/${id}`,
     component: ViewADepartment
   },
   faq: {

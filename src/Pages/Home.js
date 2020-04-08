@@ -14,6 +14,7 @@ import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/MediaMarkdown';
 import {permissions, strapiURL} from '../constants';
 import Can from '../Components/Can';
+import routes from '../utils/Routing/routes';
 import gStyle from '../utils/styles.module.css';
 import api from '../Services/api';
 
@@ -106,7 +107,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/Capstones'
+                      to={routes.capstones.genPath('')}
                     >
                       Check out Current Capstones
                     </Button>
@@ -115,7 +116,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/ViewSponsors'
+                      to={routes.viewsponsors.path}
                     >
                       Check Out Our Sponsors
                     </Button>
@@ -124,7 +125,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/Sponsors'
+                      to={routes.sponsors.path}
                     >
                       Become a Sponsor
                     </Button>

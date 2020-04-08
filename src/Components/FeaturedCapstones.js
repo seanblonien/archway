@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import InfoIcon from '@material-ui/icons/Info';
 import React, {Component} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
+import routes from '../utils/Routing/routes';
 import LoadingCircle from './LoadingCircle';
 import history from '../utils/Routing/history';
 import {imageURL} from '../utils/utils';
@@ -30,7 +31,7 @@ class FeaturedCapstones extends Component {
   }
 
   handleTileClick = (title) => {
-    history.push(`/ViewCapstone/${title}`);
+    history.push(routes.viewcapstone.genPath(title));
   };
 
   render () {
@@ -72,7 +73,7 @@ class FeaturedCapstones extends Component {
               ))}
             </GridList>
           </div>
-          <Link component={RouterLink} to='/Capstones'>See More</Link>
+          <Link component={RouterLink} to={routes.capstones.genPath()}>See More</Link>
         </Paper>
       </Grid>
     ;

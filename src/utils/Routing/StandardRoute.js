@@ -1,21 +1,18 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
-import PropTypes from 'prop-types';
-import {parentRoutePropTypes, routesPropTypes} from '../PropTypesConfig';
+import {parentRoutePropTypes, routeShapePropTypes} from '../PropTypesConfig';
 
-const StandardRoute = ({path, routes, parentRoute, component: Component}) => (
+const StandardRoute = ({path, routes, parentRoute, component: Component, ...rest}) => (
   <Route
-    path={path} render={(props) => (
+    {...rest} path={path} render={(props) => (
       <Component {...props} routes={routes && routes.map(route => parentRoute[route])}/>
     )}
   />
 );
 
 StandardRoute.propTypes = {
-  component: PropTypes.element.isRequired,
-  path: PropTypes.string.isRequired,
+  ...routeShapePropTypes,
   ...parentRoutePropTypes,
-  ...routesPropTypes,
 };
 
 export default StandardRoute;
