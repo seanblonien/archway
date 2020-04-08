@@ -30,9 +30,13 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(1, 0, 1),
   },
+  options: {
+    alignItems:'center'
+  }
 }));
 
 const Login = () => {
+  // TODO: error popup with invalid indentifier/pass
   const {login} = useContext(AuthContext);
   const [state, setState] = useState({identifier: '', password: '', remember: true});
   const classes = useStyles();
@@ -108,7 +112,7 @@ const Login = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Grid container direction='column'>
+              <Grid container direction='column' className={classes.options}>
                 <Grid item xs>
                   <Link href='/' variant='body2'>
                     Forgot password?

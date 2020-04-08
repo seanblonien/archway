@@ -21,6 +21,7 @@ const AuthPage = () => {
         container
         direction='column'
         alignItems='center'
+        component={Box} my={5}
       >
         <Grid item xs={12} sm={8} md={6} xl={6} component={Paper} elevation={6} my={10}>
           <Login/>
