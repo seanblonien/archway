@@ -1,5 +1,4 @@
 import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
@@ -115,32 +114,38 @@ class ViewProfile extends Component {
       <div>
         {profile ?
           <Box width='50%' mx='auto'>
+            <AuthContext.Consumer>{(context) => (<div>{JSON.stringify(context)}</div>)}</AuthContext.Consumer>
+            <Typography>{String(isAuthenticated)}</Typography>
+            <Typography>{String(profile.username)}</Typography>
+            <Typography>{String(user)}</Typography>
             <Snackbar message={message} open={messageOpen} autoHideDuration={6000} onClose={this.handleMessageClose}/>
             <ProfileHeader user={profile} edit={editing}/>
-            <Divider/>
-              <Paper><ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} message={this.updateMessage} canEdit={canEdit}/></Paper>
-            <Divider/>
+            <Paper>
+              <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} message={this.updateMessage} canEdit={canEdit}/>
+            </Paper>
             {(editing) ?
               (
                 // It is assumed that if you can get here, that you are editing your own profile, and you have permisison to do so
-                <div>
+                <Paper>
                   <MainProfileEdit user={profile} update={this.updateProfile}/>
                   <Can perform={permissions.application.proposals.create}>
                     <SponsorProfileEdit user={profile} update={this.updateProfile}/>
                   </Can>
                   <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
-                </div>
+                </Paper>
               ) : 
               (
-                <div>
+                <Paper>
                   <MainProfile user={profile}/>
                   <Can perform={permissions.application.proposals.create} role={profile.role.name}>
                     <SponsorProfile user={profile}/>
                   </Can>
                   <Can perform={permissions.users_permissions.user.update}>
-                    {canEdit && <EditButton edit={this.handleEdit}/>}
+                    <div>
+                      {canEdit && <EditButton edit={this.handleEdit}/>}
+                    </div>
                   </Can>
-                </div>
+                </Paper>
               )
             }
           </Box>

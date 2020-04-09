@@ -81,50 +81,52 @@ class ProfilePic extends Component {
             />
           </Grid>
           <Can perform={permissions.users_permissions.user.update}>
-            {canEdit &&
-              <Grid item xs={8} sm container direction='column' spacing={2}>
-                <Can perform={permissions.upload.upload.upload}>
-                  <Grid item>
-                    <Typography>Upload profile picture</Typography>
-                  </Grid>
-                  <Grid item container direction='row' spacing={2}>
+            <>
+              {canEdit &&
+                <Grid item xs={8} sm container direction='column' spacing={2}>
+                  <Can perform={permissions.upload.upload.upload}>
                     <Grid item>
-                      <Button variant='contained' component='label'>
-                        Choose File...
-                        <input
-                          type='file'
-                          name='file'
-                          onChange={this.handleSelectImage}
-                          style={{display: 'none'}}
-                        />
-                      </Button>
+                      <Typography>Upload profile picture</Typography>
                     </Grid>
-                    <Grid item>
-                      {selectedFile &&
-                        <Button variant='contained' component='label' onClick={this.handleUploadImage}>
-                          Upload Image
+                    <Grid item container direction='row' spacing={2}>
+                      <Grid item>
+                        <Button variant='contained' component='label'>
+                          Choose File...
+                          <input
+                            type='file'
+                            name='file'
+                            onChange={this.handleSelectImage}
+                            style={{display: 'none'}}
+                          />
                         </Button>
+                      </Grid>
+                      <Grid item>
+                        {selectedFile &&
+                          <Button variant='contained' component='label' onClick={this.handleUploadImage}>
+                            Upload Image
+                          </Button>
+                        }
+                      </Grid>
+                    </Grid>
+                    {selectedFile &&
+                      <Grid item>
+                        <Typography>{selectedFile && selectedFile.name}</Typography>
+                      </Grid>
+                    }
+                  </Can>
+                  <Can perform={permissions.upload.upload.destroy}>
+                    <Grid item>
+                      {user.picture ?
+                        <Button variant='contained' onClick={this.handleRemoveProfilePic}>
+                          Remove Profile Picture
+                        </Button> :
+                        <Button variant='contained' disabled>Remove Profile Picture</Button>
                       }
                     </Grid>
-                  </Grid>
-                  {selectedFile &&
-                    <Grid item>
-                      <Typography>{selectedFile && selectedFile.name}</Typography>
-                    </Grid>
-                  }
-                </Can>
-                <Can perform={permissions.upload.upload.destroy}>
-                  <Grid item>
-                    {user.picture ?
-                      <Button variant='contained' onClick={this.handleRemoveProfilePic}>
-                        Remove Profile Picture
-                      </Button> :
-                      <Button variant='contained' disabled>Remove Profile Picture</Button>
-                    }
-                  </Grid>
-                </Can>
-              </Grid>
-            }
+                  </Can>
+                </Grid>
+              }
+            </>
           </Can>
         </Grid>
       </Box>
