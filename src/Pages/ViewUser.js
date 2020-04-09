@@ -18,14 +18,15 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
-import history from '../utils/history';
-import MediaMarkdown from '../utils/MediaMarkdown';
+import history from '../utils/Routing/history';
+import MediaMarkdown from '../Components/MediaMarkdown';
 
 const styles = () => ({
   card: {
@@ -110,7 +111,7 @@ class ViewUser extends Component {
   };
 
   handleCapstoneClick = (title) => {
-    history.push(`/ViewCapstone/${title}`);
+    history.push(routes.viewcapstone.genPath(title));
   };
 
   handleChange = name => event => {

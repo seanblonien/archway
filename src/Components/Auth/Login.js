@@ -8,7 +8,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, {useContext, useState} from 'react';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import AuthContext from '../Contexts/AuthContext';
+import AuthContext from '../../Contexts/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
