@@ -3,69 +3,61 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React from 'react';
 
-class MainProfileEdit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+const MainProfileEdit = ({user, update}) => {
 
-  handleChange = event => {
-    const {update} = this.props;
-    const {target} = event;
-    const {value} = target;
-    const {name} = target;
-    update(name, value);
+  const handleChange = event => {
+    update(event.target.name, event.target.value);
   };
 
-  render() {
-    const {user} = this.props;
-
-    return (
-      <Box my={2}>
-        <Typography variant='h4'>Main Settings</Typography>
-        <Grid container direction='row' spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              name='Fullname'
-              label='Full name'
-              margin='dense'
-              style={{width: '100%'}}
-              onChange={this.handleChange}
-              value={user.Fullname}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name='email'
-              label='Email'
-              margin='dense'
-              style={{width: '100%'}}
-              onChange={this.handleChange}
-              value={user.email}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name='description'
-              label='Bio'
-              margin='dense'
-              style={{width: '100%'}}
-              multiline
-              onChange={this.handleChange}
-              value={user.description}
-            />
-          </Grid>
+  return (
+    <Box my={2}>
+      <Typography variant='h4'>Main Settings</Typography>
+      <Grid container direction='row' spacing={2}>
+        <Grid item xs={12}>
+          <TextField
+            name='Fullname'
+            label='Full name'
+            margin='dense'
+            fullWidth
+            onChange={handleChange}
+            value={user.Fullname}
+          />
         </Grid>
-      </Box>
-    );
-  }
-}
+        <Grid item xs={12}>
+          <TextField
+            name='email'
+            label='Email'
+            margin='dense'
+            fullWidth
+            onChange={handleChange}
+            value={user.email}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            name='description'
+            label='Bio'
+            margin='dense'
+            fullWidth
+            multiline
+            onChange={handleChange}
+            value={user.description}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
 
 MainProfileEdit.propTypes = {
-  user: PropTypes.objectOf(PropTypes.object).isRequired,
+  user: PropTypes.shape({
+    Fullname: PropTypes.string.isRequired, 
+    email: PropTypes.string.isRequired, 
+    description: PropTypes.string.isRequired
+  }).isRequired,
   update: PropTypes.func.isRequired,
 };
 

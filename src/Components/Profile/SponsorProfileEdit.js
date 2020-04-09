@@ -8,8 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../../Services/api';
-import {permissions} from '../../constants';
-import Can from '../Can';
 
 class SponsorProfileEdit extends Component {
   constructor(props) {
@@ -27,10 +25,7 @@ class SponsorProfileEdit extends Component {
 
   handleChange = event => {
     const {update} = this.props;
-    const {target} = event;
-    const {value} = target;
-    const {name} = target;
-    update(name, value);
+    update(event.target.name, event.target.value);
   };
 
   render() {
@@ -38,49 +33,50 @@ class SponsorProfileEdit extends Component {
     const {sponsors} = this.state;
 
     return (
-      <Can perform={permissions.application.proposals.create} role={user.role.name}>
-        <div>
-          <Divider/>
-          <Box my={2}>
-            <Typography variant='h4'>Sponsor Settings</Typography>
-            <Grid container direction='row' spacing={2}>
-              <Grid item xs={12}>
-                <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
-                <Select
-                  name='sponsorOrganization'
-                  labelId='sponsor-organization-select-label'
-                  margin='dense'
-                  style={{width: '100%'}}
-                  onChange={this.handleChange}
-                  value={user.sponsorOrganization}
-                >
-                  {sponsors.map(sponsor => (
-                    <option key={sponsor.id} value={sponsor}>
-                      {sponsor.name}
-                    </option>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name='jobTitle'
-                  label='Job Title'
-                  margin='dense'
-                  style={{width: '100%'}}
-                  onChange={this.handleChange}
-                  value={user.jobTitle}
-                />
-              </Grid>
+      <div>
+        <Divider/>
+        <Box my={2}>
+          <Typography variant='h4'>Sponsor Settings</Typography>
+          <Grid container direction='row' spacing={2}>
+            <Grid item xs={12}>
+              <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
+              <Select
+                name='sponsorOrganization'
+                labelId='sponsor-organization-select-label'
+                margin='dense'
+                fullWidth
+                onChange={this.handleChange}
+                value={user.sponsorOrganization}
+              >
+                {sponsors.map(sponsor => (
+                  <option key={sponsor.id} value={sponsor}>
+                    {sponsor.name}
+                  </option>
+                ))}
+              </Select>
             </Grid>
-          </Box>
-        </div>
-      </Can>
+            <Grid item xs={12}>
+              <TextField
+                name='jobTitle'
+                label='Job Title'
+                margin='dense'
+                fullWidth
+                onChange={this.handleChange}
+                value={user.jobTitle}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+      </div>
     );
   }
 }
 
 SponsorProfileEdit.propTypes = {
-  user: PropTypes.objectOf(PropTypes.object).isRequired,
+  user: PropTypes.shape({
+    sponsorOrganization: PropTypes.shape({name: PropTypes.string.isRequired}), 
+    jobTitle: PropTypes.string.isRequired
+  }).isRequired,
   update: PropTypes.func.isRequired,
 };
 

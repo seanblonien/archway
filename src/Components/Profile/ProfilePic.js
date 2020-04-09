@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {formatEntryUpload, imageURL} from '../../utils/utils';
 import api from '../../Services/api';
+import {permissions} from '../../constants';
+import Can from '../Can';
 
 class ProfilePic extends Component {
   constructor(props) {
@@ -73,46 +75,52 @@ class ProfilePic extends Component {
               }}
             />
           </Grid>
-          {canEdit &&
-            <Grid item xs={8} sm container direction='column' spacing={2}>
-              <Grid item>
-                <Typography>Upload profile picture</Typography>
-              </Grid>
-              <Grid item container direction='row' spacing={2}>
-                <Grid item>
-                  <Button variant='contained' component='label'>
-                    Choose File...
-                    <input
-                      type='file'
-                      name='file'
-                      onChange={this.handleSelectImage}
-                      style={{display: 'none'}}
-                    />
-                  </Button>
-                </Grid>
-                <Grid item>
+          <Can perform={permissions.users_permissions.user.update}>
+            {canEdit &&
+              <Grid item xs={8} sm container direction='column' spacing={2}>
+                <Can perform={permissions.upload.upload.upload}>
+                  <Grid item>
+                    <Typography>Upload profile picture</Typography>
+                  </Grid>
+                  <Grid item container direction='row' spacing={2}>
+                    <Grid item>
+                      <Button variant='contained' component='label'>
+                        Choose File...
+                        <input
+                          type='file'
+                          name='file'
+                          onChange={this.handleSelectImage}
+                          style={{display: 'none'}}
+                        />
+                      </Button>
+                    </Grid>
+                    <Grid item>
+                      {selectedFile &&
+                        <Button variant='contained' component='label' onClick={this.handleUploadImage}>
+                          Upload Image
+                        </Button>
+                      }
+                    </Grid>
+                  </Grid>
                   {selectedFile &&
-                    <Button variant='contained' component='label' onClick={this.handleUploadImage}>
-                      Upload Image
-                    </Button>
+                    <Grid item>
+                      <Typography>{selectedFile && selectedFile.name}</Typography>
+                    </Grid>
                   }
-                </Grid>
+                </Can>
+                <Can perform={permissions.upload.upload.destroy}>
+                  <Grid item>
+                    {user.picture ?
+                      <Button variant='contained' onClick={this.handleRemoveProfilePic}>
+                        Remove Profile Picture
+                      </Button> :
+                      <Button variant='contained' disabled>Remove Profile Picture</Button>
+                    }
+                  </Grid>
+                </Can>
               </Grid>
-              {selectedFile &&
-                <Grid item>
-                  <Typography>{selectedFile && selectedFile.name}</Typography>
-                </Grid>
-              }
-              <Grid item>
-                {user.picture ?
-                  <Button variant='contained' onClick={this.handleRemoveProfilePic}>
-                    Remove Profile Picture
-                  </Button> :
-                  <Button variant='contained' disabled>Remove Profile Picture</Button>
-                }
-              </Grid>
-            </Grid>
-          }
+            }
+          </Can>
         </Grid>
       </Box>
     );
@@ -120,7 +128,10 @@ class ProfilePic extends Component {
 }
 
 ProfilePic.propTypes = {
-  user: PropTypes.objectOf(PropTypes.object).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired, 
+    picture: PropTypes.objectOf(PropTypes.object).isRequired
+  }).isRequired,
   username: PropTypes.string.isRequired,
   picture: PropTypes.func.isRequired,
   message: PropTypes.func.isRequired,
