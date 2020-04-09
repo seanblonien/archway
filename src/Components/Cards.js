@@ -18,7 +18,7 @@ class Cards extends Component {
     return listItems.map((item, i) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={item.name}>
         <Card className={gStyle.card}>
-          <CardActionArea component={Link} to={childURL + item._id}>
+          <CardActionArea component={Link} to={childURL(item.id)}>
             <CardMedia
               component='img'
               height='300'
@@ -41,7 +41,7 @@ class Cards extends Component {
 
 Cards.propTypes = {
   listItems: PropTypes.arrayOf(PropTypes.object).isRequired,
-  childURL: PropTypes.string.isRequired,
+  childURL: PropTypes.func.isRequired,
   imageURLFunction: PropTypes.func.isRequired
 };
 

@@ -34,6 +34,7 @@
     "react/sort-comp": "warn",
     "react/prop-types": ["error", {"ignore":  ["classes", "match"]}],
     "react/jsx-props-no-spreading": "off",
+    "import/no-cycle": "off",
     "object-curly-spacing": ["warn", "never"],
     "template-curly-spacing": ["warn", "never"],
     "react/jsx-tag-spacing": ["warn", {
