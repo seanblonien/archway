@@ -1,6 +1,6 @@
-import Alert from '@material-ui/lab/Alert';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
@@ -109,18 +109,16 @@ class ViewProfile extends Component {
     const {user, isAuthenticated} = this.context;
 
     // The logged in (authenticated) user can only edit their own profile
-    const canEdit = isAuthenticated && user.username === profile.username;
+    const canEdit = isAuthenticated && profile && user.username === profile.username;
 
     return (
       <div>
         {profile ?
           <Box width='50%' mx='auto'>
-            <Snackbar open={messageOpen} autoHideDuration={6000} onClose={this.handleClose}>
-              <Alert severity='error'>{message}</Alert>
-            </Snackbar>
+            <Snackbar message={message} open={messageOpen} autoHideDuration={6000} onClose={this.handleMessageClose}/>
             <ProfileHeader user={profile} edit={editing}/>
             <Divider/>
-            <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} message={this.updateMessage} canEdit={canEdit}/>
+              <Paper><ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} message={this.updateMessage} canEdit={canEdit}/></Paper>
             <Divider/>
             {(editing) ?
               (

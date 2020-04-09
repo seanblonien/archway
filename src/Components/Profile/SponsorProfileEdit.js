@@ -36,7 +36,7 @@ class SponsorProfileEdit extends Component {
       <div>
         <Divider/>
         <Box my={2}>
-          <Typography variant='h4'>Sponsor Settings</Typography>
+          <Typography variant='h4'>{user.role.name} Settings</Typography>
           <Grid container direction='row' spacing={2}>
             <Grid item xs={12}>
               <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
@@ -74,6 +74,7 @@ class SponsorProfileEdit extends Component {
 
 SponsorProfileEdit.propTypes = {
   user: PropTypes.shape({
+    role: PropTypes.shape({name: PropTypes.string.isRequired}).isRequired,
     sponsorOrganization: PropTypes.shape({name: PropTypes.string.isRequired}), 
     jobTitle: PropTypes.string.isRequired
   }).isRequired,

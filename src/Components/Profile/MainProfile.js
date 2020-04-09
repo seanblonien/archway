@@ -18,9 +18,7 @@ const MainProfile = ({user}) => (
       </Grid>
       <Grid item xs={12}>
         <Typography>Bio: </Typography>
-        <Box border={1} borderRadius={12} padding={2}>
-          <Markdown>{user.description? user.description : ''}</Markdown>
-        </Box>
+        <Markdown>{user.description? user.description : ''}</Markdown>
       </Grid>
     </Grid>
   </Box>

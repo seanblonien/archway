@@ -2,12 +2,20 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {formatEntryUpload, imageURL} from '../../utils/utils';
 import api from '../../Services/api';
 import {permissions} from '../../constants';
 import Can from '../Can';
+
+const styles = () => ({
+  picBorder:{
+    border: '4px solid black', borderRadius: '12px',
+    width: '100%', height: 'auto'
+  }
+});
 
 class ProfilePic extends Component {
   constructor(props) {
@@ -60,7 +68,7 @@ class ProfilePic extends Component {
   };
 
   render() {
-    const {user, canEdit} = this.props;
+    const {user, canEdit, classes} = this.props;
     const {selectedFile} = this.state;
 
     return (
@@ -69,10 +77,7 @@ class ProfilePic extends Component {
           <Grid item xs={4}>
             <img
               src={imageURL.user(user.picture)} alt='profile'
-              style={{
-                border: '4px solid black', borderRadius: '12px',
-                width: '100%', height: 'auto'
-              }}
+              className={classes.picBorder}
             />
           </Grid>
           <Can perform={permissions.users_permissions.user.update}>
@@ -138,4 +143,4 @@ ProfilePic.propTypes = {
   canEdit: PropTypes.bool.isRequired,
 };
 
-export default ProfilePic;
+export default withStyles(styles) (ProfilePic);
