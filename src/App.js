@@ -5,7 +5,7 @@ import Can from './Components/Can';
 import Footer from './Components/Footer';
 import Header from './Components/Header/Header';
 import {permissions} from './constants';
-import {AuthProvider} from './Contexts/AuthContext';
+import AuthProvider from './Contexts/AuthProvider';
 import {RolesProvider} from './Contexts/RolesContext';
 import history from './utils/Routing/history';
 import routes from './utils/Routing/routes';
