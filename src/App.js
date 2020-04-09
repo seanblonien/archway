@@ -1,3 +1,4 @@
+import {SnackbarProvider} from 'notistack';
 import React from 'react';
 import {Router} from 'react-router-dom';
 import Can from './Components/Can';
@@ -12,20 +13,22 @@ import RoutesToRender from './utils/Routing/RoutesToRender';
 
 export default function App () {
   return <>
-    <RolesProvider>
-      <AuthProvider>
-        <Can perform={permissions.users_permissions.userspermissions.init}>
-          <Router history={history}>
-            <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
-              <Header/>
-              <div style={{paddingBottom: '140px'}}>
-                <RoutesToRender routes={routes} switch/>
+    <SnackbarProvider maxSnack={4}>
+      <RolesProvider>
+        <AuthProvider>
+          <Can perform={permissions.users_permissions.userspermissions.init}>
+            <Router history={history}>
+              <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
+                <Header/>
+                <div style={{paddingBottom: '140px'}}>
+                  <RoutesToRender routes={routes} switch/>
+                </div>
+                <Footer/>
               </div>
-              <Footer/>
-            </div>
-          </Router>
-        </Can>
-      </AuthProvider>
-    </RolesProvider>
+            </Router>
+          </Can>
+        </AuthProvider>
+      </RolesProvider>
+    </SnackbarProvider>
   </>;
 }
