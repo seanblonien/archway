@@ -3,10 +3,10 @@ import withWidth from '@material-ui/core/withWidth';
 import Fuse from 'fuse.js';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import history from '../utils/history';
 import CardLayout from '../Components/CardLayout';
 
 const styles = {
@@ -53,10 +53,6 @@ class ViewSponsors extends Component {
     this.setState({loading: false, sponsors});
   }
 
-  handleTileClick = (id) => {
-    history.push(`/ViewASponsor/${id}`);
-  };
-
   render() {
     const {loading, searchTerm, sponsors} = this.state;
 
@@ -87,7 +83,7 @@ class ViewSponsors extends Component {
       }
 
       return (
-        <CardLayout title='Our Sponsors' listItems={match} childURL='/ViewASponsor/' imageURLFunction={imageURL.sponsor}/>
+        <CardLayout title='Our Sponsors' listItems={match} childURL={routes.viewsponsor.genPath} imageURLFunction={imageURL.sponsor}/>
       );
     }
 

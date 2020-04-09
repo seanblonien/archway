@@ -34,7 +34,7 @@ import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
-import MediaMarkdown from '../utils/MediaMarkdown';
+import MediaMarkdown from '../Components/MediaMarkdown';
 
 const styles = () => ({
   card: {

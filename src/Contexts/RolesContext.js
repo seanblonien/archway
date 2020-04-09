@@ -5,7 +5,7 @@ import permissions from '../utils/AccessControl/permissionValues.json';
 
 const RolesContext = React.createContext(undefined);
 
-class RolesProvider extends Component {
+export class RolesProvider extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -64,5 +64,3 @@ RolesProvider.propTypes = {
 };
 
 export default RolesContext;
-
-export {RolesProvider};
