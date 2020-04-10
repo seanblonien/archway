@@ -26,6 +26,7 @@
     "insert-text-at-cursor": "^0.3.0",
     "lodash": "^4.17.15",
     "markdown-to-jsx": "^6.11.0",
+    "notistack": "^0.9.9",
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
     "pure-react-carousel": "^1.26.0",

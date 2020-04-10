@@ -1,7 +1,9 @@
+import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../Services/api';
 import routes from '../utils/Routing/routes';
+import {snack} from '../utils/Snackbar';
 import StorageManager from './StorageManager';
 import history from '../utils/Routing/history';
 import AuthContext from './AuthContext';
@@ -12,7 +14,7 @@ const initialState = {
   token: null,
 };
 
-export default class AuthProvider extends Component {
+class AuthProvider extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -31,8 +33,10 @@ export default class AuthProvider extends Component {
   }
 
   logout = () => {
+    const {enqueueSnackbar} = this.props;
     this.setState(initialState);
     StorageManager.clearLocalStorage();
+    enqueueSnackbar('Logged out', snack.default);
     history.push(routes.home.path);
   };
 
@@ -55,28 +59,35 @@ export default class AuthProvider extends Component {
   };
 
   login = async (identifier, password, useStorage = true) => {
+    const {enqueueSnackbar} = this.props;
+
     try {
       const response = await api.login(identifier, password);
       this.handleAuthenticationResponse(response, useStorage, routes.home.path);
+      enqueueSnackbar('Login successful', snack.success);
     } catch(error) {
-      // TODO
+      enqueueSnackbar('Error logging in', snack.error);
     }
   };
 
   register = async (user, useStorage = true) => {
+    const {enqueueSnackbar} = this.props;
     try {
       const response = await api.register(user);
       this.handleAuthenticationResponse(response, useStorage, routes.home.path);
+      enqueueSnackbar('Register successful', snack.success);
     } catch(error) {
-      // TODO
+      enqueueSnackbar('Error registering', snack.error);
     }
   };
 
   forgotPassword = async (email) => {
+    const {enqueueSnackbar} = this.props;
     try {
       await api.forgotPassword(email);
+      enqueueSnackbar('Reset password email sent', snack.info);
     } catch (error) {
-      // TODO
+      enqueueSnackbar('Error resetting password', snack.error);
     }
   };
 
@@ -104,5 +115,8 @@ export default class AuthProvider extends Component {
 }
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired
 };
+
+export default withSnackbar(AuthProvider);

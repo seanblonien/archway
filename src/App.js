@@ -10,26 +10,29 @@ import {RolesProvider} from './Contexts/RolesContext';
 import history from './utils/Routing/history';
 import routes from './utils/Routing/routes';
 import RoutesToRender from './utils/Routing/RoutesToRender';
+import Snackbar from './utils/Snackbar';
 
 export default function App () {
   const [value, setValue] = useState('');
 
   return <>
-    <RolesProvider>
-      <AuthProvider>
-        <Can perform={permissions.users_permissions.userspermissions.init}>
-          <Router history={history}>
-            <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
-              <Header/>
-              <MarkdownEditor setValue={setValue} value={value}/>
-              <div style={{paddingBottom: '140px'}}>
-                <RoutesToRender routes={routes} switch/>
+    <Snackbar>
+      <RolesProvider>
+        <AuthProvider>
+          <Can perform={permissions.users_permissions.userspermissions.init}>
+            <Router history={history}>
+              <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
+                <Header/>
+                <MarkdownEditor setValue={setValue} value={value}/>
+                <div style={{paddingBottom: '140px'}}>
+                  <RoutesToRender routes={routes} switch/>
+                </div>
+                <Footer/>
               </div>
-              <Footer/>
-            </div>
-          </Router>
-        </Can>
-      </AuthProvider>
-    </RolesProvider>
+            </Router>
+          </Can>
+        </AuthProvider>
+      </RolesProvider>
+    </Snackbar>
   </>;
 }
