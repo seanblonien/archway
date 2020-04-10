@@ -26,7 +26,7 @@ import LoadingCircle from '../Components/LoadingCircle';
 import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
 import history from '../utils/Routing/history';
-import MediaMarkdown from '../Components/MediaMarkdown';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 
 const styles = () => ({
   card: {
