@@ -1,3 +1,4 @@
+import {withSnackbar} from 'notistack';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -9,6 +10,7 @@ import {formatEntryUpload, imageURL} from '../../utils/utils';
 import api from '../../Services/api';
 import {permissions} from '../../constants';
 import Can from '../Can';
+import {snack} from '../../utils/Snackbar';
 
 const styles = () => ({
   picBorder:{
@@ -31,16 +33,17 @@ class ProfilePic extends Component {
 
   handleUploadImage = async () => {
     const {selectedFile} = this.state;
-    const {user, username, picture, message} = this.props;
+    const {user, username, picture, enqueueSnackbar} = this.props;
 
     try{
       // Upload the new picture
       const fileUpload = formatEntryUpload(selectedFile, 'user', user.id, 'picture', 'users-permissions');
       await api.uploads.upload(fileUpload);
       this.setState({selectedFile: null});
+      enqueueSnackbar('Your changes have been saved.', snack.success);
     } catch(err){
       const msg = 'The server responded with a status of '.concat(err.data.statusCode).concat(' (').concat(err.data.message).concat(')');
-      message(msg);
+      enqueueSnackbar(msg, snack.error);
     }
 
     try{
@@ -50,19 +53,20 @@ class ProfilePic extends Component {
       picture(pic);
     } catch(err){
       const msg = 'Upload success, but could not display image.';
-      message(msg);
+      enqueueSnackbar(msg, snack.error);
     }
   }
 
   handleRemoveProfilePic = async () => {
-    const {user, picture, message} = this.props;
+    const {user, picture, enqueueSnackbar} = this.props;
     if (user.picture) {
       try{
         await api.uploads.delete(user.picture.id);
         picture(null);
+        enqueueSnackbar('Profile picture removed.', snack.success);
       } catch(err){
         const msg = 'The server responded with a status of '.concat(err.data.statusCode).concat(' (').concat(err.data.message).concat(')');
-        message(msg);
+        enqueueSnackbar(msg, snack.error);
       }
     }
   };
@@ -141,8 +145,8 @@ ProfilePic.propTypes = {
   }).isRequired,
   username: PropTypes.string.isRequired,
   picture: PropTypes.func.isRequired,
-  message: PropTypes.func.isRequired,
   canEdit: PropTypes.bool.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired
 };
 
-export default withStyles(styles) (ProfilePic);
+export default withSnackbar(withStyles(styles) (ProfilePic));

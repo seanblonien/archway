@@ -1,9 +1,10 @@
+import {withSnackbar} from 'notistack';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
-import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../Services/api';
 import ProfileHeader from '../Components/Profile/ProfileHeader';
@@ -17,6 +18,7 @@ import EditButton from '../Components/Profile/EditButton';
 import AuthContext from '../Contexts/AuthContext';
 import {permissions} from '../constants';
 import Can from '../Components/Can';
+import {snack} from '../utils/Snackbar';
 
 const styles = (theme) => ({
   profilePaper:{
@@ -54,8 +56,6 @@ class ViewProfile extends Component {
         description: '',
         jobTitle: '',
       },
-      message: '',
-      messageOpen: false,
     };
   }
 
@@ -70,11 +70,6 @@ class ViewProfile extends Component {
     this.setState({profile, unchangedProfile});
   }
 
-  updateMessage = (msg) => {
-    // Triggers a message to be shown
-    this.setState({message: msg, messageOpen: true});
-  }
-
   updatePicture = (pic) => {
     // Update the picture on the screen
     const {profile, unchangedProfile} = this.state;
@@ -85,11 +80,6 @@ class ViewProfile extends Component {
     const {profile} = this.state;
     this.setState({profile: {...profile, [name]: value}});
   }
-
-  handleMessageClose = () => {
-    // Reset error message
-    this.setState({message: '', messageOpen: false});
-  };
 
   handleCancel = () => {
     const {unchangedProfile} = this.state;
@@ -102,18 +92,20 @@ class ViewProfile extends Component {
 
   handleSubmit = async (event) => {
     const {profile} = this.state;
+    const {enqueueSnackbar} = this.props;
 
     try{
       await api.users.update(profile.id, profile);
       this.setState({editing: false, unchangedProfile: profile});
+      enqueueSnackbar('Your changes have been saved.', snack.success);
     } catch(e){
-      this.setState({message: e, messageOpen: true});
+      enqueueSnackbar(e, snack.error);
     }
     event.preventDefault();
   };
 
   render() {
-    const {editing, profile, message, messageOpen} = this.state;
+    const {editing, profile} = this.state;
     const {match, classes} = this.props;
     const {user, isAuthenticated} = this.context;
 
@@ -124,11 +116,10 @@ class ViewProfile extends Component {
       <div>
         {profile ?
           <Box width='60%' mx='auto' my={2}>
-            <Snackbar message={message} open={messageOpen} autoHideDuration={6000} onClose={this.handleMessageClose}/>
             <Paper className={classes.profilePaper}>
               <ProfileHeader user={profile} edit={editing}/>
               <Divider/>
-              <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} message={this.updateMessage} canEdit={canEdit}/>
+              <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} canEdit={canEdit}/>
             </Paper>
             <br/>
             {(editing) ?
@@ -179,4 +170,8 @@ class ViewProfile extends Component {
 
 ViewProfile.contextType = AuthContext;
 
-export default withStyles(styles) (ViewProfile);
+ViewProfile.propTypes = {
+  enqueueSnackbar: PropTypes.func.isRequired
+};
+
+export default withSnackbar(withStyles(styles) (ViewProfile));
