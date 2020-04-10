@@ -9,6 +9,9 @@ import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
 import MediaMarkdown from '../Components/MediaMarkdown';
+import DepartmentForm from "../Components/DepartmentForm";
+import {permissions} from "../constants";
+import Can from "../Components/Can";
 
 const styles = {
   card: {
@@ -57,6 +60,13 @@ class ViewADepartment extends Component {
           <Typography align='center'>
             <h1>{department.name}</h1>
           </Typography>
+
+          <Can perform={permissions.application.departments.update}>
+            <DepartmentForm title='Edit Department' department={department} type='edit'/>
+          </Can>
+          <Can perform={permissions.application.departments.create}>
+            <DepartmentForm title='Create Department' type='create'/>
+          </Can>
 
           <Typography>
             {`Currently involved in ${department.capstones.length} capstones`}
