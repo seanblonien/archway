@@ -10,10 +10,10 @@ const ProfileHeader = ({user, edit}) => (
       <Grid item xs={10}>
         {(edit) ?
           (
-            <Typography variant='h3' align='left'>Profile Settings</Typography>
+            <Typography variant='h4' align='left'>Profile Settings</Typography>
           ) :
           (
-            <Typography variant='h3' align='left'>Profile: {user.Fullname}</Typography>
+            <Typography variant='h4' align='left'>Profile: {user.Fullname}</Typography>
           )
         }
       </Grid>

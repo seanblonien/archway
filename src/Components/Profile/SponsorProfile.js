@@ -7,8 +7,10 @@ import React from 'react';
 
 const SponsorProfile = ({user}) => (
   <div>
-    <Divider/>
     <Box my={2}>
+      <Typography variant='h5'>{user.role.name} Info</Typography>
+      <Divider/>
+      <br/>
       <Grid container direction='row' spacing={2}>
         <Grid item xs={12}>
           <Typography>Organization: </Typography>
@@ -25,6 +27,7 @@ const SponsorProfile = ({user}) => (
 
 SponsorProfile.propTypes = {
   user: PropTypes.shape({
+    role: PropTypes.shape({name: PropTypes.string.isRequired}).isRequired,
     sponsorOrganization: PropTypes.shape({name: PropTypes.string.isRequired}), 
     jobTitle: PropTypes.string.isRequired
   }).isRequired,

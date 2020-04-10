@@ -1,7 +1,9 @@
 import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
+import {withStyles} from '@material-ui/core/styles';
 import React, {Component} from 'react';
 import api from '../Services/api';
 import ProfileHeader from '../Components/Profile/ProfileHeader';
@@ -16,6 +18,14 @@ import AuthContext from '../Contexts/AuthContext';
 import {permissions} from '../constants';
 import Can from '../Components/Can';
 
+const styles = (theme) => ({
+  profilePaper:{
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[3],
+    padding: theme.spacing(4),
+    outline: 'none',
+  },
+});
 
 class ViewProfile extends Component {
   constructor(props) {
@@ -67,8 +77,8 @@ class ViewProfile extends Component {
 
   updatePicture = (pic) => {
     // Update the picture on the screen
-    const {profile} = this.state;
-    this.setState({profile: {...profile, picture: pic}});
+    const {profile, unchangedProfile} = this.state;
+    this.setState({profile: {...profile, picture: pic}, unchangedProfile: {...unchangedProfile, picture: pic}});
   }
 
   updateProfile = (name, value) => {
@@ -104,7 +114,7 @@ class ViewProfile extends Component {
 
   render() {
     const {editing, profile, message, messageOpen} = this.state;
-    const {match} = this.props;
+    const {match, classes} = this.props;
     const {user, isAuthenticated} = this.context;
 
     // The logged in (authenticated) user can only edit their own profile
@@ -113,39 +123,47 @@ class ViewProfile extends Component {
     return (
       <div>
         {profile ?
-          <Box width='50%' mx='auto'>
-            <AuthContext.Consumer>{(context) => (<div>{JSON.stringify(context)}</div>)}</AuthContext.Consumer>
-            <Typography>{String(isAuthenticated)}</Typography>
-            <Typography>{String(profile.username)}</Typography>
-            <Typography>{String(user)}</Typography>
+          <Box width='60%' mx='auto' my={2}>
             <Snackbar message={message} open={messageOpen} autoHideDuration={6000} onClose={this.handleMessageClose}/>
-            <ProfileHeader user={profile} edit={editing}/>
-            <Paper>
+            <Paper className={classes.profilePaper}>
+              <ProfileHeader user={profile} edit={editing}/>
+              <Divider/>
               <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} message={this.updateMessage} canEdit={canEdit}/>
             </Paper>
+            <br/>
             {(editing) ?
               (
                 // It is assumed that if you can get here, that you are editing your own profile, and you have permisison to do so
-                <Paper>
-                  <MainProfileEdit user={profile} update={this.updateProfile}/>
+                <div>
+                  <Paper className={classes.profilePaper}>
+                    <MainProfileEdit user={profile} update={this.updateProfile}/>
+                  </Paper>
                   <Can perform={permissions.application.proposals.create}>
-                    <SponsorProfileEdit user={profile} update={this.updateProfile}/>
+                    <br/>
+                    <Paper className={classes.profilePaper}>
+                      <SponsorProfileEdit user={profile} update={this.updateProfile}/>
+                    </Paper>
                   </Can>
                   <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
-                </Paper>
+                </div>
               ) : 
               (
-                <Paper>
-                  <MainProfile user={profile}/>
+                <div>
+                  <Paper className={classes.profilePaper}>
+                    <MainProfile user={profile}/>
+                  </Paper>
                   <Can perform={permissions.application.proposals.create} role={profile.role.name}>
-                    <SponsorProfile user={profile}/>
+                    <br/>
+                    <Paper className={classes.profilePaper}>
+                      <SponsorProfile user={profile}/>
+                    </Paper>
                   </Can>
                   <Can perform={permissions.users_permissions.user.update}>
                     <div>
                       {canEdit && <EditButton edit={this.handleEdit}/>}
                     </div>
                   </Can>
-                </Paper>
+                </div>
               )
             }
           </Box>
@@ -161,4 +179,4 @@ class ViewProfile extends Component {
 
 ViewProfile.contextType = AuthContext;
 
-export default ViewProfile;
+export default withStyles(styles) (ViewProfile);

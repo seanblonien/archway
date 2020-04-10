@@ -34,9 +34,10 @@ class SponsorProfileEdit extends Component {
 
     return (
       <div>
-        <Divider/>
         <Box my={2}>
-          <Typography variant='h4'>{user.role.name} Settings</Typography>
+          <Typography variant='h5'>{user.role.name} Settings</Typography>
+          <Divider/>
+          <br/>
           <Grid container direction='row' spacing={2}>
             <Grid item xs={12}>
               <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
