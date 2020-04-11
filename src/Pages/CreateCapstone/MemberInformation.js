@@ -117,13 +117,10 @@ const MemberInformation = ( props ) => {
               </Grid>
 
               <Grid item xs={12}>
-                <Grid container  justify='center' alignItems='center' spacing={2}>
-
-                  <Grid item xs={12}>
-                    <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
+                <Grid container alignItems='center' justify='center' spacing={6} direction='row'>
+                  {/* search professor */}
+                  <Grid item >
                       <Tooltip title='Search for name' arrow>
-
-                        <Grid item xs={3}>
                           <Autocomplete
                             id='combo-box-demo'
                             options={props.AllUsers}
@@ -132,42 +129,21 @@ const MemberInformation = ( props ) => {
                             onChange={props.handleSelectedProfessor}
                             renderInput={(params) => <TextField {...params} label='Search for Professor' variant='outlined'/>}
                           />
-                        </Grid>
                       </Tooltip>
-
-                      <Grid item>
-
-                        <Button variant='outlined' color='primary' onClick={props.handleConfirmTeammate}>
-                          Confirm
-                        </Button>
-                      </Grid>
-                    </Grid>
                   </Grid>
-
-                  <Grid item xs={12}>
-                    <Grid container alignItems='center' justify='space-evenly' spacing={3} direction='row'>
-                      <Tooltip title='Search for name' arrow>
-
-                        <Grid item xs={3}>
-
-                          <Autocomplete
-                            id='combo-box-demo'
-                            options={props.AllUsers}
-                            getOptionLabel={(option) => option.Fullname}
-                            style={{width: 300}}
-                            onChange={props.handleSelectedTA}
-                            renderInput={(params) => <TextField {...params} label='Search for TA' variant='outlined'/>}
-                          />
-                        </Grid>
-                      </Tooltip>
-                      <Grid item>
-
-                        <Button variant='outlined' color='primary' onClick={props.handleConfirmTeammate}>
-                          Confirm
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                  {/* search TA */}
+                  <Grid item >
+                    <Tooltip title='Search for name' arrow>
+                        <Autocomplete
+                          id='combo-box-demo'
+                          options={props.AllUsers}
+                          getOptionLabel={(option) => option.Fullname}
+                          style={{width: 300}}
+                          onChange={props.handleSelectedTA}
+                          renderInput={(params) => <TextField {...params} label='Search for TA' variant='outlined'/>}
+                        />
+                    </Tooltip>
+                </Grid>
                 </Grid>
               </Grid>
             </Grid>

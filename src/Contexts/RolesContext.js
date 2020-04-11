@@ -42,7 +42,7 @@ class RolesProvider extends Component {
 
   setRoles = async (roles) => {
     if(roles) {
-      this.setState({roles: roles});
+      this.setState({roles});
     }
   };
 

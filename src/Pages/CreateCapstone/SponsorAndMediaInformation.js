@@ -96,6 +96,7 @@ const SponsorAndMediaInformation = (props) =>
 
               <CardContent>
                 <DragAndDropZone
+                  id="file-id"
                   acceptImage={props.handleAcceptImageThumbnail.bind(this)}
                   prompt='Drop or click to upload a thumbnail'
                 />
@@ -116,7 +117,6 @@ const SponsorAndMediaInformation = (props) =>
         </Grid>
       </Grid>
       <Grid item xs={12} md={10}>
-        {/* Submit button */}
         <Card className={props.classes.card}>
           <CardContent>
             <DragAndDropZone

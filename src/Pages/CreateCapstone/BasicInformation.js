@@ -61,11 +61,6 @@ const BasicInformation = (props) => {
       handleDescription
   */
 
-  const handleChangeSwitch = (event) => {
-    console.log(event.target.name);
-  };
-
-
   return (
     <Grid item xs={12} md={10}>
       <Card className={props.classes.card}>
@@ -90,6 +85,7 @@ const BasicInformation = (props) => {
                     </FormControl>
                   </Tooltip>
                 </Grid>
+
                 <Grid item xs={2}>
                   <FormControlLabel
                     control={
@@ -105,6 +101,20 @@ const BasicInformation = (props) => {
                 </Grid>
 
               </Grid>
+            </Grid>
+            <Grid item xs={12}>
+
+              <Tooltip title='Name of Course' arrow>
+                <FormControl margin='dense' required fullWidth>
+                  <TextField
+                    id='outlined-textarea'
+                    label='Course Name'
+                    placeholder='Type the name of the course'
+                    onChange={props.handleCourseName}
+                    variant='outlined'
+                  />
+                </FormControl>
+              </Tooltip>
             </Grid>
 
             <Grid item xs={12}>

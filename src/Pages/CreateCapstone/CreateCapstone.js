@@ -7,6 +7,7 @@ import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import api from '../../Services/api';
 import BasicInformation from './BasicInformation';
+import StorageManager from '../../Contexts/StorageManager';
 import MemberInformation from './MemberInformation';
 import SponsorAndMediaInformation from './SponsorAndMediaInformation';
 
@@ -41,6 +42,7 @@ class CreateCapstone extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      description: '',
       title: '',
       isFeatured: false,
       startDate: new Date(),
@@ -49,7 +51,7 @@ class CreateCapstone extends Component {
       thumbnail: '',
       media: [],
       Department: '',
-      Username: '',
+      Username: StorageManager.getItem('user'),
       capstones: [],
       departmentList: [],
       sponsorList: [],
@@ -63,7 +65,8 @@ class CreateCapstone extends Component {
       typedName: '',
       typedEmail: '',
       selectedUser: '',
-      dialogOpen: false
+      dialogOpen: false,
+      courseName: ''
     };
   }
 
@@ -81,31 +84,8 @@ class CreateCapstone extends Component {
     });
   }
 
-  handleChange = name => event => {
-    const {departmentList} = this.state;
-    this.setState({[name]: event.target.value});
-
-    if (name === 'Department') {
-      const department = departmentList.find(d => d.name === event.target.value);
-      if(department){
-        this.setState({[name]: department});
-      }
-    }
-    if( name === 'Sponsor'){
-      // TODO use sponsorList
-      const {sponsorList} = this.state;
-      sponsorList.filter(() => true);
-    }
-  };
-
   handleChangeDepartment = (event) => {
     this.setState({Department: event.target.value});
-  };
-
-  handleSelectedUser = (event, values) => {
-    this.setState({selectedUser: values}, () => {
-      console.log(this.state.selectedUser);
-    });
   };
 
   handleSelectedProfessor = (event, values) => {
@@ -152,7 +132,6 @@ class CreateCapstone extends Component {
         this.setState({endDate: startDate});
       }
     });
-    console.log(this.state.Users);
   };
 
   handleEndDate = (endDate) => {
@@ -171,30 +150,27 @@ class CreateCapstone extends Component {
     this.setState({title: event.target.value});
   };
 
+  handleCourseName = (event) => {
+    this.setState({courseName: event.target.value});
+  };
+
   handleNewUser = (newUser) => {
     this.setState({...newUser});
   };
-
 
   handleSelectSponsor = (event) => {
     this.setState({selectedSponsor: event.target.value});
   };
 
   handleAcceptImageThumbnail = (image) => {
-    console.log(image);
-    console.log(this.state);
     this.setState({thumbnail: image});
   };
 
   handleAcceptImageCoverPhoto = (image) => {
-    console.log(image);
-    console.log(this.state);
     this.setState({coverPhoto: image});
   };
 
   handleAcceptImageMedia = (image) => {
-    console.log(image);
-    console.log(this.state);
     this.setState({media: image});
   };
 
@@ -203,7 +179,7 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
-    const {coverPhoto, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers} = this.state;
+    const { thumbnail, coverPhoto, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers} = this.state;
     if (coverPhoto == null) {
       return;
     }
@@ -211,8 +187,8 @@ class CreateCapstone extends Component {
     const sponsorIDs = checkedSponsors.map(s => s.id);
     const UserIDs = Participants.map(p => p.id);
 
-    const response = await api.capstones.create({
-      title,
+    const upload_data = {
+      name: title,
       startDate,
       endDate,
       description,
@@ -220,41 +196,69 @@ class CreateCapstone extends Component {
       department: Department.id,
       members: UserIDs,
       sponsors: sponsorIDs,
-    });
+    };
+    console.log(upload_data);
+
+    const response = await api.capstones.create(upload_data);
+    console.log(response);
 
     // Get refId of post that was just made
     const refId = response.data.id;
 
     // Upload image and link it to existing post
+    console.log(thumbnail);
+    // const image = document.getElementById('file-id');
+    console.log("the image: ");
+    // console.log(image);
     const formData = new FormData();
-    const image = document.getElementById('file-id');
-    formData.append('files', image.files[0], image.files[0].name);
-    formData.set('refId', refId);
-    formData.set('ref', 'capstone');
-    formData.set('field', 'coverPhoto');
 
-    await api.uploads.upload(formData);
+    formData.append('files', thumbnail[0], thumbnail[0].name);
+    formData.set('refId', refId);
+    formData.set('ref', 'Capstones');
+    formData.set('field', 'Thumbnail');
+    console.log(formData);
+    let data = await api.uploads.upload(formData);
+
+    console.log(data);
 
     // Use Users and AllUsers eventually
     Users.filter(() => true);
     AllUsers.filter(() => true);
   };
 
+  containsInvalidText = (text) => {
+    const filter = new Filter();
+    return filter.isProfane(text);
+  };
+
+  isFormValidForSave = () => {
+    const { title, description } = this.state;
+    if (!title || !description) {
+      console.log('non title');
+      return false;
+    }
+    if (this.containsInvalidText(title) || this.containsInvalidText(description)) {
+      console.log("bad word");
+      return false;
+    }
+    return true;
+  };
+
   isFormValid = () => {
     const {title, description, coverPhoto, checkedSponsors, Department, capstones} = this.state;
     const filter = new Filter();
     const profane = filter.isProfane(title) || filter.isProfane(description);
-    const validName = capstones.map(c => c.title.toUpperCase()).includes(title.toUpperCase());
-
+    const validName = capstones.map(c => c.name.toUpperCase()).includes(title.toUpperCase());
+    // TODO: add thumbnail & media
     const res = title && description && coverPhoto && Department && (checkedSponsors.length > 0) && !validName && !profane;
-    console.log(`title: ${title}`);
-    console.log(`des: ${description}`);
-    console.log(`cover: ${coverPhoto}`);
-    console.log(`depart: ${Department}`);
-    console.log(`spon${checkedSponsors}`);
-    console.log(`valid:${validName}`);
-    console.log(`pro? ${profane}`);
-    console.log(res);
+    // console.log(`title: ${title}`);
+    // console.log(`des: ${description}`);
+    // console.log(`cover: ${coverPhoto}`);
+    // console.log(`depart: ${Department}`);
+    // console.log(`spon${checkedSponsors}`);
+    // console.log(`valid:${validName}`);
+    // console.log(`pro? ${profane}`);
+    // console.log(res);
 
     return res;
   };
@@ -270,6 +274,7 @@ class CreateCapstone extends Component {
             classes={classes}
             handleTitle={this.handleTitle.bind(this)}
             isFeatured={this.state.isFeatured}
+            handleCourseName={this.handleCourseName.bind(this)}
             handleChangeSwitchFeature={this.handleChangeSwitchFeature.bind(this)}
             startDate={this.state.startDate}
             handleStartDate={this.handleStartDate.bind(this)}
@@ -312,7 +317,7 @@ class CreateCapstone extends Component {
                   fullWidth
                   variant='contained'
                   color='primary'
-                  disabled={!this.isFormValid()}
+                  disabled={!this.isFormValidForSave()}
                   onClick={this.handleSubmit}
                   style={{marginTop: '1%'}}
                 >
