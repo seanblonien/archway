@@ -1,13 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable prefer-destructuring */
+/* eslint-disable jsx-a11y/alt-text */
 import {Typography} from '@material-ui/core';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
-
-const isCamelCase = (str) => {
-  return /^[a-z][A-Za-z]*$/.test(str);
-};
 
 // Formats an img src to use Strapi's absolute URL on any /uploads files.
 // Image component will parse a src URL's width/height query parameters and
@@ -18,16 +15,16 @@ export const Image = (props) => {
   const propValues = {...props};
   const {src} = propValues;
   const urlParams = new URLSearchParams((new URL(src)).search);
-  const styles = {};
+  const style = {'max-width': '100%'};
   for (const [key, value] of urlParams.entries()) {
-    if(isCamelCase(key)) {
-      styles[key] = value;
+    if(key in document.body.style) {
+      style[key] = `${value}`;
     } else {
       propValues[key] = value;
     }
   }
   propValues.src = src.split('?')[0];
-  propValues.styles = styles;
+  propValues.style = style;
 
   return <img {...propValues}/>;
 };

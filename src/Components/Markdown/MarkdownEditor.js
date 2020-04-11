@@ -7,10 +7,13 @@ import PropTypes from 'prop-types';
 import {getDefaultCommands} from 'react-mde/lib/js/commands';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import ReactDOM from 'react-dom';
+import _ from 'lodash';
 import api from '../../Services/api';
 import MediaMarkdown from './MediaMarkdown';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 
+const formatImage = (text) => `![image](${text})`;
+const formatUpload = (text) => `[upload](${text})`;
 const outerRefs = {};
 
 const MarkdownEditor = ({value, setValue, uniqueName, ...rest}) => {
@@ -49,13 +52,19 @@ const MarkdownEditor = ({value, setValue, uniqueName, ...rest}) => {
   // Callback to use for when files are uploaded
   const onDrop = useCallback(async (files) => {
     try {
-      if(Array.isArray(files) && files.length > 0){
-        const formData = new FormData();
-        formData.append('files', files[0]);
-        const response = await api.uploads.upload(formData);
-        const fileUploads = response.data;
-        const textToInsert = fileUploads.reduce((str, file) =>
-          str + (/image/.test(file.mime) ? `![image](${file.url})` : `[upload](${file.url})`)
+      if(_.isArray(files) && !_.isEmpty(files)) {
+        const fileUploads = files.map(file => {
+          const formData = new FormData();
+          formData.append('files', file);
+          return api.uploads.upload(formData);
+        });
+        const fileUploadsResponse = await Promise.all(fileUploads);
+        const fileUploadsData = fileUploadsResponse.reduce((arr, response) => {
+          arr.push(...response.data);
+          return arr;
+        }, []);
+        const textToInsert = fileUploadsData.reduce((str, file) =>
+          `${str + (/image/.test(file.mime) ? formatImage(file.url) : formatUpload(file.url))}\n`
         ,'');
         const input = insertText(textToInsert);
         if (input) {
