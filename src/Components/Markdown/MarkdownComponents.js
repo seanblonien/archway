@@ -5,6 +5,10 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+const isCamelCase = (str) => {
+  return /^[a-z][A-Za-z]*$/.test(str);
+};
+
 // Formats an img src to use Strapi's absolute URL on any /uploads files.
 // Image component will parse a src URL's width/height query parameters and
 // size the image accordingly while stripping off the query parameters.
@@ -14,10 +18,16 @@ export const Image = (props) => {
   const propValues = {...props};
   const {src} = propValues;
   const urlParams = new URLSearchParams((new URL(src)).search);
+  const styles = {};
   for (const [key, value] of urlParams.entries()) {
-    propValues[key] = value;
+    if(isCamelCase(key)) {
+      styles[key] = value;
+    } else {
+      propValues[key] = value;
+    }
   }
   propValues.src = src.split('?')[0];
+  propValues.styles = styles;
 
   return <img {...propValues}/>;
 };
