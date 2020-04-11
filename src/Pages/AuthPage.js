@@ -5,7 +5,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import React from 'react';
 import {routesPropTypes} from '../utils/PropTypesConfig';
 import RoutesToRender from '../utils/Routing/RoutesToRender';
-import Dashboard from './Dashboard';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -17,7 +17,6 @@ import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
 import Register from '../../Components/Auth/Register';
-import RegisterPage from '../../Pages/RegisterPage';
 
 const routes = {
   dashboard: {
