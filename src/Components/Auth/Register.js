@@ -51,7 +51,6 @@ const Register = () => {
 
   const {identifier, password, remember} = state;
   return (
-    <Grid item xs={12} sm={8} md={6} xl={6} component={Paper} elevation={6} my={10}>
     <Box alignItems='center' m={5} className={classes.root}>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -127,7 +126,6 @@ const Register = () => {
         </form>
       </div>
     </Box>
-    </Grid>
   );
 };
 

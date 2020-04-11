@@ -116,12 +116,12 @@ const Login = () => {
             <Grid item>
               <Grid container direction='column' className={classes.options}>
                 <Grid item xs>
-                  <Link variant='body2' component={RouterLink} to={routes.auth.login.path}>
+                  <Link component={RouterLink} to={routes.auth.login.path}>
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link variant='body2' component={RouterLink} to={routes.auth.register.path}>
+                  <Link component={RouterLink} to={routes.auth.register.path}>
                     Don't have an account? Sign Up
                   </Link>
                 </Grid>
