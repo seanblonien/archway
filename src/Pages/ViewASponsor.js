@@ -13,7 +13,7 @@ import PageTitleTypography from '../Components/PageTitleTypography';
 import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
 import SponsorForm from '../Components/SponsorForm';
 import api from '../Services/api';
-import MediaMarkdown from '../Components/MediaMarkdown';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import {imageURL} from '../utils/utils';
 import {permissions} from "../constants";
 import Can from '../Components/Can';

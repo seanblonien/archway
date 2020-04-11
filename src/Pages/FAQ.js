@@ -7,7 +7,7 @@ import {HashLink as Link} from 'react-router-hash-link';
 import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
-import MediaMarkdown from '../Components/MediaMarkdown';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import gStyle from '../utils/styles.module.css';
 
 const styles = theme => ({

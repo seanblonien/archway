@@ -8,10 +8,10 @@ import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
-import MediaMarkdown from '../Components/MediaMarkdown';
 import DepartmentForm from "../Components/DepartmentForm";
 import {permissions} from "../constants";
 import Can from "../Components/Can";
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 
 const styles = {
   card: {
