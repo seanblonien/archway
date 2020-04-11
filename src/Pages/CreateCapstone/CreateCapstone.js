@@ -10,6 +10,7 @@ import BasicInformation from './BasicInformation';
 import StorageManager from '../../Contexts/StorageManager';
 import MemberInformation from './MemberInformation';
 import SponsorAndMediaInformation from './SponsorAndMediaInformation';
+import {formatEntryUpload} from "../../utils/utils";
 
 const styles = theme => ({
   list: {
@@ -205,19 +206,14 @@ class CreateCapstone extends Component {
     // Get refId of post that was just made
     const refId = response.data.id;
 
+
     // Upload image and link it to existing post
     console.log(thumbnail);
     // const image = document.getElementById('file-id');
-    console.log("the image: ");
+    console.log(refId);
     // console.log(image);
-    const formData = new FormData();
-
-    formData.append('files', thumbnail[0], thumbnail[0].name);
-    formData.set('refId', refId);
-    formData.set('ref', 'Capstones');
-    formData.set('field', 'Thumbnail');
-    console.log(formData);
-    let data = await api.uploads.upload(formData);
+    const thumbnailUpload = formatEntryUpload(thumbnail, 'capstones', refId, 'thumbnail', 'users-permissions');
+    let data = await api.uploads.upload(thumbnailUpload);
 
     console.log(data);
 

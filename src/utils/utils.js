@@ -70,7 +70,17 @@ export const formatQuery = (params) => `?${Object.keys(params)
  */
 export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPlugin = '') => {
   const entryUpload = new FormData();
+  // if (Array.isArray(file)) {
+  //   file.map(eachFile =>
+  //     entryUpload.append('files', eachFile)
+  //   )
+  // }
+  // else {
+  //   entryUpload.append('files', file);
+  // }
+
   entryUpload.append('files', file);
+
   entryUpload.append('ref', entryModel);
   entryUpload.append('source', entryPlugin);
   entryUpload.append('refId', entryID);

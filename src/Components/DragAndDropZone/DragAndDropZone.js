@@ -11,12 +11,12 @@ export default function Accept(props) {
   const [hasAccept, setAccept] = useState(false);
 
   // only keep one file in the accept files
-  while (acceptedFiles.length > 1) {
-    acceptedFiles.shift();
-  }
+  // while (acceptedFiles.length > 1) {
+  //   acceptedFiles.shift();
+  // }
 
 
-  if (acceptedFiles.length === 1 && !hasAccept) {
+  if (acceptedFiles.length >= 1 && !hasAccept) {
     console.log(acceptedFiles);
     props.acceptImage(acceptedFiles);
     setAccept(true);

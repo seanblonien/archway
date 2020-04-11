@@ -4,7 +4,7 @@ import Login from '../../Components/Auth/Login';
 import RegisterModal from '../../Components/RegisterModal';
 import SearchRedirect from '../../Components/SearchRedirect';
 import Capstone from '../../Pages/Capstones';
-import CreateCapstone from '../../Pages/CreateCapstone';
+import CreateCapstone from '../../Pages/CreateCapstone/CreateCapstone';
 import Dashboard from '../../Pages/Dashboard';
 import FAQ from '../../Pages/FAQ';
 import Home from '../../Pages/Home';
