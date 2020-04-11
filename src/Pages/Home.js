@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import FeaturedCapstones from '../Components/FeaturedCapstones';
 import FeaturedSponsors from '../Components/FeaturedSponsors';
 import LoadingCircle from '../Components/LoadingCircle';
-import MediaMarkdown from '../Components/MediaMarkdown';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import {permissions, strapiURL} from '../constants';
 import Can from '../Components/Can';
 import routes from '../utils/Routing/routes';

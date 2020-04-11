@@ -2,9 +2,9 @@ import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import MediaMarkdown from '../Markdown/MediaMarkdown';
 
 const MainProfile = ({user}) => (
   <Box my={2}>
@@ -22,7 +22,7 @@ const MainProfile = ({user}) => (
       </Grid>
       <Grid item xs={12}>
         <Typography>Bio: </Typography>
-        <Markdown>{user.description? user.description : ''}</Markdown>
+        <MediaMarkdown>{user.description? user.description : ''}</MediaMarkdown>
       </Grid>
     </Grid>
   </Box>
@@ -30,8 +30,8 @@ const MainProfile = ({user}) => (
 
 MainProfile.propTypes = {
   user: PropTypes.shape({
-    Fullname: PropTypes.string.isRequired, 
-    email: PropTypes.string.isRequired, 
+    Fullname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired
   }).isRequired,
 };

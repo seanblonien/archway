@@ -9,7 +9,7 @@ import React, {Component} from 'react';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
 import {getBgImageFromStrapi} from '../utils/utils';
-import MediaMarkdown from '../Components/MediaMarkdown';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 
 const styles = () => ({
   button: {
