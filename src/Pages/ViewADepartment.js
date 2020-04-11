@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
-import MediaMarkdown from '../utils/MediaMarkdown';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 
 const styles = {
   card: {

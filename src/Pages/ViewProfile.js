@@ -1,25 +1,60 @@
+import {withSnackbar} from 'notistack';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import {withStyles} from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {imageURL} from '../utils/utils';
 import api from '../Services/api';
+import ProfileHeader from '../Components/Profile/ProfileHeader';
+import ProfilePic from '../Components/Profile/ProfilePic';
+import MainProfile from '../Components/Profile/MainProfile';
+import MainProfileEdit from '../Components/Profile/MainProfileEdit';
+import SponsorProfile from '../Components/Profile/SponsorProfile';
+import SponsorProfileEdit from '../Components/Profile/SponsorProfileEdit';
+import CancelSubmit from '../Components/Profile/CancelSubmit';
+import EditButton from '../Components/Profile/EditButton';
+import AuthContext from '../Contexts/AuthContext';
+import {permissions} from '../constants';
+import Can from '../Components/Can';
+import {snack} from '../utils/Snackbar';
+
+const styles = (theme) => ({
+  profilePaper:{
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[3],
+    padding: theme.spacing(4),
+    outline: 'none',
+  },
+});
 
 class ViewProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       editing: false,
-      user: {
-        _id: '',
+      profile: {
+        id: '',
         username: '',
         email: '',
         Fullname: '',
-        picture: ''
+        picture: '',
+        sponsorOrganization: '',
+        role: '',
+        description: '',
+        jobTitle: '',
+      },
+      unchangedProfile: {
+        id: '',
+        username: '',
+        email: '',
+        Fullname: '',
+        picture: '',
+        sponsorOrganization: '',
+        role: '',
+        description: '',
+        jobTitle: '',
       },
     };
   }
@@ -27,216 +62,116 @@ class ViewProfile extends Component {
   async componentDidMount() {
     const {match} = this.props;
 
-    // Get the data for the user in question
+    // Get the data for the profile in question
     const response = await api.users.find({username: match.params.username});
-    const user = response[0];
+    const profile = response[0];
+    const unchangedProfile = response[0];
 
-    // Get the user's profile picture
-    this.setState({user});
+    this.setState({profile, unchangedProfile});
+  }
+
+  updatePicture = (pic) => {
+    // Update the picture on the screen
+    const {profile, unchangedProfile} = this.state;
+    this.setState({profile: {...profile, picture: pic}, unchangedProfile: {...unchangedProfile, picture: pic}});
+  }
+
+  updateProfile = (name, value) => {
+    const {profile} = this.state;
+    this.setState({profile: {...profile, [name]: value}});
   }
 
   handleCancel = () => {
-    this.setState({editing: false});
-  };
-
-  handleChange = event => {
-    const {user} = this.state;
-    const {target} = event;
-    const {value} = target;
-    const {name} = target;
-    this.setState({user: {...user, [name]: value}});
+    const {unchangedProfile} = this.state;
+    this.setState({editing: false, profile: unchangedProfile});
   };
 
   handleEdit = () => {
     this.setState({editing: true});
   };
 
-  handleRemoveProfilePic = async () => {
-    const {user} = this.state;
-    if(user.picture) {
-      await api.uploads.delete(user.picture.id);
-    }
-  };
-
   handleSubmit = async (event) => {
-    // todo: add authentication
-    const {user} = this.state;
-    await api.users.update(user.id, user);
-    this.setState({editing: false});
+    const {profile} = this.state;
+    const {enqueueSnackbar} = this.props;
+
+    try{
+      await api.users.update(profile.id, profile);
+      this.setState({editing: false, unchangedProfile: profile});
+      enqueueSnackbar('Your changes have been saved.', snack.success);
+    } catch(e){
+      enqueueSnackbar(e, snack.error);
+    }
     event.preventDefault();
   };
 
   render() {
-    const {editing, user} = this.state;
+    const {editing, profile} = this.state;
+    const {match, classes} = this.props;
+    const {user, isAuthenticated} = this.context;
+
+    // The logged in (authenticated) user can only edit their own profile
+    const canEdit = isAuthenticated && profile && user.username === profile.username;
 
     return (
-      <Box width='50%' mx='auto'>
-        <Box my={2}>
-          {(editing)?
-            (
-              <Typography variant='h3'>Profile Settings</Typography>
-            ):
-            (
-              <Typography variant='h3'>Profile: {user.Fullname}</Typography>
-            )
-          }
-        </Box>
-        <Divider/>
-        <Box my={2}>
-          <Grid container direction='row' justify='space-between' spacing={2}>
-            <Grid item xs={4} style={{width: '300px'}}>
-              <img
-                src={imageURL.user(user.picture)} alt='profile'
-                style={{
-                  border: '4px solid black', borderRadius: '12px',
-                  width: '100%', height: 'auto'
-                }}
-              />
-            </Grid>
-            <Grid item xs={8} sm container direction='column' spacing={2}>
-              <Grid item>
-                <Typography>Upload profile picture</Typography>
-              </Grid>
-              <Grid item>
-                <Button variant='contained' component='label'>
-                  Choose File...
-                  <input
-                    type='file'
-                    style={{display: 'none'}}
-                  />
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button variant = 'contained' onClick={this.handleRemoveProfilePic}>
-                  Remove Profile Picture
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Box>
-        <Divider/>
-        <Box my={2}>
-          {(editing) &&
-                        (
-                          <Typography variant='h4'>Main Settings</Typography>
-                        )
-          }
-          <Grid container direction='row' justify='left' spacing={2}>
-            <Grid item xs={12}>
-              {(editing)?
-                (
-                  <TextField
-                    name='Fullname'
-                    label='Full name'
-                    margin='dense'
-                    style={{width: '100%'}}
-                    onChange={this.handleChange}
-                    value={user.Fullname}
-                  />
-
-                ):
-                (
-                  <div>
-                    <Typography>Name: </Typography>
-                    <Typography>{user.Fullname}</Typography>
-                  </div>
-                )
-              }
-            </Grid>
-            <Grid item xs={12}>
-              {(editing)?
-                (
-                  <TextField
-                    name='email'
-                    label='Email'
-                    margin='dense'
-                    style={{width: '100%'}}
-                    onChange={this.handleChange}
-                    value={user.email}
-                  />
-
-                ):
-                (
-                  <div>
-                    <Typography>Email: </Typography>
-                    <Typography>{user.email}</Typography>
-                  </div>
-                )
-              }
-            </Grid>
-            <Grid item xs={12}>
-              {(editing)?
-                (
-                  <TextField
-                    name='phone'
-                    label='Phone'
-                    margin='dense'
-                    style={{width: '100%'}}
-                  />
-
-                ):
-                (
-                  <div>
-                    <Typography>Phone: </Typography>
-                    <Typography>1234567890</Typography>
-                  </div>
-                )
-              }
-            </Grid>
-            <Grid item xs={12}>
-              {(editing)?
-                (
-                  <TextField
-                    name='linkedin'
-                    label='LinkedIn'
-                    margin='dense'
-                    style={{width: '100%'}}
-                  />
-
-                ):
-                (
-                  <div>
-                    <Typography>LinkedIn: </Typography>
-                    <Typography>
-                      <Link href='https://www.linkedin.com/in/jrt0799/'>
-                        https://www.linkedin.com/in/jrt0799/
-                      </Link>
-                    </Typography>
-                  </div>
-                )
-              }
-            </Grid>
-          </Grid>
-        </Box>
-        <Box my={2}>
-          {(editing)?
-            (
-              <Grid container direction='row' justify='space-between' spacing={2}>
-                <Grid item>
-                  <Button variant='contained' onClick={this.handleCancel}>
-                    Cancel
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant='contained' onClick={this.handleSubmit}>
-                    Update Profile
-                  </Button>
-                </Grid>
-              </Grid>
-            ):
-            (   // TODO: Only the logged in user should be able to edit their profile
-              <Button variant='contained' onClick={this.handleEdit}>
-                Edit Profile
-              </Button>
-            )
-          }
-
-        </Box>
-      </Box>
+      <div>
+        {profile ?
+          <Box width='60%' mx='auto' my={2}>
+            <Paper className={classes.profilePaper}>
+              <ProfileHeader user={profile} edit={editing}/>
+              <Divider/>
+              <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} canEdit={canEdit}/>
+            </Paper>
+            <br/>
+            {(editing) ?
+              (
+                // It is assumed that if you can get here, that you are editing your own profile, and you have permisison to do so
+                <div>
+                  <Paper className={classes.profilePaper}>
+                    <MainProfileEdit user={profile} update={this.updateProfile}/>
+                  </Paper>
+                  <Can perform={permissions.application.proposals.create}>
+                    <br/>
+                    <Paper className={classes.profilePaper}>
+                      <SponsorProfileEdit user={profile} update={this.updateProfile}/>
+                    </Paper>
+                  </Can>
+                  <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
+                </div>
+              ) : 
+              (
+                <div>
+                  <Paper className={classes.profilePaper}>
+                    <MainProfile user={profile}/>
+                  </Paper>
+                  <Can perform={permissions.application.proposals.create} role={profile.role.name}>
+                    <br/>
+                    <Paper className={classes.profilePaper}>
+                      <SponsorProfile user={profile}/>
+                    </Paper>
+                  </Can>
+                  <Can perform={permissions.users_permissions.user.update}>
+                    <div>
+                      {canEdit && <EditButton edit={this.handleEdit}/>}
+                    </div>
+                  </Can>
+                </div>
+              )
+            }
+          </Box>
+          :
+          <Box width='50%' mx='auto' my={12}>
+            <Typography variant='h3'>Sorry, we could not find the profile you were looking for...</Typography>
+          </Box>
+        }
+      </div>
     );
-
-    // TODO: add sponsor profile settings
   }
 }
 
-export default ViewProfile;
+ViewProfile.contextType = AuthContext;
+
+ViewProfile.propTypes = {
+  enqueueSnackbar: PropTypes.func.isRequired
+};
+
+export default withSnackbar(withStyles(styles) (ViewProfile));
