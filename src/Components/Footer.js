@@ -5,6 +5,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import arch from '../Static/arch.svg';
+import routes from '../utils/Routing/routes';
 
 const styles = () => ({
   divStyle: {
@@ -56,25 +57,25 @@ const Footer = props => {
         <Grid container justify='center' style={{paddingTop: 30, paddingBottom: 40}}>
           <Grid container justify='center' style={{paddingLeft: 250, paddingRight: 250}}>
             <Grid className={classes.gridItem} item xs>
-              <Link to='/Home' className={classes.linkStyle}>Home Page</Link>
+              <Link to={routes.home.path} className={classes.linkStyle}>Home Page</Link>
             </Grid>
             <Grid className={classes.gridItem} item xs>
-              <Link to='/About' className={classes.linkStyle}>About Page</Link>
+              <Link to={routes.about.path} className={classes.linkStyle}>About Page</Link>
             </Grid>
             <Grid className={classes.gridItem} item xs>
-              <Link to='/Sponsors' className={classes.linkStyle}>Sponsor A Project</Link>
+              <Link to={routes.sponsors.path} className={classes.linkStyle}>Sponsor A Project</Link>
             </Grid>
             <Grid className={classes.gridItem} item xs={2}>
               <img src={arch} alt='Powered by Archway' title='Powered by Archway' height='30' width='30'/>
             </Grid>
             <Grid className={classes.gridItem} item xs>
-              <Link to='/ViewAllDepartments' className={classes.linkStyle}>Departments</Link>
+              <Link to={routes.viewdepartments.path} className={classes.linkStyle}>Departments</Link>
             </Grid>
             <Grid className={classes.gridItem} item xs>
-              <Link to='/FAQ' className={classes.linkStyle}>Help and Info</Link>
+              <Link to={routes.faq.path} className={classes.linkStyle}>Help and Info</Link>
             </Grid>
             <Grid className={classes.gridItem} item xs>
-              <Link to='/Sponsors' className={classes.linkStyle}>View Sponsors</Link>
+              <Link to={routes.sponsors.path} className={classes.linkStyle}>View Sponsors</Link>
             </Grid>
           </Grid>
         </Grid>

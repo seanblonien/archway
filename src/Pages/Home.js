@@ -11,12 +11,12 @@ import PropTypes from 'prop-types';
 import FeaturedCapstones from '../Components/FeaturedCapstones';
 import FeaturedSponsors from '../Components/FeaturedSponsors';
 import LoadingCircle from '../Components/LoadingCircle';
-import MediaMarkdown from '../utils/MediaMarkdown';
-import {permissions} from '../constants';
+import MediaMarkdown from '../Components/MediaMarkdown';
+import {permissions, strapiURL} from '../constants';
 import Can from '../Components/Can';
+import routes from '../utils/Routing/routes';
 import gStyle from '../utils/styles.module.css';
 import api from '../Services/api';
-import {getBgImageFromStrapi} from '../utils/utils';
 
 const insideStyles = theme => ({
   background: theme.palette.primary.main,
@@ -95,7 +95,7 @@ class Home extends Component {
       :
       <div>
         <div>
-          <Parallax style={{backgroundImage: getBgImageFromStrapi(pageContent.bgimage.url), backgroundSize: 'cover'}} strength={500}>
+          <Parallax bgImage={strapiURL + pageContent.bgimage.url} strength={500}>
             <div style={{height: 650}}>
               <div style={surroundStyle}>
                 <div style={insideStyles(theme)}>
@@ -107,7 +107,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/Capstones'
+                      to={routes.capstones.genPath('')}
                     >
                       Check out Current Capstones
                     </Button>
@@ -116,7 +116,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/ViewSponsors'
+                      to={routes.viewsponsors.path}
                     >
                       Check Out Our Sponsors
                     </Button>
@@ -125,7 +125,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/Sponsors'
+                      to={routes.sponsors.path}
                     >
                       Become a Sponsor
                     </Button>
