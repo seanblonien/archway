@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Chrome Debug React",
             "webRoot": "${workspaceRoot}/src",
-            "url": "http://localhost:3000"
+            "url": "http://localhost"
         }
     ]
 }

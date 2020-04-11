@@ -16,7 +16,7 @@ export default class UploadEndpoint {
   findOne = async (id) => (await this.apiClient.get(`${this.name}/files/${id}`)).data;
 
   // Uploads a new upload file.
-  upload = (upload) => this.apiClient.post(`${this.name}/`, upload, {
+  upload = (upload) => this.apiClient.post(`${this.name}`, upload, {
     headers: {
       'Content-Type': 'multipart/form-data',
     }
