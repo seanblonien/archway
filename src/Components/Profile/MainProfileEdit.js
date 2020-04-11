@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
+import MarkdownEditor from '../Markdown/MarkdownEditor';
 
 const MainProfileEdit = ({user, update}) => {
 
@@ -39,13 +40,9 @@ const MainProfileEdit = ({user, update}) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            name='description'
-            label='Bio'
-            margin='dense'
-            fullWidth
-            multiline
-            onChange={handleChange}
+          <MarkdownEditor
+            uniqueName='bio'
+            setValue={(value) => update('description', value)}
             value={user.description}
           />
         </Grid>
@@ -57,8 +54,8 @@ const MainProfileEdit = ({user, update}) => {
 
 MainProfileEdit.propTypes = {
   user: PropTypes.shape({
-    Fullname: PropTypes.string.isRequired, 
-    email: PropTypes.string.isRequired, 
+    Fullname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired
   }).isRequired,
   update: PropTypes.func.isRequired,
