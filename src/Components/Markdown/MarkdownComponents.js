@@ -15,7 +15,7 @@ export const Image = (props) => {
   const propValues = {...props};
   const {src} = propValues;
   const urlParams = new URLSearchParams((new URL(src)).search);
-  const style = {'max-width': '100%'};
+  const style = {'maxWidth': '100%'};
   for (const [key, value] of urlParams.entries()) {
     if(key in document.body.style) {
       style[key] = `${value}`;
@@ -72,7 +72,7 @@ export const A = (props) =>  {
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
-    <P>
+    <P display='inline'>
       <a {...props} className={classes.link} target='_blank'/>
     </P>
   );

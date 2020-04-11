@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-find-dom-node */
+import {useSnackbar} from 'notistack';
 import React, {useCallback, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import ReactMde from 'react-mde';
@@ -9,6 +10,7 @@ import insertTextAtCursor from 'insert-text-at-cursor';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import api from '../../Services/api';
+import {snack} from '../../utils/Snackbar';
 import MediaMarkdown from './MediaMarkdown';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 
@@ -17,6 +19,7 @@ const formatUpload = (text) => `[upload](${text})`;
 const outerRefs = {};
 
 const MarkdownEditor = ({value, setValue, uniqueName, ...rest}) => {
+  const {enqueueSnackbar} = useSnackbar();
   // Create this editor's outer ref that will be used for finding the textarea
   const outerRef = React.createRef();
   // The active tab of the markdown editor
@@ -31,7 +34,12 @@ const MarkdownEditor = ({value, setValue, uniqueName, ...rest}) => {
     fileInputRef.click();
   };
 
-  // Inserts the given text into this editor's ReactMde textarea
+  /**
+   * Insert the given text into the ReactMde textarea at the cursor.
+   *
+   * @param text The text value to insert at the cursor in the ReactMde textarea
+   * @returns {null|String} The modified textarea value, or null if error
+   */
   const insertText = (text) => {
     // Because ReactMde doesn't give us a ref value for the text area, we have to find it ourselves
     const inputs = ReactDOM.findDOMNode(outerRefs[uniqueName].current).getElementsByClassName('mde-text');
@@ -52,27 +60,34 @@ const MarkdownEditor = ({value, setValue, uniqueName, ...rest}) => {
   // Callback to use for when files are uploaded
   const onDrop = useCallback(async (files) => {
     try {
+      // If there is at least one file
       if(_.isArray(files) && !_.isEmpty(files)) {
+        // Make the file upload requests
         const fileUploads = files.map(file => {
           const formData = new FormData();
           formData.append('files', file);
           return api.uploads.upload(formData);
         });
+        // Upload files
         const fileUploadsResponse = await Promise.all(fileUploads);
+        // Reduce the out the returned file data into one array
         const fileUploadsData = fileUploadsResponse.reduce((arr, response) => {
           arr.push(...response.data);
           return arr;
         }, []);
-        const textToInsert = fileUploadsData.reduce((str, file) =>
+        // Format each url into markdown
+        const textToInsert = fileUploadsData.reduce((str, file, i) =>
           `${str + (/image/.test(file.mime) ? formatImage(file.url) : formatUpload(file.url))}\n`
         ,'');
+        // Insert the text into the text area
         const input = insertText(textToInsert);
-        if (input) {
+        // If input was successful, update the textarea value manually
+        if(input) {
           setValue(input);
         }
       }
     } catch (e) {
-      // TODO handle
+      enqueueSnackbar('Error when uploading files', snack.error);
     }
   }, []);
 
