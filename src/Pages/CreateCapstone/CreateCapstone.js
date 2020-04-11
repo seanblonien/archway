@@ -180,7 +180,7 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
-    const { thumbnail, coverPhoto, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers} = this.state;
+    const { thumbnail, coverPhoto, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers, media} = this.state;
     if (coverPhoto == null) {
       return;
     }
@@ -212,8 +212,13 @@ class CreateCapstone extends Component {
     // const image = document.getElementById('file-id');
     console.log(refId);
     // console.log(image);
-    const thumbnailUpload = formatEntryUpload(thumbnail, 'capstones', refId, 'thumbnail', 'users-permissions');
+    const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', refId, 'thumbnail');
     let data = await api.uploads.upload(thumbnailUpload);
+    const mediaUploads = media.map(file => {
+      const upload = formatEntryUpload(file, 'capstones', refId, 'media');
+      return api.uploads.upload(upload);
+    });
+    const resp = Promise.all(mediaUploads);
 
     console.log(data);
 
