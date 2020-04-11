@@ -647,6 +647,9 @@
           "dominant": false,
           "targetAttribute": "personnel",
           "unique": false
+        },
+        "jobTitle": {
+          "type": "string"
         }
       }
     }
