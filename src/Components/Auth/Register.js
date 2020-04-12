@@ -7,7 +7,10 @@ import React, {useContext, useEffect, useState} from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import AuthContext from '../../Contexts/AuthContext';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import api from '../../Services/api';
+import {passwordMatch, validateEmail, validatePassword, validateUsername} from '../../utils/validation';
+import routes from '../../utils/Routing/routes';
+import {Link} from '@material-ui/core';
+import {Link as RouterLink} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,30 +38,22 @@ const Register = () => {
   const {register} = useContext(AuthContext);
   const [state, setState] = useState({identifier: '', password: '', remember: true, passwordInvalid: ''});
   const classes = useStyles();
+  const {identifier,
+    password,
+    confirmPassword,
+    fullName,
+    email} = state;
 
   useEffect(() => {
-    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-      const {password} = state;
-      return value === password;
-    });
-    ValidatorForm.addValidationRule('passwordLength', (value) => {
-      return value.length >= 6;
-    });
-    ValidatorForm.addValidationRule('uniqueUsername', async (value) => {
-      let response = null;
-      while (response == null) {
-        try {
-          response = await api.users.find({username: value});
-          return response.length === 0;
-        } catch (error) {
-          return true;
-        }
-      }
-    });
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => passwordMatch(password, value));
+    ValidatorForm.addValidationRule('passwordLength', (value) => validatePassword(value));
+    ValidatorForm.addValidationRule('uniqueUsername', (value) => validateUsername(value));
+    ValidatorForm.addValidationRule('validEmail', (value) => validateEmail(value));
     return function cleanup() {
       ValidatorForm.removeValidationRule('isPasswordMatch');
       ValidatorForm.removeValidationRule('passwordLength');
       ValidatorForm.removeValidationRule('uniqueUsername');
+      ValidatorForm.removeValidationRule('validEmail');
     };
   });
 
@@ -74,11 +69,7 @@ const Register = () => {
     register(user);
   };
 
-  const {identifier,
-    password,
-    confirmPassword,
-    fullName,
-    email} = state;
+
   return (
     <Box alignItems='center' m={5} className={classes.root}>
       <div className={classes.paper}>
@@ -126,7 +117,7 @@ const Register = () => {
                 autoFocus
                 value={email}
                 onChange={handleChange}
-                validators={['required', 'isEmail']}
+                validators={['required', 'validEmail']}
                 errorMessages={['An email is required.', 'The email is invalid.']}
               />
             </Grid>
@@ -164,9 +155,13 @@ const Register = () => {
               >
                 Register
               </Button>
+
             </Grid>
           </Grid>
         </ValidatorForm>
+        <Link component={RouterLink} to={routes.auth.login.path}>
+          Return to login screen
+        </Link>
       </div>
     </Box>
   );

@@ -18,18 +18,23 @@ export const validateAddUser = (user) => {
 };
 
 export const validatePassword = (password) => {
-
+  return password.length >= 6;
 };
 
-export const validateUsername = (username) => {
+export const validateUsername = async (username) => {
   try {
-    const response = api.users.find({username: username});
-    return false;
+    const response = await api.users.find({username: username});
+    return response.length === 0;
   } catch (error) {
     return true;
   }
 };
 
 export const validateEmail = (email) => {
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return emailRegex.test(email);
+};
 
+export const passwordMatch = (password, secondPassword) => {
+  return password === secondPassword;
 };
