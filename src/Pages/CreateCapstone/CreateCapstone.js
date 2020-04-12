@@ -52,7 +52,7 @@ class CreateCapstone extends Component {
       thumbnail: '',
       media: [],
       Department: '',
-      Username: StorageManager.getItem('user'),
+      Username: StorageManager.getItem('user')._id,
       capstones: [],
       departmentList: [],
       sponsorList: [],
@@ -77,6 +77,7 @@ class CreateCapstone extends Component {
     const departmentList = await api.departments.find();
     const sponsorList = await api.sponsors.find();
     // sets the various states
+    console.log(departmentList);
     this.setState({capstones, sponsorList, departmentList});
 
     const response = await api.users.find();
@@ -86,11 +87,12 @@ class CreateCapstone extends Component {
   }
 
   handleChangeDepartment = (event) => {
+    console.log(event.target.value);
     this.setState({Department: event.target.value});
   };
 
   handleSelectedProfessor = (event, values) => {
-    this.setState({selectProfessor: values});
+    this.setState({selectedProfessor: values});
   };
 
   handleSelectedTA = (event, values) => {
@@ -179,48 +181,72 @@ class CreateCapstone extends Component {
     this.setState({isFeatured: event.target.checked});
   };
 
-  handleSubmit = async () => {
-    const { thumbnail, coverPhoto, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers, media} = this.state;
-    if (coverPhoto == null) {
-      return;
-    }
-
-    const sponsorIDs = checkedSponsors.map(s => s.id);
-    const UserIDs = Participants.map(p => p.id);
-
-    const upload_data = {
-      name: title,
+  extractNonMediaContent = () => {
+    const {
+      title,
+      Username,
+      isFeatured,
+      courseName,
       startDate,
       endDate,
+      Department,
       description,
+      Participants,
+      selectedProfessor,
+      selectedTA,
+      checkedSponsors
+    } = this.state;
+    const upload_content = {
+      name: title,
       moderator: Username,
-      department: Department.id,
-      members: UserIDs,
-      sponsors: sponsorIDs,
+      isFeatured: isFeatured,
+      startDate: startDate,
+      endDate: endDate
     };
-    console.log(upload_data);
+    if (courseName !== '') {
+      upload_content.courseName = courseName;
+    }
+    if (Department !== '') {
+      console.log(Department);
+      upload_content.department = [Department.id, ];
+    }
+    if (description !== '') {
+      upload_content.description = description;
+    }
+    if (Participants.length > 0) {
+      const UserIDs = Participants.map(p => p.id);
+      upload_content.members = UserIDs;
+    }
+    if (selectedTA !== '') {
+      upload_content.TA = selectedTA.id;
+    }
+    if (selectedProfessor !== '') {
+      upload_content.professor = selectedProfessor.id;
+    }
+    if (checkedSponsors.length > 0) {
+      upload_content.sponsors = checkedSponsors.map(s => s.id);
+    }
+    return upload_content;
+  };
 
+  handleSubmit = async () => {
+    const {
+      Users,
+      AllUsers,
+    } = this.state;
+    let upload_data = this.extractNonMediaContent();
     const response = await api.capstones.create(upload_data);
-    console.log(response);
 
-    // Get refId of post that was just made
-    const refId = response.data.id;
-
-
-    // Upload image and link it to existing post
-    console.log(thumbnail);
-    // const image = document.getElementById('file-id');
-    console.log(refId);
-    // console.log(image);
-    const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', refId, 'thumbnail');
-    let data = await api.uploads.upload(thumbnailUpload);
-    const mediaUploads = media.map(file => {
-      const upload = formatEntryUpload(file, 'capstones', refId, 'media');
-      return api.uploads.upload(upload);
-    });
-    const resp = Promise.all(mediaUploads);
-
-    console.log(data);
+    // const refId = response.data.id;
+    // const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', refId, 'thumbnail');
+    // let data = await api.uploads.upload(thumbnailUpload);
+    // const mediaUploads = media.map(file => {
+    //   const upload = formatEntryUpload(file, 'capstones', refId, 'media');
+    //   return api.uploads.upload(upload);
+    // });
+    // const resp = Promise.all(mediaUploads);
+    //
+    // console.log(data);
 
     // Use Users and AllUsers eventually
     Users.filter(() => true);
@@ -233,13 +259,11 @@ class CreateCapstone extends Component {
   };
 
   isFormValidForSave = () => {
-    const { title, description } = this.state;
-    if (!title || !description) {
-      console.log('non title');
+    const { title } = this.state;
+    if (!title) {
       return false;
     }
-    if (this.containsInvalidText(title) || this.containsInvalidText(description)) {
-      console.log("bad word");
+    if (this.containsInvalidText(title)) {
       return false;
     }
     return true;

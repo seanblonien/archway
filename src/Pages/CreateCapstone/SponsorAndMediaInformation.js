@@ -15,6 +15,7 @@ import BusinessIcon from '@material-ui/icons/Business';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import DragAndDropZone from '../../Components/DragAndDropZone/DragAndDropZone';
+import DragAndDropMultipleZone from "../../Components/DragAndDropZone/DragAndDropMultipleZone";
 import PageTitleTypography from '../../Components/PageTitleTypography';
 
 const SponsorAndMediaInformation = (props) => 
@@ -58,7 +59,7 @@ const SponsorAndMediaInformation = (props) =>
                             <em>None</em>
                           </MenuItem>
                           {props.sponsorList.map(sponsor => (
-                            <MenuItem value={sponsor.name}>{sponsor.name}</MenuItem>
+                            <MenuItem value={sponsor}>{sponsor.name}</MenuItem>
                           ))}
                         </Select>
                       </FormControl>
@@ -79,7 +80,7 @@ const SponsorAndMediaInformation = (props) =>
                    </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={sponsor}
+                  primary={sponsor.name}
                 />
               </ListItem>))
               }
@@ -119,7 +120,7 @@ const SponsorAndMediaInformation = (props) =>
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
-            <DragAndDropZone
+            <DragAndDropMultipleZone
               acceptImage={props.handleAcceptImageMedia.bind(this)}
               prompt='Drop or click to upload a picture'
             />

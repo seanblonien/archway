@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {useDropzone} from 'react-dropzone';
-// TODO refactor to use local react style
 import './style.css';
+
+
+
 
 export default function Accept(props) {
   const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
@@ -11,9 +13,9 @@ export default function Accept(props) {
   const [hasAccept, setAccept] = useState(false);
 
   // only keep one file in the accept files
-  // while (acceptedFiles.length > 1) {
-  //   acceptedFiles.shift();
-  // }
+  while (acceptedFiles.length > 1) {
+    acceptedFiles.shift();
+  }
 
 
   if (acceptedFiles.length >= 1 && !hasAccept) {

@@ -172,7 +172,7 @@ const BasicInformation = (props) => {
                       <em>None</em>
                     </MenuItem>
                     {props.departmentList.map(dept => (
-                      <MenuItem value={dept.name}>{dept.name}</MenuItem>
+                      <MenuItem value={dept}>{dept.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
