@@ -16,7 +16,6 @@ import Publish from '@material-ui/icons/Publish';
 import AboutIcon from '@material-ui/icons/QuestionAnswer';
 import ViewAllDepartmentsIcon from '@material-ui/icons/SchoolTwoTone';
 import ViewYourCapstonesIcon from '@material-ui/icons/TableChartTwoTone';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
@@ -134,10 +133,6 @@ class HeaderDrawer extends Component {
       );
     }
 }
-
-HeaderDrawer.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 HeaderDrawer.contextType = AuthContext;
 

@@ -22,7 +22,7 @@ const MainProfile = ({user}) => (
       </Grid>
       <Grid item xs={12}>
         <Typography>Bio: </Typography>
-        <MediaMarkdown>{user.description? user.description : ''}</MediaMarkdown>
+        {user.description && <MediaMarkdown>{user.description}</MediaMarkdown>}S
       </Grid>
     </Grid>
   </Box>
@@ -32,7 +32,7 @@ MainProfile.propTypes = {
   user: PropTypes.shape({
     Fullname: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired
+    description: PropTypes.string
   }).isRequired,
 };
 

@@ -1,6 +1,5 @@
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Redirect, withRouter} from 'react-router-dom';
 
@@ -10,8 +9,8 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   textField: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(1),
     width: 250,
     placeholder: 'Search...'
   },
@@ -88,9 +87,5 @@ class TextFields extends Component {
     );
   }
 }
-
-TextFields.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default withRouter(withStyles(styles)(TextFields));

@@ -53,33 +53,26 @@ class ViewADepartment extends Component {
 
       return (
         <Box className='ViewASponsor' mx={5}>
-
-          <Typography align='center'>
-            <h1>{department.name}</h1>
+          <Typography variant='h4' align='center'>
+            {department.name}
           </Typography>
-
           <Typography>
             {`Currently involved in ${department.capstones.length} capstones`}
           </Typography>
-
           <Typography>
             <MediaMarkdown>{department.description}</MediaMarkdown>
           </Typography>
-
-
-          <Typography align='center'>
-            <h1> All Capstones by {department.name}</h1>
+          <Typography  variant='h4'align='center'>
+            All Capstones by {department.name}
           </Typography>
-
           <Button
             component={Link}
             to={`/ViewCapstone/${department.capstones.id}`}
           >
-            <Typography>
-              <h1>{department.capstones.title}</h1>
+            <Typography variant='h5'>
+              {department.capstones.title}
             </Typography>
           </Button>
-
         </Box>
       );
     }

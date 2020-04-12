@@ -29,33 +29,25 @@ const styles = (theme) => ({
   },
 });
 
+const initialState = {
+  id: '',
+  username: '',
+  email: '',
+  Fullname: '',
+  picture: {},
+  sponsorOrganization: {name: ''},
+  role: {name: ''},
+  description: '',
+  jobTitle: '',
+};
+
 class ViewProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       editing: false,
-      profile: {
-        id: '',
-        username: '',
-        email: '',
-        Fullname: '',
-        picture: '',
-        sponsorOrganization: '',
-        role: '',
-        description: '',
-        jobTitle: '',
-      },
-      unchangedProfile: {
-        id: '',
-        username: '',
-        email: '',
-        Fullname: '',
-        picture: '',
-        sponsorOrganization: '',
-        role: '',
-        description: '',
-        jobTitle: '',
-      },
+      profile: initialState,
+      unchangedProfile: initialState,
     };
   }
 
@@ -137,7 +129,7 @@ class ViewProfile extends Component {
                   </Can>
                   <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
                 </div>
-              ) : 
+              ) :
               (
                 <div>
                   <Paper className={classes.profilePaper}>
