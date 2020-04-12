@@ -1,7 +1,6 @@
 import About from '../../Components/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import Login from '../../Components/Auth/Login';
-import RegisterModal from '../../Components/RegisterModal';
 import SearchRedirect from '../../Components/SearchRedirect';
 import Capstone from '../../Pages/Capstones';
 import CreateCapstone from '../../Pages/CreateCapstone';
@@ -17,6 +16,7 @@ import ViewASponsor from '../../Pages/ViewASponsor';
 import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
+import Register from '../../Components/Auth/Register';
 
 const routes = {
   dashboard: {
@@ -55,7 +55,7 @@ const routes = {
     register: {
       name: 'Register',
       path: '/auth/register',
-      component: RegisterModal
+      component: Register
     },
   },
   searchredirect: {
