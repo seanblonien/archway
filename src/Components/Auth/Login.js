@@ -1,4 +1,4 @@
-import {Box, TextField, Button} from '@material-ui/core';
+import {Box, TextField, Button,Link} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -7,10 +7,10 @@ import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, {useContext, useState} from 'react';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
 import routes from '../../utils/Routing/routes';
-import {Link} from '@material-ui/core';
-import {Link as RouterLink} from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -121,7 +121,7 @@ const Login = () => {
                 </Grid>
                 <Grid item>
                   <Link component={RouterLink} to={routes.auth.register.path}>
-                    Don't have an account? Sign Up
+                    Don&apos;t have an account? Sign Up
                   </Link>
                 </Grid>
               </Grid>

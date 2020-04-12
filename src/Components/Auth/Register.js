@@ -1,16 +1,15 @@
-import {Box, Button} from '@material-ui/core';
+import {Box, Button, Link} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, {useContext, useEffect, useState} from 'react';
 import PersonIcon from '@material-ui/icons/Person';
-import AuthContext from '../../Contexts/AuthContext';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {Link as RouterLink} from 'react-router-dom';
+import AuthContext from '../../Contexts/AuthContext';
 import {passwordMatch, validateEmail, validatePassword, validateUsername} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
-import {Link} from '@material-ui/core';
-import {Link as RouterLink} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,11 +63,9 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const {identifier, password, fullName, email} = state;
-    let user = {'username': identifier, password, 'Fullname': fullName, email};
+    const user = {'username': identifier, password, 'Fullname': fullName, email};
     register(user);
   };
-
 
   return (
     <Box alignItems='center' m={5} className={classes.root}>
