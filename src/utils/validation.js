@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {userImport} from '../constants';
+import api from '../Services/api';
 
 /**
  * Validates the given user object to check for required fields
@@ -14,4 +15,21 @@ export const validateAddUser = (user) => {
   const errors = isValid ? [] : emptyRequiredFields.map(field => `'${field.label}' field is required`);
 
   return [isValid, errors];
+};
+
+export const validatePassword = (password) => {
+
+};
+
+export const validateUsername = (username) => {
+  try {
+    const response = api.users.find({username: username});
+    return false;
+  } catch (error) {
+    return true;
+  }
+};
+
+export const validateEmail = (email) => {
+
 };

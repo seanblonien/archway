@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
-  // TODO: error popup with invalid indentifier/pass
   const {login} = useContext(AuthContext);
   const [state, setState] = useState({identifier: '', password: '', remember: true});
   const classes = useStyles();
