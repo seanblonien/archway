@@ -10,7 +10,7 @@ import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
 import ComputerRoundedIcon from '@material-ui/icons/ComputerRounded';
 import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
-import MediaMarkdown from '../utils/MediaMarkdown';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import {strapiURL} from '../constants';
 
 const styles = (theme) => ({

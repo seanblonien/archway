@@ -1,14 +1,16 @@
-import {Box, TextField, Button} from '@material-ui/core';
+import {Box, TextField, Button,Link} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, {useContext, useState} from 'react';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import AuthContext from '../Contexts/AuthContext';
+import {Link as RouterLink} from 'react-router-dom';
+import AuthContext from '../../Contexts/AuthContext';
+import routes from '../../utils/Routing/routes';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(1, 0, 1),
   },
+  options: {
+    alignItems:'center'
+  }
 }));
 
 const Login = () => {
@@ -108,15 +113,15 @@ const Login = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Grid container direction='column'>
+              <Grid container direction='column' className={classes.options}>
                 <Grid item xs>
-                  <Link href='/' variant='body2'>
+                  <Link component={RouterLink} to={routes.auth.login.path}>
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href='/' variant='body2'>
-                    {'Don\'t have an account? Sign Up'}
+                  <Link component={RouterLink} to={routes.auth.register.path}>
+                    Don&apos;t have an account? Sign Up
                   </Link>
                 </Grid>
               </Grid>

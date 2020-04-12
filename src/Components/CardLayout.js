@@ -20,7 +20,7 @@ const cardLayout = ({title, listItems, childURL, imageURLFunction}) => (
 cardLayout.propTypes = {
   title: PropTypes.string.isRequired,
   listItems: PropTypes.arrayOf(PropTypes.object).isRequired,
-  childURL: PropTypes.string.isRequired,
+  childURL: PropTypes.func.isRequired,
   imageURLFunction: PropTypes.func.isRequired
 };
 

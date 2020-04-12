@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable jsx-a11y/alt-text */
 import {Typography} from '@material-ui/core';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -10,13 +12,21 @@ import React from 'react';
 //
 // For example, ?height=500&width=500 at the end of an embedded file URL.
 export const Image = (props) => {
-  const {src, alt} = props;
+  const propValues = {...props};
+  const {src} = propValues;
   const urlParams = new URLSearchParams((new URL(src)).search);
-  const height = urlParams.get('height');
-  const width = urlParams.get('width');
-  const newSrc = src.split('?')[0];
+  const style = {'maxWidth': '100%'};
+  for (const [key, value] of urlParams.entries()) {
+    if(key in document.body.style) {
+      style[key] = `${value}`;
+    } else {
+      propValues[key] = value;
+    }
+  }
+  propValues.src = src.split('?')[0];
+  propValues.style = style;
 
-  return <img {...props} alt={alt} src={newSrc} height={height} width={width}/>;
+  return <img {...propValues}/>;
 };
 
 Image.propTypes = {
@@ -62,7 +72,7 @@ export const A = (props) =>  {
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
-    <P>
+    <P display='inline'>
       <a {...props} className={classes.link} target='_blank'/>
     </P>
   );
