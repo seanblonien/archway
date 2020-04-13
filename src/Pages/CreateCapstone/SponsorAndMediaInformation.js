@@ -15,7 +15,7 @@ import BusinessIcon from '@material-ui/icons/Business';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import DragAndDropZone from '../../Components/DragAndDropZone/DragAndDropZone';
-import DragAndDropMultipleZone from "../../Components/DragAndDropZone/DragAndDropMultipleZone";
+import DragAndDropMultipleZone from "../../Components/DragAndDropZone/UploadMultipleImage";
 import PageTitleTypography from '../../Components/PageTitleTypography';
 
 const SponsorAndMediaInformation = (props) => 
@@ -42,10 +42,8 @@ const SponsorAndMediaInformation = (props) =>
             <Divider/>
             <Grid container  justify='center'>
               <Grid item xs={12}>
-
                 <Grid container  justify='center' spacing={2} alignItems='center'>
                   <Tooltip title='Select a Sponsor' arrow>
-
                      <Grid item xs={9}>
                       <FormControl margin='dense' fullWidth variant='filled'>
                         <InputLabel ref={null}>Sponsor</InputLabel>
@@ -91,38 +89,37 @@ const SponsorAndMediaInformation = (props) =>
 
       </Grid>
       <Grid item xs={12} md={10}>
-        <Grid container  justify='center' spacing={2} alignItems='center'>
-          <Grid item xs={3}>
-            <Card className={props.classes.card}>
+        <Card className={props.classes.card}>
+          <CardContent>
+            <PageTitleTypography text='Upload a Thumbnail' align='center' size='h5'/>
+            <DragAndDropZone
+              id="file-id"
+              acceptImage={props.handleAcceptImageThumbnail.bind(this)}
+              prompt='Drop or click to upload a thumbnail'
+            />
+          </CardContent>
+        </Card>
 
-              <CardContent>
-                <DragAndDropZone
-                  id="file-id"
-                  acceptImage={props.handleAcceptImageThumbnail.bind(this)}
-                  prompt='Drop or click to upload a thumbnail'
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={9}>
-            <Card className={props.classes.card}>
-
-              <CardContent>
-                <DragAndDropZone
-                  acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}
-                  prompt='Drop or click to upload a cover photo'
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
       </Grid>
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
+
             <DragAndDropMultipleZone
               acceptImage={props.handleAcceptImageMedia.bind(this)}
-              prompt='Drop or click to upload a picture'
+              prompt='Upload Cover Photo'
+            />
+          </CardContent>
+        </Card>
+
+      </Grid>
+      <Grid item xs={12} md={10}>
+        <Card className={props.classes.card}>
+          <CardContent>
+
+            <DragAndDropMultipleZone
+              acceptImage={props.handleAcceptImageMedia.bind(this)}
+              prompt='Upload Media Photo'
             />
           </CardContent>
         </Card>
