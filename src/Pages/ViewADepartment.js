@@ -9,6 +9,7 @@ import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
 import ComputerRoundedIcon from '@material-ui/icons/ComputerRounded';
 import LoadingCircle from '../Components/LoadingCircle';
+import CapstonesTab from '../Components/CapstonesTab';
 import api from '../Services/api';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import {strapiURL} from '../constants';
@@ -22,15 +23,18 @@ const styles = (theme) => ({
   link: {
     color: 'white',
     '&:hover': {
-      color: theme.palette.secondary.main,
+      color: theme.palette.primary.light,
     },
     '&:visited': {
-      color: theme.palette.primary.light,
+      color: theme.palette.secondary.main,
     }
   },
   contact: {
     display: 'flex',
     alignItems: 'center',
+  },
+  capstones: {
+    padding: '3%',
   }
 });
 
@@ -67,23 +71,28 @@ class ViewADepartment extends Component {
                 <MediaMarkdown item>{department.description}</MediaMarkdown>
               </Grid>
               <br/>
-              <Grid item container md={6} direction='row' justify='space-between'>
-                <Grid item className={classes.contact}>
+              <Grid item container md={6} direction='row' justify='space-evenly'>
+                {department.phone && <Grid item className={classes.contact}>
                   <PhoneRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
                   <Link className={classes.link} href={`tel:${department.phone}`}>{department.phone}</Link>
-                </Grid>
-                <Grid item className={classes.contact}>
+                </Grid>}
+                {department.email && <Grid item className={classes.contact}>
                   <MailOutlineRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
                   <Link className={classes.link} href={`mailto:${department.email}`}>{department.email}</Link>
-                </Grid>
-                <Grid item className={classes.contact}>
+                </Grid>}
+                {department.url && <Grid item className={classes.contact}>
                   <ComputerRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
                   <Link className={classes.link} href={department.url}>View Department Page</Link>
-                </Grid>
+                </Grid>}
               </Grid>
             </Grid>
           </Grid>
         </Parallax>
+        <Grid className={classes.capstones} container direction='column'>
+          <MediaMarkdown>{`####${department.name} Capstones`}</MediaMarkdown>
+          <br/>
+          <CapstonesTab department={department}/>
+        </Grid>
       </div>
     ;
   }
