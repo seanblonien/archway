@@ -76,7 +76,7 @@ const MarkdownEditor = ({value, setValue, uniqueName, ...rest}) => {
           return arr;
         }, []);
         // Format each url into markdown
-        const textToInsert = fileUploadsData.reduce((str, file, i) =>
+        const textToInsert = fileUploadsData.reduce((str, file) =>
           `${str + (/image/.test(file.mime) ? formatImage(file.url) : formatUpload(file.url))}\n`
         ,'');
         // Insert the text into the text area
@@ -122,9 +122,13 @@ const MarkdownEditor = ({value, setValue, uniqueName, ...rest}) => {
 };
 
 MarkdownEditor.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   setValue: PropTypes.func.isRequired,
   uniqueName: PropTypes.string.isRequired
+};
+
+MarkdownEditor.defaultProps = {
+  value: ''
 };
 
 export default MarkdownEditor;

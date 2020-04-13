@@ -29,33 +29,25 @@ const styles = (theme) => ({
   },
 });
 
+const initialState = {
+  id: '',
+  username: '',
+  email: '',
+  Fullname: '',
+  picture: {},
+  sponsorOrganization: {name: ''},
+  role: {name: ''},
+  description: '',
+  jobTitle: '',
+};
+
 class ViewProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       editing: false,
-      profile: {
-        id: '',
-        username: '',
-        email: '',
-        Fullname: '',
-        picture: '',
-        sponsorOrganization: '',
-        role: '',
-        description: '',
-        jobTitle: '',
-      },
-      unchangedProfile: {
-        id: '',
-        username: '',
-        email: '',
-        Fullname: '',
-        picture: '',
-        sponsorOrganization: '',
-        role: '',
-        description: '',
-        jobTitle: '',
-      },
+      profile: initialState,
+      unchangedProfile: initialState,
     };
   }
 
@@ -93,6 +85,7 @@ class ViewProfile extends Component {
   handleSubmit = async (event) => {
     const {profile} = this.state;
     const {enqueueSnackbar} = this.props;
+    event.preventDefault();
 
     try{
       await api.users.update(profile.id, profile);
@@ -101,7 +94,6 @@ class ViewProfile extends Component {
     } catch(e){
       enqueueSnackbar(e, snack.error);
     }
-    event.preventDefault();
   };
 
   render() {
@@ -137,7 +129,7 @@ class ViewProfile extends Component {
                   </Can>
                   <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
                 </div>
-              ) : 
+              ) :
               (
                 <div>
                   <Paper className={classes.profilePaper}>

@@ -82,8 +82,8 @@ class SponsorProfileEdit extends Component {
 SponsorProfileEdit.propTypes = {
   user: PropTypes.shape({
     role: PropTypes.shape({name: PropTypes.string.isRequired}).isRequired,
-    sponsorOrganization: PropTypes.shape({name: PropTypes.string.isRequired}), 
-    jobTitle: PropTypes.string.isRequired
+    sponsorOrganization: PropTypes.shape({name: PropTypes.string.isRequired}),
+    jobTitle: PropTypes.string
   }).isRequired,
   update: PropTypes.func.isRequired,
 };

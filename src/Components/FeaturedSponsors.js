@@ -3,13 +3,13 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
+import {permissions} from '../constants';
 import api from '../Services/api';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
+import {imageURL} from '../utils/utils';
 import Can from './Can';
 import LoadingCircle from './LoadingCircle';
-import {permissions} from '../constants';
-import {imageURL} from '../utils/utils';
 
 class FeaturedSponsors extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class FeaturedSponsors extends Component {
           <Grid container direction='column' item xs={12} md={8}  justify='center' alignItems='center'>
             <Typography align='center' variant='h4'>Sponsors</Typography>
           </Grid>
-          <Grid item xs={12} alignItems='center'>
+          <Grid item xs={12} container justify='center' alignItems='center'>
             <GridList cellHeight={100} cols={2}>
               {featuredSponsors.map((result, i) => (
                 <GridListTile

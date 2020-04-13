@@ -5,7 +5,6 @@ import Modal from '@material-ui/core/Modal';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
 function getModalStyle() {
@@ -22,17 +21,17 @@ function getModalStyle() {
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
-    padding: theme.spacing.unit * 2,
-    margin: theme.spacing.unit *2,
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
     background: '#00b8ee',
   },
 
   paper: {
     position: 'absolute',
-    width: theme.spacing.unit * 50,
+    width: theme.spacing(50),
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
+    padding: theme.spacing(4),
     outline: 'none',
   },
 
@@ -41,8 +40,8 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     width: 200,
   },
   dense: {
@@ -118,10 +117,6 @@ class MyModal extends Component {
     );
   }
 }
-
-MyModal.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 const SimpleModal = withStyles(styles)(MyModal);
 

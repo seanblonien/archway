@@ -51,7 +51,7 @@ services:
     image: app:latest
     # Exposes the host port to the container port for interservice communication
     ports:
-      - 80:3000
+      - 80:80
     # Ensure the strapi service is up before the app starts
     # The app uses strapi to load data
     depends_on:

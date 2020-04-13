@@ -14,6 +14,7 @@ import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
 import SponsorForm from '../Components/SponsorForm';
 import api from '../Services/api';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import api from '../Services/api';
 import {imageURL} from '../utils/utils';
 import {permissions} from "../constants";
 import Can from '../Components/Can';
@@ -40,7 +41,7 @@ const styles = theme => ({
     border: '2px solid currentColor',
     borderRadius: 0,
     height: 'auto',
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 5}px`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(5)}px`,
   },
   pos: {
     marginBottom: 100,
@@ -105,19 +106,20 @@ class ViewASponsor extends Component {
       return (
         <div className='ViewASponsor'>
           <Grid container justify='center'>
-            <Grid xs={10}>
+            <Grid item xs={10}>
               <Grid container>
-                <Grid xs={12}>
+                <Grid item xs={12}>
                   <Card>
-                    <PageTitleTypography text={sponsor.name}/>
+
                       <SponsorForm title='Edit Sponsor' sponsor={sponsor}
                                    type='edit' update={this.updateData}/>
+                    <Typography variant='h1'>{sponsor.name}</Typography>
                     <Divider style={{marginTop: '2%'}}/>
                   </Card>
                 </Grid>
                 <Card>
                   <Grid container justify='center'>
-                    <Grid xs={6}>
+                    <Grid item xs={6}>
 
                       <Typography color='primary' align='center' component='span'>
                         <h1> Logo </h1>
@@ -148,11 +150,11 @@ class ViewASponsor extends Component {
                   </Grid>
                 </Card>
 
-                <Grid xs={12}>
+                <Grid item xs={12}>
                   <Card>
                     <Divider style={{marginTop: '2%'}}/>
-                    <Typography align='center'>
-                      <h1> {`${sponsor.name}'s`} Sponsored Capstones </h1>
+                    <Typography variant='h4' align='center'>
+                      {`${sponsor.name}'s`} Sponsored Capstones
                     </Typography>
                     <CardContent>
                       <Typography>
@@ -160,10 +162,10 @@ class ViewASponsor extends Component {
                       </Typography>
                       <Grid container spacing={8}>
                         {sponsor.capstones.map((result) => (
-                          <Grid item xs={12} md={6} style={{marginTop: '2%'}}>
+                          <Grid item xs={12} md={6} style={{marginTop: '2%'}} key={result.id}>
                             <Card className={classes.capstoneCard} style={{height: '200px', overflow: 'auto'}}>
                               <CardContent>
-                                <SubHeadingTextTypography text={result.title}/>
+                                <Typography variant='subtitle1'>{result.title}</Typography>
                                 <Divider/>
                                 <MediaMarkdown>
                                   {result.description}
