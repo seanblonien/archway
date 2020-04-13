@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../../Services/api';
+import {permissions} from "../../constants";
+import SponsorForm from "../SponsorForm";
+import Can from "../Can";
 
 class SponsorProfileEdit extends Component {
   constructor(props) {
@@ -56,6 +59,9 @@ class SponsorProfileEdit extends Component {
                 ))}
               </Select>
             </Grid>
+            <Can perform={permissions.application.sponsors.create}>
+              <SponsorForm title='Create New Sponsor' type='create'/>
+            </Can>
             <Grid item xs={12}>
               <TextField
                 name='jobTitle'

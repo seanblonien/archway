@@ -92,6 +92,11 @@ class ViewASponsor extends Component {
     }
   }
 
+  async updateData() {
+    const {match} = this.props;
+    const sponsor = await api.sponsors.findOne(match.params.id);
+    this.setState(sponsor);
+  }
   render() {
     const {classes} = this.props;
     const {loading, sponsor, canEdit} = this.state;
@@ -105,15 +110,8 @@ class ViewASponsor extends Component {
                 <Grid xs={12}>
                   <Card>
                     <PageTitleTypography text={sponsor.name}/>
-                    {canEdit &&
-                    <Can perform={permissions.application.sponsors.update}>
                       <SponsorForm title='Edit Sponsor' sponsor={sponsor}
-                                   type='edit'/>
-                    </Can>
-                    }
-                    <Can perform={permissions.application.sponsors.create}>
-                      <SponsorForm title='Create New Sponsor' type='create'/>
-                    </Can>
+                                   type='edit' update={this.updateData}/>
                     <Divider style={{marginTop: '2%'}}/>
                   </Card>
                 </Grid>

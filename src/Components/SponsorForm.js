@@ -11,8 +11,12 @@ import {withStyles} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
 import DragAndDropZone from "./DragAndDropZone/DragAndDropZone";
 import api from '../Services/api';
+import MarkdownEditor from "./Markdown/MarkdownEditor";
+import {formatEntryUpload} from "../utils/utils";
+import {snack} from "../utils/Snackbar";
 
 class SponsorForm extends React.Component {
 
@@ -92,8 +96,22 @@ class SponsorForm extends React.Component {
   };
 
   handleChange = name => event => {
+    debugger;
     this.setState({[name]: event.target.value});
   };
+
+  handleMarkdownChange = (name, value) => {
+  debugger;
+    this.setState({[name]: value});
+  };
+
+  handleSelectImage = name => event => {
+    this.setState({[name]: event.target.files[0]});
+  };
+
+  handleUploadImage = async () => {
+    const {logo} = this.state;
+  }
 
   render() {
     const {open, type, name, url, description, preview, coverPhto, logo, thumbnail} = this.state;
@@ -127,13 +145,11 @@ class SponsorForm extends React.Component {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  multiline
-                  rows='4'
-                  fullWidth
-                  label='Organization Description'
+                <Typography variant='caption'>Enter Organization Description and Information below</Typography>
+                <MarkdownEditor
+                  uniqueName='description'
+                  setValue={(value) => this.handleMarkdownChange('description', value)}
                   value={description}
-                  onChange={this.handleChange('description')}
                 />
                 <TextField
                   multiline
@@ -145,6 +161,26 @@ class SponsorForm extends React.Component {
                 />
               </Grid>
               <Grid item xs={12} md={10}>
+                <Grid item container direction='row' spacing={2}>
+                  <Grid item>
+                    <Button variant='contained' component='label'>
+                      Choose File...
+                      <input
+                        type='file'
+                        name='file'
+                        onChange={this.handleSelectImage}
+                        style={{display: 'none'}}
+                      />
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    {logo &&
+                    <Button variant='contained' component='label' onClick={this.handleUploadImage}>
+                      Upload Image
+                    </Button>
+                    }
+                  </Grid>
+                </Grid>
                 <Grid container  justify='center' spacing={2} alignItems='center'>
                   <Grid item xs={6}>
                     <Card>
