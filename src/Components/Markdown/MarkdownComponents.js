@@ -53,7 +53,7 @@ export const H5 = (props) => <Typography {...props} variant='h5'/>;
 export const H6 = (props) => <Typography {...props} variant='h6'/>;
 
 // Returns styled MaterialUI Typography component for body1 variant.
-export const B1 = (props) => <Typography {...props} variant='body1' component='span'/>;
+export const B1 = (props) => <Typography {...props} variant='body1'/>;
 
 // Returns styled MaterialUI Typography component for body2 variant.
 export const B2 = (props) => <Typography {...props} variant='body2' component='span'/>;
@@ -74,9 +74,5 @@ const useStyles = makeStyles(theme => ({
 export const A = (props) =>  {
   const theme = useTheme();
   const classes = useStyles(theme);
-  return (
-    <B1 display='inline'>
-      <a {...props} className={classes.link} target='_blank'/>
-    </B1>
-  );
+  return <a {...props} className={classes.link} target='_blank'/>;
 };

@@ -85,6 +85,7 @@ class ViewProfile extends Component {
   handleSubmit = async (event) => {
     const {profile} = this.state;
     const {enqueueSnackbar} = this.props;
+    event.preventDefault();
 
     try{
       await api.users.update(profile.id, profile);
@@ -93,7 +94,6 @@ class ViewProfile extends Component {
     } catch(e){
       enqueueSnackbar(e, snack.error);
     }
-    event.preventDefault();
   };
 
   render() {

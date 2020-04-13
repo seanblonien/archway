@@ -22,7 +22,7 @@ const MainProfile = ({user}) => (
       </Grid>
       <Grid item xs={12}>
         <Typography>Bio: </Typography>
-        {user.description && <MediaMarkdown>{user.description}</MediaMarkdown>}S
+        {user.description && <MediaMarkdown>{user.description}</MediaMarkdown>}
       </Grid>
     </Grid>
   </Box>
