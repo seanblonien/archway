@@ -56,7 +56,7 @@ MainProfileEdit.propTypes = {
   user: PropTypes.shape({
     Fullname: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired
+    description: PropTypes.string
   }).isRequired,
   update: PropTypes.func.isRequired,
 };

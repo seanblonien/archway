@@ -48,7 +48,7 @@ Can.propTypes = {
     PropTypes.arrayOf(PropTypes.oneOf(permissionValues).isRequired).isRequired,
     PropTypes.string.isRequired]).isRequired,
   no: PropTypes.func,
-  role: PropTypes.oneOf(roleValues),
+  role: PropTypes.oneOf([...roleValues,'']),
 };
 
 Can.defaultProps = {
