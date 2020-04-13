@@ -115,7 +115,7 @@ class ViewYourCapstones extends Component {
                             <IconButton
                               className={classes.icon}
                               component={Link}
-                              to={`/ViewCapstone${result._id}`}
+                              to={`/ViewCapstone${result.id}`}
                             >
                               <InfoIcon/>
                             </IconButton>
@@ -124,7 +124,7 @@ class ViewYourCapstones extends Component {
                             <IconButton
                               className={classes.icon}
                               component={Link}
-                              to={`/EditCapstone${result._id}`}
+                              to={`/EditCapstone${result.id}`}
                             >
                               <CreateIcon/>
                             </IconButton>
@@ -134,7 +134,7 @@ class ViewYourCapstones extends Component {
                               className={classes.icon}
                               onClick={(e) => this.handleDelete(e, result.id)}
                               component={Link}
-                              to={`/ViewYourCapstones${result._id}`}
+                              to={`/ViewYourCapstones${result.id}`}
                             >
                               <DeleteForeverIcon/>
                             </IconButton>
@@ -162,7 +162,7 @@ class ViewYourCapstones extends Component {
             <Grid item xs={12} md={10}>
               <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
                 {participatedCapstones.map((result2) => (
-                  <GridListTile key={result2.coverPhoto.url} onClick={() => this.handleTileClick(result2._id)}>
+                  <GridListTile key={result2.coverPhoto.url} onClick={() => this.handleTileClick(result2.id)}>
                     <img src={imageURL.capstone(result2.coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
                     <GridListTileBar
                       title={result2.title}
@@ -174,7 +174,7 @@ class ViewYourCapstones extends Component {
                               <IconButton
                                 className={classes.icon}
                                 component={Link}
-                                to={`/ViewCapstone/${result2._id}`}
+                                to={`/ViewCapstone/${result2.id}`}
                               >
                                 <InfoIcon/>
                               </IconButton>

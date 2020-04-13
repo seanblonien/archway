@@ -9,7 +9,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
@@ -41,16 +40,16 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit * 3,
+      marginLeft: theme.spacing(3),
       width: 'auto',
     },
   },
   searchIcon: {
-    width: theme.spacing.unit * 9,
+    width: theme.spacing(9),
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -72,7 +71,7 @@ const styles = theme => ({
   }
 });
 
-class PrimarySearchAppBar extends Component {
+class Header extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -191,15 +190,10 @@ class PrimarySearchAppBar extends Component {
   }
 }
 
-PrimarySearchAppBar.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-  theme: PropTypes.objectOf(PropTypes.object).isRequired,
-};
-
-PrimarySearchAppBar.contextType = AuthContext;
+Header.contextType = AuthContext;
 
 export default compose(
   withStyles(styles),
   withRouter,
   withTheme
-)(PrimarySearchAppBar);
+)(Header);
