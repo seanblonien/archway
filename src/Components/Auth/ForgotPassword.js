@@ -11,6 +11,7 @@ import AuthContext from '../../Contexts/AuthContext';
 import {validateEmail} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
 import {verifyEmailInStrapi} from '../../utils/verification';
+import history from '../../utils/Routing/history';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,7 +57,12 @@ const ForgotPassword = () => {
     e.preventDefault();
     const response = await verifyEmailInStrapi(email);
     if (response) {
-      await forgotPassword(email);
+      try {
+        const response = await forgotPassword(email);
+        history.push(routes.auth.resetpassword.path);
+      } catch (error) {
+        
+      }
     }
   };
 
