@@ -6,10 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import React, {useContext, useEffect, useState} from 'react';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useLocation} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
 import {passwordMatch, validatePassword} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
+import queryString from 'query-string';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ResetPassword = () => {
   const {resetPassword} = useContext(AuthContext);
-  const [state, setState] = useState({password: ''});
+  const [state, setState] = useState({password: '', passwordConfirmation: '', code: queryString.parse(useLocation().search)['code']});
   const classes = useStyles();
   const {code, password, passwordConfirmation} = state;
 
@@ -50,7 +51,7 @@ const ResetPassword = () => {
 
   const handleChange = (event) => {
     const {value, name} = event.target;
-    setState({[name]: value});
+    setState({...state, [name]: value});
   };
 
   const handleSubmit = async (e) => {
@@ -98,7 +99,7 @@ const ResetPassword = () => {
               <TextValidator
                 fullWidth
                 label='Confirm New Password'
-                name='confirmPassword'
+                name='passwordConfirmation'
                 type='password'
                 value={passwordConfirmation}
                 onChange={handleChange}
