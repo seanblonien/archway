@@ -57,8 +57,7 @@ class FeaturedCapstones extends Component {
                     alt='Capstone' style={{height: '100%', width: '100%'}}
                   />
                   <GridListTileBar
-                    title={result.title}
-                    subtitle={`Made by: ${result.moderator.username}`}
+                    title={result.name}
                     actionIcon={
                       <IconButton
                         className={classes.icon}
