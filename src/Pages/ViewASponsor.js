@@ -9,16 +9,14 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
 import LoadingCircle from '../Components/LoadingCircle';
-import PageTitleTypography from '../Components/PageTitleTypography';
-import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
 import SponsorForm from '../Components/SponsorForm';
-import api from '../Services/api';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import api from '../Services/api';
 import {imageURL} from '../utils/utils';
-import {permissions} from "../constants";
+import {permissions} from '../constants';
 import Can from '../Components/Can';
-import AuthContext from "../Contexts/AuthContext";
+import AuthContext from '../Contexts/AuthContext';
+import {withSnackbar} from "notistack";
 
 const styles = theme => ({
   card: {
@@ -93,11 +91,13 @@ class ViewASponsor extends Component {
     }
   }
 
-  async updateData() {
-    const {match} = this.props;
-    const sponsor = await api.sponsors.findOne(match.params.id);
-    this.setState(sponsor);
-  }
+  updateData = async () => {
+    const {sponsor} = this.state;
+    debugger;
+    const updatedSponsor = await api.sponsors.findOne(sponsor.id);
+    this.setState({sponsor: updatedSponsor});
+  };
+
   render() {
     const {classes} = this.props;
     const {loading, sponsor, canEdit} = this.state;
@@ -111,8 +111,10 @@ class ViewASponsor extends Component {
                 <Grid item xs={12}>
                   <Card>
 
-                      <SponsorForm title='Edit Sponsor' sponsor={sponsor}
-                                   type='edit' update={this.updateData}/>
+                      <SponsorForm title='Edit Sponsor'
+                                   sponsor={sponsor}
+                                   type='edit'
+                                   update={this.updateData}/>
                     <Typography variant='h1'>{sponsor.name}</Typography>
                     <Divider style={{marginTop: '2%'}}/>
                   </Card>
@@ -191,4 +193,4 @@ class ViewASponsor extends Component {
 
 ViewASponsor.contextType = AuthContext;
 
-export default (withStyles(styles)(withWidth()(ViewASponsor)));
+export default withSnackbar((withStyles(styles)(withWidth()(ViewASponsor))));

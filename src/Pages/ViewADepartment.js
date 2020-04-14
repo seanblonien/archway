@@ -8,9 +8,9 @@ import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
-import DepartmentForm from "../Components/DepartmentForm";
-import {permissions} from "../constants";
-import Can from "../Components/Can";
+import DepartmentForm from '../Components/DepartmentForm';
+import {permissions} from '../constants';
+import Can from '../Components/Can';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 
 const styles = {
@@ -59,9 +59,7 @@ class ViewADepartment extends Component {
           <Typography variant='h4' align='center'>
             {department.name}
           </Typography>
-          <Can perform={permissions.application.departments.update}>
             <DepartmentForm title='Edit Department' department={department} type='edit'/>
-          </Can>
           <Can perform={permissions.application.departments.create}>
             <DepartmentForm title='Create Department' type='create'/>
           </Can>

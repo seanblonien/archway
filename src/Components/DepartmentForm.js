@@ -6,13 +6,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import compose from "recompose/compose";
-import {withStyles} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import DragAndDropZone from "./DragAndDropZone/DragAndDropZone";
+import compose from 'recompose/compose';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 import api from '../Services/api';
+import MarkdownEditor from './Markdown/MarkdownEditor';
+import PhotoUpload from './PhotoUpload';
+import {imageURL} from '../utils/utils';
 
 class DepartmentForm extends React.Component {
 
@@ -29,31 +30,18 @@ class DepartmentForm extends React.Component {
       description: '',
       preview: '',
       coverPhoto: '',
-      logo: '',
-      thumbnail: ''
+      thumbnail: '',
+      id: ''
     };
   }
 
   componentDidMount() {
     const {type} = this.props;
     const {user} = this.context;
-    this.setState({type: type, user: user});
+    this.setState({type, user});
     if (type === 'edit') {
       this.initFields();
     }
-  }
-
-  initFields() {
-    const {department} = this.props;
-
-    this.setState({
-      name: department.name,
-      email: department.email,
-      description: department.description,
-      url: department.url,
-      phone: department.phone,
-      preview: department.preview
-    });
   }
 
   handleClickOpen = () => {
@@ -65,7 +53,7 @@ class DepartmentForm extends React.Component {
   };
 
   handleSave = async () => {
-    const {name, email, url, description, phone, preview, coverPhoto, logo, thumbnail} = this.state;
+    const {name, email, url, description, phone, preview} = this.state;
     const {department} = this.props;
 
     await api.sponsors.update(department.id, {
@@ -82,7 +70,7 @@ class DepartmentForm extends React.Component {
   };
 
   handleCreate = async () => {
-    const {name, email, url, description, phone, preview, coverPhto, logo, thumbnail, user} = this.state;
+    const {name, email, url, description, phone, preview, user} = this.state;
 
     await api.sponsors.create({
       name,
@@ -102,18 +90,39 @@ class DepartmentForm extends React.Component {
     this.setState({[name]: event.target.value});
   };
 
+  handleMarkdownChange = (name, value) => {
+    this.setState({[name]: value});
+  };
+
+  initFields() {
+    const {department} = this.props;
+
+    this.setState({
+      name: department.name,
+      email: department.email,
+      description: department.description,
+      url: department.url,
+      phone: department.phone,
+      preview: department.preview,
+      id: department.id
+    });
+  }
+
   render() {
-    const {open, type, name, email, url, description, phone, preview, coverPhoto, logo, thumbnail} = this.state;
+    const {open, type, name, email, url, description, phone, preview, coverPhoto, thumbnail, id} = this.state;
     const {title} = this.props;
 
     return (
       <div>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+        <Button variant='outlined' color='primary' onClick={this.handleClickOpen}>
           {title}
         </Button>
-        <Dialog open={open} onClose={this.handleClose}
-                aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">{title}</DialogTitle>
+        <Dialog
+          open={open}
+          onClose={this.handleClose}
+          aria-labelledby='form-dialog-title'
+        >
+          <DialogTitle id='form-dialog-title'>{title}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               Change any field or upload new photos. Click Save all changes have been made
@@ -121,7 +130,7 @@ class DepartmentForm extends React.Component {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
-                  label="Department Name"
+                  label='Department Name'
                   value={name}
                   fullWidth
                   onChange={this.handleChange('name')}
@@ -129,7 +138,7 @@ class DepartmentForm extends React.Component {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  label="Organization URL"
+                  label='Organization URL'
                   value={url}
                   fullwidth
                   onChange={this.handleChange('url')}
@@ -137,26 +146,24 @@ class DepartmentForm extends React.Component {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  label="Department Phone Number"
+                  label='Department Phone Number'
                   value={phone}
                   onChange={this.handleChange('phone')}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  label="Department Email"
+                  label='Department Email'
                   value={email}
                   onChange={this.handleChange('email')}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  multiline
-                  rows='4'
-                  fullWidth
-                  label='Department Description'
+                <Typography variant='caption'>Enter Department Description and Information below</Typography>
+                <MarkdownEditor
+                  uniqueName='description'
+                  setValue={(value) => this.handleMarkdownChange('description', value)}
                   value={description}
-                  onChange={this.handleChange('description')}
                 />
                 <TextField
                   multiline
@@ -167,47 +174,47 @@ class DepartmentForm extends React.Component {
                   onChange={this.handleChange('preview')}
                 />
               </Grid>
-              <Grid item xs={12} md={10}>
-                <Grid container  justify='center' spacing={2} alignItems='center'>
-                  <Grid item xs={6}>
-                    <Card>
-                      <CardContent>
-                        <DragAndDropZone/>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} md={10}>
-                <Card>
-                  <CardContent>
-                    <DragAndDropZone/>
-                  </CardContent>
-                </Card>
-
-              </Grid>
             </Grid>
+            <PhotoUpload
+              fieldName='coverPhoto'
+              contentType='departments'
+              title='Choose Cover Photo'
+              id={id}
+              photo={imageURL.department(coverPhoto)}
+            />
+            <PhotoUpload
+              fieldName='thumbnail'
+              contentType='departments'
+              title='Choose Thumbnail'
+              id={id}
+              photo={imageURL.department(thumbnail)}
+            />
+
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.handleClose} color='primary'>
               Cancel
             </Button>
             {type === 'edit' &&
-            < Button onClick={this.handleSave} color="primary">
-              Save
-            </Button>
-            }
+              <Button onClick={this.handleSave} color='primary'>
+                Save
+              </Button>}
             {type === 'create' &&
-            < Button onClick={this.handleCreate} color="primary">
-              Create
-            </Button>
-            }
+              <Button onClick={this.handleCreate} color='primary'>
+                Create
+              </Button>}
           </DialogActions>
         </Dialog>
       </div>
     );
   }
 }
+
+DepartmentForm.propTypes = {
+  type: PropTypes.string.isRequired,
+  department: PropTypes.isRequired,
+  title: PropTypes.string.isRequired
+};
 
 export default compose(
 )(DepartmentForm);

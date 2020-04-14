@@ -121,7 +121,7 @@ class ViewProfile extends Component {
                   <Paper className={classes.profilePaper}>
                     <MainProfileEdit user={profile} update={this.updateProfile}/>
                   </Paper>
-                  <Can perform={permissions.application.proposals.create}>
+                  <Can perform={permissions.application.proposals.create} role={profile.role.name}>
                     <br/>
                     <Paper className={classes.profilePaper}>
                       <SponsorProfileEdit user={profile} update={this.updateProfile}/>
