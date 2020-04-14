@@ -55,8 +55,15 @@ export const transformUserFields = async (user) => {
  * @returns {string}
  */
 export const formatQuery = (params) => `?${Object.keys(params)
-  .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-  .join('&')}`;
+  .map(k => {
+    const value = params[k];
+    if(typeof value === 'object') {
+      return Object.keys(value).map((subk) => (
+        `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`)
+      ).join('&');
+    } 
+    return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
+  }).join('&')}`;
 
 /**
  * Formats a given file file for uploading to strapi as it relates to an entry.

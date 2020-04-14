@@ -43,7 +43,7 @@ class ViewADepartment extends Component {
     super(props);
     this.state = {
       loading: true,
-      department: [],
+      department: {},
     };
   }
 
@@ -51,6 +51,8 @@ class ViewADepartment extends Component {
     const {match} = this.props;
     const department = await api.departments.findOne(match.params.id);
     this.setState({loading: false, department});
+
+    const professors = await api.users.find({department: {id: match.params.id}});
   }
 
   render() {
