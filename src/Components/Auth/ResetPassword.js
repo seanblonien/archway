@@ -4,13 +4,12 @@ import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, {useContext, useEffect, useState} from 'react';
-import PersonIcon from '@material-ui/icons/Person';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
-import {passwordMatch, validateEmail, validatePassword, validateUsername} from '../../utils/validation';
+import {passwordMatch, validatePassword} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
-import {verifyEmailInStrapi} from '../../utils/verification';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,97 +33,59 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Register = () => {
-  const {register} = useContext(AuthContext);
-  const [state, setState] = useState({identifier: '', password: '', remember: true, passwordInvalid: ''});
+const ResetPassword = () => {
+  const {resetPassword} = useContext(AuthContext);
+  const [state, setState] = useState({password: ''});
   const classes = useStyles();
-  const {identifier,
-    password,
-    confirmPassword,
-    fullName,
-    email} = state;
+  const {code, password, passwordConfirmation} = state;
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => passwordMatch(password, value));
     ValidatorForm.addValidationRule('passwordLength', (value) => validatePassword(value));
-    ValidatorForm.addValidationRule('uniqueUsername', (value) => validateUsername(value));
-    ValidatorForm.addValidationRule('validEmail', (value) => validateEmail(value));
-    ValidatorForm.addValidationRule('unusedEmail', async (value) => !(await verifyEmailInStrapi(value)));
     return function cleanup() {
       ValidatorForm.removeValidationRule('isPasswordMatch');
       ValidatorForm.removeValidationRule('passwordLength');
-      ValidatorForm.removeValidationRule('uniqueUsername');
-      ValidatorForm.removeValidationRule('validEmail');
-      ValidatorForm.removeValidationRule('unusedEmail');
     };
   });
 
   const handleChange = (event) => {
-    const {checked, value, name, type} = event.target;
-    setState({...state, [name]: type === 'checkbox' ? checked : value});
+    const {value, name} = event.target;
+    setState({[name]: value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = {'username': identifier, password, 'Fullname': fullName, email};
-    register(user);
+    resetPassword(code, password, passwordConfirmation);
   };
 
   return (
     <Box alignItems='center' m={5} className={classes.root}>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <PersonIcon/>
+          <VpnKeyIcon/>
         </Avatar>
         <Typography component='h1' variant='h5'>
-          Register as a Sponsor
+          Reset Password
         </Typography>
         <ValidatorForm className={classes.form} onSubmit={handleSubmit}>
           <Grid container direction='column' spacing={1}>
             <Grid item>
               <TextValidator
                 fullWidth
-                label='Username'
-                name='identifier'
+                label='Unique Code (check email)'
+                name='code'
                 type='text'
                 autoFocus
-                value={identifier}
-                onChange={handleChange}
-                helperText='This will be used to log in.'
-                validators={['required', 'uniqueUsername']}
-                errorMessages={['A username is required.', 'That username is not unique. Please try another.']}
-              />
-            </Grid>
-            <Grid item>
-              <TextValidator
-                fullWidth
-                label='Full Name'
-                name='fullName'
-                type='text'
-                autoFocus
-                value={fullName}
+                value={code}
                 onChange={handleChange}
                 validators={['required']}
-                errorMessages={['Your full name is required.']}
+                errorMessages={['The unique code is required.']}
               />
             </Grid>
             <Grid item>
               <TextValidator
                 fullWidth
-                label='Email'
-                name='email'
-                type='text'
-                autoFocus
-                value={email}
-                onChange={handleChange}
-                validators={['required', 'validEmail', 'unusedEmail']}
-                errorMessages={['An email is required.', 'The email is invalid.', 'That email is already in use.']}
-              />
-            </Grid>
-            <Grid item>
-              <TextValidator
-                fullWidth
-                label='Password'
+                label='New Password'
                 name='password'
                 type='password'
                 value={password}
@@ -136,13 +97,13 @@ const Register = () => {
             <Grid item>
               <TextValidator
                 fullWidth
-                label='Confirm Password'
+                label='Confirm New Password'
                 name='confirmPassword'
                 type='password'
-                value={confirmPassword}
+                value={passwordConfirmation}
                 onChange={handleChange}
                 validators={['required', 'isPasswordMatch']}
-                errorMessages={['The password confirmation is required.', 'The passwords do not match.']}
+                errorMessages={['The new password confirmation is required.', 'The passwords do not match.']}
               />
             </Grid>
             <Grid item>
@@ -153,9 +114,8 @@ const Register = () => {
                 color='primary'
                 className={classes.submit}
               >
-                Register
+                Confirm new password
               </Button>
-
             </Grid>
           </Grid>
         </ValidatorForm>
@@ -167,4 +127,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default ResetPassword;
