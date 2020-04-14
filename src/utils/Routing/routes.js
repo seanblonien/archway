@@ -1,7 +1,9 @@
+import {AccountCircle, Create, Description, Publish, ViewQuilt} from '@material-ui/icons';
 import About from '../../Components/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import Login from '../../Components/Auth/Login';
 import SearchRedirect from '../../Components/SearchRedirect';
+import {permissions} from '../../constants';
 import Capstone from '../../Pages/Capstones';
 import CreateCapstone from '../../Pages/CreateCapstone';
 import Dashboard from '../../Pages/Dashboard';
@@ -17,6 +19,7 @@ import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
 import Register from '../../Components/Auth/Register';
+import ViewYourCapstones from '../../Pages/ViewYourCapstones';
 
 const routes = {
   dashboard: {
@@ -24,22 +27,43 @@ const routes = {
     path: '/dashboard',
     component: Dashboard,
     protected: true,
-    routeNames: ['viewprofile','createcapstone','importusers'],
+    routeNames: ['viewprofile','viewyourcapstones','createcapstone','proposals','importusers'],
     viewprofile: {
       name: 'View Profile',
       path: '/dashboard/viewprofile/:username',
       genPath: (username ) => `/dashboard/viewprofile/${username}`,
-      component: ViewProfile
+      component: ViewProfile,
+      Icon: AccountCircle,
+      permission: permissions.users_permissions.user.me,
+    },
+    viewyourcapstones: {
+      name: 'View Your Capstones',
+      path: '/dashboard/my-capstones/:username',
+      genPath: (username ) => `/dashboard/view-your-capstones/${username}`,
+      component: ViewYourCapstones,
+      Icon: ViewQuilt,
+      permission: permissions.application.capstones.update,
     },
     createcapstone: {
       name: 'Create Capstone',
       path: '/dashboard/create-capstones',
-      component: CreateCapstone
+      component: CreateCapstone,
+      Icon: Create,
+      permission: permissions.application.capstones.create,
+    },
+    proposals: {
+      name: 'Proposals',
+      path: '/dashboard/proposals',
+      component: NotFound,
+      Icon: Description,
+      permission: permissions.application.capstones.create,
     },
     importusers: {
       name: 'Import Users',
       path: '/dashboard/import-users',
-      component: ImportUsers
+      component: ImportUsers,
+      Icon: Publish,
+      permission: permissions.users_permissions.user.create,
     },
   },
   auth: {
