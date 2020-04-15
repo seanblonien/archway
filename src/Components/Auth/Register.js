@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
   const {register} = useContext(AuthContext);
-  const [state, setState] = useState({identifier: '', password: '', remember: true, passwordInvalid: ''});
+  const [state, setState] = useState({identifier: '', password: '', confirmPassword: '', fullName: '', email: '', remember: true, passwordInvalid: ''});
   const classes = useStyles();
   const {identifier,
     password,
@@ -101,7 +101,6 @@ const Register = () => {
                 label='Full Name'
                 name='fullName'
                 type='text'
-                autoFocus
                 value={fullName}
                 onChange={handleChange}
                 validators={['required']}
@@ -114,7 +113,6 @@ const Register = () => {
                 label='Email'
                 name='email'
                 type='text'
-                autoFocus
                 value={email}
                 onChange={handleChange}
                 validators={['required', 'validEmail', 'unusedEmail']}
