@@ -43,8 +43,7 @@
     "react-share": "^4.0.1",
     "recompose": "^0.30.0",
     "typescript": "^3.8.3",
-    "react-material-ui-form-validator": "^2.0.10",
-    "query-string": "^6.12.1"
+    "react-material-ui-form-validator": "^2.0.10"
   },
   "scripts": {
     "start": "react-scripts start",
