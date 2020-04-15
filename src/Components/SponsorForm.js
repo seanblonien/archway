@@ -10,6 +10,7 @@ import compose from 'recompose/compose';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withSnackbar} from 'notistack';
+import PropTypes from 'prop-types';
 import api from '../Services/api';
 import MarkdownEditor from './Markdown/MarkdownEditor';
 import {formatEntryUpload, imageURL} from '../utils/utils';
@@ -103,10 +104,9 @@ class SponsorForm extends React.Component {
       preview
     });
 
-    this.uploadImages();
-
-    update();
+    await this.uploadImages();
     this.setState({open: false});
+    update();
   };
 
   handleCreate = async () => {
@@ -122,14 +122,15 @@ class SponsorForm extends React.Component {
         personnel: [user]
       });
 
-      this.setState({id: newSponsor.id});
+      debugger;
+
+      this.setState({id: newSponsor.data.id});
 
     } catch (err) {
 
     }
 
     this.uploadImages();
-
     update();
     this.setState({open: false});
   };
@@ -205,7 +206,7 @@ class SponsorForm extends React.Component {
               </Grid>
               <Grid item xs={12} md={10}>
                 <PhotoUpload
-                  fieldName='selectedPhoto'
+                  fieldName='selectedCover'
                   contentType='sponsors'
                   title='Choose Cover Photo'
                   id={id}

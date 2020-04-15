@@ -13,7 +13,10 @@ import PropTypes from 'prop-types';
 import api from '../Services/api';
 import MarkdownEditor from './Markdown/MarkdownEditor';
 import PhotoUpload from './PhotoUpload';
-import {imageURL} from '../utils/utils';
+import {formatEntryUpload, imageURL} from '../utils/utils';
+import {snack} from "../utils/Snackbar";
+import AuthContext from "../Contexts/AuthContext";
+import {withSnackbar} from "notistack";
 
 class DepartmentForm extends React.Component {
 
@@ -31,7 +34,9 @@ class DepartmentForm extends React.Component {
       preview: '',
       coverPhoto: '',
       thumbnail: '',
-      id: ''
+      id: '',
+      selectedCover: '',
+      selectedThumbnail: ''
     };
   }
 
@@ -56,7 +61,8 @@ class DepartmentForm extends React.Component {
     const {name, email, url, description, phone, preview} = this.state;
     const {department} = this.props;
 
-    await api.sponsors.update(department.id, {
+    debugger;
+    await api.departments.update(department.id, {
       name,
       email,
       url,
@@ -65,6 +71,7 @@ class DepartmentForm extends React.Component {
       preview
     });
 
+    await this.uploadImages();
     this.setState({open: false});
     window.location.reload();
   };
@@ -72,7 +79,7 @@ class DepartmentForm extends React.Component {
   handleCreate = async () => {
     const {name, email, url, description, phone, preview, user} = this.state;
 
-    await api.sponsors.create({
+    await api.departments.create({
       name,
       email,
       url,
@@ -86,12 +93,41 @@ class DepartmentForm extends React.Component {
     window.location.reload();
   };
 
+  uploadImages = async () => {
+    const {selectedCover, selectedThumbnail, id} = this.state;
+    const {enqueueSnackbar} = this.props;
+
+    let fileUpload;
+    debugger;
+
+    try{
+      // Upload the new picture
+      if (selectedCover !== '') {
+        fileUpload = formatEntryUpload(selectedCover, 'departments', id, 'coverPhoto', 'users-permissions');
+        await api.uploads.upload(fileUpload);
+      }
+      if (selectedThumbnail !== '') {
+        fileUpload = formatEntryUpload(selectedThumbnail, 'departments', id, 'thumbnail', 'users-permissions');
+        await api.uploads.upload(fileUpload);
+      }
+
+      enqueueSnackbar('Your changes have been saved.', snack.success);
+    } catch(err){
+      const msg = 'There was a problem uploading the department photos.';
+      enqueueSnackbar(msg, snack.error);
+    }
+  };
+
   handleChange = name => event => {
     this.setState({[name]: event.target.value});
   };
 
   handleMarkdownChange = (name, value) => {
     this.setState({[name]: value});
+  };
+
+  handleFileChange = (name, value) => {
+    this.setState({[name] : value});
   };
 
   initFields() {
@@ -104,7 +140,9 @@ class DepartmentForm extends React.Component {
       url: department.url,
       phone: department.phone,
       preview: department.preview,
-      id: department.id
+      id: department.id,
+      coverPhoto: department.coverPhoto,
+      thumbnail: department.thumbnail,
     });
   }
 
@@ -176,18 +214,19 @@ class DepartmentForm extends React.Component {
               </Grid>
             </Grid>
             <PhotoUpload
-              fieldName='coverPhoto'
+              fieldName='selectedCover'
               contentType='departments'
               title='Choose Cover Photo'
               id={id}
+              onChange={this.handleFileChange}
               photo={imageURL.department(coverPhoto)}
             />
             <PhotoUpload
-              fieldName='thumbnail'
-              contentType='departments'
+              ieldName='selectedThumbnail'
               title='Choose Thumbnail'
               id={id}
-              photo={imageURL.department(thumbnail)}
+              onChange={this.handleFileChange}
+              photo={imageURL.sponsor(thumbnail)}
             />
 
           </DialogContent>
@@ -216,5 +255,7 @@ DepartmentForm.propTypes = {
   title: PropTypes.string.isRequired
 };
 
-export default compose(
-)(DepartmentForm);
+DepartmentForm.contextType = AuthContext;
+
+export default withSnackbar(compose(
+)(DepartmentForm));

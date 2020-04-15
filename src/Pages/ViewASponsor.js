@@ -74,7 +74,9 @@ class ViewASponsor extends Component {
     this.state = {
       loading: true,
       sponsor: [],
-      canEdit: false
+      canEdit: false,
+      logoPhoto: '',
+      coverPhoto: ''
     };
   }
 
@@ -82,7 +84,12 @@ class ViewASponsor extends Component {
     const {match} = this.props;
     const sponsor = await api.sponsors.findOne(match.params.id);
     const {user} = this.context;
-    this.setState({loading: false, sponsor});
+    this.setState({
+      loading: false,
+      sponsor,
+      logoPhoto: imageURL.sponsor(sponsor.logo),
+      coverPhoto: imageURL.sponsor(sponsor.coverPhoto)
+    });
 
     for (const person of sponsor.personnel) {
       if (person.id === user.id) {
@@ -95,12 +102,16 @@ class ViewASponsor extends Component {
     const {sponsor} = this.state;
     debugger;
     const updatedSponsor = await api.sponsors.findOne(sponsor.id);
-    this.setState({sponsor: updatedSponsor});
+    this.setState({
+      sponsor: updatedSponsor,
+      coverPhoto: imageURL.sponsor(updatedSponsor.coverPhoto),
+      logoPhoto: imageURL.sponsor(updatedSponsor.logo)
+    });
   };
 
   render() {
     const {classes} = this.props;
-    const {loading, sponsor, canEdit} = this.state;
+    const {loading, sponsor, canEdit, logoPhoto} = this.state;
 
     if (!loading) {
       return (
@@ -128,7 +139,7 @@ class ViewASponsor extends Component {
                       </Typography>
                       <Divider style={{marginBottom: '2%'}}/>
                       <Typography align='center' style={{marginBottom: '1%'}}>
-                        <img src={imageURL.sponsor(sponsor.logo)} className={classes.sponsorImage} alt='Display'/>
+                        <img src={logoPhoto} className={classes.sponsorImage} alt='Display'/>
                       </Typography>
                       <CardContent>
                         <MediaMarkdown>

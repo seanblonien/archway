@@ -28,17 +28,20 @@ class PhotoUpload extends Component {
   }
 
   handleSelectImage = event => {
+    debugger;
     const {onChange, fieldName} = this.props;
     this.setState({selectedFile : event.target.files[0]});
     onChange(fieldName, event.target.files[0]);
 
+    const file = event.target.files[0];
     const reader = new FileReader();
+    const url = reader.readAsDataURL(file);
 
-    reader.onloadend = () => {
+    reader.onloadend = function (e) {
       this.setState({
-        photo: [reader.result]
-      });
-    };
+        photo: [reader.result],
+    })
+    }.bind(this);
   };
 
   render() {
