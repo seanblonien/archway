@@ -6,11 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import React, {useContext, useEffect, useState} from 'react';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {Link as RouterLink, useLocation} from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
+import {useQuery} from '../../utils/utils';
 import {passwordMatch, validatePassword} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
-import queryString from 'query-string';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ResetPassword = () => {
   const {resetPassword} = useContext(AuthContext);
-  const [state, setState] = useState({password: '', passwordConfirmation: '', code: queryString.parse(useLocation().search)['code']});
+  const [state, setState] = useState({password: '', passwordConfirmation: '', code: useQuery().get('code')});
   const classes = useStyles();
   const {code, password, passwordConfirmation} = state;
 
