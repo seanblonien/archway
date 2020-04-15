@@ -58,7 +58,7 @@ const ForgotPassword = () => {
     const response = await verifyEmailInStrapi(email);
     if (response) {
       try {
-        const response = await forgotPassword(email);
+        await forgotPassword(email);
         history.push(routes.auth.resetpassword.path);
       } catch (error) {
         

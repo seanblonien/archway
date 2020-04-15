@@ -87,7 +87,7 @@ class AuthProvider extends Component {
       await api.forgotPassword(email);
       enqueueSnackbar('Reset password email sent', snack.info);
     } catch (error) {
-      enqueueSnackbar('Error resetting password', snack.error);
+      enqueueSnackbar('Error sending reset password email', snack.error);
     }
   };
 
