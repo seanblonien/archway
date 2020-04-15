@@ -1,5 +1,5 @@
 # Base MongoDB image
-FROM mongo:4.2.3-bionic
+FROM mongo:4.2.5-bionic
 
 # Sets up database called 'strapi'
 ENV MONGO_INITDB_DATABASE=strapi
