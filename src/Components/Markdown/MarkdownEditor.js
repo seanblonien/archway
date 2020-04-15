@@ -122,9 +122,13 @@ const MarkdownEditor = ({value, setValue, uniqueName, ...rest}) => {
 };
 
 MarkdownEditor.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   setValue: PropTypes.func.isRequired,
   uniqueName: PropTypes.string.isRequired
+};
+
+MarkdownEditor.defaultProps = {
+  value: ''
 };
 
 export default MarkdownEditor;
