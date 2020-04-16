@@ -66,12 +66,12 @@ export default function MultipleImageUploader(props) {
         <input
           accept="image/*"
           className={classes.input}
-          id="contained-button-file"
+          id={props.prompt}
           multiple
           type="file"
           onChange={handleImg}
         />
-        <label htmlFor="contained-button-file">
+        <label htmlFor={props.prompt}>
           <Button variant="contained" color="primary" component="span" fullWidth>
             Upload
           </Button>

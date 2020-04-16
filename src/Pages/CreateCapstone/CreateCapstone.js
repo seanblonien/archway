@@ -11,6 +11,9 @@ import StorageManager from '../../Contexts/StorageManager';
 import MemberInformation from './MemberInformation';
 import SponsorAndMediaInformation from './SponsorAndMediaInformation';
 import {formatEntryUpload} from "../../utils/utils";
+import {snack} from '../../utils/Snackbar';
+import {withSnackbar} from 'notistack';
+
 
 const styles = theme => ({
   list: {
@@ -67,7 +70,8 @@ class CreateCapstone extends Component {
       typedEmail: '',
       selectedUser: '',
       dialogOpen: false,
-      courseName: ''
+      courseName: '',
+      capstoneId: '',
     };
   }
 
@@ -170,11 +174,15 @@ class CreateCapstone extends Component {
   };
 
   handleAcceptImageCoverPhoto = (image) => {
-    this.setState({coverPhoto: image});
+    this.setState({coverPhoto: image}, () => {
+      console.log(this.state.coverPhoto);
+    });
   };
 
   handleAcceptImageMedia = (image) => {
-    this.setState({media: image});
+    this.setState({media: image}, () => {
+      console.log(this.state.media);
+    });
   };
 
   handleChangeSwitchFeature = (event) => {
@@ -230,62 +238,141 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
+    if (!this.isFormValidForSubmit()) {
+      return;
+    }
+    this.handleUpload();
+  };
+
+  handleSave = async () => {
+    if (!this.isFormValidForSave()) {
+      return;
+    }
+    // this.handleUpload();
+  };
+
+  handleUpload = async () => {
     const {
       Users,
       AllUsers,
+      thumbnail,
+      coverPhoto,
+      media
     } = this.state;
+
+    const {enqueueSnackbar} = this.props;
+    enqueueSnackbar('success!', snack.success);
+
     let upload_data = this.extractNonMediaContent();
     const response = await api.capstones.create(upload_data);
 
-    // const refId = response.data.id;
-    // const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', refId, 'thumbnail');
-    // let data = await api.uploads.upload(thumbnailUpload);
-    // const mediaUploads = media.map(file => {
-    //   const upload = formatEntryUpload(file, 'capstones', refId, 'media');
-    //   return api.uploads.upload(upload);
-    // });
-    // const resp = Promise.all(mediaUploads);
-    //
-    // console.log(data);
+    const refId = response.data.id;
+    // upload thumbnail
+    if (thumbnail && thumbnail.length > 0) {
+      const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', refId, 'thumbnail');
+      let data = await api.uploads.upload(thumbnailUpload);
+    }
+
+    // upload media
+    if (media && media.length > 0) {
+      const mediaUploads = media.map(file => {
+        const upload = formatEntryUpload(file, 'capstones', refId, 'media');
+        return api.uploads.upload(upload);
+      });
+      const respMedia = Promise.all(mediaUploads);
+    }
+
+
+    // upload media
+    if (coverPhoto && coverPhoto.length > 0) {
+      const coverPhotoUploads = coverPhoto.map(file => {
+        const upload = formatEntryUpload(file, 'capstones', refId, 'coverPhoto');
+        return api.uploads.upload(upload);
+      });
+      const respCover = Promise.all(coverPhotoUploads);
+    }
+
 
     // Use Users and AllUsers eventually
     Users.filter(() => true);
     AllUsers.filter(() => true);
   };
 
-  containsInvalidText = (text) => {
-    const filter = new Filter();
-    return filter.isProfane(text);
-  };
-
-  isFormValidForSave = () => {
+  checkForRequiredField = () => {
     const { title } = this.state;
-    if (!title) {
-      return false;
-    }
-    if (this.containsInvalidText(title)) {
+    const {enqueueSnackbar} = this.props;
+
+    if (!title || title === '') {
+      enqueueSnackbar('must include a title', snack.error);
       return false;
     }
     return true;
   };
 
-  isFormValid = () => {
-    const {title, description, coverPhoto, checkedSponsors, Department, capstones} = this.state;
+  checkForProfane = () => {
+    const {enqueueSnackbar} = this.props;
+    const { title, description, courseName } = this.state;
     const filter = new Filter();
-    const profane = filter.isProfane(title) || filter.isProfane(description);
-    const validName = capstones.map(c => c.name.toUpperCase()).includes(title.toUpperCase());
-    // TODO: add thumbnail & media
-    const res = title && description && coverPhoto && Department && (checkedSponsors.length > 0) && !validName && !profane;
-    // console.log(`title: ${title}`);
-    // console.log(`des: ${description}`);
-    // console.log(`cover: ${coverPhoto}`);
-    // console.log(`depart: ${Department}`);
-    // console.log(`spon${checkedSponsors}`);
-    // console.log(`valid:${validName}`);
-    // console.log(`pro? ${profane}`);
-    // console.log(res);
+    let content = [];
+    if (filter.isProfane(title)) {
+      content.push("title");
+    }
+    if (filter.isProfane(description)) {
+      content.push("description");
+    }
+    if (filter.isProfane(courseName)) {
+      content.push("course name");
+    }
+    if (content.length > 0) {
+      enqueueSnackbar("Eww, following field contains illegal word: " + content.join(' '), snack.error);
+      return false;
+    }
+    return true;
+  };
 
-    return res;
+  checkFilledAllFieldForSubmit = () => {
+    const {enqueueSnackbar} = this.props;
+    const { title, description, courseName, Participants, checkedSponsors, selectedProfessor, selectedTA } = this.state;
+    let valid = true;
+    if (!title || title === '') {
+      valid = false;
+      enqueueSnackbar('must include a title', snack.error);
+    }
+    if (!description || description === '') {
+      valid = false;
+      enqueueSnackbar('must include a description', snack.error);
+    }
+    if (!courseName || courseName === '') {
+      valid = false;
+      enqueueSnackbar('must include a course name', snack.error);
+    }
+    if (!Participants || Participants.length === 0) {
+      valid = false;
+      enqueueSnackbar('must select a team member', snack.error);
+    }
+    if (!checkedSponsors || checkedSponsors.length === 0) {
+      valid = false;
+      enqueueSnackbar('must select a sponsor', snack.error);
+    }
+    if (!selectedProfessor || selectedProfessor === '') {
+      valid = false;
+      enqueueSnackbar('must select a professor', snack.error);
+    }
+    if (!selectedTA || selectedTA === '') {
+      valid = false;
+      enqueueSnackbar('must select a TA', snack.error);
+    }
+    return valid;
+  };
+
+
+  isFormValidForSave = () => {
+    return this.checkForRequiredField() && this.checkForProfane();
+
+  };
+
+  isFormValidForSubmit = () => {
+    return this.checkForRequiredField() && this.checkFilledAllFieldForSubmit() && this.checkForProfane();
   };
 
   render() {
@@ -342,8 +429,7 @@ class CreateCapstone extends Component {
                   fullWidth
                   variant='contained'
                   color='primary'
-                  disabled={!this.isFormValidForSave()}
-                  onClick={this.handleSubmit}
+                  onClick={this.handleSave}
                   style={{marginTop: '1%'}}
                 >
                   Save
@@ -355,7 +441,6 @@ class CreateCapstone extends Component {
                   fullWidth
                   variant='contained'
                   color='primary'
-                  disabled={!this.isFormValid()}
                   onClick={this.handleSubmit}
                   style={{marginTop: '1%'}}
                 >
@@ -382,7 +467,10 @@ class CreateCapstone extends Component {
   }
 }
 
+
+
 export default compose(
   withStyles(styles),
   withWidth(),
+  withSnackbar,
 )(CreateCapstone);

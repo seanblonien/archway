@@ -106,7 +106,7 @@ const SponsorAndMediaInformation = (props) =>
           <CardContent>
 
             <DragAndDropMultipleZone
-              acceptImage={props.handleAcceptImageMedia.bind(this)}
+              acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}
               prompt='Upload Cover Photo'
             />
           </CardContent>
