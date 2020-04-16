@@ -1,7 +1,6 @@
 import About from '../../Components/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import Login from '../../Components/Auth/Login';
-import SearchRedirect from '../../Components/SearchRedirect';
 import Capstone from '../../Pages/Capstones';
 import CreateCapstone from '../../Pages/CreateCapstone';
 import Dashboard from '../../Pages/Dashboard';
@@ -17,6 +16,7 @@ import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
 import Register from '../../Components/Auth/Register';
+import SearchResults from '../../Pages/SearchResults';
 
 const routes = {
   dashboard: {
@@ -58,11 +58,11 @@ const routes = {
       component: Register
     },
   },
-  searchredirect: {
-    name: 'Search Redirect',
-    path: '/SearchRedirect/:path/:searchTerm?',
-    genPath: (path, searchterm) => `/SearchRedirect/${path}/${searchterm}`,
-    component: SearchRedirect
+  search: {
+    name: 'Search',
+    path: '/SearchResults/:searchTerm?',
+    genPath: (searchterm) => `/SearchResults/${searchterm}`,
+    component: SearchResults
   },
   capstones: {
     name: 'Capstones',

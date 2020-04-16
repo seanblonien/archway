@@ -6,6 +6,7 @@ import defaultCapstoneImg from '../Static/defaultCapstone.svg';
 import defaultSponsorImg from '../Static/defaultSponsor.svg';
 import defaultDepartmentImg from '../Static/defaultDepartment.svg';
 import api from '../Services/api';
+import { useLocation } from 'react-router-dom';
 
 // Returns the first n words from the string
 export const getFirstNWords = (str, n) => {
@@ -57,6 +58,13 @@ export const transformUserFields = async (user) => {
 export const formatQuery = (params) => `?${Object.keys(params)
   .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
   .join('&')}`;
+
+/**
+ * Destructure the query string
+ */
+export const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 /**
  * Formats a given file file for uploading to strapi as it relates to an entry.

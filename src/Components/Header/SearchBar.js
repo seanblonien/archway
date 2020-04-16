@@ -1,7 +1,9 @@
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React, {Component} from 'react';
-import {Redirect, withRouter} from 'react-router-dom';
+import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
+import {formatQuery} from '../../utils/utils';
 
 const styles = theme => ({
   container: {
@@ -25,13 +27,11 @@ const styles = theme => ({
   }
 });
 
-class TextFields extends Component {
+class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       input: '',
-      redirect: false,
-      redirectPath: '/SearchRedirect/'
     };
   }
 
@@ -42,35 +42,20 @@ class TextFields extends Component {
   };
 
   keyPress = e => {
-    const {redirectPath} = this.state;
+    const searchTerm = formatQuery({search: e.target.value});
+
     if(e.keyCode === 13) {
-      let newPath = redirectPath;
-
-      if (window.location.pathname.includes('ViewSponsors')) {
-        newPath += `ViewSponsors/${e.target.value}`;
-      }
-      else {
-        newPath += `Capstones/${e.target.value}`;
-      }
-
-      this.setState(() => ({
-        redirect: true,
-        redirectPath: newPath,
-      }));
+      history.push(routes.search.genPath(searchTerm));
     }
   };
 
   render() {
     const {classes} = this.props;
-    const {redirect, redirectPath, input} = this.state;
-
-    if (redirect === true) {
-      this.setState({redirect: false});
-      return <Redirect to={redirectPath}/>;
-    }
+    const {input} = this.state;
 
     return (
       <form className={classes.container} noValidate autoComplete='off'>
+
         <TextField
           id='standard-name'
           placeholder='Search...'
@@ -88,4 +73,4 @@ class TextFields extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(TextFields));
+export default withStyles(styles) (SearchBar);
