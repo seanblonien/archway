@@ -7,16 +7,15 @@ import React, {Component} from 'react';
 import {Parallax} from 'react-parallax';
 import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
+import Can from '../Components/Can';
 import FeaturedCapstones from '../Components/FeaturedCapstones';
 import FeaturedSponsors from '../Components/FeaturedSponsors';
 import LoadingCircle from '../Components/LoadingCircle';
-import MediaMarkdown from '../Components/MediaMarkdown';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import {permissions, strapiURL} from '../constants';
-import Can from '../Components/Can';
+import api from '../Services/api';
 import routes from '../utils/Routing/routes';
 import gStyle from '../utils/styles.module.css';
-import api from '../Services/api';
 
 const insideStyles = theme => ({
   background: theme.palette.primary.main,
@@ -166,11 +165,6 @@ class Home extends Component {
     ;
   }
 }
-
-Home.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-  theme: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default compose(
   withStyles(styles, {withTheme: true}),

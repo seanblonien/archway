@@ -1,12 +1,13 @@
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {strapiURL} from '../constants';
-import {A, H1, H2, H3, H4, H5, H6, Image, P} from './MarkdownComponents';
+import {strapiURL} from '../../constants';
+import {A, B1, B2, H1, H2, H3, H4, H5, H6, Image} from './MarkdownComponents';
 
 const MediaMarkdown = ({children}) => {
   // Replaces any relative paths of uploads files to use the strapi url
-  const childrenAbsoluteMedia = children.replace('](/uploads/', `](${strapiURL}/uploads/`);
+  let childrenAbsoluteMedia = children.replace(/]\(\/uploads\//g, `](${strapiURL}/uploads/`);
+  childrenAbsoluteMedia = childrenAbsoluteMedia.replace(/\/uploads\/.*\)/g,encodeURI);
 
   return (
     <Markdown
@@ -19,8 +20,8 @@ const MediaMarkdown = ({children}) => {
         h5: {component: H5},
         h6: {component: H6},
         a: {component: A},
-        p: {component: P},
-        span: {component: P},
+        p: {component: B1},
+        span: {component: B2},
       }}}
     >
       {childrenAbsoluteMedia}

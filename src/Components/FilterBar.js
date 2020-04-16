@@ -4,7 +4,6 @@ import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../Services/api';
 import history from '../utils/Routing/history';
@@ -23,7 +22,7 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     minWidth: 200,
   },
 });
@@ -99,9 +98,5 @@ class NativeSelects extends Component {
     );
   }
 }
-
-NativeSelects.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default withStyles(styles)(NativeSelects);

@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable jsx-a11y/alt-text */
 import {Typography} from '@material-ui/core';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -10,13 +12,21 @@ import React from 'react';
 //
 // For example, ?height=500&width=500 at the end of an embedded file URL.
 export const Image = (props) => {
-  const {src, alt} = props;
+  const propValues = {...props};
+  const {src} = propValues;
   const urlParams = new URLSearchParams((new URL(src)).search);
-  const height = urlParams.get('height');
-  const width = urlParams.get('width');
-  const newSrc = src.split('?')[0];
+  const style = {'maxWidth': '100%'};
+  for (const [key, value] of urlParams.entries()) {
+    if(key in document.body.style) {
+      style[key] = `${value}`;
+    } else {
+      propValues[key] = value;
+    }
+  }
+  propValues.src = src.split('?')[0];
+  propValues.style = style;
 
-  return <img {...props} alt={alt} src={newSrc} height={height} width={width}/>;
+  return <img {...propValues}/>;
 };
 
 Image.propTypes = {
@@ -42,8 +52,11 @@ export const H5 = (props) => <Typography {...props} variant='h5'/>;
 // Returns styled MaterialUI Typography component for h6 variant.
 export const H6 = (props) => <Typography {...props} variant='h6'/>;
 
-// Returns styled MaterialUI Typography component for p variant.
-export const P = (props) => <Typography {...props} variant='body1'/>;
+// Returns styled MaterialUI Typography component for body1 variant.
+export const B1 = (props) => <Typography {...props} variant='body1'/>;
+
+// Returns styled MaterialUI Typography component for body2 variant.
+export const B2 = (props) => <Typography {...props} variant='body2' component='span'/>;
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -61,9 +74,5 @@ const useStyles = makeStyles(theme => ({
 export const A = (props) =>  {
   const theme = useTheme();
   const classes = useStyles(theme);
-  return (
-    <P>
-      <a {...props} className={classes.link} target='_blank'/>
-    </P>
-  );
+  return <a {...props} className={classes.link} target='_blank'/>;
 };

@@ -4,12 +4,11 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth/withWidth';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import api from '../Services/api';
 import {getBgImageFromStrapi} from '../utils/utils';
-import MediaMarkdown from '../Components/MediaMarkdown';
 
 const styles = () => ({
   button: {
@@ -89,9 +88,5 @@ class Sponsors extends Component {
       </div>;
   }
 }
-
-Sponsors.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default (withStyles(styles)(withWidth()(Sponsors)));
