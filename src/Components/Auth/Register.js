@@ -10,6 +10,7 @@ import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
 import {passwordMatch, validateEmail, validatePassword, validateUsername} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
+import history from '../../utils/Routing/history'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +65,10 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = {'username': identifier, password, 'Fullname': fullName, email};
-    register(user);
+    const registered = register(user);
+    if(registered){
+      history.push(routes.auth.validateemail);
+    }
   };
 
   return (

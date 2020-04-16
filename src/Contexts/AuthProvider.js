@@ -76,8 +76,10 @@ class AuthProvider extends Component {
       const response = await api.register(user);
       this.handleAuthenticationResponse(response, useStorage, routes.home.path);
       enqueueSnackbar('Register successful', snack.success);
+      return true;
     } catch(error) {
       enqueueSnackbar('Error registering', snack.error);
+      return false;
     }
   };
 

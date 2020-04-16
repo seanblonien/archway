@@ -17,6 +17,8 @@ import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
 import Register from '../../Components/Auth/Register';
+import ValidateEmail from '../../Components/Auth/ValidateEmail';
+
 
 const routes = {
   dashboard: {
@@ -46,7 +48,7 @@ const routes = {
     name: 'auth',
     path: '/auth',
     component: AuthPage,
-    routeNames: ['login', 'register'],
+    routeNames: ['login', 'register', 'validateemail'],
     login: {
       name: 'Login',
       path: '/auth/login',
@@ -56,6 +58,11 @@ const routes = {
       name: 'Register',
       path: '/auth/register',
       component: Register
+    },
+    validateemail: {
+      name: 'Validate Email',
+      path: '/auth/validateEmail',
+      component: ValidateEmail
     },
   },
   searchredirect: {
