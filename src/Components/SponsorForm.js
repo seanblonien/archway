@@ -122,8 +122,6 @@ class SponsorForm extends React.Component {
         personnel: [user]
       });
 
-      debugger;
-
       this.setState({id: newSponsor.data.id});
 
     } catch (err) {

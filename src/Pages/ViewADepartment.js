@@ -47,6 +47,10 @@ class ViewADepartment extends Component {
     this.setState({loading: false, departments});
   }
 
+  updateData = async () => {
+    const departments = await api.departments.find();
+  }
+
   render() {
     const {loading, departments} = this.state;
     const {match} = this.props;

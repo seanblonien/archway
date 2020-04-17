@@ -28,7 +28,6 @@ class PhotoUpload extends Component {
   }
 
   handleSelectImage = event => {
-    debugger;
     const {onChange, fieldName} = this.props;
     this.setState({selectedFile : event.target.files[0]});
     onChange(fieldName, event.target.files[0]);

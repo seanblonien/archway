@@ -100,7 +100,6 @@ class ViewASponsor extends Component {
 
   updateData = async () => {
     const {sponsor} = this.state;
-    debugger;
     const updatedSponsor = await api.sponsors.findOne(sponsor.id);
     this.setState({
       sponsor: updatedSponsor,

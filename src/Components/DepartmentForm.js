@@ -16,6 +16,7 @@ import PhotoUpload from './PhotoUpload';
 import {formatEntryUpload, imageURL} from '../utils/utils';
 import {snack} from "../utils/Snackbar";
 import AuthContext from "../Contexts/AuthContext";
+import PeopleSelect from './PeopleSelect';
 import {withSnackbar} from "notistack";
 
 class DepartmentForm extends React.Component {
@@ -32,22 +33,25 @@ class DepartmentForm extends React.Component {
       email: '',
       description: '',
       preview: '',
-      coverPhoto: '',
       thumbnail: '',
       id: '',
-      selectedCover: '',
+      professors: [],
+      allUsers: '',
       selectedThumbnail: ''
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     const {type} = this.props;
     const {user} = this.context;
     this.setState({type, user});
     if (type === 'edit') {
       this.initFields();
-    }
-  }
+    };
+
+    const allUsers = await api.users.find();
+    this.setState({allUsers});
+  };
 
   handleClickOpen = () => {
     this.setState({open: true});
@@ -58,17 +62,17 @@ class DepartmentForm extends React.Component {
   };
 
   handleSave = async () => {
-    const {name, email, url, description, phone, preview} = this.state;
+    const {name, email, url, description, phone, preview, professors} = this.state;
     const {department} = this.props;
 
-    debugger;
     await api.departments.update(department.id, {
       name,
       email,
       url,
       description,
       phone,
-      preview
+      preview,
+      professors
     });
 
     await this.uploadImages();
@@ -77,7 +81,8 @@ class DepartmentForm extends React.Component {
   };
 
   handleCreate = async () => {
-    const {name, email, url, description, phone, preview, user} = this.state;
+    const {name, email, url, description, phone, preview, professors} = this.state;
+    const {update} = this.props;
 
     await api.departments.create({
       name,
@@ -86,11 +91,12 @@ class DepartmentForm extends React.Component {
       description,
       phone,
       preview,
-      personnel: [user]
+      professors
     });
 
+    await this.uploadImages();
     this.setState({open: false});
-    window.location.reload();
+    update();
   };
 
   uploadImages = async () => {
@@ -98,14 +104,8 @@ class DepartmentForm extends React.Component {
     const {enqueueSnackbar} = this.props;
 
     let fileUpload;
-    debugger;
 
     try{
-      // Upload the new picture
-      if (selectedCover !== '') {
-        fileUpload = formatEntryUpload(selectedCover, 'departments', id, 'coverPhoto', 'users-permissions');
-        await api.uploads.upload(fileUpload);
-      }
       if (selectedThumbnail !== '') {
         fileUpload = formatEntryUpload(selectedThumbnail, 'departments', id, 'thumbnail', 'users-permissions');
         await api.uploads.upload(fileUpload);
@@ -130,6 +130,23 @@ class DepartmentForm extends React.Component {
     this.setState({[name] : value});
   };
 
+  handleProfessorSelect = (user) => {
+    debugger;
+    let professors = this.state.professors;
+    professors.push(user);
+    this.setState({professors});
+  };
+
+  handleProfessorRemove = (user) => {
+    debugger;
+    let professors = this.state.professors;
+
+    const index = professors.indexOf(user);
+    if (index !== -1) professors.splice(index, 1);
+
+    this.setState({professors});
+  };
+
   initFields() {
     const {department} = this.props;
 
@@ -141,13 +158,13 @@ class DepartmentForm extends React.Component {
       phone: department.phone,
       preview: department.preview,
       id: department.id,
-      coverPhoto: department.coverPhoto,
       thumbnail: department.thumbnail,
+      professors: department.professors
     });
   }
 
   render() {
-    const {open, type, name, email, url, description, phone, preview, coverPhoto, thumbnail, id} = this.state;
+    const {open, type, name, email, url, description, phone, preview, professors, thumbnail, id, allUsers} = this.state;
     const {title} = this.props;
 
     return (
@@ -197,12 +214,6 @@ class DepartmentForm extends React.Component {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant='caption'>Enter Department Description and Information below</Typography>
-                <MarkdownEditor
-                  uniqueName='description'
-                  setValue={(value) => this.handleMarkdownChange('description', value)}
-                  value={description}
-                />
                 <TextField
                   multiline
                   rows='2'
@@ -211,15 +222,20 @@ class DepartmentForm extends React.Component {
                   value={preview}
                   onChange={this.handleChange('preview')}
                 />
+                <Typography variant='caption'>Enter Department Description and Information below</Typography>
+                <MarkdownEditor
+                  uniqueName='description'
+                  setValue={(value) => this.handleMarkdownChange('description', value)}
+                  value={description}
+                />
               </Grid>
             </Grid>
-            <PhotoUpload
-              fieldName='selectedCover'
-              contentType='departments'
-              title='Choose Cover Photo'
-              id={id}
-              onChange={this.handleFileChange}
-              photo={imageURL.department(coverPhoto)}
+            <PeopleSelect
+              title='Select Department Professors and Faculty'
+              allUsers={allUsers}
+              selectedPeople={professors}
+              handleConfirmUser={this.handleProfessorSelect}
+              handleRemove={this.handleProfessorRemove}
             />
             <PhotoUpload
               ieldName='selectedThumbnail'
@@ -228,7 +244,6 @@ class DepartmentForm extends React.Component {
               onChange={this.handleFileChange}
               photo={imageURL.sponsor(thumbnail)}
             />
-
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color='primary'>
@@ -252,7 +267,7 @@ class DepartmentForm extends React.Component {
 DepartmentForm.propTypes = {
   type: PropTypes.string.isRequired,
   department: PropTypes.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };
 
 DepartmentForm.contextType = AuthContext;
