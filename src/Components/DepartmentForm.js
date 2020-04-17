@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,6 +18,8 @@ import {formatEntryUpload, imageURL} from '../utils/utils';
 import {snack} from '../utils/Snackbar';
 import AuthContext from '../Contexts/AuthContext';
 import PeopleSelect from './PeopleSelect';
+import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
+import {validateEmail} from "../utils/validation";
 
 class DepartmentForm extends React.Component {
 
@@ -27,15 +29,17 @@ class DepartmentForm extends React.Component {
     this.state = {
       open: false,
       type: '',
-      name: '',
-      url: '',
-      email: '',
-      description: '',
-      preview: '',
-      thumbnail: '',
-      id: '',
-      professors: [],
-      allUsers: '',
+      department: {
+        name: '',
+        url: '',
+        email: '',
+        description: '',
+        preview: '',
+        thumbnail: '',
+        id: '',
+        professors: [],
+      },
+      allUsers: [],
       selectedThumbnail: ''
     };
   }
@@ -60,19 +64,11 @@ class DepartmentForm extends React.Component {
   };
 
   handleSave = async () => {
-    const {name, email, url, description, phone, preview, professors} = this.state;
-    const {department, enqueueSnackbar, update} = this.props;
+    const {department} = this.state;
+    const {enqueueSnackbar, update} = this.props;
 
     try {
-      await api.departments.update(department.id, {
-        name,
-        email,
-        url,
-        description,
-        phone,
-        preview,
-        professors
-      });
+      await api.departments.update(department.id, department);
 
       enqueueSnackbar('The department was updated.', snack.success);
       await this.uploadImages();
@@ -85,19 +81,11 @@ class DepartmentForm extends React.Component {
   };
 
   handleCreate = async () => {
-    const {name, email, url, description, phone, preview, professors} = this.state;
+    const {department} = this.state;
     const {update, enqueueSnackbar} = this.props;
 
     try {
-      await api.departments.create({
-        name,
-        email,
-        url,
-        description,
-        phone,
-        preview,
-        professors
-      });
+      await api.departments.create(department);
 
       enqueueSnackbar('The department was successfully created.', snack.success);
       await this.uploadImages();
@@ -127,26 +115,41 @@ class DepartmentForm extends React.Component {
     }
   };
 
-  handleChange = name => event => {
-    this.setState({[name]: event.target.value});
+
+  handleChange = (event) => {
+    debugger;
+    const {department} = this.state;
+    const {value, name} = event.target;
+
+    this.setState({department: {
+      ...department,
+      [name]: value}
+    });
   };
 
   handleMarkdownChange = (name, value) => {
-    this.setState({[name]: value});
+    const {department} = this.state;
+    this.setState({department: {
+        ...department,
+        [name]: value}
+    });
   };
 
   handleFileChange = (name, value) => {
-    this.setState({[name] : value});
-  };
+    const {department} = this.state;
+    this.setState({department: {
+        ...department,
+        [name]: value}
+    });  };
 
   handleProfessorSelect = (user) => {
-    const {professors} = this.state;
+    const {professors} = this.state.department;
     professors.push(user);
     this.setState({professors});
   };
 
   handleProfessorRemove = (user) => {
-    const {professors} = this.state;
+    const {professors} = this.state.department;
 
     const index = professors.indexOf(user);
     if (index !== -1) professors.splice(index, 1);
@@ -157,21 +160,24 @@ class DepartmentForm extends React.Component {
   initFields() {
     const {department} = this.props;
 
-    this.setState({
-      name: department.name,
-      email: department.email,
-      description: department.description,
-      url: department.url,
-      phone: department.phone,
-      preview: department.preview,
-      id: department.id,
-      thumbnail: department.thumbnail,
-      professors: department.professors
+    this.setState({ department: {
+        ...department,
+        name: department.name,
+        email: department.email,
+        description: department.description,
+        url: department.url,
+        phone: department.phone,
+        preview: department.preview,
+        id: department.id,
+        thumbnail: department.thumbnail,
+        professors: department.professors
+      }
     });
   }
 
   render() {
-    const {open, type, name, email, url, description, phone, preview, professors, thumbnail, id, allUsers} = this.state;
+    const {open, type, id, allUsers, department} = this.state;
+    const {name, email, url, description, phone, preview, professors, thumbnail} = department;
     const {title} = this.props;
 
     return (
@@ -189,37 +195,48 @@ class DepartmentForm extends React.Component {
             <DialogContentText>
               Change any field or upload new photos. Click Save all changes have been made
             </DialogContentText>
+            <ValidatorForm
+              ref="form"
+              onSubmit={this.handleSubmit}
+              onError={errors => console.log(errors)}
+            >
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
                   label='Department Name'
+                  name='name'
                   value={name}
                   fullWidth
-                  onChange={this.handleChange('name')}
+                  onChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   label='Department URL'
+                  name='url'
                   value={url}
                   fullWidth
-                  onChange={this.handleChange('url')}
+                  onChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   label='Phone Number'
+                  name='phone'
                   value={phone}
                   fullWidth
-                  onChange={this.handleChange('phone')}
+                  onChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
+                <TextValidator
                   label='Contact Email'
+                  name='email'
                   value={email}
                   fullWidth
-                  onChange={this.handleChange('email')}
+                  onChange={this.handleChange}
+                  validators={['required', 'isEmail']}
+                  errorMessages={['An email is required.', 'The email is invalid.']}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -227,9 +244,10 @@ class DepartmentForm extends React.Component {
                   multiline
                   rows='2'
                   fullWidth
+                  name='preview'
                   label='Preview'
                   value={preview}
-                  onChange={this.handleChange('preview')}
+                  onChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -256,6 +274,7 @@ class DepartmentForm extends React.Component {
                 photo={imageURL.sponsor(thumbnail)}
               />
             </Grid>
+            </ValidatorForm>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color='primary'>
@@ -278,7 +297,11 @@ class DepartmentForm extends React.Component {
 
 DepartmentForm.propTypes = {
   type: PropTypes.string.isRequired,
-  department: PropTypes.isRequired,
+  department: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    preview: PropTypes.string.isRequired}),
   title: PropTypes.string.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired

@@ -38,16 +38,16 @@ const PeopleSelect = ( props ) => {
       <Grid item xs={12} md={10}>
         <Card>
           <CardContent>
-            <Grid container  justify='left' alignItems='center' spacing={2}>
+            <Grid container alignItems='center' spacing={2}>
               <Grid item xs={12}>
                 <Typography>{title}</Typography>
                 <Divider/>
               </Grid>
               <Grid item xs={12}>
-                <Grid container  justify='center' alignItems='center'>
+                <Grid container alignItems='center'>
 
                   <Grid item xs={12}>
-                    <Grid container alignItems='center' justify='left' spacing={3} direction='row'>
+                    <Grid container alignItems='center' spacing={3} direction='row'>
                       <Tooltip title='Search for name' arrow>
                         <Grid item xs={8}>
                           <Autocomplete
@@ -70,7 +70,7 @@ const PeopleSelect = ( props ) => {
                   </Grid>
                   {/* team list */}
                   <Grid item xs={9}>
-                    {selectedPeople.map(participant =>(<ListItem>
+                    {selectedPeople.map(participant =>(<ListItem key={participant.id}>
                       <ListItemAvatar>
                         <Avatar>
                           <EmojiPeopleIcon/>
@@ -98,8 +98,10 @@ const PeopleSelect = ( props ) => {
 
 PeopleSelect.propTypes = {
   title: PropTypes.string.isRequired,
-  allUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selectedPeople: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allUsers: PropTypes.arrayOf(PropTypes.shape({
+      Fullname: PropTypes.string.isRequired})).isRequired,
+  selectedPeople: PropTypes.arrayOf(PropTypes.shape({
+    Fullname: PropTypes.string.isRequired})).isRequired,
   handleConfirmUser: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
 };

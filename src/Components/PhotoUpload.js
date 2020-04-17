@@ -89,10 +89,10 @@ class PhotoUpload extends Component {
 }
 
 PhotoUpload.propTypes = {
-  photo: PropTypes.isRequired,
+  photo: PropTypes.node.isRequired,
   fieldName: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  onChange: PropTypes.isRequired,
+  onChange: PropTypes.func.isRequired,
 
 };
 
