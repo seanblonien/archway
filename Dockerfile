@@ -1,5 +1,5 @@
 # Base node image to run the npm build scripts
-FROM node:13.7.0
+FROM node:13.13.0
 
 # Create and set the app's working directory (default directory for react-scripts)
 RUN mkdir /usr/src/app

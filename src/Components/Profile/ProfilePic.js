@@ -140,8 +140,8 @@ class ProfilePic extends Component {
 
 ProfilePic.propTypes = {
   user: PropTypes.shape({
-    id: PropTypes.string.isRequired, 
-    picture: PropTypes.objectOf(PropTypes.object).isRequired
+    id: PropTypes.string.isRequired,
+    picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
   }).isRequired,
   username: PropTypes.string.isRequired,
   picture: PropTypes.func.isRequired,
@@ -149,4 +149,4 @@ ProfilePic.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired
 };
 
-export default withSnackbar(withStyles(styles) (ProfilePic));
+export default withSnackbar(withStyles(styles)(ProfilePic));

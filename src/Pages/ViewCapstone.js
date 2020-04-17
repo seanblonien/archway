@@ -32,8 +32,6 @@ import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
-import PageTitleTypography from '../Components/PageTitleTypography';
-import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 
 const styles = () => ({
@@ -162,7 +160,7 @@ class ViewCapstone extends Component {
 
     // If we're logged-in, store the user Id and update the count values.
     if (user) {
-      this.setState({Username: user._id});
+      this.setState({Username: user.id});
     }
 
     const capstone = await this.getCapstone();
@@ -229,7 +227,7 @@ class ViewCapstone extends Component {
     this.setState({userOpen: false});
     for (let i = 0; i < users.length; i++) {
       if (users[i].username.toUpperCase() === newUser.toUpperCase()) {
-        members.push(users[i]._id);
+        members.push(users[i].id);
         break;
       }
     }
@@ -241,7 +239,7 @@ class ViewCapstone extends Component {
     const {members} = obj;
     const {Username} = this.state;
 
-    return !_.isEmpty(members.filter(c => c._id === Username));
+    return !_.isEmpty(members.filter(c => c.id === Username));
   };
 
   render() {
@@ -308,7 +306,7 @@ class ViewCapstone extends Component {
                 </Grid>
 
                 {/* Title, Capstone Image, Start/End Date */}
-                <PageTitleTypography text={capstone.title}/>
+                <Typography variant='h1'>{capstone.title}</Typography>
 
                 <Divider/>
                 <Typography align='center' style={{marginBottom: '1%'}}>
@@ -321,26 +319,26 @@ class ViewCapstone extends Component {
                 <Grid item xs={12} sm={12} md={6}>
                   <Card className={this.setLeftColClass(this.props)}>
                     <CardContent>
-                      <SubHeadingTextTypography text='Project Info' align='center'/>
+                      <Typography variant='h4'>Project Info</Typography>
                       <Divider/>
-                      <Typography variant='subheading' style={{marginTop: '2%'}}>
+                      <Typography variant='subtitle1' style={{marginTop: '2%'}}>
                         <b>Start Date:</b> {ViewCapstone.formatDate(capstone.startDate)}
                       </Typography>
-                      <Typography variant='subheading'>
+                      <Typography variant='subtitle1'>
                         <b>Date Completed:</b> {ViewCapstone.formatDate(capstone.endDate)}
                       </Typography>
-                      <Typography variant='subheading' style={{marginTop: '2%'}}>
+                      <Typography variant='subtitle1' style={{marginTop: '2%'}}>
                         <b>Department: </b> {capstone.department.name}
                       </Typography>
-                      <Typography variant='subheading'>
+                      <Typography variant='subtitle1'>
                         <div>
                           <b>Sponsors:</b>
                           {capstone.sponsors.map((result) => (
-                            <div>{result.name}</div>
+                            <div key={result.name}>{result.name}</div>
                           ))}
                         </div>
                       </Typography>
-                      <Typography variant='subheading' style={{marginTop: '2%'}}>
+                      <Typography variant='subtitle1' style={{marginTop: '2%'}}>
                         <b>Description: </b> <br/>
                         <MediaMarkdown>
                           {capstone.description}
@@ -353,7 +351,7 @@ class ViewCapstone extends Component {
                   <Card className={this.setLeftColClass(this.props)}>
                     {picArray.length > 0 &&
                       <CardContent>
-                        <SubHeadingTextTypography text='Photo Gallery' align='center'/>
+                        <Typography variant='h4'>Photo Gallery</Typography>
 
                         { /* Add A New Photo */}
 
@@ -387,7 +385,7 @@ class ViewCapstone extends Component {
                                   Cancel
                                 </Button>
                                 <Button
-                                  onClick={() => this.handlePhotoSubmit(capstone._id, capstone.members)}
+                                  onClick={() => this.handlePhotoSubmit(capstone.id, capstone.members)}
                                   color='primary'
                                 >
                                   Submit
@@ -413,7 +411,7 @@ class ViewCapstone extends Component {
                       </CardContent>}
                     {picArray.length === 0 &&
                       <CardContent>
-                        <SubHeadingTextTypography text='Photos Coming Soon' align='center'/>
+                        <Typography variant='h4'>Photos Coming Soon</Typography>
                         {this.isCreator(capstone) &&
                           <div align='center'>
                             <Button onClick={this.handlePhotoClickOpen}>
@@ -444,7 +442,7 @@ class ViewCapstone extends Component {
                                   Cancel
                                 </Button>
                                 <Button
-                                  onClick={() => this.handlePhotoSubmit(capstone._id, capstone.members)}
+                                  onClick={() => this.handlePhotoSubmit(capstone.id, capstone.members)}
                                   color='primary'
                                 >
                                   Submit
@@ -459,7 +457,7 @@ class ViewCapstone extends Component {
                 <Grid item xs={12} sm={12} md={6}>
                   <Card className={classes.card}>
                     <CardContent>
-                      <SubHeadingTextTypography text='The Team' align='center'/>
+                      <Typography variant='h4'>The Team</Typography>
 
                       { /* Add a user */}
 
@@ -478,7 +476,7 @@ class ViewCapstone extends Component {
                             <DialogContent>
                               <DialogContentText>
                                 To add a new group member, type their username here.
-                                Group members must be registered on the site to be added
+                                Group members must have accounts on the site to be added
                                 to capstones.
                               </DialogContentText>
                               <TextField
@@ -495,7 +493,7 @@ class ViewCapstone extends Component {
                                 Cancel
                               </Button>
                               <Button
-                                onClick={() => this.handleUserSubmit(capstone._id, capstone.members)}
+                                onClick={() => this.handleUserSubmit(capstone.id, capstone.members)}
                                 color='primary'
                               >
                                 Submit

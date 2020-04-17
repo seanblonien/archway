@@ -35,7 +35,7 @@ const SubMenu = ({items, links, title}) => (
           {items.map((value, index) => {
             const linkValue = links[index];
             return (
-              <Link key={linkValue} component={RouterLink} to={linkValue}>
+              <Link key={index} component={RouterLink} to={linkValue}>
                 <StyledMenuItem>
                   {value}
                 </StyledMenuItem>

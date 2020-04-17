@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import _ from 'lodash';
+import {useLocation} from 'react-router-dom';
 import defaultUserImg from '../Static/defaultUser.png';
 import {strapiURL} from '../constants';
 import defaultCapstoneImg from '../Static/defaultCapstone.svg';
@@ -84,3 +85,5 @@ export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPl
   entryUpload.append('field', entryField);
   return entryUpload;
 };
+
+export const useQuery = () => new URLSearchParams(useLocation().search);
