@@ -70,15 +70,15 @@ class AuthProvider extends Component {
     }
   };
 
-  register = async (user, useStorage = true) => {
+  signUp = async (user, useStorage = true) => {
     const {enqueueSnackbar} = this.props;
     try {
-      const response = await api.register(user);
+      const response = await api.signUp(user);
       this.handleAuthenticationResponse(response, useStorage);
       history.push(routes.auth.validateemail.path);
-      enqueueSnackbar('Register successful', snack.success);
+      enqueueSnackbar('Sign up successful', snack.success);
     } catch(error) {
-      enqueueSnackbar('Error registering', snack.error);
+      enqueueSnackbar('Error signing up', snack.error);
     }
   };
 
@@ -106,7 +106,7 @@ class AuthProvider extends Component {
   render() {
     const {children} = this.props;
     const {isAuthenticated, user, token} = this.state;
-    const {logout, login, register, forgotPassword, resetPassword} = this;
+    const {logout, login, signUp, forgotPassword, resetPassword} = this;
 
     return (
       <AuthContext.Provider
@@ -116,7 +116,7 @@ class AuthProvider extends Component {
           token,
           logout,
           login,
-          register,
+          signUp,
           forgotPassword,
           resetPassword
         }}
