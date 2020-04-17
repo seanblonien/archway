@@ -115,7 +115,7 @@ const Login = () => {
             <Grid item>
               <Grid container direction='column' className={classes.options}>
                 <Grid item xs>
-                  <Link component={RouterLink} to={routes.auth.login.path}>
+                  <Link component={RouterLink} to={routes.auth.forgotpassword.path}>
                     Forgot password?
                   </Link>
                 </Grid>

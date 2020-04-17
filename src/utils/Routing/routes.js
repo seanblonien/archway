@@ -17,6 +17,8 @@ import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
 import Register from '../../Components/Auth/Register';
+import ForgotPassword from '../../Components/Auth/ForgotPassword';
+import ResetPassword from '../../Components/Auth/ResetPassword';
 import ValidateEmail from '../../Components/Auth/ValidateEmail';
 
 
@@ -48,7 +50,7 @@ const routes = {
     name: 'auth',
     path: '/auth',
     component: AuthPage,
-    routeNames: ['login', 'register', 'validateemail'],
+    routeNames: ['login', 'register', 'forgotpassword', 'resetpassword', 'validateemail'],
     login: {
       name: 'Login',
       path: '/auth/login',
@@ -58,6 +60,16 @@ const routes = {
       name: 'Register',
       path: '/auth/register',
       component: Register
+    },
+    forgotpassword: {
+      name: 'Forgot Password',
+      path: '/auth/forgotPassword',
+      component: ForgotPassword
+    },
+    resetpassword: {
+      name: 'Reset Password',
+      path: '/auth/resetPassword',
+      component: ResetPassword
     },
     validateemail: {
       name: 'Validate Email',

@@ -10,6 +10,7 @@ import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
 import {passwordMatch, validateEmail, validatePassword, validateUsername} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
+import {verifyEmailInStrapi} from '../../utils/verification';
 import history from '../../utils/Routing/history'
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
   const {register} = useContext(AuthContext);
-  const [state, setState] = useState({identifier: '', password: '', remember: true, passwordInvalid: ''});
+  const [state, setState] = useState({identifier: '', password: '', confirmPassword: '', fullName: '', email: '', remember: true, passwordInvalid: ''});
   const classes = useStyles();
   const {identifier,
     password,
@@ -49,11 +50,13 @@ const Register = () => {
     ValidatorForm.addValidationRule('passwordLength', (value) => validatePassword(value));
     ValidatorForm.addValidationRule('uniqueUsername', (value) => validateUsername(value));
     ValidatorForm.addValidationRule('validEmail', (value) => validateEmail(value));
+    ValidatorForm.addValidationRule('unusedEmail', async (value) => !(await verifyEmailInStrapi(value)));
     return function cleanup() {
       ValidatorForm.removeValidationRule('isPasswordMatch');
       ValidatorForm.removeValidationRule('passwordLength');
       ValidatorForm.removeValidationRule('uniqueUsername');
       ValidatorForm.removeValidationRule('validEmail');
+      ValidatorForm.removeValidationRule('unusedEmail');
     };
   });
 
@@ -102,7 +105,6 @@ const Register = () => {
                 label='Full Name'
                 name='fullName'
                 type='text'
-                autoFocus
                 value={fullName}
                 onChange={handleChange}
                 validators={['required']}
@@ -115,11 +117,10 @@ const Register = () => {
                 label='Email'
                 name='email'
                 type='text'
-                autoFocus
                 value={email}
                 onChange={handleChange}
-                validators={['required', 'validEmail']}
-                errorMessages={['An email is required.', 'The email is invalid.']}
+                validators={['required', 'validEmail', 'unusedEmail']}
+                errorMessages={['An email is required.', 'The email is invalid.', 'That email is already in use.']}
               />
             </Grid>
             <Grid item>
