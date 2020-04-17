@@ -67,7 +67,12 @@ const ResetPassword = () => {
         </Avatar>
         <Typography component='h1' variant='h5'>
           Reset Password
-        </Typography>
+        </Typography><br/>
+        <Box maxWidth='300px' disableGutters>
+          <Typography variant='body2'>
+            Click the password reset link in the email, or enter the code manually here.
+          </Typography>
+        </Box>
         <ValidatorForm className={classes.form} onSubmit={handleSubmit}>
           <Grid container direction='column' spacing={1}>
             <Grid item>

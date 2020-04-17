@@ -1,4 +1,4 @@
-import {Box, Button, Container, Link} from '@material-ui/core';
+import {Box, Button, Link} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
@@ -67,7 +67,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = {'username': identifier, password, 'Fullname': fullName, email};
-    signUp(user);
+    await signUp(user);
   };
 
   return (

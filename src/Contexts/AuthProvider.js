@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -84,12 +85,12 @@ class AuthProvider extends Component {
 
   forgotPassword = async (email) => {
     const {enqueueSnackbar} = this.props;
+    // Tell user email was sent *regardless* if an account with the email exists
+    enqueueSnackbar('Reset password email sent', snack.info);
+    history.push(routes.auth.resetpassword.path);
     try {
       await api.forgotPassword(email);
-      enqueueSnackbar('Reset password email sent', snack.info);
-    } catch (error) {
-      enqueueSnackbar('Error sending reset password email', snack.error);
-    }
+    } catch (error) {}
   };
 
   resetPassword = async (code, password, passwordConfirm) => {
