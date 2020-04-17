@@ -17,7 +17,7 @@ export const validateAddUser = (user) => {
   return [isValid, errors];
 };
 
-export const validatePassword = (password) => password.length >= 6;
+export const validatePassword = (password) => {return (password !== undefined && (password.length >= 6))};
 
 export const validateUsername = async (username) => {
   try {

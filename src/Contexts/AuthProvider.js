@@ -87,6 +87,16 @@ class AuthProvider extends Component {
       await api.forgotPassword(email);
       enqueueSnackbar('Reset password email sent', snack.info);
     } catch (error) {
+      enqueueSnackbar('Error sending reset password email', snack.error);
+    }
+  };
+
+  resetPassword = async (code, password, passwordConfirm) => {
+    const {enqueueSnackbar} = this.props;
+    try {
+      await api.resetPassword(code, password, passwordConfirm);
+      enqueueSnackbar('The password has been reset', snack.info);
+    } catch (error) {
       enqueueSnackbar('Error resetting password', snack.error);
     }
   };
@@ -94,7 +104,7 @@ class AuthProvider extends Component {
   render() {
     const {children} = this.props;
     const {isAuthenticated, user, token} = this.state;
-    const {logout, login, register, forgotPassword} = this;
+    const {logout, login, register, forgotPassword, resetPassword} = this;
 
     return (
       <AuthContext.Provider
@@ -105,7 +115,8 @@ class AuthProvider extends Component {
           logout,
           login,
           register,
-          forgotPassword
+          forgotPassword,
+          resetPassword
         }}
       >
         {children}

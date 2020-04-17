@@ -71,8 +71,10 @@ const API = {
   register: (user) =>
     axios.post('/auth/local/register', user),
 
-  forgotPassword: (email) => axios.post('', email),
-  authenticate: () => axios.get('/posts')
+  forgotPassword: (email) => axios.post('/auth/forgot-password', {email}),
+  authenticate: () => axios.get('/posts'),
+  resetPassword: (code, password, passwordConfirmation) => axios.post('/auth/reset-password',
+    {code, password, passwordConfirmation})
 };
 
 export default API;
