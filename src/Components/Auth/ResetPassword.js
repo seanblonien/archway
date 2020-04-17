@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ResetPassword = () => {
   const {resetPassword} = useContext(AuthContext);
-  const [state, setState] = useState({password: '', passwordConfirmation: '', code: useQuery().get('code')});
+  const [state, setState] = useState({password: '', passwordConfirmation: '', code: useQuery().get('code') || ''});
   const classes = useStyles();
   const {code, password, passwordConfirmation} = state;
 

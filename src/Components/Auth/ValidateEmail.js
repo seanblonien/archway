@@ -39,7 +39,7 @@ const ValidateEmail = () => {
           <EmailIcon/>
         </Avatar>
         <Typography component='h1' variant='h5'>
-          Please check your email for a verification code.
+          Please check your email for a confirmation link.
         </Typography>
         <Link component={RouterLink} to={routes.auth.login.path}>
           Return to login screen

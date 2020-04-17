@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ForgotPassword = () => {
   const {forgotPassword} = useContext(AuthContext);
-  const [state, setState] = useState({});
+  const [state, setState] = useState({email: ''});
   const classes = useStyles();
   const {email} = state;
 
@@ -61,7 +61,7 @@ const ForgotPassword = () => {
         await forgotPassword(email);
         history.push(routes.auth.resetpassword.path);
       } catch (error) {
-        
+
       }
     }
   };
