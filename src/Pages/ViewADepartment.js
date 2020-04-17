@@ -49,7 +49,8 @@ class ViewADepartment extends Component {
 
   updateData = async () => {
     const departments = await api.departments.find();
-  }
+    this.setState({departments});
+  };
 
   render() {
     const {loading, departments} = this.state;
@@ -63,9 +64,13 @@ class ViewADepartment extends Component {
           <Typography variant='h4' align='center'>
             {department.name}
           </Typography>
-            <DepartmentForm title='Edit Department' department={department} type='edit'/>
-          <Can perform={permissions.application.departments.create}>
-            <DepartmentForm title='Create Department' type='create'/>
+          <Can perform={permissions.application.departments.update}>
+            <DepartmentForm
+              title='Edit Department'
+              department={department}
+              type='edit'
+              update={this.updateData}
+            />
           </Can>
           <Typography>
             {`Currently involved in ${department.capstones.length} capstones`}

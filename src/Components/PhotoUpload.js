@@ -34,13 +34,13 @@ class PhotoUpload extends Component {
 
     const file = event.target.files[0];
     const reader = new FileReader();
-    const url = reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
 
-    reader.onloadend = function (e) {
+    reader.onloadend = () => {
       this.setState({
         photo: [reader.result],
-    })
-    }.bind(this);
+      });
+    };
   };
 
   render() {

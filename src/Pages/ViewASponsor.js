@@ -8,6 +8,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
+import {withSnackbar} from 'notistack';
 import LoadingCircle from '../Components/LoadingCircle';
 import SponsorForm from '../Components/SponsorForm';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
@@ -16,7 +17,6 @@ import {imageURL} from '../utils/utils';
 import {permissions} from '../constants';
 import Can from '../Components/Can';
 import AuthContext from '../Contexts/AuthContext';
-import {withSnackbar} from "notistack";
 
 const styles = theme => ({
   card: {
@@ -120,11 +120,16 @@ class ViewASponsor extends Component {
               <Grid container>
                 <Grid item xs={12}>
                   <Card>
-
-                      <SponsorForm title='Edit Sponsor'
-                                   sponsor={sponsor}
-                                   type='edit'
-                                   update={this.updateData}/>
+                    {canEdit &&
+                      <Can perform={permissions.application.sponsors.update}>
+                        <SponsorForm
+                          title='Edit Sponsor'
+                          sponsor={sponsor}
+                          type='edit'
+                          update={this.updateData}
+                        />
+                      </Can>
+                    }
                     <Typography variant='h1'>{sponsor.name}</Typography>
                     <Divider style={{marginTop: '2%'}}/>
                   </Card>

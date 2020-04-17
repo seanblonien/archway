@@ -12,9 +12,10 @@ import Avatar from '@material-ui/core/Avatar';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from "@material-ui/core/Typography";
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 
-const MemberInformation = ( props ) => {
+const PeopleSelect = ( props ) => {
 
   /*
   * allUsers
@@ -25,6 +26,8 @@ const MemberInformation = ( props ) => {
   */
 
   const [selectUser, setSelectUser] = useState('');
+
+  const {title, allUsers, selectedPeople, handleRemove, handleConfirmUser} = props;
 
   const handleSelectUser = (event, values) => {
     setSelectUser(values);
@@ -37,7 +40,7 @@ const MemberInformation = ( props ) => {
           <CardContent>
             <Grid container  justify='left' alignItems='center' spacing={2}>
               <Grid item xs={12}>
-                <Typography>{props.title}</Typography>
+                <Typography>{title}</Typography>
                 <Divider/>
               </Grid>
               <Grid item xs={12}>
@@ -49,7 +52,7 @@ const MemberInformation = ( props ) => {
                         <Grid item xs={8}>
                           <Autocomplete
                             id='combo-box-demo'
-                            options={props.allUsers}
+                            options={allUsers}
                             getOptionLabel={(option) => option.Fullname}
                             style={{width: 300}}
                             onChange={handleSelectUser}
@@ -58,7 +61,7 @@ const MemberInformation = ( props ) => {
                         </Grid>
                       </Tooltip>
                       <Grid item>
-                        <Button variant='outlined' color='primary' onClick={() => props.handleConfirmUser(selectUser)}>
+                        <Button variant='outlined' color='primary' onClick={() => handleConfirmUser(selectUser)}>
                           Confirm
                         </Button>
                       </Grid>
@@ -67,7 +70,7 @@ const MemberInformation = ( props ) => {
                   </Grid>
                   {/* team list */}
                   <Grid item xs={9}>
-                    {props.selectedPeople.map(participant =>(<ListItem>
+                    {selectedPeople.map(participant =>(<ListItem>
                       <ListItemAvatar>
                         <Avatar>
                           <EmojiPeopleIcon/>
@@ -76,7 +79,7 @@ const MemberInformation = ( props ) => {
                       <ListItemText
                         primary={participant.Fullname}
                       />
-                      <Button onClick={ () => props.handleRemove(participant)}>Remove</Button>
+                      <Button onClick={ () => handleRemove(participant)}>Remove</Button>
                     </ListItem>))
                     }
                   </Grid>
@@ -93,4 +96,12 @@ const MemberInformation = ( props ) => {
   );
 };
 
-export default MemberInformation;
+PeopleSelect.propTypes = {
+  title: PropTypes.string.isRequired,
+  allUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedPeople: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleConfirmUser: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+};
+
+export default PeopleSelect;

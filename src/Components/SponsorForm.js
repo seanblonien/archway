@@ -79,7 +79,7 @@ class SponsorForm extends React.Component {
       }
       if (fileUpload !== '') {
         fileUpload = formatEntryUpload(selectedLogo, 'sponsors', id, 'logo', 'users-permissions');
-        await api.uploads.upload(fileUpload)
+        await api.uploads.upload(fileUpload);
       }
       if (selectedThumbnail !== '') {
         fileUpload = formatEntryUpload(selectedThumbnail, 'sponsors', id, 'thumbnail', 'users-permissions');
@@ -122,13 +122,13 @@ class SponsorForm extends React.Component {
         personnel: [user]
       });
 
+      enqueueSnackbar('New sponsor was successfully created.', snack.success);
+      await this.uploadImages();
       this.setState({id: newSponsor.data.id});
-
     } catch (err) {
-
+      enqueueSnackbar('There was a problem creating a new sponsor');
     }
 
-    this.uploadImages();
     update();
     this.setState({open: false});
   };
@@ -154,16 +154,19 @@ class SponsorForm extends React.Component {
   };
 
   render() {
-    const {open, type, id, name, url, description, preview, coverPhoto, logo, thumbnail, user} = this.state;
-    const {title, sponsor} = this.props;
+    const {open, type, id, name, url, description, preview, coverPhoto, logo, thumbnail} = this.state;
+    const {title} = this.props;
 
     return (
       <div>
         <Button variant='outlined' color='primary' onClick={this.handleClickOpen}>
           {title}
         </Button>
-        <Dialog open={open} onClose={this.handleClose}
-                aria-labelledby='form-dialog-title'>
+        <Dialog
+          open={open}
+          onClose={this.handleClose}
+          aria-labelledby='form-dialog-title'
+        >
           <DialogTitle id='form-dialog-title'>{title}</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -209,8 +212,8 @@ class SponsorForm extends React.Component {
                   title='Choose Cover Photo'
                   id={id}
                   onChange={this.handleFileChange}
-                  photo={imageURL.sponsor(coverPhoto)}>
-                </PhotoUpload>
+                  photo={imageURL.sponsor(coverPhoto)}
+                />
                 <PhotoUpload
                   fieldName='selectedLogo'
                   contentType='sponsors'
@@ -218,16 +221,14 @@ class SponsorForm extends React.Component {
                   id={id}
                   onChange={this.handleFileChange}
                   photo={imageURL.sponsor(logo)}
-                >
-                </PhotoUpload>
+                />
                 <PhotoUpload
                   fieldName='selectedThumbnail'
                   title='Choose Thumbnail'
                   id={id}
                   onChange={this.handleFileChange}
                   photo={imageURL.sponsor(thumbnail)}
-                >
-                </PhotoUpload>
+                />
               </Grid>
             </Grid>
           </DialogContent>
@@ -236,14 +237,14 @@ class SponsorForm extends React.Component {
               Cancel
             </Button>
             {type === 'edit' &&
-            < Button onClick={this.handleSave} color='primary'>
-              Save
+              <Button onClick={this.handleSave} color='primary'>
+                Save
               </Button>
             }
             {type === 'create' &&
-            < Button onClick={this.handleCreate} color='primary'>
-              Create
-            </Button>
+              <Button onClick={this.handleCreate} color='primary'>
+                Create
+              </Button>
             }
           </DialogActions>
         </Dialog>
@@ -255,6 +256,7 @@ class SponsorForm extends React.Component {
 SponsorForm.propTypes = {
   type: PropTypes.string.isRequired,
   sponsor: PropTypes.isRequired,
+  title: PropTypes.string.isRequired,
   enqueueSnackbar: PropTypes.isRequired,
   update: PropTypes.isRequired
 };

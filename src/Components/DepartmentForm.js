@@ -10,14 +10,14 @@ import compose from 'recompose/compose';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+import {withSnackbar} from 'notistack';
 import api from '../Services/api';
 import MarkdownEditor from './Markdown/MarkdownEditor';
 import PhotoUpload from './PhotoUpload';
 import {formatEntryUpload, imageURL} from '../utils/utils';
-import {snack} from "../utils/Snackbar";
-import AuthContext from "../Contexts/AuthContext";
+import {snack} from '../utils/Snackbar';
+import AuthContext from '../Contexts/AuthContext';
 import PeopleSelect from './PeopleSelect';
-import {withSnackbar} from "notistack";
 
 class DepartmentForm extends React.Component {
 
@@ -27,7 +27,6 @@ class DepartmentForm extends React.Component {
     this.state = {
       open: false,
       type: '',
-      user: '',
       name: '',
       url: '',
       email: '',
@@ -43,11 +42,10 @@ class DepartmentForm extends React.Component {
 
   componentDidMount = async () => {
     const {type} = this.props;
-    const {user} = this.context;
-    this.setState({type, user});
+    this.setState({type});
     if (type === 'edit') {
       this.initFields();
-    };
+    }
 
     const allUsers = await api.users.find();
     this.setState({allUsers});
@@ -63,46 +61,58 @@ class DepartmentForm extends React.Component {
 
   handleSave = async () => {
     const {name, email, url, description, phone, preview, professors} = this.state;
-    const {department} = this.props;
+    const {department, enqueueSnackbar, update} = this.props;
 
-    await api.departments.update(department.id, {
-      name,
-      email,
-      url,
-      description,
-      phone,
-      preview,
-      professors
-    });
+    try {
+      await api.departments.update(department.id, {
+        name,
+        email,
+        url,
+        description,
+        phone,
+        preview,
+        professors
+      });
 
-    await this.uploadImages();
+      enqueueSnackbar('The department was updated.', snack.success);
+      await this.uploadImages();
+    } catch (err) {
+      enqueueSnackbar('The department was unable to update.', snack.error);
+    }
+
+    update();
     this.setState({open: false});
-    window.location.reload();
   };
 
   handleCreate = async () => {
     const {name, email, url, description, phone, preview, professors} = this.state;
-    const {update} = this.props;
+    const {update, enqueueSnackbar} = this.props;
 
-    await api.departments.create({
-      name,
-      email,
-      url,
-      description,
-      phone,
-      preview,
-      professors
-    });
+    try {
+      await api.departments.create({
+        name,
+        email,
+        url,
+        description,
+        phone,
+        preview,
+        professors
+      });
 
-    await this.uploadImages();
+      enqueueSnackbar('The department was successfully created.', snack.success);
+      await this.uploadImages();
+
+    } catch (err) {
+      enqueueSnackbar('There was a problem creating the department.', snack.error);
+    }
+
     this.setState({open: false});
     update();
   };
 
   uploadImages = async () => {
-    const {selectedCover, selectedThumbnail, id} = this.state;
+    const {selectedThumbnail, id} = this.state;
     const {enqueueSnackbar} = this.props;
-
     let fileUpload;
 
     try{
@@ -110,8 +120,7 @@ class DepartmentForm extends React.Component {
         fileUpload = formatEntryUpload(selectedThumbnail, 'departments', id, 'thumbnail', 'users-permissions');
         await api.uploads.upload(fileUpload);
       }
-
-      enqueueSnackbar('Your changes have been saved.', snack.success);
+      enqueueSnackbar('Your thumbnail has been saved.', snack.success);
     } catch(err){
       const msg = 'There was a problem uploading the department photos.';
       enqueueSnackbar(msg, snack.error);
@@ -131,15 +140,13 @@ class DepartmentForm extends React.Component {
   };
 
   handleProfessorSelect = (user) => {
-    debugger;
-    let professors = this.state.professors;
+    const {professors} = this.state;
     professors.push(user);
     this.setState({professors});
   };
 
   handleProfessorRemove = (user) => {
-    debugger;
-    let professors = this.state.professors;
+    const {professors} = this.state;
 
     const index = professors.indexOf(user);
     if (index !== -1) professors.splice(index, 1);
@@ -193,23 +200,25 @@ class DepartmentForm extends React.Component {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  label='Organization URL'
+                  label='Department URL'
                   value={url}
-                  fullwidth
+                  fullWidth
                   onChange={this.handleChange('url')}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  label='Department Phone Number'
+                  label='Phone Number'
                   value={phone}
+                  fullWidth
                   onChange={this.handleChange('phone')}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  label='Department Email'
+                  label='Contact Email'
                   value={email}
+                  fullWidth
                   onChange={this.handleChange('email')}
                 />
               </Grid>
@@ -222,28 +231,31 @@ class DepartmentForm extends React.Component {
                   value={preview}
                   onChange={this.handleChange('preview')}
                 />
-                <Typography variant='caption'>Enter Department Description and Information below</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant='body1'>Enter department description and other information below</Typography>
                 <MarkdownEditor
                   uniqueName='description'
                   setValue={(value) => this.handleMarkdownChange('description', value)}
                   value={description}
                 />
               </Grid>
+
+              <PeopleSelect
+                title='Select Department Professors and Faculty'
+                allUsers={allUsers}
+                selectedPeople={professors}
+                handleConfirmUser={this.handleProfessorSelect}
+                handleRemove={this.handleProfessorRemove}
+              />
+              <PhotoUpload
+                fieldName='selectedThumbnail'
+                title='Choose Thumbnail'
+                id={id}
+                onChange={this.handleFileChange}
+                photo={imageURL.sponsor(thumbnail)}
+              />
             </Grid>
-            <PeopleSelect
-              title='Select Department Professors and Faculty'
-              allUsers={allUsers}
-              selectedPeople={professors}
-              handleConfirmUser={this.handleProfessorSelect}
-              handleRemove={this.handleProfessorRemove}
-            />
-            <PhotoUpload
-              ieldName='selectedThumbnail'
-              title='Choose Thumbnail'
-              id={id}
-              onChange={this.handleFileChange}
-              photo={imageURL.sponsor(thumbnail)}
-            />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color='primary'>
@@ -268,6 +280,8 @@ DepartmentForm.propTypes = {
   type: PropTypes.string.isRequired,
   department: PropTypes.isRequired,
   title: PropTypes.string.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired
 };
 
 DepartmentForm.contextType = AuthContext;
