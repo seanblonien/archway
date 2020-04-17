@@ -10,6 +10,7 @@ import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
 import ComputerRoundedIcon from '@material-ui/icons/ComputerRounded';
 import LoadingCircle from '../Components/LoadingCircle';
 import CapstonesTab from '../Components/CapstonesTab';
+import Professors from '../Components/Professors';
 import api from '../Services/api';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import {strapiURL} from '../constants';
@@ -51,8 +52,6 @@ class ViewADepartment extends Component {
     const {match} = this.props;
     const department = await api.departments.findOne(match.params.id);
     this.setState({loading: false, department});
-
-    const professors = await api.users.find({department: {id: match.params.id}});
   }
 
   render() {
@@ -94,6 +93,10 @@ class ViewADepartment extends Component {
           <MediaMarkdown>{`####${department.name} Capstones`}</MediaMarkdown>
           <br/>
           <CapstonesTab department={department}/>
+          <br/><br/>
+          <MediaMarkdown>#### Professors</MediaMarkdown>
+          <br/>
+          <Professors department={department}/>
         </Grid>
       </div>
     ;

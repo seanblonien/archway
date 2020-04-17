@@ -10,7 +10,7 @@ import {Link as RouterLink} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import routes from '../utils/Routing/routes';
 import history from '../utils/Routing/history';
-import {imageURL} from '../utils/utils';
+import {imageURL, convertStrapiDate} from '../utils/utils';
 
 const styles = (theme) => ({
   root: {
@@ -51,7 +51,7 @@ class DepartmentCapstones extends Component {
       if (Object.prototype.hasOwnProperty.call(departmentCapstones, index)) {
         const capstone = departmentCapstones[index];
 
-        const endDate = this.convertStrapiDate(capstone.endDate);
+        const endDate = convertStrapiDate(capstone.endDate);
         if (current === 'True' && endDate >= today) {
           datedCapstones.push(capstone);
         }
@@ -61,12 +61,6 @@ class DepartmentCapstones extends Component {
       }
     }
     return datedCapstones;
-  }
-
-  convertStrapiDate = (date) => {
-    const d = date.split('-');
-    const convertedDate = new Date(d[0], d[1]-1, d[2]);
-    return convertedDate;
   }
 
   handleTileClick = (title) => {
@@ -91,7 +85,7 @@ class DepartmentCapstones extends Component {
                 alt='Capstone' style={{height: '100%', width: '100%'}}
               />
               <GridListTileBar
-                title={result.title}
+                title={result.name}
                 actionIcon={
                   <IconButton
                     className={classes.icon}

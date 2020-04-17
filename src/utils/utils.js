@@ -62,7 +62,7 @@ export const formatQuery = (params) => `?${Object.keys(params)
       return Object.keys(value).map((subk) => (
         `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`)
       ).join('&');
-    } 
+    }
     return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
   }).join('&')}`;
 
@@ -87,3 +87,11 @@ export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPl
 };
 
 export const useQuery = () => new URLSearchParams(useLocation().search);
+
+// Strapi dates are returned as a string in the format of MM/DD/YYYY.
+// This method converts it to a Date object.
+export const convertStrapiDate = (date) => {
+  const d = date.split('-');
+  const convertedDate = new Date(d[0], d[1]-1, d[2]);
+  return convertedDate;
+};
