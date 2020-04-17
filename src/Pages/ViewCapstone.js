@@ -476,7 +476,7 @@ class ViewCapstone extends Component {
                             <DialogContent>
                               <DialogContentText>
                                 To add a new group member, type their username here.
-                                Group members must be registered on the site to be added
+                                Group members must have accounts on the site to be added
                                 to capstones.
                               </DialogContentText>
                               <TextField
