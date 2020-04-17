@@ -150,7 +150,7 @@ class ViewCapstone extends Component {
       photoOpen: false,
       capstone: '',
       team: [],
-      teamPics: []
+      teamPics: [],
     };
   }
 
@@ -168,6 +168,14 @@ class ViewCapstone extends Component {
     await this.getTeamPics();
     this.setState({loading: false, users: users1});
   };
+
+  getDepartmentName = () => {
+    const {capstone} = this.state;
+    if (capstone.departments[0]) {
+      return capstone.departments[0].name;
+    }
+    return 'None';
+  }
 
   getCapstone = async () =>{
     const {match} = this.props;
@@ -328,7 +336,7 @@ class ViewCapstone extends Component {
                         <b>Date Completed:</b> {ViewCapstone.formatDate(capstone.endDate)}
                       </Typography>
                       <Typography variant='subtitle1' style={{marginTop: '2%'}}>
-                        <b>Department: </b> {capstone.department.name}
+                        <b>Department: </b> {this.getDepartmentName()}
                       </Typography>
                       <Typography variant='subtitle1'>
                         <div>

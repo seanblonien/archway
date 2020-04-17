@@ -69,5 +69,5 @@ export default function CapstonesTab(props) {
 }
 
 CapstonesTab.propTypes = {
-  department: PropTypes.objectOf(PropTypes.object).isRequired,
+  department: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
 };
