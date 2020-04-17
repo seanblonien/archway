@@ -45,7 +45,7 @@ class AuthProvider extends Component {
     StorageManager.setItem('token', token);
   };
 
-  handleAuthenticationResponse = (response, useStorage, redirect) => {
+  handleAuthenticationResponse = (response, useStorage) => {
     const {user, jwt: token} = response.data;
     if(useStorage) {
       this.setUserInStorage(user, token);
@@ -55,7 +55,6 @@ class AuthProvider extends Component {
       user,
       token,
     });
-    history.push(redirect);
   };
 
   login = async (identifier, password, useStorage = true) => {
@@ -63,7 +62,8 @@ class AuthProvider extends Component {
 
     try {
       const response = await api.login(identifier, password);
-      this.handleAuthenticationResponse(response, useStorage, routes.home.path);
+      this.handleAuthenticationResponse(response, useStorage);
+      history.push(routes.home.path);
       enqueueSnackbar('Login successful', snack.success);
     } catch(error) {
       enqueueSnackbar('Error logging in', snack.error);
@@ -74,12 +74,11 @@ class AuthProvider extends Component {
     const {enqueueSnackbar} = this.props;
     try {
       const response = await api.register(user);
-      this.handleAuthenticationResponse(response, useStorage, routes.home.path);
+      this.handleAuthenticationResponse(response, useStorage);
+      history.push(routes.auth.validateemail.path);
       enqueueSnackbar('Register successful', snack.success);
-      return true;
     } catch(error) {
       enqueueSnackbar('Error registering', snack.error);
-      return false;
     }
   };
 
@@ -97,6 +96,7 @@ class AuthProvider extends Component {
     const {enqueueSnackbar} = this.props;
     try {
       await api.resetPassword(code, password, passwordConfirm);
+      history.push(routes.auth.login.path);
       enqueueSnackbar('The password has been reset', snack.info);
     } catch (error) {
       enqueueSnackbar('Error resetting password', snack.error);

@@ -11,7 +11,6 @@ import AuthContext from '../../Contexts/AuthContext';
 import {passwordMatch, validateEmail, validatePassword, validateUsername} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
 import {verifyEmailInStrapi} from '../../utils/verification';
-import history from '../../utils/Routing/history'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,13 +64,10 @@ const Register = () => {
     setState({...state, [name]: type === 'checkbox' ? checked : value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const user = {'username': identifier, password, 'Fullname': fullName, email};
-    const registered = register(user);
-    if(registered){
-      history.push(routes.auth.validateemail);
-    }
+    register(user);
   };
 
   return (
