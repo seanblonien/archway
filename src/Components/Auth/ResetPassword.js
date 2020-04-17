@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ResetPassword = () => {
   const {resetPassword} = useContext(AuthContext);
-  const [state, setState] = useState({password: '', passwordConfirmation: '', code: useQuery().get('code')});
+  const [state, setState] = useState({password: '', passwordConfirmation: '', code: useQuery().get('code') || ''});
   const classes = useStyles();
   const {code, password, passwordConfirmation} = state;
 
@@ -67,7 +67,12 @@ const ResetPassword = () => {
         </Avatar>
         <Typography component='h1' variant='h5'>
           Reset Password
-        </Typography>
+        </Typography><br/>
+        <Box maxWidth='300px'>
+          <Typography align='justify' variant='body2'>
+            Click the password reset link in the email, or enter the code manually here.
+          </Typography>
+        </Box>
         <ValidatorForm className={classes.form} onSubmit={handleSubmit}>
           <Grid container direction='column' spacing={1}>
             <Grid item>

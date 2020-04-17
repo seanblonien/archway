@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Register = () => {
-  const {register} = useContext(AuthContext);
+const SignUp = () => {
+  const {signUp} = useContext(AuthContext);
   const [state, setState] = useState({identifier: '', password: '', confirmPassword: '', fullName: '', email: '', remember: true, passwordInvalid: ''});
   const classes = useStyles();
   const {identifier,
@@ -64,10 +64,10 @@ const Register = () => {
     setState({...state, [name]: type === 'checkbox' ? checked : value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const user = {'username': identifier, password, 'Fullname': fullName, email};
-    register(user);
+    await signUp(user);
   };
 
   return (
@@ -77,8 +77,16 @@ const Register = () => {
           <PersonIcon/>
         </Avatar>
         <Typography component='h1' variant='h5'>
-          Register as a Sponsor
+          Sign Up as a <Link component={RouterLink} to={routes.sponsors.path}>Sponsor</Link>
         </Typography>
+        <br/>
+        <Box maxWidth='300px'>
+          <Typography align='justify' variant='body2'>
+            If you are a student, professor, or faculty member affiliated with the
+            university, please contact the site administrator to get an account
+            if you do not already have one.
+          </Typography>
+        </Box>
         <ValidatorForm className={classes.form} onSubmit={handleSubmit}>
           <Grid container direction='column' spacing={1}>
             <Grid item>
@@ -151,7 +159,7 @@ const Register = () => {
                 color='primary'
                 className={classes.submit}
               >
-                Register
+                Sign Up
               </Button>
 
             </Grid>
@@ -165,4 +173,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SignUp;

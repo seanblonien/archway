@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -45,7 +46,7 @@ class AuthProvider extends Component {
     StorageManager.setItem('token', token);
   };
 
-  handleAuthenticationResponse = (response, useStorage, redirect) => {
+  handleAuthenticationResponse = (response, useStorage) => {
     const {user, jwt: token} = response.data;
     if(useStorage) {
       this.setUserInStorage(user, token);
@@ -55,7 +56,6 @@ class AuthProvider extends Component {
       user,
       token,
     });
-    history.push(redirect);
   };
 
   login = async (identifier, password, useStorage = true) => {
@@ -63,38 +63,47 @@ class AuthProvider extends Component {
 
     try {
       const response = await api.login(identifier, password);
-      this.handleAuthenticationResponse(response, useStorage, routes.home.path);
+      this.handleAuthenticationResponse(response, useStorage);
+      history.push(routes.home.path);
       enqueueSnackbar('Login successful', snack.success);
     } catch(error) {
-      enqueueSnackbar('Error logging in', snack.error);
+      // Handle special error case if email is not confirmed
+      if(error.status !== 400){
+        enqueueSnackbar('Error logging in', snack.error);
+      } else {
+        const {message} = error.data.data[0].messages[0];
+        enqueueSnackbar(message, snack.error);
+      }
     }
   };
 
-  register = async (user, useStorage = true) => {
+  signUp = async (user, useStorage = true) => {
     const {enqueueSnackbar} = this.props;
     try {
-      const response = await api.register(user);
-      this.handleAuthenticationResponse(response, useStorage, routes.home.path);
-      enqueueSnackbar('Register successful', snack.success);
+      const response = await api.signUp(user);
+      this.handleAuthenticationResponse(response, useStorage);
+      history.push(routes.auth.validateemail.path);
+      enqueueSnackbar('Sign up successful', snack.success);
     } catch(error) {
-      enqueueSnackbar('Error registering', snack.error);
+      enqueueSnackbar('Error signing up', snack.error);
     }
   };
 
   forgotPassword = async (email) => {
     const {enqueueSnackbar} = this.props;
+    // Tell user email was sent *regardless* if an account with the email exists
+    enqueueSnackbar('Reset password email sent', snack.info);
+    history.push(routes.auth.resetpassword.path);
     try {
       await api.forgotPassword(email);
-      enqueueSnackbar('Reset password email sent', snack.info);
-    } catch (error) {
-      enqueueSnackbar('Error sending reset password email', snack.error);
-    }
+    } catch (error) {}
   };
 
   resetPassword = async (code, password, passwordConfirm) => {
     const {enqueueSnackbar} = this.props;
     try {
       await api.resetPassword(code, password, passwordConfirm);
+      history.push(routes.auth.login.path);
       enqueueSnackbar('The password has been reset', snack.info);
     } catch (error) {
       enqueueSnackbar('Error resetting password', snack.error);
@@ -104,7 +113,7 @@ class AuthProvider extends Component {
   render() {
     const {children} = this.props;
     const {isAuthenticated, user, token} = this.state;
-    const {logout, login, register, forgotPassword, resetPassword} = this;
+    const {logout, login, signUp, forgotPassword, resetPassword} = this;
 
     return (
       <AuthContext.Provider
@@ -114,7 +123,7 @@ class AuthProvider extends Component {
           token,
           logout,
           login,
-          register,
+          signUp,
           forgotPassword,
           resetPassword
         }}

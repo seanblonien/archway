@@ -16,9 +16,11 @@ import ViewASponsor from '../../Pages/ViewASponsor';
 import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
-import Register from '../../Components/Auth/Register';
+import SignUp from '../../Components/Auth/SignUp';
 import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import ResetPassword from '../../Components/Auth/ResetPassword';
+import ValidateEmail from '../../Components/Auth/ValidateEmail';
+
 
 const routes = {
   dashboard: {
@@ -48,26 +50,31 @@ const routes = {
     name: 'auth',
     path: '/auth',
     component: AuthPage,
-    routeNames: ['login', 'register', 'forgotpassword', 'resetpassword'],
+    routeNames: ['login', 'signup', 'forgotpassword', 'resetpassword', 'validateemail'],
     login: {
       name: 'Login',
       path: '/auth/login',
       component: Login
     },
-    register: {
-      name: 'Register',
-      path: '/auth/register',
-      component: Register
+    signup: {
+      name: 'Sign Up',
+      path: '/auth/signup',
+      component: SignUp
     },
     forgotpassword: {
       name: 'Forgot Password',
-      path: '/auth/forgotPassword',
+      path: '/auth/forgot-password',
       component: ForgotPassword
     },
     resetpassword: {
       name: 'Reset Password',
-      path: '/auth/resetPassword',
+      path: '/auth/reset-password',
       component: ResetPassword
+    },
+    validateemail: {
+      name: 'Validate Email',
+      path: '/auth/validate-email',
+      component: ValidateEmail
     },
   },
   searchredirect: {

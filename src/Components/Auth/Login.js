@@ -120,8 +120,8 @@ const Login = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link component={RouterLink} to={routes.auth.register.path}>
-                    Don&apos;t have an account? Sign Up
+                  <Link component={RouterLink} to={routes.auth.signup.path}>
+                    Looking to be a Sponsor? Sign Up
                   </Link>
                 </Grid>
               </Grid>

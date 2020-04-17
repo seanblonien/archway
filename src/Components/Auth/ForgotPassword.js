@@ -10,8 +10,6 @@ import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
 import {validateEmail} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
-import {verifyEmailInStrapi} from '../../utils/verification';
-import history from '../../utils/Routing/history';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ForgotPassword = () => {
   const {forgotPassword} = useContext(AuthContext);
-  const [state, setState] = useState({});
+  const [state, setState] = useState({email: ''});
   const classes = useStyles();
   const {email} = state;
 
@@ -55,15 +53,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await verifyEmailInStrapi(email);
-    if (response) {
-      try {
-        await forgotPassword(email);
-        history.push(routes.auth.resetpassword.path);
-      } catch (error) {
-        
-      }
-    }
+    await forgotPassword(email);
   };
 
   return (
