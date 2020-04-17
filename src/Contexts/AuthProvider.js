@@ -67,7 +67,13 @@ class AuthProvider extends Component {
       history.push(routes.home.path);
       enqueueSnackbar('Login successful', snack.success);
     } catch(error) {
-      enqueueSnackbar('Error logging in', snack.error);
+      // Handle special error case if email is not confirmed
+      if(error.status !== 400){
+        enqueueSnackbar('Error logging in', snack.error);
+      } else {
+        const {message} = error.data.data[0].messages[0];
+        enqueueSnackbar(message, snack.error);
+      }
     }
   };
 
