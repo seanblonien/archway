@@ -68,8 +68,8 @@ const ResetPassword = () => {
         <Typography component='h1' variant='h5'>
           Reset Password
         </Typography><br/>
-        <Box maxWidth='300px' disableGutters>
-          <Typography variant='body2'>
+        <Box maxWidth='300px'>
+          <Typography align='justify' variant='body2'>
             Click the password reset link in the email, or enter the code manually here.
           </Typography>
         </Box>

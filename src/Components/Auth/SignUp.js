@@ -80,8 +80,8 @@ const SignUp = () => {
           Sign Up as a <Link component={RouterLink} to={routes.sponsors.path}>Sponsor</Link>
         </Typography>
         <br/>
-        <Box maxWidth='300px' disableGutters>
-          <Typography variant='body2'>
+        <Box maxWidth='300px'>
+          <Typography align='justify' variant='body2'>
             If you are a student, professor, or faculty member affiliated with the
             university, please contact the site administrator to get an account
             if you do not already have one.
