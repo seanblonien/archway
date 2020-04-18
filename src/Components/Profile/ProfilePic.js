@@ -141,7 +141,7 @@ class ProfilePic extends Component {
 ProfilePic.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}),
+    picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
   }).isRequired,
   username: PropTypes.string.isRequired,
   picture: PropTypes.func.isRequired,

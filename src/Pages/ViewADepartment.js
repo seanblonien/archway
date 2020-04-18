@@ -1,50 +1,60 @@
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import {withStyles} from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import {withStyles, withTheme} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import {Parallax} from 'react-parallax';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
+import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
+import ComputerRoundedIcon from '@material-ui/icons/ComputerRounded';
 import LoadingCircle from '../Components/LoadingCircle';
+import CapstonesTab from '../Components/CapstonesTab';
+import Professors from '../Components/Professors';
 import api from '../Services/api';
 import DepartmentForm from '../Components/DepartmentForm';
 import {permissions} from '../constants';
 import Can from '../Components/Can';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import {strapiURL} from '../constants';
 
-const styles = {
-  card: {
-    raised: true,
+const styles = (theme) => ({
+  cover: {
+    height: '500px',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    color: 'white',
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+  link: {
+    color: 'white',
+    '&:hover': {
+      color: theme.palette.primary.light,
+    },
+    '&:visited': {
+      color: theme.palette.secondary.main,
+    }
   },
-  title: {
-    fontSize: 18,
+  contact: {
+    display: 'flex',
+    alignItems: 'center',
   },
-  pos: {
-    marginBottom: 100,
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
-  },
-};
+  capstones: {
+    padding: '3%',
+  }
+});
 
 class ViewADepartment extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      departments: []
+      department: {},
     };
   }
 
   async componentDidMount() {
-    const departments = await api.departments.find();
-    this.setState({loading: false, departments});
+    const {match} = this.props;
+    const department = await api.departments.findOne(match.params.id);
+    this.setState({loading: false, department});
   }
 
   updateData = async () => {
@@ -53,51 +63,63 @@ class ViewADepartment extends Component {
   };
 
   render() {
-    const {loading, departments} = this.state;
-    const {match} = this.props;
+    const {classes} = this.props;
+    const {loading, department} = this.state;
 
-    if (!loading) {
-      const department = departments.find(d => d.id === match.params.id);
-
-      return (
-        <Box className='ViewASponsor' mx={5}>
-          <Typography variant='h4' align='center'>
-            {department.name}
-          </Typography>
-          <Can perform={permissions.application.departments.update}>
-            <DepartmentForm
-              title='Edit Department'
-              department={department}
-              type='edit'
-              update={this.updateData}
-            />
-          </Can>
-          <Typography>
-            {`Currently involved in ${department.capstones.length} capstones`}
-          </Typography>
-          <Typography>
-            <MediaMarkdown>{department.description}</MediaMarkdown>
-          </Typography>
-          <Typography  variant='h4'align='center'>
-            All Capstones by {department.name}
-          </Typography>
-          <Button
-            component={Link}
-            to={`/ViewCapstone/${department.capstones.id}`}
-          >
-            <Typography variant='h5'>
-              {department.capstones.title}
-            </Typography>
-          </Button>
-        </Box>
-      );
-    }
-
-    return <LoadingCircle/>;
-
+    return loading ?
+      <LoadingCircle/> :
+      <div>
+        <Parallax bgImage={strapiURL + department.cover.url} strength={500}>
+          <Grid className={classes.cover} container direction='row' justify='center' alignItems='center'>
+            <Grid item container direction='column' alignItems='center'>
+              <Can perform={permissions.application.departments.update}>
+                <DepartmentForm
+                  title='Edit Department'
+                  department={department}
+                  type='edit'
+                  update={this.updateData}
+                />
+              </Can>
+              <Grid item>
+                <MediaMarkdown item>{`###${department.name}`}</MediaMarkdown>
+              </Grid>
+              <br/>
+              <Grid item md={5}>
+                <MediaMarkdown item>{department.description}</MediaMarkdown>
+              </Grid>
+              <br/>
+              <Grid item container md={6} direction='row' justify='space-evenly'>
+                {department.phone && <Grid item className={classes.contact}>
+                  <PhoneRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
+                  <Link className={classes.link} href={`tel:${department.phone}`}>{department.phone}</Link>
+                </Grid>}
+                {department.email && <Grid item className={classes.contact}>
+                  <MailOutlineRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
+                  <Link className={classes.link} href={`mailto:${department.email}`}>{department.email}</Link>
+                </Grid>}
+                {department.url && <Grid item className={classes.contact}>
+                  <ComputerRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
+                  <Link className={classes.link} href={department.url}>View Department Page</Link>
+                </Grid>}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Parallax>
+        <Grid className={classes.capstones} container direction='column'>
+          <MediaMarkdown>{`####${department.name} Capstones`}</MediaMarkdown>
+          <br/>
+          <CapstonesTab department={department}/>
+          <br/><br/>
+          <MediaMarkdown>#### Professors</MediaMarkdown>
+          <br/>
+          <Professors department={department}/>
+        </Grid>
+      </div>
+    ;
   }
 }
 export default compose(
   withStyles(styles),
   withWidth(),
+  withTheme
 )(ViewADepartment);

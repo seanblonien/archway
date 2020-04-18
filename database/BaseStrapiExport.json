@@ -55,13 +55,6 @@
           "targetAttribute": "capstones",
           "unique": false
         },
-        "department": {
-          "nature": "oneToMany",
-          "target": "application::departments.departments",
-          "dominant": false,
-          "targetAttribute": "capstones",
-          "unique": false
-        },
         "section": {
           "nature": "manyToOne",
           "target": "application::sections.sections",
@@ -73,6 +66,13 @@
           "type": "media",
           "multiple": false,
           "required": false
+        },
+        "departments": {
+          "nature": "manyToMany",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "capstones",
+          "unique": false
         }
       }
     },
@@ -130,10 +130,10 @@
           "required": true
         },
         "capstones": {
-          "nature": "manyToOne",
+          "nature": "manyToMany",
           "target": "application::capstones.capstones",
-          "dominant": false,
-          "targetAttribute": "department",
+          "dominant": true,
+          "targetAttribute": "departments",
           "unique": false
         },
         "url": {
@@ -177,6 +177,11 @@
         },
         "preview": {
           "type": "string"
+        },
+        "cover": {
+          "type": "media",
+          "multiple": false,
+          "required": false
         }
       }
     },
