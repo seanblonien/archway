@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import _ from 'lodash';
+import {useLocation} from 'react-router-dom';
 import defaultUserImg from '../Static/defaultUser.png';
 import {strapiURL} from '../constants';
 import defaultCapstoneImg from '../Static/defaultCapstone.svg';
@@ -56,8 +57,15 @@ export const transformUserFields = async (user) => {
  * @returns {string}
  */
 export const formatQuery = (params) => `?${Object.keys(params)
-  .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-  .join('&')}`;
+  .map(k => {
+    const value = params[k];
+    if(typeof value === 'object') {
+      return Object.keys(value).map((subk) => (
+        `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`)
+      ).join('&');
+    }
+    return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
+  }).join('&')}`;
 
 /**
  * Destructure the query string
@@ -84,4 +92,14 @@ export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPl
   entryUpload.append('refId', entryID);
   entryUpload.append('field', entryField);
   return entryUpload;
+};
+
+export const useQuery = () => new URLSearchParams(useLocation().search);
+
+// Strapi dates are returned as a string in the format of MM/DD/YYYY.
+// This method converts it to a Date object.
+export const convertStrapiDate = (date) => {
+  const d = date.split('-');
+  const convertedDate = new Date(d[0], d[1]-1, d[2]);
+  return convertedDate;
 };
