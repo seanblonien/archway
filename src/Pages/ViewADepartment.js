@@ -13,10 +13,9 @@ import CapstonesTab from '../Components/CapstonesTab';
 import Professors from '../Components/Professors';
 import api from '../Services/api';
 import DepartmentForm from '../Components/DepartmentForm';
-import {permissions} from '../constants';
 import Can from '../Components/Can';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
-import {strapiURL} from '../constants';
+import {strapiURL, permissions} from '../constants';
 import gStyle from '../utils/styles.module.css';
 
 const styles = (theme) => ({

@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import compose from 'recompose/compose';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import {withSnackbar} from 'notistack';
+import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import api from '../Services/api';
 import MarkdownEditor from './Markdown/MarkdownEditor';
 import PhotoUpload from './PhotoUpload';
@@ -18,8 +18,6 @@ import {formatEntryUpload, imageURL} from '../utils/utils';
 import {snack} from '../utils/Snackbar';
 import AuthContext from '../Contexts/AuthContext';
 import PeopleSelect from './PeopleSelect';
-import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
-import {validateEmail} from "../utils/validation";
 
 class DepartmentForm extends React.Component {
 
@@ -117,7 +115,6 @@ class DepartmentForm extends React.Component {
 
 
   handleChange = (event) => {
-    debugger;
     const {department} = this.state;
     const {value, name} = event.target;
 
@@ -130,26 +127,27 @@ class DepartmentForm extends React.Component {
   handleMarkdownChange = (name, value) => {
     const {department} = this.state;
     this.setState({department: {
-        ...department,
-        [name]: value}
+      ...department,
+      [name]: value}
     });
   };
 
   handleFileChange = (name, value) => {
     const {department} = this.state;
     this.setState({department: {
-        ...department,
-        [name]: value}
-    });  };
+      ...department,
+      [name]: value}
+    });
+  };
 
   handleProfessorSelect = (user) => {
-    const {professors} = this.state.department;
+    const {professors} = this.state;
     professors.push(user);
     this.setState({professors});
   };
 
   handleProfessorRemove = (user) => {
-    const {professors} = this.state.department;
+    const {professors} = this.state;
 
     const index = professors.indexOf(user);
     if (index !== -1) professors.splice(index, 1);
@@ -160,19 +158,18 @@ class DepartmentForm extends React.Component {
   initFields() {
     const {department} = this.props;
 
-    this.setState({ department: {
-        ...department,
-        name: department.name,
-        email: department.email,
-        description: department.description,
-        url: department.url,
-        phone: department.phone,
-        preview: department.preview,
-        id: department.id,
-        thumbnail: department.thumbnail,
-        professors: department.professors
-      }
-    });
+    this.setState({department: {
+      ...department,
+      name: department.name,
+      email: department.email,
+      description: department.description,
+      url: department.url,
+      phone: department.phone,
+      preview: department.preview,
+      id: department.id,
+      thumbnail: department.thumbnail,
+      professors: department.professors
+    }});
   }
 
   render() {
@@ -192,88 +189,83 @@ class DepartmentForm extends React.Component {
         >
           <DialogTitle id='form-dialog-title'>{title}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Change any field or upload new photos. Click Save all changes have been made
-            </DialogContentText>
             <ValidatorForm
-              ref="form"
               onSubmit={this.handleSubmit}
-              onError={errors => console.log(errors)}
             >
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  label='Department Name'
-                  name='name'
-                  value={name}
-                  fullWidth
-                  onChange={this.handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label='Department URL'
-                  name='url'
-                  value={url}
-                  fullWidth
-                  onChange={this.handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  label='Phone Number'
-                  name='phone'
-                  value={phone}
-                  fullWidth
-                  onChange={this.handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextValidator
-                  label='Contact Email'
-                  name='email'
-                  value={email}
-                  fullWidth
-                  onChange={this.handleChange}
-                  validators={['required', 'isEmail']}
-                  errorMessages={['An email is required.', 'The email is invalid.']}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  multiline
-                  rows='2'
-                  fullWidth
-                  name='preview'
-                  label='Preview'
-                  value={preview}
-                  onChange={this.handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant='body1'>Enter department description and other information below</Typography>
-                <MarkdownEditor
-                  uniqueName='description'
-                  setValue={(value) => this.handleMarkdownChange('description', value)}
-                  value={description}
-                />
-              </Grid>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <TextField
+                    label='Department Name'
+                    name='name'
+                    value={name}
+                    fullWidth
+                    onChange={this.handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label='Department URL'
+                    name='url'
+                    value={url}
+                    fullWidth
+                    onChange={this.handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label='Phone Number'
+                    name='phone'
+                    value={phone}
+                    fullWidth
+                    onChange={this.handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextValidator
+                    label='Contact Email'
+                    name='email'
+                    value={email}
+                    fullWidth
+                    onChange={this.handleChange}
+                    validators={['required', 'isEmail']}
+                    errorMessages={['An email is required.', 'The email is invalid.']}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    multiline
+                    rows='2'
+                    fullWidth
+                    name='preview'
+                    label='Preview'
+                    value={preview}
+                    onChange={this.handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='body1'>Enter department description and other information below</Typography>
+                  <MarkdownEditor
+                    uniqueName='description'
+                    setValue={(value) => this.handleMarkdownChange('description', value)}
+                    value={description}
+                  />
+                </Grid>
 
-              <PeopleSelect
-                title='Select Department Professors and Faculty'
-                allUsers={allUsers}
-                selectedPeople={professors}
-                handleConfirmUser={this.handleProfessorSelect}
-                handleRemove={this.handleProfessorRemove}
-              />
-              <PhotoUpload
-                fieldName='selectedThumbnail'
-                title='Choose Thumbnail'
-                id={id}
-                onChange={this.handleFileChange}
-                photo={imageURL.sponsor(thumbnail)}
-              />
-            </Grid>
+                <PeopleSelect
+                  title='Select Department Professors and Faculty'
+                  allUsers={allUsers}
+                  selectedPeople={professors}
+                  handleConfirmUser={this.handleProfessorSelect}
+                  handleRemove={this.handleProfessorRemove}
+                />
+                <PhotoUpload
+                  fieldName='selectedThumbnail'
+                  title='Choose Thumbnail'
+                  id={id}
+                  onChange={this.handleFileChange}
+                  photo={imageURL.sponsor(thumbnail)}
+                />
+              </Grid>
             </ValidatorForm>
           </DialogContent>
           <DialogActions>
@@ -298,10 +290,16 @@ class DepartmentForm extends React.Component {
 DepartmentForm.propTypes = {
   type: PropTypes.string.isRequired,
   department: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
     description: PropTypes.string,
-    preview: PropTypes.string.isRequired}),
+    preview: PropTypes.string.isRequired,
+    thumbnail: PropTypes.isRequired,
+    professors: PropTypes.isRequired
+  }).isRequired,
   title: PropTypes.string.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired

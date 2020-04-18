@@ -99,7 +99,7 @@ const PeopleSelect = ( props ) => {
 PeopleSelect.propTypes = {
   title: PropTypes.string.isRequired,
   allUsers: PropTypes.arrayOf(PropTypes.shape({
-      Fullname: PropTypes.string.isRequired})).isRequired,
+    Fullname: PropTypes.string.isRequired})).isRequired,
   selectedPeople: PropTypes.arrayOf(PropTypes.shape({
     Fullname: PropTypes.string.isRequired})).isRequired,
   handleConfirmUser: PropTypes.func.isRequired,

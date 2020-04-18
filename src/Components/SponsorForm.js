@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import compose from 'recompose/compose';
 import Grid from '@material-ui/core/Grid';
@@ -169,9 +168,6 @@ class SponsorForm extends React.Component {
         >
           <DialogTitle id='form-dialog-title'>{title}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Change any field or upload new photos. Click Save all changes have been made
-            </DialogContentText>
             <Grid container spacing={3}>
               <Grid item xs={6}>
                 <TextField
