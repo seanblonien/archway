@@ -1,6 +1,6 @@
 import DateFnsUtils from '@date-io/date-fns';
 import EventNoteIcon from '@material-ui/icons/EventNote';
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {DesktopDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
@@ -9,7 +9,7 @@ const AdvancedKeyboardExample = ({label}) => {
 
   return (
     <MuiPickersUtilsProvider  utils={DateFnsUtils}>
-      <KeyboardDatePicker
+      <DesktopDatePicker
         autoOk
         variant='outlined'
         label={label}

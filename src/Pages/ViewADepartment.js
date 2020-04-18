@@ -17,6 +17,7 @@ import {permissions} from '../constants';
 import Can from '../Components/Can';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import {strapiURL} from '../constants';
+import gStyle from '../utils/styles.module.css';
 
 const styles = (theme) => ({
   cover: {
@@ -58,8 +59,9 @@ class ViewADepartment extends Component {
   }
 
   updateData = async () => {
-    const departments = await api.departments.find();
-    this.setState({departments});
+    const {match} = this.props;
+    const department = await api.departments.findOne(match.params.id);
+    this.setState({loading: false, department});
   };
 
   render() {
@@ -72,14 +74,6 @@ class ViewADepartment extends Component {
         <Parallax bgImage={strapiURL + department.cover.url} strength={500}>
           <Grid className={classes.cover} container direction='row' justify='center' alignItems='center'>
             <Grid item container direction='column' alignItems='center'>
-              <Can perform={permissions.application.departments.update}>
-                <DepartmentForm
-                  title='Edit Department'
-                  department={department}
-                  type='edit'
-                  update={this.updateData}
-                />
-              </Can>
               <Grid item>
                 <MediaMarkdown item>{`###${department.name}`}</MediaMarkdown>
               </Grid>
@@ -101,6 +95,16 @@ class ViewADepartment extends Component {
                   <ComputerRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
                   <Link className={classes.link} href={department.url}>View Department Page</Link>
                 </Grid>}
+                <div className={gStyle.gridListContainer}>
+                  <Can perform={permissions.application.departments.update}>
+                    <DepartmentForm
+                      title='Edit Department'
+                      department={department}
+                      type='edit'
+                      update={this.updateData}
+                    />
+                  </Can>
+                </div>
               </Grid>
             </Grid>
           </Grid>
