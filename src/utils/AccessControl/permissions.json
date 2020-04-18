@@ -102,8 +102,10 @@
       "count": "upload.upload.count",
       "getsettings": "upload.upload.getsettings",
       "destroy": "upload.upload.destroy",
-      "find": "upload.upload.find",
-      "getenvironments": "upload.upload.getenvironments"
+      "find": "upload.upload.find"
+    },
+    "proxy": {
+      "uploadproxy": "upload.proxy.uploadproxy"
     }
   },
   "application": {

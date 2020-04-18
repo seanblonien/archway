@@ -71,7 +71,7 @@
   "upload.upload.getsettings",
   "upload.upload.destroy",
   "upload.upload.find",
-  "upload.upload.getenvironments",
+  "upload.proxy.uploadproxy",
   "application.capstones.count",
   "application.capstones.create",
   "application.capstones.find",
@@ -246,5 +246,5 @@
   "upload.upload.find",
   "upload.upload.getsettings",
   "upload.upload.destroy",
-  "upload.upload.getenvironments"
+  "upload.proxy.uploadproxy"
 ]
