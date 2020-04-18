@@ -99,11 +99,13 @@
       "updatesettings": "upload.upload.updatesettings",
       "findone": "upload.upload.findone",
       "search": "upload.upload.search",
-      "getenvironments": "upload.upload.getenvironments",
       "count": "upload.upload.count",
       "getsettings": "upload.upload.getsettings",
       "destroy": "upload.upload.destroy",
       "find": "upload.upload.find"
+    },
+    "proxy": {
+      "uploadproxy": "upload.proxy.uploadproxy"
     }
   },
   "application": {
