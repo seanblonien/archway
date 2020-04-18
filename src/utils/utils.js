@@ -56,8 +56,15 @@ export const transformUserFields = async (user) => {
  * @returns {string}
  */
 export const formatQuery = (params) => `?${Object.keys(params)
-  .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-  .join('&')}`;
+  .map(k => {
+    const value = params[k];
+    if(typeof value === 'object') {
+      return Object.keys(value).map((subk) => (
+        `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`)
+      ).join('&');
+    }
+    return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
+  }).join('&')}`;
 
 /**
  * Formats a given file file for uploading to strapi as it relates to an entry.
@@ -80,3 +87,11 @@ export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPl
 };
 
 export const useQuery = () => new URLSearchParams(useLocation().search);
+
+// Strapi dates are returned as a string in the format of MM/DD/YYYY.
+// This method converts it to a Date object.
+export const convertStrapiDate = (date) => {
+  const d = date.split('-');
+  const convertedDate = new Date(d[0], d[1]-1, d[2]);
+  return convertedDate;
+};
