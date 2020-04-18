@@ -179,7 +179,7 @@ class DepartmentForm extends React.Component {
 
     return (
       <div>
-        <Button variant='outlined' color='secondary' onClick={this.handleClickOpen}>
+        <Button variant='contained' color='secondary' onClick={this.handleClickOpen}>
           {title}
         </Button>
         <Dialog

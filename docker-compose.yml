@@ -13,7 +13,7 @@ services:
     # Mounts the local directory to where the database values are stored
     # This is what makes the database persistent
     volumes:
-     - /Users/emilytracey/mnt/mongodb/data:/data/db
+     - /mnt/mongodb/data:/data/db
     # Exposes the host port to the container port for intercommunication
     ports:
       - 27017:27017

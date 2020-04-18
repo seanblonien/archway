@@ -8,7 +8,7 @@ const AdvancedKeyboardExample = ({label}) => {
   const [selectedDate, handleDateChange] = useState(new Date());
 
   return (
-    <MuiPickersUtilsProvider  utils={DateFnsUtils}>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <KeyboardDatePicker
         autoOk
         variant='outlined'
