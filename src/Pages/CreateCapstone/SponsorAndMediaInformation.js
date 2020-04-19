@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -36,6 +36,19 @@ const SponsorAndMediaInformation = (props) => {
     * handleAcceptImageCoverPhoto
     * handleAcceptImageMedia
     */
+
+  const [clearThumbnail, setClearThumbnail] = useState(false);
+  const [clearCoverPhoto, setClearCoverPhoto] = useState(false);
+  const [clearMedia, setClearMedia] = useState(false);
+
+  useEffect(() => {
+    if (props.removeImg) {
+      console.log('remove all images');
+      setClearCoverPhoto(true);
+      setClearThumbnail(true);
+      setClearMedia(true);
+    }
+  });
 
   const displaySponsor = (sponsor, canDelete=true) => {
     if (!sponsor.logo) {
@@ -134,8 +147,8 @@ const SponsorAndMediaInformation = (props) => {
           <CardContent>
             <PageTitleTypography text='Upload a Thumbnail' align='center' size='h5'/>
             <DragAndDropZone
-              removeImg={props.removeImg}
-              setRemoveImg={props.setRemoveImg}
+              removeImg={clearThumbnail}
+              setRemoveImg={setClearThumbnail}
               id="file-id"
               acceptImage={props.handleAcceptImageThumbnail.bind(this)}
               prompt='Drop or click to upload a thumbnail'
@@ -148,6 +161,8 @@ const SponsorAndMediaInformation = (props) => {
         <Card className={props.classes.card}>
           <CardContent>
             <DragAndDropMultipleZone
+              removeImg={clearCoverPhoto}
+              setRemoveImg={setClearCoverPhoto}
               acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}
               prompt='Upload Cover Photo'
             />
@@ -160,6 +175,8 @@ const SponsorAndMediaInformation = (props) => {
           <CardContent>
 
             <DragAndDropMultipleZone
+              removeImg={clearMedia}
+              setRemoveImg={setClearMedia}
               acceptImage={props.handleAcceptImageMedia.bind(this)}
               prompt='Upload Media Photo'
             />

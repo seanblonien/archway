@@ -52,6 +52,9 @@ class CreateCapstone extends Component {
       isFeatured: false,
       startDate: new Date(),
       endDate: new Date(),
+      oldThumbnail: [],
+      oldCoverPhoto: [],
+      oldMedia: [],
       coverPhoto: [],
       thumbnail: [],
       media: [],
@@ -71,7 +74,7 @@ class CreateCapstone extends Component {
       dialogOpen: false,
       courseName: '',
       capstoneId: '',
-      removeImg:false
+      removeImg: false
     };
   }
 
@@ -81,22 +84,17 @@ class CreateCapstone extends Component {
     const departmentList = await api.departments.find();
     const sponsorList = await api.sponsors.find();
     // sets the various states
-    console.log(departmentList);
     this.setState({capstones, sponsorList, departmentList});
 
     const response = await api.users.find();
-    this.setState({Users: response, AllUsers: response}, () => {
-      console.log(this.state.Users);
-    });
+    this.setState({Users: response, AllUsers: response});
   }
 
   handleChangeDepartment = (event) => {
-    console.log(event.target.value);
     this.setState({Department: event.target.value});
   };
 
   handleSelectedProfessor = (event, values) => {
-    console.log(values);
     this.setState({selectedProfessor: values});
   };
 
@@ -114,7 +112,7 @@ class CreateCapstone extends Component {
 
   handleConfirmSponsor = (selectedSponsor) => {
     const {checkedSponsors} = this.state;
-    if(selectedSponsor !== '') {
+    if (selectedSponsor !== '') {
       if (!checkedSponsors.includes(selectedSponsor)) {
         const joinedSponsor = checkedSponsors.concat(selectedSponsor);
         this.setState({checkedSponsors: joinedSponsor});
@@ -123,12 +121,11 @@ class CreateCapstone extends Component {
   };
 
   handleRemoveSponsor = (selectedSponsorId) => {
-    console.log(selectedSponsorId);
     const copyOfSponsors = _.cloneDeep(this.state.checkedSponsors);
-    this.setState({checkedSponsors: copyOfSponsors.filter(t => {
+    this.setState({
+      checkedSponsors: copyOfSponsors.filter(t => {
         return selectedSponsorId !== t.id;
-      })}, () => {
-      console.log(this.state.checkedSponsors);
+      })
     });
   };
 
@@ -147,13 +144,14 @@ class CreateCapstone extends Component {
 
   handleRemoveTeammate = (selectedUserId) => {
     const copyOfParticipants = _.cloneDeep(this.state.Participants);
-    this.setState({Participants: copyOfParticipants.filter(t => {
+    this.setState({
+      Participants: copyOfParticipants.filter(t => {
         return selectedUserId !== t.id;
-      })}, () => {
+      })
+    }, () => {
       console.log(this.state.Participants);
     });
   };
-
 
 
   handleStartDate = (startDate) => {
@@ -242,8 +240,7 @@ class CreateCapstone extends Component {
       upload_content.courseName = courseName;
     }
     if (Department !== '') {
-      console.log(Department);
-      upload_content.department = [Department.id, ];
+      upload_content.department = [Department.id,];
     }
     if (description !== '') {
       upload_content.description = description;
@@ -283,17 +280,18 @@ class CreateCapstone extends Component {
       selectedTA: '',
       courseName: '',
       capstoneId: '',
-      removeImg: true
+      removeImg: true,
+      oldThumbnail: [],
+      oldCoverPhoto: [],
+      oldMedia: []
     });
-    this.forceUpdate();
-    // window.location.reload(false);
   };
 
   handleSubmit = async () => {
     console.log('???');
-    // if (!this.isFormValidForSubmit()) {
-    //   return;
-    // }
+    if (!this.isFormValidForSubmit()) {
+      return;
+    }
     this.handleUpload();
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('successful submit!', snack.success);
@@ -306,7 +304,7 @@ class CreateCapstone extends Component {
     }
     await this.handleUpload(false);
     const {enqueueSnackbar} = this.props;
-    enqueueSnackbar('successful upload!', snack.success);
+    enqueueSnackbar('successful saved!', snack.success);
   };
 
   uploadImage = async () => {
@@ -346,45 +344,92 @@ class CreateCapstone extends Component {
 
   };
 
-  handleUpload = async (isFinished) => {
+  getUploadAndDelete = (olds, news) => {
+    let oldNames = olds.map(o => true);
+    let newNames = news.map(o => true);
+    const intersect = (a, b) => {
+      let t;
+      if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+      return a.filter(function (e) {
+        return b.indexOf(e) > -1;
+      });
+    };
+    let intersectName = intersect(oldNames, newNames);
+    let needsUpload = newNames.filter(o => !intersectName.includes(o));
+    let needsDelete = oldNames.filter(o => !intersectName.includes(o));
+    return [needsUpload, needsDelete];
+  };
+
+  imageNeededToUpload = () => {
     const {
-      Users,
-      AllUsers,
+      oldThumbnail,
+      oldCoverPhoto,
+      oldMedia,
       thumbnail,
       coverPhoto,
       media
     } = this.state;
+    // not a good code style
+    let thumbnailUpload, coverPhotoUpload, mediaUpload;
+    if (oldThumbnail.length === 0 || oldThumbnail[0].name !== thumbnail[0].name) {
+      thumbnailUpload = thumbnail;
+    }
+    else {
+      thumbnailUpload = 'no'
+    }
+
+    if (oldCoverPhoto.length === 0 ) {
+      coverPhotoUpload = coverPhoto;
+    }
+    else {
+      coverPhotoUpload = this.getUploadAndDelete(oldCoverPhoto, coverPhoto);
+    }
+
+    if (oldMedia.length === 0) {
+      mediaUpload = media;
+    }
+    else {
+      mediaUpload = this.getUploadAndDelete(oldMedia, media);
+    }
+    return {
+      thumbnailUpload,
+      coverPhotoUpload,
+      mediaUpload
+    }
+  };
+
+  // TODO: make every photo different name
+  handleUpload = async (isFinished) => {
+    const {
+      Users,
+      AllUsers,
+      capstoneId
+    } = this.state;
 
     let upload_data = this.extractNonMediaContent();
     upload_data.isFinished = isFinished;
-    const response = await api.capstones.create(upload_data);
-
-    const refId = response.data.id;
-    this.setState({capstoneId: refId});
-    // upload thumbnail
-    if (thumbnail && thumbnail.length > 0) {
-      const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', refId, 'thumbnail');
-      let data = await api.uploads.upload(thumbnailUpload);
+    let response;
+    // no previous capstone id, create
+    if (capstoneId === '') {
+      response = await api.capstones.create(upload_data);
+      // save the returned ID for next editing
+      const refId = response.data.id;
+      this.setState({capstoneId: refId});
+    }
+    // previous capstone id, update
+    else {
+      response = await api.capstones.update(capstoneId, upload_data);
     }
 
-    // upload media
-    if (media && media.length > 0) {
-      const mediaUploads = media.map(file => {
-        const upload = formatEntryUpload(file, 'capstones', refId, 'media');
-        return api.uploads.upload(upload);
-      });
-      const respMedia = Promise.all(mediaUploads);
+    // upload images
+
+    const resultImages = this.imageNeededToUpload();
+
+    if (resultImages.thumbnailUpload !== 'no') {
+      // upload thumbnail
     }
 
-
-    // upload media
-    if (coverPhoto && coverPhoto.length > 0) {
-      const coverPhotoUploads = coverPhoto.map(file => {
-        const upload = formatEntryUpload(file, 'capstones', refId, 'coverPhoto');
-        return api.uploads.upload(upload);
-      });
-      const respCover = Promise.all(coverPhotoUploads);
-    }
+    api.uploads.delete()
 
 
     // Use Users and AllUsers eventually

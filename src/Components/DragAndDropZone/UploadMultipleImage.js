@@ -52,6 +52,14 @@ export default function MultipleImageUploader(props) {
     props.acceptImage(files);
   }, [files]);
 
+  useEffect(() => {
+    if (props.removeImg && files.length > 0) {
+      console.log('removing');
+      files.length = 0;
+      props.setRemoveImg(false);
+    }
+  });
+
   const handleImg = (event) => {
     setFiles(files.concat(Array.from(event.target.files)));
   };
