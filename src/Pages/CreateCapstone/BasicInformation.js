@@ -66,10 +66,10 @@ const BasicInformation = (props) => {
       <Card className={props.classes.card}>
         <CardContent>
           <PageTitleTypography text='Create Capstone' align='left' size='h4'/>
-          <Grid container justify='left' spacing={3}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               {/* Form for capstone name */}
-              <Grid container justify='left' spacing={3} direction='row'>
+              <Grid container spacing={3} direction='row'>
                 <Grid item xs={9}>
 
                   <Tooltip title='Name of Capstone' arrow>
@@ -174,7 +174,9 @@ const BasicInformation = (props) => {
                       <em>None</em>
                     </MenuItem>
                     {props.departmentList.map(dept => (
-                      <MenuItem value={dept}>{dept.name}</MenuItem>
+                      <MenuItem
+                        key={dept.id}
+                        value={dept}>{dept.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>

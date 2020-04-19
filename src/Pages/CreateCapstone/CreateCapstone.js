@@ -80,6 +80,7 @@ class CreateCapstone extends Component {
 
   async componentDidMount() {
     // pull data from strapi/backend
+    //TODO: do we need this?
     const capstones = await api.capstones.find();
     const departmentList = await api.departments.find();
     const sponsorList = await api.sponsors.find();
@@ -88,6 +89,13 @@ class CreateCapstone extends Component {
 
     const response = await api.users.find();
     this.setState({Users: response, AllUsers: response});
+
+    // load the capstone to edit if exist
+    if (this.props.editId) {
+      const editCapstone = await api.capstones.findOne(this.props.editId);
+      console.log(editCapstone);
+    }
+
   }
 
   handleChangeDepartment = (event) => {
@@ -289,10 +297,10 @@ class CreateCapstone extends Component {
 
   handleSubmit = async () => {
     console.log('???');
-    if (!this.isFormValidForSubmit()) {
-      return;
-    }
-    this.handleUpload();
+    // if (!this.isFormValidForSubmit()) {
+    //   return;
+    // }
+    await this.handleUpload(true);
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('successful submit!', snack.success);
     await this.clearCurrentCapstone();
@@ -344,22 +352,6 @@ class CreateCapstone extends Component {
 
   };
 
-  getUploadAndDelete = (olds, news) => {
-    let oldNames = olds.map(o => true);
-    let newNames = news.map(o => true);
-    const intersect = (a, b) => {
-      let t;
-      if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
-      return a.filter(function (e) {
-        return b.indexOf(e) > -1;
-      });
-    };
-    let intersectName = intersect(oldNames, newNames);
-    let needsUpload = newNames.filter(o => !intersectName.includes(o));
-    let needsDelete = oldNames.filter(o => !intersectName.includes(o));
-    return [needsUpload, needsDelete];
-  };
-
   imageNeededToUpload = () => {
     const {
       oldThumbnail,
@@ -377,20 +369,12 @@ class CreateCapstone extends Component {
     else {
       thumbnailUpload = 'no'
     }
+    // old: 1 2 3
+    // new 2 3 4
+    let oldCoverPhotoNames = oldCoverPhoto.map(o => o.name);
 
-    if (oldCoverPhoto.length === 0 ) {
-      coverPhotoUpload = coverPhoto;
-    }
-    else {
-      coverPhotoUpload = this.getUploadAndDelete(oldCoverPhoto, coverPhoto);
-    }
 
-    if (oldMedia.length === 0) {
-      mediaUpload = media;
-    }
-    else {
-      mediaUpload = this.getUploadAndDelete(oldMedia, media);
-    }
+
     return {
       thumbnailUpload,
       coverPhotoUpload,
@@ -422,14 +406,15 @@ class CreateCapstone extends Component {
     }
 
     // upload images
+    await this.uploadImage();
 
-    const resultImages = this.imageNeededToUpload();
-
-    if (resultImages.thumbnailUpload !== 'no') {
-      // upload thumbnail
-    }
-
-    api.uploads.delete()
+    // const resultImages = this.imageNeededToUpload();
+    //
+    // if (resultImages.thumbnailUpload !== 'no') {
+    //   // upload thumbnail
+    // }
+    //
+    // api.uploads.delete();
 
 
     // Use Users and AllUsers eventually

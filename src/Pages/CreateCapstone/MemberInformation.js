@@ -44,10 +44,24 @@ const MemberInformation = ( props ) => {
     setSelectUser(values);
   };
 
+  const defaultProps = {
+    options: props.AllUsers,
+    getOptionLabel: (option) => {
+      if (option.Fullname) {
+        return option.Fullname;
+      }
+      else {
+        return "";
+      }
+    }
+  };
+
   const displayUser = (participant, canDelete=true) => {
     if (!participant.picture) {
       return (
-        <ListItem alignItems="flex-start">
+        <ListItem
+          key={participant.id}
+          alignItems="flex-start">
           <ListItemAvatar>
             <Avatar>
               <EmojiPeopleIcon/>
@@ -93,7 +107,7 @@ const MemberInformation = ( props ) => {
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
-            <Grid container  justify='left' alignItems='center' spacing={2}>
+            <Grid container  alignItems='center' spacing={2}>
               <Grid item xs={12}>
                 <PageTitleTypography text='Team Member Information' align='left' size='h5'/>
                 <Divider/>
@@ -102,13 +116,12 @@ const MemberInformation = ( props ) => {
                 <Grid container  justify='center' alignItems='center'>
 
                   <Grid item xs={12}>
-                    <Grid container alignItems='center' justify='left' spacing={3} direction='row'>
+                    <Grid container alignItems='center' spacing={3} direction='row'>
                       <Tooltip title='Search for name' arrow>
                         <Grid item xs={8}>
                           <Autocomplete
-                            id='combo-box-demo'
-                            options={props.AllUsers}
-                            getOptionLabel={(option) => option.Fullname}
+                            id='searchTeamMember'
+                            {...defaultProps}
                             style={{width: 300}}
                             value={selectUser}
                             onChange={handleSelectUser}
@@ -155,23 +168,22 @@ const MemberInformation = ( props ) => {
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
-            <Grid container  justify='left' alignItems='center' spacing={2}>
+            <Grid container alignItems='center' spacing={2}>
               <Grid item xs={12}>
                 <PageTitleTypography text='Staff Information' align='left' size='h5'/>
                 <Divider/>
               </Grid>
 
               <Grid item xs={12}>
-                <Grid container alignItems='center' justify='left' spacing={6}>
+                <Grid container alignItems='center' spacing={6}>
                   {/* search professor */}
                   <Grid item>
                   <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
                     <Grid item >
                       <Tooltip title='Search for name' arrow>
                           <Autocomplete
-                            id='combo-box-demo'
-                            options={props.AllUsers}
-                            getOptionLabel={(option) => option.Fullname}
+                            id='searchProf'
+                            {...defaultProps}
                             style={{width: 300}}
                             onChange={props.handleSelectedProfessor}
                             renderInput={(params) => <TextField {...params} label='Search for Professor' variant='outlined'/>}
@@ -189,9 +201,8 @@ const MemberInformation = ( props ) => {
                   <Grid item >
                     <Tooltip title='Search for name' arrow>
                         <Autocomplete
-                          id='combo-box-demo'
-                          options={props.AllUsers}
-                          getOptionLabel={(option) => option.Fullname}
+                          id='searchTA'
+                          {...defaultProps}
                           style={{width: 300}}
                           onChange={props.handleSelectedTA}
                           renderInput={(params) => <TextField {...params} label='Search for TA' variant='outlined'/>}

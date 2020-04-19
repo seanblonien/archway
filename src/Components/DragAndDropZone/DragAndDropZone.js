@@ -22,11 +22,11 @@ export default function Accept(props) {
     if (acceptedFiles.length >= 1 && !hasAccept) {
       props.acceptImage(acceptedFiles);
       setAccept(true);
-      if (props.removeImg) {
-        console.log('removing');
-        acceptedFiles.length = 0;
-        props.setRemoveImg(false);
-      }
+    }
+    if (props.removeImg) {
+      console.log('removing');
+      acceptedFiles.length = 0;
+      props.setRemoveImg(false);
     }
 
 

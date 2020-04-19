@@ -43,6 +43,8 @@ const SponsorAndMediaInformation = (props) => {
 
   useEffect(() => {
     if (props.removeImg) {
+      props.setRemoveImg(false);
+
       console.log('remove all images');
       setClearCoverPhoto(true);
       setClearThumbnail(true);
@@ -119,7 +121,9 @@ const SponsorAndMediaInformation = (props) => {
                             <em>None</em>
                           </MenuItem>
                           {props.sponsorList.map(sponsor => (
-                            <MenuItem value={sponsor}>{sponsor.name}</MenuItem>
+                            <MenuItem
+                              key={sponsor.id}
+                              value={sponsor}>{sponsor.name}</MenuItem>
                           ))}
                         </Select>
                       </FormControl>
@@ -161,6 +165,8 @@ const SponsorAndMediaInformation = (props) => {
         <Card className={props.classes.card}>
           <CardContent>
             <DragAndDropMultipleZone
+              id={"coverPhoto"}
+
               removeImg={clearCoverPhoto}
               setRemoveImg={setClearCoverPhoto}
               acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}
@@ -175,6 +181,7 @@ const SponsorAndMediaInformation = (props) => {
           <CardContent>
 
             <DragAndDropMultipleZone
+              id={"media"}
               removeImg={clearMedia}
               setRemoveImg={setClearMedia}
               acceptImage={props.handleAcceptImageMedia.bind(this)}
