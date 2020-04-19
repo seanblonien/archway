@@ -20,8 +20,8 @@ const Dashboard = ({routes}) => {
         </Box>
         <List>
           {Object.values(routes).map(({name, Icon, path, permission, genPath}) =>
-            <Can perform={permission}>
-              <ListItem key={name} component={Link} to={genPath ? genPath(user.username) : path}>
+            <Can perform={permission} key={name}>
+              <ListItem component={Link} to={genPath ? genPath(user.username) : path}>
                 <ListItemIcon>
                   <Icon/>
                 </ListItemIcon>
