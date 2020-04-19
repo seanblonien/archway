@@ -7,6 +7,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
+import routes from '../utils/Routing/routes';
+import history from '../utils/Routing/history';
 
 const styles = (theme) => ({
   root: {
@@ -39,6 +41,10 @@ class Professors extends Component {
     this.setState({professors});
   }
 
+  handleTileClick = (title) => {
+    history.push(routes.viewprofile.genPath(title));
+  };
+
   render () {
     const {classes} = this.props;
     const {professors} = this.state;
@@ -52,7 +58,7 @@ class Professors extends Component {
               style={{paddingLeft: '30px'}}
             >
               <GridListTile
-                onClick={() => this.handleTileClick(result.id)}
+                onClick={() => this.handleTileClick(result.username)}
               >
                 <img
                   src={imageURL.user(professors[i].picture)}
@@ -70,7 +76,7 @@ class Professors extends Component {
 }
 
 Professors.propTypes = {
-  department: PropTypes.objectOf(PropTypes.object).isRequired,
+  department: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
 };
 
 export default compose(

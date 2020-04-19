@@ -105,7 +105,7 @@ class DepartmentCapstones extends Component {
 }
 
 DepartmentCapstones.propTypes = {
-  department: PropTypes.objectOf(PropTypes.object).isRequired,
+  department: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
   current: PropTypes.string.isRequired,
 };
 
