@@ -153,7 +153,10 @@ class DepartmentForm extends React.Component {
     const {department} = this.state;
     const {professors} = department;
     professors.push(user);
-    this.setState({professors});
+    this.setState({department: {
+      ...department,
+      professors}
+    });
   };
 
   handleProfessorRemove = (user) => {
@@ -163,7 +166,10 @@ class DepartmentForm extends React.Component {
     const index = professors.indexOf(user);
     if (index !== -1) professors.splice(index, 1);
 
-    this.setState({professors});
+    this.setState({department: {
+      ...department,
+      professors}
+    });
   };
 
   initFields() {
