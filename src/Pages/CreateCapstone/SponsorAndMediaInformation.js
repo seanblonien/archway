@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,34 +17,83 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DragAndDropZone from '../../Components/DragAndDropZone/DragAndDropZone';
 import DragAndDropMultipleZone from "../../Components/DragAndDropZone/UploadMultipleImage";
 import PageTitleTypography from '../../Components/PageTitleTypography';
+import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {imageURL} from "../../utils/utils";
 
-const SponsorAndMediaInformation = (props) => 
+const SponsorAndMediaInformation = (props) => {
 
-/*
-  * classes
-  * selectedSponsor
-  * handleSelectSponsor
-  * sponsorList
-  * handleConfirmSponsor
-  * checkedSponsors
-  * handleAcceptImageThumbnail
-  * handleAcceptImageCoverPhoto
-  * handleAcceptImageMedia
-  */
+  /*
+    * classes
+    * selectedSponsor
+    * handleSelectSponsor
+    * sponsorList
+    * handleConfirmSponsor
+    * checkedSponsors
+    * handleAcceptImageThumbnail
+    * handleAcceptImageCoverPhoto
+    * handleAcceptImageMedia
+    */
+
+  const displaySponsor = (sponsor, canDelete=true) => {
+    if (!sponsor.logo) {
+      return (
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <Avatar>
+              <EmojiPeopleIcon/>
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={sponsor.name}
+            secondary={sponsor.url}
+          />
+          {canDelete &&
+          <ListItemSecondaryAction>
+            <IconButton aria-label="delete">
+              <DeleteIcon onClick={() => props.handleRemoveSponsor(sponsor.id)}/>
+            </IconButton>
+          </ListItemSecondaryAction>
+          }
+        </ListItem>);
+    }
+    else {
+      return (
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <Avatar alt={sponsor.name} src={imageURL.user(sponsor.logo)} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={sponsor.name}
+            secondary={sponsor.url}
+          />
+          {canDelete &&
+          <ListItemSecondaryAction>
+            <IconButton aria-label="delete">
+              <DeleteIcon onClick={() => props.handleRemoveSponsor(sponsor.id)}/>
+            </IconButton>
+          </ListItemSecondaryAction>
+          }
+        </ListItem>
+      );
+    }
+  };
 
 
-  (
+  return (
     <Grid container justify='center'>
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
             <PageTitleTypography text='Sponsor Information' align='left' size='h5'/>
             <Divider/>
-            <Grid container  justify='center'>
+            <Grid container justify='center'>
               <Grid item xs={12}>
-                <Grid container  justify='center' spacing={2} alignItems='center'>
+                <Grid container justify='center' spacing={2} alignItems='center'>
                   <Tooltip title='Select a Sponsor' arrow>
-                     <Grid item xs={9}>
+                    <Grid item xs={9}>
                       <FormControl margin='dense' fullWidth variant='filled'>
                         <InputLabel ref={null}>Sponsor</InputLabel>
                         <Select
@@ -62,25 +111,17 @@ const SponsorAndMediaInformation = (props) =>
                         </Select>
                       </FormControl>
                     </Grid>
-                   </Tooltip>
+                  </Tooltip>
                   <Grid item xs>
-                     <Button variant='outlined' color='primary' onClick={() => props.handleConfirmSponsor(props.selectedSponsor)}>
+                    <Button variant='outlined' color='primary'
+                            onClick={() => props.handleConfirmSponsor(props.selectedSponsor)}>
                       Confirm
                     </Button>
-                   </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
               <Divider/>
-              {props.checkedSponsors.map(sponsor =>(<ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                     <BusinessIcon/>
-                   </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={sponsor.name}
-                />
-              </ListItem>))
+              {props.checkedSponsors.map(sponsor => displaySponsor(sponsor))
               }
             </Grid>
 
@@ -93,6 +134,8 @@ const SponsorAndMediaInformation = (props) =>
           <CardContent>
             <PageTitleTypography text='Upload a Thumbnail' align='center' size='h5'/>
             <DragAndDropZone
+              removeImg={props.removeImg}
+              setRemoveImg={props.setRemoveImg}
               id="file-id"
               acceptImage={props.handleAcceptImageThumbnail.bind(this)}
               prompt='Drop or click to upload a thumbnail'
@@ -104,7 +147,6 @@ const SponsorAndMediaInformation = (props) =>
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
-
             <DragAndDropMultipleZone
               acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}
               prompt='Upload Cover Photo'
@@ -126,7 +168,7 @@ const SponsorAndMediaInformation = (props) =>
 
       </Grid>
     </Grid>
-  )
-;
+  );
+}
 
 export default SponsorAndMediaInformation;

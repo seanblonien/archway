@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDropzone} from 'react-dropzone';
 import './style.css';
 
@@ -6,23 +6,30 @@ import './style.css';
 
 
 export default function Accept(props) {
-  const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
+  const {acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: 'image/jpeg, image/png'
   });
 
   const [hasAccept, setAccept] = useState(false);
 
-  // only keep one file in the accept files
-  while (acceptedFiles.length > 1) {
-    acceptedFiles.shift();
-  }
 
+  useEffect(() => {
+    if (acceptedFiles.length > 1) {
+      while (acceptedFiles.length > 1) {
+        acceptedFiles.shift();
+      }
+    }
+    if (acceptedFiles.length >= 1 && !hasAccept) {
+      props.acceptImage(acceptedFiles);
+      setAccept(true);
+    }
+    if (props.removeImg) {
+      console.log('removing');
+      acceptedFiles.length = 0;
+      props.setRemoveImg(false);
+    }
 
-  if (acceptedFiles.length >= 1 && !hasAccept) {
-    console.log(acceptedFiles);
-    props.acceptImage(acceptedFiles);
-    setAccept(true);
-  }
+  });
 
   return (
     <div className='dropzone' {...getRootProps()}>

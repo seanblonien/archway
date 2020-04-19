@@ -13,6 +13,7 @@ import SponsorAndMediaInformation from './SponsorAndMediaInformation';
 import {formatEntryUpload} from "../../utils/utils";
 import {snack} from '../../utils/Snackbar';
 import {withSnackbar} from 'notistack';
+import _ from 'lodash';
 
 
 const styles = theme => ({
@@ -51,8 +52,8 @@ class CreateCapstone extends Component {
       isFeatured: false,
       startDate: new Date(),
       endDate: new Date(),
-      coverPhoto: '',
-      thumbnail: '',
+      coverPhoto: [],
+      thumbnail: [],
       media: [],
       Department: '',
       Username: StorageManager.getItem('user')._id,
@@ -66,12 +67,11 @@ class CreateCapstone extends Component {
       Participants: [],
       selectedProfessor: '',
       selectedTA: '',
-      typedName: '',
-      typedEmail: '',
       selectedUser: '',
       dialogOpen: false,
       courseName: '',
       capstoneId: '',
+      removeImg:false
     };
   }
 
@@ -96,6 +96,7 @@ class CreateCapstone extends Component {
   };
 
   handleSelectedProfessor = (event, values) => {
+    console.log(values);
     this.setState({selectedProfessor: values});
   };
 
@@ -121,6 +122,17 @@ class CreateCapstone extends Component {
     }
   };
 
+  handleRemoveSponsor = (selectedSponsorId) => {
+    console.log(selectedSponsorId);
+    const copyOfSponsors = _.cloneDeep(this.state.checkedSponsors);
+    this.setState({checkedSponsors: copyOfSponsors.filter(t => {
+        return selectedSponsorId !== t.id;
+      })}, () => {
+      console.log(this.state.checkedSponsors);
+    });
+  };
+
+
   handleConfirmTeammate = (selectedUser) => {
     const user = selectedUser;
     if (user !== '') {
@@ -132,6 +144,17 @@ class CreateCapstone extends Component {
       }
     }
   };
+
+  handleRemoveTeammate = (selectedUserId) => {
+    const copyOfParticipants = _.cloneDeep(this.state.Participants);
+    this.setState({Participants: copyOfParticipants.filter(t => {
+        return selectedUserId !== t.id;
+      })}, () => {
+      console.log(this.state.Participants);
+    });
+  };
+
+
 
   handleStartDate = (startDate) => {
     this.setState({startDate}, () => {
@@ -189,6 +212,10 @@ class CreateCapstone extends Component {
     this.setState({isFeatured: event.target.checked});
   };
 
+  setRemoveImage = (remove) => {
+    this.setState({removeImg: remove});
+  };
+
   extractNonMediaContent = () => {
     const {
       title,
@@ -237,21 +264,89 @@ class CreateCapstone extends Component {
     return upload_content;
   };
 
+  clearCurrentCapstone = () => {
+    this.setState({
+      title: '',
+      description: '',
+      isFeatured: false,
+      startDate: new Date(),
+      endDate: new Date(),
+      coverPhoto: [],
+      thumbnail: [],
+      media: [],
+      Department: '',
+      capstones: [],
+      checkedSponsors: [],
+      selectedSponsor: '',
+      Participants: [],
+      selectedProfessor: '',
+      selectedTA: '',
+      courseName: '',
+      capstoneId: '',
+      removeImg: true
+    });
+    this.forceUpdate();
+    // window.location.reload(false);
+  };
+
   handleSubmit = async () => {
-    if (!this.isFormValidForSubmit()) {
-      return;
-    }
+    console.log('???');
+    // if (!this.isFormValidForSubmit()) {
+    //   return;
+    // }
     this.handleUpload();
+    const {enqueueSnackbar} = this.props;
+    enqueueSnackbar('successful submit!', snack.success);
+    await this.clearCurrentCapstone();
   };
 
   handleSave = async () => {
     if (!this.isFormValidForSave()) {
       return;
     }
-    // this.handleUpload();
+    await this.handleUpload(false);
+    const {enqueueSnackbar} = this.props;
+    enqueueSnackbar('successful upload!', snack.success);
   };
 
-  handleUpload = async () => {
+  uploadImage = async () => {
+    const {
+      thumbnail,
+      coverPhoto,
+      media
+    } = this.state;
+    if (this.state.capstoneId === '') {
+      return;
+    }
+    const capstoneId = this.state.capstoneId;
+    // upload thumbnail
+    if (thumbnail && thumbnail.length > 0) {
+      const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', capstoneId, 'thumbnail');
+      let data = await api.uploads.upload(thumbnailUpload);
+    }
+
+    // upload media
+    if (media && media.length > 0) {
+      const mediaUploads = media.map(file => {
+        const upload = formatEntryUpload(file, 'capstones', capstoneId, 'media');
+        return api.uploads.upload(upload);
+      });
+      const respMedia = Promise.all(mediaUploads);
+    }
+
+
+    // upload media
+    if (coverPhoto && coverPhoto.length > 0) {
+      const coverPhotoUploads = coverPhoto.map(file => {
+        const upload = formatEntryUpload(file, 'capstones', capstoneId, 'coverPhoto');
+        return api.uploads.upload(upload);
+      });
+      const respCover = Promise.all(coverPhotoUploads);
+    }
+
+  };
+
+  handleUpload = async (isFinished) => {
     const {
       Users,
       AllUsers,
@@ -260,13 +355,12 @@ class CreateCapstone extends Component {
       media
     } = this.state;
 
-    const {enqueueSnackbar} = this.props;
-    enqueueSnackbar('success!', snack.success);
-
     let upload_data = this.extractNonMediaContent();
+    upload_data.isFinished = isFinished;
     const response = await api.capstones.create(upload_data);
 
     const refId = response.data.id;
+    this.setState({capstoneId: refId});
     // upload thumbnail
     if (thumbnail && thumbnail.length > 0) {
       const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', refId, 'thumbnail');
@@ -384,6 +478,8 @@ class CreateCapstone extends Component {
         <Grid container justify='center'>
           <BasicInformation
             classes={classes}
+            title={this.state.title}
+            courseName={this.state.courseName}
             handleTitle={this.handleTitle.bind(this)}
             isFeatured={this.state.isFeatured}
             handleCourseName={this.handleCourseName.bind(this)}
@@ -396,27 +492,34 @@ class CreateCapstone extends Component {
             handleChangeDepartment={this.handleChangeDepartment.bind(this)}
             departmentList={this.state.departmentList}
             handleDescription={this.handleDescription.bind(this)}
+            description={this.state.description}
           />
           <MemberInformation
             classes={classes}
             AllUsers={this.state.AllUsers}
             handleConfirmTeammate={this.handleConfirmTeammate.bind(this)}
+            handleRemoveTeammate={this.handleRemoveTeammate.bind(this)}
             handleClickDialogOpen={this.handleClickDialogOpen.bind(this)}
             handleNewUser={this.handleNewUser.bind(this)}
             dialogOpen={this.state.dialogOpen}
             handleClickDialogClose={this.handleClickDialogClose.bind(this)}
             Participants={this.state.Participants}
+            selectedProfessor={this.state.selectedProfessor}
+            selectedTA={this.state.selectedTA}
             handleSelectedProfessor={this.handleSelectedProfessor.bind(this)}
             handleSelectedTA={this.handleSelectedTA.bind(this)}
             selectedUser={this.state.selectedUser}
           />
           <SponsorAndMediaInformation
+            removeImg={this.state.removeImg}
+            setRemoveImg={this.setRemoveImage.bind(this)}
             classes={classes}
             selectedSponsor={this.state.selectedSponsor}
             handleSelectSponsor={this.handleSelectSponsor.bind(this)}
             checkedSponsors={this.state.checkedSponsors}
             sponsorList={this.state.sponsorList}
             handleConfirmSponsor={this.handleConfirmSponsor.bind(this)}
+            handleRemoveSponsor={this.handleRemoveSponsor.bind(this)}
             handleAcceptImageThumbnail={this.handleAcceptImageThumbnail.bind(this)}
             handleAcceptImageCoverPhoto={this.handleAcceptImageCoverPhoto.bind(this)}
             handleAcceptImageMedia={this.handleAcceptImageMedia.bind(this)}

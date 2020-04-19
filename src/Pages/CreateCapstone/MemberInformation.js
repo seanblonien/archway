@@ -14,6 +14,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import SimpleDialog from '../../Components/AddUserDialog';
 import PageTitleTypography from '../../Components/PageTitleTypography';
+import {imageURL} from "../../utils/utils";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from '@material-ui/icons/Delete';
+import List from "@material-ui/core/List";
+
 
 
 const MemberInformation = ( props ) => {
@@ -38,6 +44,49 @@ const MemberInformation = ( props ) => {
     setSelectUser(values);
   };
 
+  const displayUser = (participant, canDelete=true) => {
+    if (!participant.picture) {
+      return (
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <Avatar>
+              <EmojiPeopleIcon/>
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={participant.Fullname}
+            secondary={participant.email}
+          />
+          {canDelete &&
+            <ListItemSecondaryAction>
+              <IconButton aria-label="delete">
+                <DeleteIcon onClick={() => props.handleRemoveTeammate(participant.id)}/>
+              </IconButton>
+            </ListItemSecondaryAction>
+          }
+        </ListItem>);
+    }
+    else {
+      return (
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <Avatar alt={participant.Fullname} src={imageURL.user(participant.picture)} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={participant.Fullname}
+            secondary={participant.email}
+          />
+          {canDelete &&
+            <ListItemSecondaryAction>
+              <IconButton aria-label="delete">
+                <DeleteIcon onClick={() => props.handleRemoveTeammate(participant.id)}/>
+              </IconButton>
+            </ListItemSecondaryAction>
+          }
+        </ListItem>
+      );
+    }
+  };
 
   return (
     <Grid container justify='center'>
@@ -61,13 +110,17 @@ const MemberInformation = ( props ) => {
                             options={props.AllUsers}
                             getOptionLabel={(option) => option.Fullname}
                             style={{width: 300}}
+                            value={selectUser}
                             onChange={handleSelectUser}
                             renderInput={(params) => <TextField {...params} label='Search for Team Members' variant='outlined'/>}
                           />
                         </Grid>
                       </Tooltip>
                       <Grid item>
-                        <Button variant='outlined' color='primary' onClick={() => props.handleConfirmTeammate(selectUser)}>
+                        <Button variant='outlined' color='primary' onClick={() => {
+                          props.handleConfirmTeammate(selectUser);
+                          setSelectUser('');
+                        }}>
                           Confirm
                         </Button>
                       </Grid>
@@ -85,18 +138,10 @@ const MemberInformation = ( props ) => {
                   </Grid>
                   {/* team list */}
                   <Grid item xs={9}>
-                    {props.Participants.map(participant =>(<ListItem>
-                      <ListItemAvatar>
-                        <Avatar>
-                          <EmojiPeopleIcon/>
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={participant.Fullname}
-                      />
-                    </ListItem>))
-
+                    <List>
+                    {props.Participants.map(participant => displayUser(participant))
                     }
+                    </List>
                   </Grid>
 
                 </Grid>
@@ -117,9 +162,11 @@ const MemberInformation = ( props ) => {
               </Grid>
 
               <Grid item xs={12}>
-                <Grid container alignItems='center' justify='center' spacing={6} direction='row'>
+                <Grid container alignItems='center' justify='left' spacing={6}>
                   {/* search professor */}
-                  <Grid item >
+                  <Grid item>
+                  <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
+                    <Grid item >
                       <Tooltip title='Search for name' arrow>
                           <Autocomplete
                             id='combo-box-demo'
@@ -130,8 +177,15 @@ const MemberInformation = ( props ) => {
                             renderInput={(params) => <TextField {...params} label='Search for Professor' variant='outlined'/>}
                           />
                       </Tooltip>
+                    </Grid>
+                    <Grid>
+                      {(props.selectedProfessor && props.selectedProfessor !== '') && displayUser(props.selectedProfessor, false)}
+                    </Grid>
+                  </Grid>
                   </Grid>
                   {/* search TA */}
+                  <Grid item>
+                  <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
                   <Grid item >
                     <Tooltip title='Search for name' arrow>
                         <Autocomplete
@@ -143,7 +197,12 @@ const MemberInformation = ( props ) => {
                           renderInput={(params) => <TextField {...params} label='Search for TA' variant='outlined'/>}
                         />
                     </Tooltip>
-                </Grid>
+                  </Grid>
+                    <Grid item>
+                      {(props.selectedTA && props.selectedTA !== '') && displayUser(props.selectedTA, false)}
+                    </Grid>
+                  </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>

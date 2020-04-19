@@ -75,6 +75,7 @@ const BasicInformation = (props) => {
                   <Tooltip title='Name of Capstone' arrow>
                     <FormControl margin='dense' required fullWidth>
                       <TextField
+                        value={props.title}
                         id='outlined-textarea'
                         label='Title'
                         placeholder='Type the title for the capstone project'
@@ -107,6 +108,7 @@ const BasicInformation = (props) => {
               <Tooltip title='Name of Course' arrow>
                 <FormControl margin='dense' required fullWidth>
                   <TextField
+                    value={props.courseName}
                     id='outlined-textarea'
                     label='Course Name'
                     placeholder='Type the name of the course'
@@ -189,6 +191,7 @@ const BasicInformation = (props) => {
                     placeholder='Type the description'
                     multiline
                     variant='outlined'
+                    value={props.description}
                     onChange={props.handleDescription}
                   />
                 </FormControl>
