@@ -36,6 +36,7 @@ class ViewAllDepartments extends Component {
             <DepartmentForm
               title='Create Department'
               type='create'
+              department={null}
               update={this.updateDepartments}
             />
           </Can>

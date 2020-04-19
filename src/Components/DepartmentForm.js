@@ -34,11 +34,13 @@ class DepartmentForm extends React.Component {
         description: '',
         preview: '',
         thumbnail: '',
+        cover: '',
         id: '',
         professors: [],
       },
       allUsers: [],
-      selectedThumbnail: ''
+      selectedThumbnail: '',
+      selectedCover: ''
     };
   }
 
@@ -83,7 +85,14 @@ class DepartmentForm extends React.Component {
     const {update, enqueueSnackbar} = this.props;
 
     try {
-      await api.departments.create(department);
+      await api.departments.create({
+        name: department.name,
+        email: department.email,
+        phone: department.phone,
+        url: department.url,
+        description: department.description,
+        preview: department.preview
+      });
 
       enqueueSnackbar('The department was successfully created.', snack.success);
       await this.uploadImages();
@@ -97,7 +106,7 @@ class DepartmentForm extends React.Component {
   };
 
   uploadImages = async () => {
-    const {selectedThumbnail, id} = this.state;
+    const {selectedThumbnail, selectedCover, id} = this.state;
     const {enqueueSnackbar} = this.props;
     let fileUpload;
 
@@ -106,7 +115,11 @@ class DepartmentForm extends React.Component {
         fileUpload = formatEntryUpload(selectedThumbnail, 'departments', id, 'thumbnail', 'users-permissions');
         await api.uploads.upload(fileUpload);
       }
-      enqueueSnackbar('Your thumbnail has been saved.', snack.success);
+      if (selectedCover !== '') {
+        fileUpload = formatEntryUpload(selectedCover, 'departments', id, 'cover', 'users-permissions');
+        await api.uploads.upload(fileUpload);
+      }
+      enqueueSnackbar('Any photos have been saved.', snack.success);
     } catch(err){
       const msg = 'There was a problem uploading the department photos.';
       enqueueSnackbar(msg, snack.error);
@@ -133,21 +146,17 @@ class DepartmentForm extends React.Component {
   };
 
   handleFileChange = (name, value) => {
-    const {department} = this.state;
-    this.setState({department: {
-      ...department,
-      [name]: value}
-    });
+    this.setState({[name]: value});
   };
 
   handleProfessorSelect = (user) => {
-    const {professors} = this.state;
+    const {professors} = this.state.department;
     professors.push(user);
     this.setState({professors});
   };
 
   handleProfessorRemove = (user) => {
-    const {professors} = this.state;
+    const {professors} = this.state.department;
 
     const index = professors.indexOf(user);
     if (index !== -1) professors.splice(index, 1);
@@ -168,13 +177,14 @@ class DepartmentForm extends React.Component {
       preview: department.preview,
       id: department.id,
       thumbnail: department.thumbnail,
+      cover: department.cover,
       professors: department.professors
     }});
   }
 
   render() {
     const {open, type, id, allUsers, department} = this.state;
-    const {name, email, url, description, phone, preview, professors, thumbnail} = department;
+    const {name, email, url, description, phone, preview, professors, thumbnail, cover} = department;
     const {title} = this.props;
 
     return (
@@ -190,7 +200,7 @@ class DepartmentForm extends React.Component {
           <DialogTitle id='form-dialog-title'>{title}</DialogTitle>
           <DialogContent>
             <ValidatorForm
-              onSubmit={this.handleSubmit}
+              onSubmit={this.handleClose}
             >
               <Grid container spacing={3}>
                 <Grid item xs={12}>
@@ -263,7 +273,14 @@ class DepartmentForm extends React.Component {
                   title='Choose Thumbnail'
                   id={id}
                   onChange={this.handleFileChange}
-                  photo={imageURL.sponsor(thumbnail)}
+                  photo={imageURL.department(thumbnail)}
+                />
+                <PhotoUpload
+                  fieldName='selectedCover'
+                  title='Choose Cover'
+                  id={id}
+                  onChange={this.handleFileChange}
+                  photo={imageURL.department(cover)}
                 />
               </Grid>
             </ValidatorForm>
@@ -299,7 +316,7 @@ DepartmentForm.propTypes = {
     preview: PropTypes.string.isRequired,
     thumbnail: PropTypes.isRequired,
     professors: PropTypes.isRequired
-  }).isRequired,
+  }),
   title: PropTypes.string.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired
