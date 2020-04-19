@@ -71,7 +71,7 @@ class DepartmentForm extends React.Component {
       await api.departments.update(department.id, department);
 
       enqueueSnackbar('The department was updated.', snack.success);
-      await this.uploadImages();
+      await this.uploadImages(department.id);
     } catch (err) {
       enqueueSnackbar('The department was unable to update.', snack.error);
     }
@@ -85,7 +85,7 @@ class DepartmentForm extends React.Component {
     const {update, enqueueSnackbar} = this.props;
 
     try {
-      await api.departments.create({
+      const newDepartment = await api.departments.create({
         name: department.name,
         email: department.email,
         phone: department.phone,
@@ -95,7 +95,7 @@ class DepartmentForm extends React.Component {
       });
 
       enqueueSnackbar('The department was successfully created.', snack.success);
-      await this.uploadImages();
+      await this.uploadImages(newDepartment.data.id);
 
     } catch (err) {
       enqueueSnackbar('There was a problem creating the department.', snack.error);
@@ -105,8 +105,8 @@ class DepartmentForm extends React.Component {
     update();
   };
 
-  uploadImages = async () => {
-    const {selectedThumbnail, selectedCover, id} = this.state;
+  uploadImages = async (id) => {
+    const {selectedThumbnail, selectedCover} = this.state;
     const {enqueueSnackbar} = this.props;
     let fileUpload;
 
@@ -150,13 +150,15 @@ class DepartmentForm extends React.Component {
   };
 
   handleProfessorSelect = (user) => {
-    const {professors} = this.state.department;
+    const {department} = this.state;
+    const {professors} = department;
     professors.push(user);
     this.setState({professors});
   };
 
   handleProfessorRemove = (user) => {
-    const {professors} = this.state.department;
+    const {department} = this.state;
+    const {professors} = department;
 
     const index = professors.indexOf(user);
     if (index !== -1) professors.splice(index, 1);
@@ -207,7 +209,7 @@ class DepartmentForm extends React.Component {
                   <TextField
                     label='Department Name'
                     name='name'
-                    value={name}
+                    value={name || ''}
                     fullWidth
                     onChange={this.handleChange}
                   />
@@ -216,7 +218,7 @@ class DepartmentForm extends React.Component {
                   <TextField
                     label='Department URL'
                     name='url'
-                    value={url}
+                    value={url || ''}
                     fullWidth
                     onChange={this.handleChange}
                   />
@@ -225,7 +227,7 @@ class DepartmentForm extends React.Component {
                   <TextField
                     label='Phone Number'
                     name='phone'
-                    value={phone}
+                    value={phone || ''}
                     fullWidth
                     onChange={this.handleChange}
                   />
@@ -234,7 +236,7 @@ class DepartmentForm extends React.Component {
                   <TextValidator
                     label='Contact Email'
                     name='email'
-                    value={email}
+                    value={email || ''}
                     fullWidth
                     onChange={this.handleChange}
                     validators={['required', 'isEmail']}
@@ -304,6 +306,10 @@ class DepartmentForm extends React.Component {
   }
 }
 
+DepartmentForm.defaultProps = {
+  department: null
+};
+
 DepartmentForm.propTypes = {
   type: PropTypes.string.isRequired,
   department: PropTypes.shape({
@@ -314,6 +320,7 @@ DepartmentForm.propTypes = {
     phone: PropTypes.string.isRequired,
     description: PropTypes.string,
     preview: PropTypes.string.isRequired,
+    cover: PropTypes.isRequired,
     thumbnail: PropTypes.isRequired,
     professors: PropTypes.isRequired
   }),

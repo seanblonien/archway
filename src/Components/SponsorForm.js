@@ -249,12 +249,25 @@ class SponsorForm extends React.Component {
   }
 }
 
+SponsorForm.defaultProps = {
+  sponsor: null
+};
+
 SponsorForm.propTypes = {
   type: PropTypes.string.isRequired,
-  sponsor: PropTypes.isRequired,
+  sponsor: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    preview: PropTypes.string.isRequired,
+    coverPhoto: PropTypes.isRequired,
+    thumbnail: PropTypes.isRequired,
+    logo: PropTypes.isRequired
+  }),
   title: PropTypes.string.isRequired,
-  enqueueSnackbar: PropTypes.isRequired,
-  update: PropTypes.isRequired
+  enqueueSnackbar: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired
 };
 
 SponsorForm.contextType = AuthContext;
