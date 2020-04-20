@@ -76,7 +76,7 @@ export const formatQuery = (params) => `?${Object.keys(params)
  * @param entryField the field in the entry for the file
  * @param entryPlugin (optional) the plugin name for the model or content type
  */
-export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPlugin = '') => {
+export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPlugin = null) => {
   const entryUpload = new FormData();
   // if (Array.isArray(file)) {
   //   file.map(eachFile =>
@@ -90,9 +90,11 @@ export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPl
   entryUpload.append('files', file);
 
   entryUpload.append('ref', entryModel);
-  entryUpload.append('source', entryPlugin);
   entryUpload.append('refId', entryID);
   entryUpload.append('field', entryField);
+  if(entryPlugin) {
+    entryUpload.append('source', entryPlugin);
+  }
   return entryUpload;
 };
 

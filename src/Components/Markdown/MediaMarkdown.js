@@ -6,8 +6,9 @@ import {A, B1, B2, H1, H2, H3, H4, H5, H6, Image} from './MarkdownComponents';
 
 const MediaMarkdown = ({children}) => {
   // Replaces any relative paths of uploads files to use the strapi url
-  let childrenAbsoluteMedia = children.replace(/]\(\/uploads\//g, `](${strapiURL}/uploads/`);
-  childrenAbsoluteMedia = childrenAbsoluteMedia.replace(/\/uploads\/.*\)/g,encodeURI);
+  let newChildren = children.replace(/]\(\/uploads\//g, `](${strapiURL}/uploads/`);
+  // Ensures upload URLs are URI encoded
+  newChildren = newChildren.replace(/\/uploads\/.*\)/g,encodeURI);
 
   return (
     <Markdown
@@ -24,7 +25,7 @@ const MediaMarkdown = ({children}) => {
         span: {component: B2},
       }}}
     >
-      {childrenAbsoluteMedia}
+      {newChildren}
     </Markdown>
   );
 };

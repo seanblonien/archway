@@ -53,7 +53,7 @@ export const H5 = (props) => <Typography {...props} variant='h5'/>;
 export const H6 = (props) => <Typography {...props} variant='h6'/>;
 
 // Returns styled MaterialUI Typography component for body1 variant.
-export const B1 = (props) => <Typography {...props} variant='body1'/>;
+export const B1 = (props) => <Typography {...props} variant='body1' paragraph/>;
 
 // Returns styled MaterialUI Typography component for body2 variant.
 export const B2 = (props) => <Typography {...props} variant='body2' component='span'/>;

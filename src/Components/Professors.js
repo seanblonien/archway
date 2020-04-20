@@ -54,7 +54,7 @@ class Professors extends Component {
         <GridList className={classes.gridList} cols={1}>
           {professors.map((result, i) => (
             <div
-              key={professors[i].picture.url}
+              key={professors[i].id}
               style={{paddingLeft: '30px'}}
             >
               <GridListTile
