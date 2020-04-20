@@ -1,6 +1,4 @@
 import React, {useState} from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -14,77 +12,80 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
-const PeopleSelect = ({title, allUsers, selectedPeople, handleRemove, handleConfirmUser}) => {
-  const [selectUser, setSelectUser] = useState('');
-
-  const handleSelectUser = (event, values) => {
-    setSelectUser(values);
-  };
+const PeopleSelect = ({title, users, selectedUsers, setSelectedUsers}) => {
+  const [selectUser, setSelectUser] = useState(null);
+  const unselectedUsers = _.differenceBy(users, selectedUsers, 'id');
 
   return (
-    <Grid container justify='center'>
-      <Grid item xs={12} md={10}>
-        <Card>
-          <CardContent>
-            <Grid container alignItems='center' spacing={2}>
-              <Grid item xs={12}>
-                <Typography>{title}</Typography>
-                <Divider/>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container alignItems='center'>
-                  <Grid item xs={12}>
-                    <Grid container alignItems='center' spacing={3} direction='row'>
-                      <Tooltip title='Search for name' arrow>
-                        <Grid item xs={8}>
-                          <Autocomplete
-                            id={title}
-                            options={allUsers}
-                            getOptionLabel={(option) => option.Fullname}
-                            style={{width: 300}}
-                            onChange={handleSelectUser}
-                            renderInput={(params) =>
-                              <TextField
-                                {...params}
-                                label='Search for Team Members'
-                                variant='outlined'
-                              />
-                            }
-                          />
-                        </Grid>
-                      </Tooltip>
-                      <Grid item>
-                        <Button
-                          variant='outlined'
-                          color='primary'
-                          onClick={() => handleConfirmUser(selectUser)}
-                        >
-                          Confirm
-                        </Button>
-                      </Grid>
-                    </Grid>
-
-                  </Grid>
-                  {/* team list */}
-                  <Grid item xs={9}>
-                    {selectedPeople.map(participant =>
-                      <ListItem key={participant.id}>
-                        <ListItemAvatar>
-                          <Avatar>
-                            <EmojiPeopleIcon/>
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={participant.Fullname}/>
-                        <Button onClick={() => handleRemove(participant)}>Remove</Button>
-                      </ListItem>
-                    )}
-                  </Grid>
+    <Grid container alignItems='center' spacing={2}>
+      <Grid item xs={12}>
+        <Typography>{title}</Typography>
+        <Divider/>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container alignItems='center'>
+          <Grid item xs={12}>
+            <Grid container alignItems='center' spacing={3} direction='row'>
+              <Tooltip title='Search for name' arrow>
+                <Grid item xs={8}>
+                  <Autocomplete
+                    id={title}
+                    options={unselectedUsers}
+                    getOptionLabel={(option) => option.Fullname}
+                    getOptionSelected={(option, value) => option.id === value.id}
+                    style={{width: 300}}
+                    value={selectUser}
+                    onChange={(event, value) =>
+                      setSelectUser(value)
+                    }
+                    renderInput={(params) =>
+                      <TextField
+                        {...params}
+                        label='Search for Team Members'
+                        variant='outlined'
+                      />
+                    }
+                  />
                 </Grid>
+              </Tooltip>
+              <Grid item>
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  onClick={() => {
+                    setSelectedUsers([...selectedUsers, selectUser]);
+                    setSelectUser(null);
+                  }}
+                >
+                  Confirm
+                </Button>
               </Grid>
             </Grid>
-          </CardContent>
-        </Card>
+
+          </Grid>
+          {/* team list */}
+          <Grid item xs={9}>
+            {selectedUsers.map(participant =>
+              <ListItem key={participant.id}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <EmojiPeopleIcon/>
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={participant.Fullname}/>
+                <Button
+                  onClick={() =>
+                    setSelectedUsers([...selectedUsers.filter(u => u.id !== participant.id)])
+                  }
+                >
+                  Remove
+                </Button>
+              </ListItem>
+            )}
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
@@ -92,12 +93,11 @@ const PeopleSelect = ({title, allUsers, selectedPeople, handleRemove, handleConf
 
 PeopleSelect.propTypes = {
   title: PropTypes.string.isRequired,
-  allUsers: PropTypes.arrayOf(PropTypes.shape({
+  users: PropTypes.arrayOf(PropTypes.shape({
     Fullname: PropTypes.string.isRequired})).isRequired,
-  selectedPeople: PropTypes.arrayOf(PropTypes.shape({
+  selectedUsers: PropTypes.arrayOf(PropTypes.shape({
     Fullname: PropTypes.string.isRequired})).isRequired,
-  handleConfirmUser: PropTypes.func.isRequired,
-  handleRemove: PropTypes.func.isRequired,
+  setSelectedUsers: PropTypes.func.isRequired,
 };
 
 export default PeopleSelect;

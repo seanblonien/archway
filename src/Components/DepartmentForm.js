@@ -55,12 +55,10 @@ class DepartmentForm extends React.Component {
     this.setState({allUsers});
   };
 
-  handleClickOpen = () => {
-    this.setState({open: true});
-  };
-
-  handleClose = () => {
-    this.setState({open: false});
+  handleDialogToggle = () => {
+    this.setState(prevState => ({
+      open: !prevState.open
+    }));
   };
 
   handleSave = async () => {
@@ -69,9 +67,8 @@ class DepartmentForm extends React.Component {
 
     try {
       await api.departments.update(department.id, department);
-
-      enqueueSnackbar('The department was updated.', snack.success);
       await this.uploadImages(department.id);
+      enqueueSnackbar('The department was updated.', snack.success);
     } catch (err) {
       enqueueSnackbar('The department was unable to update.', snack.error);
     }
@@ -149,27 +146,11 @@ class DepartmentForm extends React.Component {
     this.setState({[name]: value});
   };
 
-  handleProfessorSelect = (user) => {
-    const {department} = this.state;
-    const {professors} = department;
-    professors.push(user);
-    this.setState({department: {
-      ...department,
+  setProfessors = (professors) => {
+    this.setState(prevState => ({department: {
+      ...prevState.department,
       professors}
-    });
-  };
-
-  handleProfessorRemove = (user) => {
-    const {department} = this.state;
-    const {professors} = department;
-
-    const index = professors.indexOf(user);
-    if (index !== -1) professors.splice(index, 1);
-
-    this.setState({department: {
-      ...department,
-      professors}
-    });
+    }));
   };
 
   initFields() {
@@ -194,22 +175,22 @@ class DepartmentForm extends React.Component {
     const {open, type, id, allUsers, department} = this.state;
     const {name, email, url, description, phone, preview, professors, thumbnail, cover} = department;
     const {title} = this.props;
+    const {handleDialogToggle, handleSave, handleCreate, handleChange,
+      handleMarkdownChange, setProfessors, handleFileChange} = this;
 
     return (
       <div>
-        <Button variant='contained' color='secondary' onClick={this.handleClickOpen}>
+        <Button variant='contained' color='secondary' onClick={handleDialogToggle}>
           {title}
         </Button>
         <Dialog
           open={open}
-          onClose={this.handleClose}
+          onClose={handleDialogToggle}
           aria-labelledby='form-dialog-title'
         >
           <DialogTitle id='form-dialog-title'>{title}</DialogTitle>
           <DialogContent>
-            <ValidatorForm
-              onSubmit={this.handleClose}
-            >
+            <ValidatorForm onSubmit={handleDialogToggle}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <TextField
@@ -217,7 +198,7 @@ class DepartmentForm extends React.Component {
                     name='name'
                     value={name || ''}
                     fullWidth
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -226,7 +207,7 @@ class DepartmentForm extends React.Component {
                     name='url'
                     value={url || ''}
                     fullWidth
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -235,7 +216,7 @@ class DepartmentForm extends React.Component {
                     name='phone'
                     value={phone || ''}
                     fullWidth
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -244,7 +225,7 @@ class DepartmentForm extends React.Component {
                     name='email'
                     value={email || ''}
                     fullWidth
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                     validators={['required', 'isEmail']}
                     errorMessages={['An email is required.', 'The email is invalid.']}
                   />
@@ -257,52 +238,54 @@ class DepartmentForm extends React.Component {
                     name='preview'
                     label='Preview'
                     value={preview}
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant='body1'>Enter department description and other information below</Typography>
                   <MarkdownEditor
                     uniqueName='description'
-                    setValue={(value) => this.handleMarkdownChange('description', value)}
+                    setValue={(value) => handleMarkdownChange('description', value)}
                     value={description}
                   />
                 </Grid>
 
-                <PeopleSelect
-                  title='Select Department Professors and Faculty'
-                  allUsers={allUsers}
-                  selectedPeople={professors}
-                  handleConfirmUser={this.handleProfessorSelect}
-                  handleRemove={this.handleProfessorRemove}
-                />
+                <Grid item xs={12}>
+                  <PeopleSelect
+                    title='Select Department Professors and Faculty'
+                    users={allUsers}
+                    selectedUsers={professors}
+                    setSelectedUsers={setProfessors}
+                  />
+                </Grid>
+
                 <PhotoUpload
                   fieldName='selectedThumbnail'
                   title='Choose Thumbnail'
                   id={id}
-                  onChange={this.handleFileChange}
+                  onChange={handleFileChange}
                   photo={imageURL.department(thumbnail)}
                 />
                 <PhotoUpload
                   fieldName='selectedCover'
                   title='Choose Cover'
                   id={id}
-                  onChange={this.handleFileChange}
+                  onChange={handleFileChange}
                   photo={imageURL.department(cover)}
                 />
               </Grid>
             </ValidatorForm>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color='primary'>
+            <Button onClick={handleDialogToggle} color='primary'>
               Cancel
             </Button>
             {type === 'edit' &&
-              <Button onClick={this.handleSave} color='primary'>
+              <Button onClick={handleSave} color='primary'>
                 Save
               </Button>}
             {type === 'create' &&
-              <Button onClick={this.handleCreate} color='primary'>
+              <Button onClick={handleCreate} color='primary'>
                 Create
               </Button>}
           </DialogActions>
