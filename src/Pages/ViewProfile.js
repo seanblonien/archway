@@ -85,10 +85,12 @@ class ViewProfile extends Component {
   handleSubmit = async (event) => {
     const {profile} = this.state;
     const {enqueueSnackbar} = this.props;
+    const {setUser} = this.context;
     event.preventDefault();
 
     try{
-      await api.users.update(profile.id, profile);
+      const response = await api.users.update(profile.id, profile);
+      setUser(response.data);
       this.setState({editing: false, unchangedProfile: profile});
       enqueueSnackbar('Your changes have been saved.', snack.success);
     } catch(e){
@@ -121,7 +123,7 @@ class ViewProfile extends Component {
                   <Paper className={classes.profilePaper}>
                     <MainProfileEdit user={profile} update={this.updateProfile}/>
                   </Paper>
-                  <Can perform={permissions.application.proposals.create}>
+                  <Can perform={permissions.application.proposals.create} role={profile.role.name}>
                     <br/>
                     <Paper className={classes.profilePaper}>
                       <SponsorProfileEdit user={profile} update={this.updateProfile}/>
