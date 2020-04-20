@@ -15,19 +15,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 
-const PeopleSelect = ( props ) => {
-
-  /*
-  * allUsers
-  * props
-  * handleConfirmTeammate - handleConfirmUser
-  * handleClickDialogOpen
-  * selectedPeople
-  */
-
+const PeopleSelect = ({title, allUsers, selectedPeople, handleRemove, handleConfirmUser}) => {
   const [selectUser, setSelectUser] = useState('');
-
-  const {title, allUsers, selectedPeople, handleRemove, handleConfirmUser} = props;
 
   const handleSelectUser = (event, values) => {
     setSelectUser(values);
@@ -45,23 +34,32 @@ const PeopleSelect = ( props ) => {
               </Grid>
               <Grid item xs={12}>
                 <Grid container alignItems='center'>
-
                   <Grid item xs={12}>
                     <Grid container alignItems='center' spacing={3} direction='row'>
                       <Tooltip title='Search for name' arrow>
                         <Grid item xs={8}>
                           <Autocomplete
-                            id='combo-box-demo'
+                            id={title}
                             options={allUsers}
                             getOptionLabel={(option) => option.Fullname}
                             style={{width: 300}}
                             onChange={handleSelectUser}
-                            renderInput={(params) => <TextField {...params} label='Search for Team Members' variant='outlined'/>}
+                            renderInput={(params) =>
+                              <TextField
+                                {...params}
+                                label='Search for Team Members'
+                                variant='outlined'
+                              />
+                            }
                           />
                         </Grid>
                       </Tooltip>
                       <Grid item>
-                        <Button variant='outlined' color='primary' onClick={() => handleConfirmUser(selectUser)}>
+                        <Button
+                          variant='outlined'
+                          color='primary'
+                          onClick={() => handleConfirmUser(selectUser)}
+                        >
                           Confirm
                         </Button>
                       </Grid>
@@ -70,27 +68,23 @@ const PeopleSelect = ( props ) => {
                   </Grid>
                   {/* team list */}
                   <Grid item xs={9}>
-                    {selectedPeople.map(participant =>(<ListItem key={participant.id}>
-                      <ListItemAvatar>
-                        <Avatar>
-                          <EmojiPeopleIcon/>
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={participant.Fullname}
-                      />
-                      <Button onClick={ () => handleRemove(participant)}>Remove</Button>
-                    </ListItem>))
-                    }
+                    {selectedPeople.map(participant =>
+                      <ListItem key={participant.id}>
+                        <ListItemAvatar>
+                          <Avatar>
+                            <EmojiPeopleIcon/>
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={participant.Fullname}/>
+                        <Button onClick={() => handleRemove(participant)}>Remove</Button>
+                      </ListItem>
+                    )}
                   </Grid>
-
                 </Grid>
               </Grid>
-
             </Grid>
           </CardContent>
         </Card>
-
       </Grid>
     </Grid>
   );
