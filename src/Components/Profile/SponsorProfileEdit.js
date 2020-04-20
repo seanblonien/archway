@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../../Services/api';
+import {permissions} from '../../constants';
+import SponsorForm from '../SponsorForm';
+import Can from '../Can';
 
 class SponsorProfileEdit extends Component {
   constructor(props) {
@@ -19,9 +22,13 @@ class SponsorProfileEdit extends Component {
 
   async componentDidMount() {
     // Get the list of sponsors
+    this.updateListOfSponsors();
+  }
+
+  updateListOfSponsors = async () => {
     const sponsors = await api.sponsors.find({});
     this.setState({sponsors});
-  }
+  };
 
   handleChange = event => {
     const {update} = this.props;
@@ -56,6 +63,9 @@ class SponsorProfileEdit extends Component {
                 ))}
               </Select>
             </Grid>
+            <Can perform={permissions.application.sponsors.create} role={user.role.name}>
+              <SponsorForm title='Create New Sponsor' type='create' update={this.updateListOfSponsors}/>
+            </Can>
             <Grid item xs={12}>
               <TextField
                 name='jobTitle'

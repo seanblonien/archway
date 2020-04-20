@@ -430,6 +430,9 @@
           "dominant": false,
           "targetAttribute": "sponsorOrganization",
           "unique": false
+        },
+        "verified": {
+          "type": "boolean"
         }
       }
     },

@@ -32,6 +32,9 @@ class AuthProvider extends Component {
       });
     }
   }
+  setUser = (user) => {
+    this.setState({user});
+  }
 
   logout = () => {
     const {enqueueSnackbar} = this.props;
@@ -113,13 +116,14 @@ class AuthProvider extends Component {
   render() {
     const {children} = this.props;
     const {isAuthenticated, user, token} = this.state;
-    const {logout, login, signUp, forgotPassword, resetPassword} = this;
+    const {setUser, logout, login, signUp, forgotPassword, resetPassword} = this;
 
     return (
       <AuthContext.Provider
         value={{
           isAuthenticated,
           user,
+          setUser,
           token,
           logout,
           login,
