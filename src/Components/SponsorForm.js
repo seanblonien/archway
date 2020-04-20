@@ -34,9 +34,9 @@ class SponsorForm extends React.Component {
       coverPhoto: '',
       logo: '',
       thumbnail: '',
-      selectedCover: '',
-      selectedLogo: '',
-      selectedThumbnail: ''
+      selectedCover: null,
+      selectedLogo: null,
+      selectedThumbnail: null
     };
   }
 
@@ -68,27 +68,22 @@ class SponsorForm extends React.Component {
     const {selectedCover, selectedLogo, selectedThumbnail, id} = this.state;
     const {enqueueSnackbar} = this.props;
 
-    let fileUpload;
-
     try{
-      // Upload the new picture
-      if (selectedCover !== '') {
-        fileUpload = formatEntryUpload(selectedCover, 'sponsors', id, 'coverPhoto', 'users-permissions');
+      if (selectedCover) {
+        const fileUpload = formatEntryUpload(selectedCover, 'sponsors', id, 'coverPhoto');
         await api.uploads.upload(fileUpload);
       }
-      if (fileUpload !== '') {
-        fileUpload = formatEntryUpload(selectedLogo, 'sponsors', id, 'logo', 'users-permissions');
+      if (selectedLogo) {
+        const fileUpload = formatEntryUpload(selectedLogo, 'sponsors', id, 'logo');
         await api.uploads.upload(fileUpload);
       }
-      if (selectedThumbnail !== '') {
-        fileUpload = formatEntryUpload(selectedThumbnail, 'sponsors', id, 'thumbnail', 'users-permissions');
+      if (selectedThumbnail) {
+        const fileUpload = formatEntryUpload(selectedThumbnail, 'sponsors', id, 'thumbnail');
         await api.uploads.upload(fileUpload);
       }
-
       enqueueSnackbar('Your changes have been saved.', snack.success);
     } catch(err){
-      const msg = 'there was a problem uploading the organizations photos';
-      enqueueSnackbar(msg, snack.error);
+      enqueueSnackbar('Error uploading the organizations photos', snack.error);
     }
   };
 

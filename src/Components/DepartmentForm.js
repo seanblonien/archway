@@ -5,7 +5,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import compose from 'recompose/compose';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
@@ -172,7 +171,7 @@ class DepartmentForm extends React.Component {
   }
 
   render() {
-    const {open, type, id, allUsers, department} = this.state;
+    const {open, type, allUsers, department} = this.state;
     const {name, email, url, description, phone, preview, professors, thumbnail, cover} = department;
     const {title} = this.props;
     const {handleDialogToggle, handleSave, handleCreate, handleChange,
@@ -258,21 +257,23 @@ class DepartmentForm extends React.Component {
                     setSelectedUsers={setProfessors}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <PhotoUpload
+                    fieldName='selectedThumbnail'
+                    title='Choose Thumbnail'
+                    onChange={handleFileChange}
+                    photo={imageURL.department(thumbnail)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <PhotoUpload
+                    fieldName='selectedCover'
+                    title='Choose Cover'
+                    onChange={handleFileChange}
+                    photo={imageURL.department(cover)}
+                  />
+                </Grid>
 
-                <PhotoUpload
-                  fieldName='selectedThumbnail'
-                  title='Choose Thumbnail'
-                  id={id}
-                  onChange={handleFileChange}
-                  photo={imageURL.department(thumbnail)}
-                />
-                <PhotoUpload
-                  fieldName='selectedCover'
-                  title='Choose Cover'
-                  id={id}
-                  onChange={handleFileChange}
-                  photo={imageURL.department(cover)}
-                />
               </Grid>
             </ValidatorForm>
           </DialogContent>
@@ -320,5 +321,4 @@ DepartmentForm.propTypes = {
 
 DepartmentForm.contextType = AuthContext;
 
-export default withSnackbar(compose(
-)(DepartmentForm));
+export default withSnackbar(DepartmentForm);

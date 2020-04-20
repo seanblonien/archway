@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import compose from 'recompose/compose';
 import {permissions} from '../constants';
 import Can from './Can';
 
@@ -93,7 +94,9 @@ PhotoUpload.propTypes = {
   fieldName: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-
 };
 
-export default withSnackbar(withStyles(styles)(PhotoUpload));
+export default compose(
+  withSnackbar,
+  withStyles(styles)
+)(PhotoUpload);
