@@ -101,13 +101,12 @@ class ViewCapstone extends Component {
             <MediaMarkdown>{capstone.description}</MediaMarkdown>
             <br/>
           </Grid>
-          {capstone.members[0] &&
-            <div><Typography style={{marginBottom: '10px'}} variant='h4'>Meet the Team</Typography>
-              <Grid container direction='column'>
-                <Team item capstone={capstone}/>
-              </Grid></div>
-          }
         </Grid>
+        {capstone.members[0] &&
+          <Grid container direction='column'>
+            <Team item capstone={capstone}/>
+          </Grid>
+        }
         <Grid container direction='column' justifyContent='center'>
           <CapstonePhotos item capstone={capstone}/>
         </Grid>

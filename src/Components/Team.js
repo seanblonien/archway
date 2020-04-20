@@ -1,31 +1,27 @@
 import {withStyles, withTheme} from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import Grid from '@material-ui/core/Grid';
+import React, {Component} from 'react';
+import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import Typography from '@material-ui/core/Typography';
-import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {imageURL} from '../utils/utils';
 import routes from '../utils/Routing/routes';
 import history from '../utils/Routing/history';
-import LoadingCircle from './LoadingCircle';
+import {imageURL} from '../utils/utils';
 
 const styles = (theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
+    paddingTop: '1%',
+    paddingRight: '5%',
+    paddingLeft: '5%',
   },
   gridList: {
-    height: '200px',
-    flexWrap: 'nowrap',
-    transform: 'translateZ(0)',
-  },
-  text: {
-    color: 'rgb(0, 0, 0)',
+
   },
 });
 
@@ -33,7 +29,6 @@ class Team extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
       team: [],
     };
   }
@@ -41,38 +36,37 @@ class Team extends Component {
   async componentDidMount() {
     const {capstone} = this.props;
     const team = capstone.members;
-    this.setState({loading: false, team});
+    this.setState({team});
   }
 
   handleTileClick = (title) => {
     history.push(routes.viewprofile.genPath(title));
   };
 
-  render () {
+  render() {
     const {classes} = this.props;
-    const {team, loading} = this.state;
+    const {team} = this.state;
 
-    return loading ?
-      <LoadingCircle/> :
-      <Grid container direction='row' xs={11} className={classes.root}>
-        <GridList item className={classes.gridList} cols={2.5}>
+    return (
+      <div className={classes.root}>
+        <Typography style={{marginBottom: '10px'}} variant='h4'>Meet the Team</Typography>
+        <GridList className={classes.gridList} cols={6}>
           {team.map((member) => (
-            <div key={member.id} style={{marginRight: '20px'}}>
+            <div style={{height: '200px', width: '200px'}}>
               <GridListTile
+                key={member.id} cols={2}
+                style={{height: '150px', width: '150px', paddingRight: '2%', paddingTop: '2%'}}
                 onClick={() => this.handleTileClick(member.username)}
               >
-                <img
-                  src={imageURL.user(member.picture)}
-                  alt='Team Member'
-                  style={{height: '150px', width: '150px'}}
-                />
+                <img src={imageURL.user(member.picture)} alt=''/>
               </GridListTile>
-              <Typography className={classes.text}>{member.Fullname}</Typography>
+              <Typography variant='body2'>{member.Fullname}</Typography>
+              <Typography variant='body2'>{member.email}</Typography>
             </div>
           ))}
         </GridList>
-      </Grid>
-    ;
+      </div>
+    );
   }
 }
 
