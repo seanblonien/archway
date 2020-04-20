@@ -26,9 +26,9 @@ const ResultCapstone = ({capstone}) => (
 ResultCapstone.propTypes = {
   capstone: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    preview: PropTypes.string.isRequired,
-    thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired
+    name: PropTypes.string,
+    preview: PropTypes.string,
+    thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
   }).isRequired,
 };
 

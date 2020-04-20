@@ -13,6 +13,8 @@ class ResultsList extends Component {
       capstones: [{
         id: '',
       }],
+      selectedDepartments: new Set(),
+      selectedSponsors: new Set(),
     };
   }
 
@@ -24,6 +26,24 @@ class ResultsList extends Component {
     this.setState({capstones});
   }
 
+  updateDepartments = (departments) => {
+    this.setState({selectedDepartments: departments});
+    this.search();
+  };
+
+  updateSponsors = (sponsors) => {
+    this.setState({selectedSponsors: sponsors});
+    this.search();
+  };
+
+  search = async () => {
+    const {query} = this.props;
+    const {selectedDepartments, selectedSponsors} = this.state;
+
+    const capstones = await api.capstones.find({_q: query, _limit: 3});
+    this.setState({capstones});
+  };
+
   render() {
     const {query} = this.props;
     const {capstones} = this.state;
@@ -33,7 +53,7 @@ class ResultsList extends Component {
         <Typography variant='h3'>Search results for {query}</Typography>
         <Grid container direction = 'row' spacing={2}>
           <Grid item xs={4}>
-            <Filters/>
+            <Filters departments={this.updateDepartments} sponsors={this.updateSponsors}/>
           </Grid>
           <Grid item xs={8}>
             {capstones.map(capstone => (

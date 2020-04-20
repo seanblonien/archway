@@ -42,6 +42,7 @@ class ResultsList extends Component {
   };
 
   handleDepartmentsCheckboxClick = (event) =>{
+    const {departments} = this.props;
     const {checkedDepartments} = this.state;
     const item = event.target.name;
     if(event.target.checked){
@@ -50,9 +51,12 @@ class ResultsList extends Component {
       checkedDepartments.delete(item);
     }
     this.setState({checkedDepartments});
+    console.log(Array.from(checkedDepartments));
+    departments(Array.from(checkedDepartments));
   };
 
   handleSponsorsCheckboxClick = (event) =>{
+    const {sponsors} = this.props;
     const {checkedSponsors} = this.state;
     const item = event.target.name;
     if(event.target.checked){
@@ -61,6 +65,7 @@ class ResultsList extends Component {
       checkedSponsors.delete(item);
     }
     this.setState({checkedSponsors});
+    sponsors(Array.from(checkedSponsors));
   };
 
   render() {
@@ -106,6 +111,8 @@ class ResultsList extends Component {
 
 
 ResultsList.propTypes = {
+  departments: PropTypes.func.isRequired,
+  sponsors: PropTypes.func.isRequired
 };
 
 export default ResultsList;
