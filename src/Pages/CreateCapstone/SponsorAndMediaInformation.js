@@ -1,3 +1,4 @@
+import Typography from '@material-ui/core/Typography';
 import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -11,17 +12,16 @@ import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import BusinessIcon from '@material-ui/icons/Business';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import DragAndDropZone from '../../Components/DragAndDropZone/DragAndDropZone';
-import DragAndDropMultipleZone from "../../Components/DragAndDropZone/UploadMultipleImage";
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import PageTitleTypography from '../../Components/PageTitleTypography';
-import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import {imageURL} from "../../utils/utils";
+import DragAndDropMultipleZone from '../../Components/DragAndDropZone/DragAndDropMultipleZone';
+import DragAndDropZone from '../../Components/DragAndDropZone/DragAndDropZone';
+import {imageURL} from '../../utils/utils';
 
 const SponsorAndMediaInformation = (props) => {
 
@@ -38,7 +38,6 @@ const SponsorAndMediaInformation = (props) => {
     */
 
   const [clearThumbnail, setClearThumbnail] = useState(false);
-  const [clearCoverPhoto, setClearCoverPhoto] = useState(false);
   const [clearMedia, setClearMedia] = useState(false);
 
   useEffect(() => {
@@ -46,7 +45,6 @@ const SponsorAndMediaInformation = (props) => {
       props.setRemoveImg(false);
 
       console.log('remove all images');
-      setClearCoverPhoto(true);
       setClearThumbnail(true);
       setClearMedia(true);
     }
@@ -57,7 +55,8 @@ const SponsorAndMediaInformation = (props) => {
       return (
         <ListItem
           key={sponsor.id}
-          alignItems="flex-start">
+          alignItems='flex-start'
+        >
           <ListItemAvatar>
             <Avatar>
               <EmojiPeopleIcon/>
@@ -68,34 +67,34 @@ const SponsorAndMediaInformation = (props) => {
             secondary={sponsor.url}
           />
           {canDelete &&
-          <ListItemSecondaryAction>
-            <IconButton aria-label="delete">
-              <DeleteIcon onClick={() => props.handleRemoveSponsor(sponsor.id)}/>
-            </IconButton>
-          </ListItemSecondaryAction>
+            <ListItemSecondaryAction>
+              <IconButton aria-label='delete'>
+                <DeleteIcon onClick={() => props.handleRemoveSponsor(sponsor.id)}/>
+              </IconButton>
+            </ListItemSecondaryAction>
           }
         </ListItem>);
     }
-    else {
-      return (
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar alt={sponsor.name} src={imageURL.user(sponsor.logo)} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={sponsor.name}
-            secondary={sponsor.url}
-          />
-          {canDelete &&
+
+    return (
+      <ListItem alignItems='flex-start'>
+        <ListItemAvatar>
+          <Avatar alt={sponsor.name} src={imageURL.user(sponsor.logo)}/>
+        </ListItemAvatar>
+        <ListItemText
+          primary={sponsor.name}
+          secondary={sponsor.url}
+        />
+        {canDelete &&
           <ListItemSecondaryAction>
-            <IconButton aria-label="delete">
+            <IconButton aria-label='delete'>
               <DeleteIcon onClick={() => props.handleRemoveSponsor(sponsor.id)}/>
             </IconButton>
           </ListItemSecondaryAction>
-          }
-        </ListItem>
-      );
-    }
+        }
+      </ListItem>
+    );
+
   };
 
 
@@ -125,15 +124,18 @@ const SponsorAndMediaInformation = (props) => {
                           {props.sponsorList.map(sponsor => (
                             <MenuItem
                               key={sponsor.id}
-                              value={sponsor}>{sponsor.name}</MenuItem>
+                              value={sponsor}
+                            >{sponsor.name}</MenuItem>
                           ))}
                         </Select>
                       </FormControl>
                     </Grid>
                   </Tooltip>
                   <Grid item xs>
-                    <Button variant='outlined' color='primary'
-                            onClick={() => props.handleConfirmSponsor(props.selectedSponsor)}>
+                    <Button
+                      variant='outlined' color='primary'
+                      onClick={() => props.handleConfirmSponsor(props.selectedSponsor)}
+                    >
                       Confirm
                     </Button>
                   </Grid>
@@ -155,7 +157,7 @@ const SponsorAndMediaInformation = (props) => {
             <DragAndDropZone
               removeImg={clearThumbnail}
               setRemoveImg={setClearThumbnail}
-              id="file-id"
+              id='file-id'
               acceptImage={props.handleAcceptImageThumbnail.bind(this)}
               prompt='Drop or click to upload a thumbnail'
             />
@@ -166,13 +168,13 @@ const SponsorAndMediaInformation = (props) => {
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
+            <Typography align='center' variant='h5'>
+              Upload Cover Photo
+            </Typography>
+            <Divider/>
             <DragAndDropMultipleZone
-              id={"coverPhoto"}
-
-              removeImg={clearCoverPhoto}
-              setRemoveImg={setClearCoverPhoto}
+              id='coverPhoto'
               acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}
-              prompt='Upload Cover Photo'
             />
           </CardContent>
         </Card>
@@ -183,7 +185,7 @@ const SponsorAndMediaInformation = (props) => {
           <CardContent>
 
             <DragAndDropMultipleZone
-              id={"media"}
+              id='media'
               removeImg={clearMedia}
               setRemoveImg={setClearMedia}
               acceptImage={props.handleAcceptImageMedia.bind(this)}
@@ -195,6 +197,6 @@ const SponsorAndMediaInformation = (props) => {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default SponsorAndMediaInformation;
