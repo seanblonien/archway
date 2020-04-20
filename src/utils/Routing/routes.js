@@ -15,7 +15,6 @@ import ViewASponsor from '../../Pages/ViewASponsor';
 import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
-import Register from '../../Components/Auth/Register';
 import SearchResults from '../../Pages/SearchResults';
 import SignUp from '../../Components/Auth/SignUp';
 import ForgotPassword from '../../Components/Auth/ForgotPassword';
