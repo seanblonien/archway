@@ -6,13 +6,13 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import history from '../utils/history';
-import LoadingCircle from './LoadingCircle';
 import api from '../Services/api';
+import history from '../utils/Routing/history';
+import routes from '../utils/Routing/routes';
 import gStyle from '../utils/styles.module.css';
+import LoadingCircle from './LoadingCircle';
 
 const styles = {
   card: {
@@ -43,7 +43,7 @@ class About extends Component {
 
     const sponsorMatch = sponsors.find(sponsor => sponsor.name === label);
     if(sponsorMatch) {
-      history.push(`/ViewASponsor/${sponsorMatch.id}`);
+      history.push(routes.viewsponsor.genPath(sponsorMatch.id));
     }
   };
 
@@ -126,10 +126,6 @@ class About extends Component {
     return <LoadingCircle/>;
   }
 }
-
-About.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default compose(
   withStyles(styles),

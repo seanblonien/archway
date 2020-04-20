@@ -14,17 +14,17 @@ import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import BusinessIcon from '@material-ui/icons/Business';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import Filter from 'bad-words';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import api from '../Services/api';
 import SimpleDialog from '../Components/AddUserDialog';
 import ArchwayDatePicker from '../Components/ArchwayDatePicker';
 import DragAndDropZone from '../Components/DragAndDropZone/DragAndDropZone';
-import PageTitleTypography from '../Components/PageTitleTypography';
+import api from '../Services/api';
 
 const styles = theme => ({
   list: {
@@ -46,8 +46,8 @@ const styles = theme => ({
     marginTop: '.5%',
   },
   textField: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(1),
     width: 250,
     placeholder: 'Search...'
   },
@@ -215,7 +215,7 @@ class CreateCapstone extends Component {
           <Grid item xs={12} md={10}>
             <Card className={classes.card}>
               <CardContent>
-                <PageTitleTypography text='Create Capstone' align='left' size='h4'/>
+                <Typography variant='h4'>Create Capstone</Typography>
                 <Grid container  justify='left' spacing={3}>
                   <Grid item xs={12}>
                     {/* Form for capstone name */}
@@ -288,7 +288,7 @@ class CreateCapstone extends Component {
               <CardContent>
                 <Grid container  justify='left' alignItems='center' spacing={2}>
                   <Grid item xs={12}>
-                    <PageTitleTypography text='Team Member Information' align='left' size='h5'/>
+                    <Typography variant='h4'>Team Member Information</Typography>
                     <Divider/>
                   </Grid>
                   <Grid item xs={12}>
@@ -368,7 +368,7 @@ class CreateCapstone extends Component {
               <CardContent>
                 <Grid container  justify='left' alignItems='center' spacing={2}>
                   <Grid item xs={12}>
-                    <PageTitleTypography text='Team Member Information' align='left' size='h5'/>
+                    <Typography variant='h4'>Team Member Information</Typography>
                     <Divider/>
                   </Grid>
 
@@ -458,7 +458,7 @@ class CreateCapstone extends Component {
           <Grid item xs={12} md={10}>
             <Card className={classes.card}>
               <CardContent>
-                <PageTitleTypography text='Sponsor Information' align='left' size='h5'/>
+                <Typography variant='h4'>Sponsor Information</Typography>
                 <Divider/>
                 <Grid container  justify='center'>
                   <Grid item xs={12}>

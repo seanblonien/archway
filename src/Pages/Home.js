@@ -7,16 +7,15 @@ import React, {Component} from 'react';
 import {Parallax} from 'react-parallax';
 import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
+import Can from '../Components/Can';
 import FeaturedCapstones from '../Components/FeaturedCapstones';
 import FeaturedSponsors from '../Components/FeaturedSponsors';
 import LoadingCircle from '../Components/LoadingCircle';
-import MediaMarkdown from '../utils/MediaMarkdown';
-import {permissions} from '../constants';
-import Can from '../Components/Can';
-import gStyle from '../utils/styles.module.css';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import {permissions, strapiURL} from '../constants';
 import api from '../Services/api';
-import {getBgImageFromStrapi} from '../utils/utils';
+import routes from '../utils/Routing/routes';
+import gStyle from '../utils/styles.module.css';
 
 const insideStyles = theme => ({
   background: theme.palette.primary.main,
@@ -95,7 +94,7 @@ class Home extends Component {
       :
       <div>
         <div>
-          <Parallax style={{backgroundImage: getBgImageFromStrapi(pageContent.bgimage.url), backgroundSize: 'cover'}} strength={500}>
+          <Parallax bgImage={strapiURL + pageContent.bgimage.url} strength={500}>
             <div style={{height: 650}}>
               <div style={surroundStyle}>
                 <div style={insideStyles(theme)}>
@@ -107,7 +106,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/Capstones'
+                      to={routes.capstones.genPath('')}
                     >
                       Check out Current Capstones
                     </Button>
@@ -116,7 +115,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/ViewSponsors'
+                      to={routes.viewsponsors.path}
                     >
                       Check Out Our Sponsors
                     </Button>
@@ -125,7 +124,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to='/Sponsors'
+                      to={routes.sponsors.path}
                     >
                       Become a Sponsor
                     </Button>
@@ -166,11 +165,6 @@ class Home extends Component {
     ;
   }
 }
-
-Home.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-  theme: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default compose(
   withStyles(styles, {withTheme: true}),

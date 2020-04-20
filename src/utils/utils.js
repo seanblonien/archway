@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import _ from 'lodash';
+import {useLocation} from 'react-router-dom';
 import defaultUserImg from '../Static/defaultUser.png';
 import {strapiURL} from '../constants';
 import defaultCapstoneImg from '../Static/defaultCapstone.svg';
@@ -55,5 +56,44 @@ export const transformUserFields = async (user) => {
  * @returns {string}
  */
 export const formatQuery = (params) => `?${Object.keys(params)
-  .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-  .join('&')}`;
+  .map(k => {
+    const value = params[k];
+    if(typeof value === 'object') {
+      return Object.keys(value).map((subk) => (
+        `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`)
+      ).join('&');
+    }
+    return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
+  }).join('&')}`;
+
+/**
+ * Formats a given file file for uploading to strapi as it relates to an entry.
+ * An entry is an instance of a content type. For example, a singular user is an entry.
+ *
+ * @param file the file to upload for
+ * @param entryModel the model or content type name (i.e. user, capstone)
+ * @param entryID the ID of the entry to associate this file with (i.e. a user ID)
+ * @param entryField the field in the entry for the file
+ * @param entryPlugin (optional) the plugin name for the model or content type
+ */
+export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPlugin = null) => {
+  const entryUpload = new FormData();
+  entryUpload.append('files', file);
+  entryUpload.append('ref', entryModel);
+  entryUpload.append('refId', entryID);
+  entryUpload.append('field', entryField);
+  if(entryPlugin) {
+    entryUpload.append('source', entryPlugin);
+  }
+  return entryUpload;
+};
+
+export const useQuery = () => new URLSearchParams(useLocation().search);
+
+// Strapi dates are returned as a string in the format of MM/DD/YYYY.
+// This method converts it to a Date object.
+export const convertStrapiDate = (date) => {
+  const d = date.split('-');
+  const convertedDate = new Date(d[0], d[1]-1, d[2]);
+  return convertedDate;
+};

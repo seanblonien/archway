@@ -8,12 +8,15 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
+import {withSnackbar} from 'notistack';
 import LoadingCircle from '../Components/LoadingCircle';
-import PageTitleTypography from '../Components/PageTitleTypography';
-import SubHeadingTextTypography from '../Components/SubHeadingTextTypography';
+import SponsorForm from '../Components/SponsorForm';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import api from '../Services/api';
-import MediaMarkdown from '../utils/MediaMarkdown';
 import {imageURL} from '../utils/utils';
+import {permissions} from '../constants';
+import Can from '../Components/Can';
+import AuthContext from '../Contexts/AuthContext';
 
 const styles = theme => ({
   card: {
@@ -36,7 +39,7 @@ const styles = theme => ({
     border: '2px solid currentColor',
     borderRadius: 0,
     height: 'auto',
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 5}px`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(5)}px`,
   },
   pos: {
     marginBottom: 100,
@@ -70,42 +73,77 @@ class ViewASponsor extends Component {
     super(props);
     this.state = {
       loading: true,
-      sponsor: []
+      sponsor: [],
+      canEdit: false,
+      logoPhoto: '',
+      coverPhoto: ''
     };
   }
 
   async componentDidMount() {
     const {match} = this.props;
     const sponsor = await api.sponsors.findOne(match.params.id);
-    this.setState({loading: false, sponsor});
+    const {user} = this.context;
+    this.setState({
+      loading: false,
+      sponsor,
+      logoPhoto: imageURL.sponsor(sponsor.logo),
+      coverPhoto: imageURL.sponsor(sponsor.coverPhoto)
+    });
+
+    for (const person of sponsor.personnel) {
+      if (person.id === user.id) {
+        this.setState({canEdit: true});
+      }
+    }
   }
+
+  updateData = async () => {
+    const {sponsor} = this.state;
+    const updatedSponsor = await api.sponsors.findOne(sponsor.id);
+    this.setState({
+      sponsor: updatedSponsor,
+      coverPhoto: imageURL.sponsor(updatedSponsor.coverPhoto),
+      logoPhoto: imageURL.sponsor(updatedSponsor.logo)
+    });
+  };
 
   render() {
     const {classes} = this.props;
-    const {loading, sponsor} = this.state;
+    const {loading, sponsor, canEdit, logoPhoto} = this.state;
 
     if (!loading) {
       return (
         <div className='ViewASponsor'>
           <Grid container justify='center'>
-            <Grid xs={10}>
+            <Grid item xs={10}>
               <Grid container>
-                <Grid xs={12}>
+                <Grid item xs={12}>
                   <Card>
-                    <PageTitleTypography text={sponsor.name}/>
+                    {canEdit &&
+                      <Can perform={permissions.application.sponsors.update}>
+                        <SponsorForm
+                          title='Edit Sponsor'
+                          sponsor={sponsor}
+                          type='edit'
+                          update={this.updateData}
+                        />
+                      </Can>
+                    }
+                    <Typography variant='h1'>{sponsor.name}</Typography>
                     <Divider style={{marginTop: '2%'}}/>
                   </Card>
                 </Grid>
                 <Card>
                   <Grid container justify='center'>
-                    <Grid xs={6}>
+                    <Grid item xs={6}>
 
                       <Typography color='primary' align='center' component='span'>
                         <h1> Logo </h1>
                       </Typography>
                       <Divider style={{marginBottom: '2%'}}/>
                       <Typography align='center' style={{marginBottom: '1%'}}>
-                        <img src={imageURL.sponsor(sponsor.logo)} className={classes.sponsorImage} alt='Display'/>
+                        <img src={logoPhoto} className={classes.sponsorImage} alt='Display'/>
                       </Typography>
                       <CardContent>
                         <MediaMarkdown>
@@ -129,11 +167,11 @@ class ViewASponsor extends Component {
                   </Grid>
                 </Card>
 
-                <Grid xs={12}>
+                <Grid item xs={12}>
                   <Card>
                     <Divider style={{marginTop: '2%'}}/>
-                    <Typography align='center'>
-                      <h1> {`${sponsor.name}'s`} Sponsored Capstones </h1>
+                    <Typography variant='h4' align='center'>
+                      {`${sponsor.name}'s`} Sponsored Capstones
                     </Typography>
                     <CardContent>
                       <Typography>
@@ -141,10 +179,10 @@ class ViewASponsor extends Component {
                       </Typography>
                       <Grid container spacing={8}>
                         {sponsor.capstones.map((result) => (
-                          <Grid item xs={12} md={6} style={{marginTop: '2%'}}>
+                          <Grid item xs={12} md={6} style={{marginTop: '2%'}} key={result.id}>
                             <Card className={classes.capstoneCard} style={{height: '200px', overflow: 'auto'}}>
                               <CardContent>
-                                <SubHeadingTextTypography text={result.title}/>
+                                <Typography variant='subtitle1'>{result.title}</Typography>
                                 <Divider/>
                                 <MediaMarkdown>
                                   {result.description}
@@ -168,4 +206,6 @@ class ViewASponsor extends Component {
   }
 }
 
-export default (withStyles(styles)(withWidth()(ViewASponsor)));
+ViewASponsor.contextType = AuthContext;
+
+export default withSnackbar((withStyles(styles)(withWidth()(ViewASponsor))));

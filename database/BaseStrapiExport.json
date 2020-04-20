@@ -55,13 +55,6 @@
           "targetAttribute": "capstones",
           "unique": false
         },
-        "department": {
-          "nature": "oneToMany",
-          "target": "application::departments.departments",
-          "dominant": false,
-          "targetAttribute": "capstones",
-          "unique": false
-        },
         "section": {
           "nature": "manyToOne",
           "target": "application::sections.sections",
@@ -73,6 +66,13 @@
           "type": "media",
           "multiple": false,
           "required": false
+        },
+        "departments": {
+          "nature": "manyToMany",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "capstones",
+          "unique": false
         }
       }
     },
@@ -130,31 +130,23 @@
           "required": true
         },
         "capstones": {
-          "nature": "manyToOne",
+          "nature": "manyToMany",
           "target": "application::capstones.capstones",
-          "dominant": false,
-          "targetAttribute": "department",
+          "dominant": true,
+          "targetAttribute": "departments",
           "unique": false
         },
         "url": {
           "type": "string"
         },
-        "contact": {
+        "email": {
           "type": "email"
         },
         "description": {
           "type": "richtext",
           "default": "10000"
         },
-        "preview": {
-          "type": "string"
-        },
         "thumbnail": {
-          "type": "media",
-          "multiple": false,
-          "required": false
-        },
-        "coverPhoto": {
           "type": "media",
           "multiple": false,
           "required": false
@@ -179,6 +171,17 @@
           "dominant": false,
           "targetAttribute": "department",
           "unique": false
+        },
+        "phone": {
+          "type": "string"
+        },
+        "preview": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "media",
+          "multiple": false,
+          "required": false
         }
       }
     },
@@ -427,6 +430,9 @@
           "dominant": false,
           "targetAttribute": "sponsorOrganization",
           "unique": false
+        },
+        "verified": {
+          "type": "boolean"
         }
       }
     },
@@ -649,6 +655,9 @@
           "dominant": false,
           "targetAttribute": "personnel",
           "unique": false
+        },
+        "jobTitle": {
+          "type": "string"
         }
       }
     }

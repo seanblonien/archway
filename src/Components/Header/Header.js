@@ -9,13 +9,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
 import AuthContext from '../../Contexts/AuthContext';
 import universityLogo from '../../Static/univ_logo.svg';
-import history from '../../utils/history';
+import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
 import Drawer from './Drawer';
 import SearchBar from './SearchBar';
 import SubMenu from './SubMenu';
@@ -40,16 +40,16 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit * 3,
+      marginLeft: theme.spacing(3),
       width: 'auto',
     },
   },
   searchIcon: {
-    width: theme.spacing.unit * 9,
+    width: theme.spacing(9),
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -71,7 +71,7 @@ const styles = theme => ({
   }
 });
 
-class PrimarySearchAppBar extends Component {
+class Header extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -93,11 +93,6 @@ class PrimarySearchAppBar extends Component {
     this.setState({anchorEl: event.currentTarget});
   };
 
-  handleToAccount = () => {
-    const {user} = this.context;
-    history.push(`/ViewProfile/${user.username}`);
-  };
-
   render() {
     const {isAuthenticated} = this.context;
     const {anchorEl} = this.state;
@@ -112,8 +107,8 @@ class PrimarySearchAppBar extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        {isAuthenticated && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
-        {!isAuthenticated && <MenuItem onClick={() => history.push('/login')}>Login / Register</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={() => history.push(routes.dashboard.path)}>Dashboard</MenuItem>}
+        {!isAuthenticated && <MenuItem onClick={() => history.push(routes.auth.login.path)}>Login / Register</MenuItem>}
         {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
       </Menu>
     );
@@ -126,30 +121,30 @@ class PrimarySearchAppBar extends Component {
             <div className={classes.sectionMobile}>
               <Drawer/>
             </div>
-            <Button style={{color: 'white', fontSize: '25px'}} component={Link} to='/'>
+            <Button style={{color: 'white', fontSize: '25px'}} component={Link} to={routes.home.path}>
               <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40' style={{paddingRight: 7}}/>
               {theme.university} | Archway
             </Button>
             <div className={classes.sectionDesktop}>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to='/About'>
+              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.about.path}>
                 <SubMenu
                   title='About'
                   items={['FAQ', String(theme.university), 'Archway']}
-                  links={['/FAQ', '/About', '/About']}
+                  links={[routes.faq.path, routes.about.path, routes.about.path]}
                 />
               </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to='/Sponsors'>
+              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.sponsors.path}>
                 <SubMenu
                   title='Sponsors'
                   items={['Become a Sponsor', 'View Current Sponsors']}
-                  links={['/Sponsors', '/ViewSponsors']}
+                  links={[routes.sponsors.path, routes.viewsponsors.genPath()]}
                 />
               </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to='/Capstones'>
+              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.genPath()}>
                 <SubMenu
                   title='Projects'
                   items={['All Capstones','All Departments']}
-                  links={['/Capstones', '/ViewAllDepartments']}
+                  links={[routes.capstones.genPath(), routes.viewdepartments.path]}
                 />
               </Button>
             </div>
@@ -195,15 +190,10 @@ class PrimarySearchAppBar extends Component {
   }
 }
 
-PrimarySearchAppBar.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-  theme: PropTypes.objectOf(PropTypes.object).isRequired,
-};
-
-PrimarySearchAppBar.contextType = AuthContext;
+Header.contextType = AuthContext;
 
 export default compose(
   withStyles(styles),
   withRouter,
   withTheme
-)(PrimarySearchAppBar);
+)(Header);

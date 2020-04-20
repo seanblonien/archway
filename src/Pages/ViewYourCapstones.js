@@ -13,11 +13,12 @@ import InfoIcon from '@material-ui/icons/Info';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import compose from 'recompose/compose';
+import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import AuthContext from '../Contexts/AuthContext';
 import LoadingCircle from '../Components/LoadingCircle';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
 
 const styles = {
   card: {
@@ -76,11 +77,11 @@ class ViewYourCapstones extends Component {
     // get capstones that are moderated by user
     const response = await api.users.findOne(userID);
     this.setState({capstones: response.data.capstones});
-    history.push('/');
+    history.push(routes.home.path);
   };
 
   handleTileClick = (title) => {
-    history.push(`/ViewCapstone/${title}`);
+    history.push(routes.viewcapstone.genPath(title));
   };
 
   render() {
@@ -114,7 +115,7 @@ class ViewYourCapstones extends Component {
                             <IconButton
                               className={classes.icon}
                               component={Link}
-                              to={`/ViewCapstone${result._id}`}
+                              to={`/ViewCapstone${result.id}`}
                             >
                               <InfoIcon/>
                             </IconButton>
@@ -123,7 +124,7 @@ class ViewYourCapstones extends Component {
                             <IconButton
                               className={classes.icon}
                               component={Link}
-                              to={`/EditCapstone${result._id}`}
+                              to={`/EditCapstone${result.id}`}
                             >
                               <CreateIcon/>
                             </IconButton>
@@ -133,7 +134,7 @@ class ViewYourCapstones extends Component {
                               className={classes.icon}
                               onClick={(e) => this.handleDelete(e, result.id)}
                               component={Link}
-                              to={`/ViewYourCapstones${result._id}`}
+                              to={`/ViewYourCapstones${result.id}`}
                             >
                               <DeleteForeverIcon/>
                             </IconButton>
@@ -161,7 +162,7 @@ class ViewYourCapstones extends Component {
             <Grid item xs={12} md={10}>
               <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
                 {participatedCapstones.map((result2) => (
-                  <GridListTile key={result2.coverPhoto.url} onClick={() => this.handleTileClick(result2._id)}>
+                  <GridListTile key={result2.coverPhoto.url} onClick={() => this.handleTileClick(result2.id)}>
                     <img src={imageURL.capstone(result2.coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
                     <GridListTileBar
                       title={result2.title}
@@ -173,7 +174,7 @@ class ViewYourCapstones extends Component {
                               <IconButton
                                 className={classes.icon}
                                 component={Link}
-                                to={`/ViewCapstone/${result2._id}`}
+                                to={`/ViewCapstone/${result2.id}`}
                               >
                                 <InfoIcon/>
                               </IconButton>

@@ -4,10 +4,10 @@ import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../Services/api';
-import history from '../utils/history';
+import history from '../utils/Routing/history';
+import routes from '../utils/Routing/routes';
 
 const styles = theme => ({
   root: {
@@ -22,7 +22,7 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     minWidth: 200,
   },
 });
@@ -53,9 +53,8 @@ class NativeSelects extends Component {
   }
 
   handleChange = name => event => {
-    const path = `/SearchRedirect/Capstones/${event.target.value}`;
     this.setState({[name]: event.target.value});
-    history.push(path);
+    history.push(routes.searchredirect.genPath('Capstones', event.target.value));
   };
 
   render() {
@@ -99,9 +98,5 @@ class NativeSelects extends Component {
     );
   }
 }
-
-NativeSelects.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default withStyles(styles)(NativeSelects);
