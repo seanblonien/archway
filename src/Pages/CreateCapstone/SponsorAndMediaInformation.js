@@ -50,12 +50,14 @@ const SponsorAndMediaInformation = (props) => {
       setClearThumbnail(true);
       setClearMedia(true);
     }
-  });
+  }, [props.removeImg, props.setRemoveImg]);
 
   const displaySponsor = (sponsor, canDelete=true) => {
     if (!sponsor.logo) {
       return (
-        <ListItem alignItems="flex-start">
+        <ListItem
+          key={sponsor.id}
+          alignItems="flex-start">
           <ListItemAvatar>
             <Avatar>
               <EmojiPeopleIcon/>

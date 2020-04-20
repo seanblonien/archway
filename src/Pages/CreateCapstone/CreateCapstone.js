@@ -91,12 +91,23 @@ class CreateCapstone extends Component {
     this.setState({Users: response, AllUsers: response});
 
     // load the capstone to edit if exist
+    // TODO: test upload image
+    // TODO: preview semester
+    // TODO: if not a created capstone, clear, else reset all things
     if (this.props.editId) {
-      const editCapstone = await api.capstones.findOne(this.props.editId);
+      const editCapstone = await api.capstones.findOne("5e9cead5003a0600319843e1");
       console.log(editCapstone);
+
     }
 
   }
+
+  // loadCurrentCapstone = (capstone) => {
+  //   const currentCapstone = JSON.parse(JSON.stringify(capstone));
+  //   this.setState({
+  //     title: currentCapstone.name;
+  //   })
+  // };
 
   handleChangeDepartment = (event) => {
     this.setState({Department: event.target.value});
@@ -136,7 +147,6 @@ class CreateCapstone extends Component {
       })
     });
   };
-
 
   handleConfirmTeammate = (selectedUser) => {
     const user = selectedUser;
@@ -296,10 +306,9 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
-    console.log('???');
-    // if (!this.isFormValidForSubmit()) {
-    //   return;
-    // }
+    if (!this.isFormValidForSubmit()) {
+      return;
+    }
     await this.handleUpload(true);
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('successful submit!', snack.success);

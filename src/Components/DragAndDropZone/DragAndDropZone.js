@@ -4,7 +4,6 @@ import './style.css';
 
 
 
-
 export default function Accept(props) {
   const {acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: 'image/jpeg, image/png'
