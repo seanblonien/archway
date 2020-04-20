@@ -85,10 +85,12 @@ class ViewProfile extends Component {
   handleSubmit = async (event) => {
     const {profile} = this.state;
     const {enqueueSnackbar} = this.props;
+    const {setUser} = this.context;
     event.preventDefault();
 
     try{
-      await api.users.update(profile.id, profile);
+      const response = await api.users.update(profile.id, profile);
+      setUser(response.data);
       this.setState({editing: false, unchangedProfile: profile});
       enqueueSnackbar('Your changes have been saved.', snack.success);
     } catch(e){
