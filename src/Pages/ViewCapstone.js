@@ -12,6 +12,7 @@ import api from '../Services/api';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import LoadingCircle from '../Components/LoadingCircle';
 import Team from '../Components/Team';
+import CapstonePhotos from '../Components/CapstonePhotos';
 import {strapiURL} from '../constants';
 import {convertStrapiDate, imageURL} from '../utils/utils';
 import history from '../utils/Routing/history';
@@ -100,10 +101,15 @@ class ViewCapstone extends Component {
             <MediaMarkdown>{capstone.description}</MediaMarkdown>
             <br/>
           </Grid>
-          {capstone.members[0] && <Typography style={{marginBottom: '10px'}} variant='h4'>Meet the Team</Typography>}
-          <Grid container direction='column'>
-            <Team item capstone={capstone}/>
-          </Grid>
+          {capstone.members[0] &&
+            <div><Typography style={{marginBottom: '10px'}} variant='h4'>Meet the Team</Typography>
+              <Grid container direction='column'>
+                <Team item capstone={capstone}/>
+              </Grid></div>
+          }
+        </Grid>
+        <Grid container direction='column' justifyContent='center'>
+          <CapstonePhotos item capstone={capstone}/>
         </Grid>
       </div>
     ;
