@@ -18,9 +18,9 @@ import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PropTypes from 'prop-types';
 import PageTitleTypography from '../../Components/PageTitleTypography';
-import DragAndDropMultipleZone from '../../Components/DragAndDropZone/DragAndDropMultipleZone';
-import DragAndDropZone from '../../Components/DragAndDropZone/DragAndDropZone';
+import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import {imageURL} from '../../utils/utils';
 
 const SponsorAndMediaInformation = (props) => {
@@ -36,19 +36,6 @@ const SponsorAndMediaInformation = (props) => {
     * handleAcceptImageCoverPhoto
     * handleAcceptImageMedia
     */
-
-  const [clearThumbnail, setClearThumbnail] = useState(false);
-  const [clearMedia, setClearMedia] = useState(false);
-
-  useEffect(() => {
-    if (props.removeImg) {
-      props.setRemoveImg(false);
-
-      console.log('remove all images');
-      setClearThumbnail(true);
-      setClearMedia(true);
-    }
-  }, [props.removeImg, props.setRemoveImg]);
 
   const displaySponsor = (sponsor, canDelete=true) => {
     if (!sponsor.logo) {
@@ -97,7 +84,7 @@ const SponsorAndMediaInformation = (props) => {
 
   };
 
-
+  const {setCover, cover, thumbnail, media, setThumbnail, setMedia} = props;
   return (
     <Grid container justify='center'>
       <Grid item xs={12} md={10}>
@@ -153,13 +140,15 @@ const SponsorAndMediaInformation = (props) => {
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
-            <PageTitleTypography text='Upload a Thumbnail' align='center' size='h5'/>
-            <DragAndDropZone
-              removeImg={clearThumbnail}
-              setRemoveImg={setClearThumbnail}
-              id='file-id'
-              acceptImage={props.handleAcceptImageThumbnail.bind(this)}
-              prompt='Drop or click to upload a thumbnail'
+            <Typography align='center' variant='h5'>
+              Upload a Thumbnail
+            </Typography>
+            <Divider/>
+            <DragAndDrop
+              setFiles={setThumbnail}
+              files={thumbnail}
+              accept='image/*'
+              single
             />
           </CardContent>
         </Card>
@@ -172,9 +161,10 @@ const SponsorAndMediaInformation = (props) => {
               Upload Cover Photo
             </Typography>
             <Divider/>
-            <DragAndDropMultipleZone
-              id='coverPhoto'
-              acceptImage={props.handleAcceptImageCoverPhoto.bind(this)}
+            <DragAndDrop
+              setFiles={setCover}
+              files={cover}
+              accept='image/*'
             />
           </CardContent>
         </Card>
@@ -183,13 +173,12 @@ const SponsorAndMediaInformation = (props) => {
       <Grid item xs={12} md={10}>
         <Card className={props.classes.card}>
           <CardContent>
-
-            <DragAndDropMultipleZone
-              id='media'
-              removeImg={clearMedia}
-              setRemoveImg={setClearMedia}
-              acceptImage={props.handleAcceptImageMedia.bind(this)}
-              prompt='Upload Media Photo'
+            <Typography align='center' variant='h5'>
+              Upload Media
+            </Typography>
+            <DragAndDrop
+              setFiles={setMedia}
+              files={media}
             />
           </CardContent>
         </Card>
@@ -197,6 +186,15 @@ const SponsorAndMediaInformation = (props) => {
       </Grid>
     </Grid>
   );
+};
+
+SponsorAndMediaInformation.propTypes = {
+  cover: PropTypes.arrayOf(PropTypes.instanceOf(File)).isRequired,
+  thumbnail: PropTypes.arrayOf(PropTypes.instanceOf(File)).isRequired,
+  media: PropTypes.arrayOf(PropTypes.instanceOf(File)).isRequired,
+  setCover: PropTypes.func.isRequired,
+  setThumbnail: PropTypes.func.isRequired,
+  setMedia: PropTypes.func.isRequired,
 };
 
 export default SponsorAndMediaInformation;

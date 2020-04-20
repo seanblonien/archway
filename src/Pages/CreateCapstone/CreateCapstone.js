@@ -55,7 +55,7 @@ class CreateCapstone extends Component {
       oldThumbnail: [],
       oldCoverPhoto: [],
       oldMedia: [],
-      coverPhoto: [],
+      cover: [],
       thumbnail: [],
       media: [],
       Department: '',
@@ -208,20 +208,16 @@ class CreateCapstone extends Component {
     this.setState({selectedSponsor: event.target.value});
   };
 
-  handleAcceptImageThumbnail = (image) => {
-    this.setState({thumbnail: image});
+  setThumbnail = (thumbnail) => {
+    this.setState({thumbnail});
   };
 
-  handleAcceptImageCoverPhoto = (image) => {
-    this.setState({coverPhoto: image}, () => {
-      console.log(this.state.coverPhoto);
-    });
+  setCover = (cover) => {
+    this.setState({cover});
   };
 
-  handleAcceptImageMedia = (image) => {
-    this.setState({media: image}, () => {
-      console.log(this.state.media);
-    });
+  setMedia = (media) => {
+    this.setState({media});
   };
 
   handleChangeSwitchFeature = (event) => {
@@ -286,7 +282,7 @@ class CreateCapstone extends Component {
       isFeatured: false,
       startDate: new Date(),
       endDate: new Date(),
-      coverPhoto: [],
+      cover: [],
       thumbnail: [],
       media: [],
       Department: '',
@@ -306,6 +302,7 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
+    console.log(this.state);
     if (!this.isFormValidForSubmit()) {
       return;
     }
@@ -327,7 +324,7 @@ class CreateCapstone extends Component {
   uploadImage = async () => {
     const {
       thumbnail,
-      coverPhoto,
+      cover,
       media
     } = this.state;
     if (this.state.capstoneId === '') {
@@ -351,12 +348,12 @@ class CreateCapstone extends Component {
 
 
     // upload media
-    if (coverPhoto && coverPhoto.length > 0) {
-      const coverPhotoUploads = coverPhoto.map(file => {
-        const upload = formatEntryUpload(file, 'capstones', capstoneId, 'coverPhoto');
+    if (cover && cover.length > 0) {
+      const coverUploads = cover.map(file => {
+        const upload = formatEntryUpload(file, 'capstones', capstoneId, 'cover');
         return api.uploads.upload(upload);
       });
-      const respCover = Promise.all(coverPhotoUploads);
+      const respCover = Promise.all(coverUploads);
     }
 
   };
@@ -367,11 +364,11 @@ class CreateCapstone extends Component {
       oldCoverPhoto,
       oldMedia,
       thumbnail,
-      coverPhoto,
+      cover,
       media
     } = this.state;
     // not a good code style
-    let thumbnailUpload, coverPhotoUpload, mediaUpload;
+    let thumbnailUpload, coverUpload, mediaUpload;
     if (oldThumbnail.length === 0 || oldThumbnail[0].name !== thumbnail[0].name) {
       thumbnailUpload = thumbnail;
     }
@@ -386,7 +383,7 @@ class CreateCapstone extends Component {
 
     return {
       thumbnailUpload,
-      coverPhotoUpload,
+      coverUpload,
       mediaUpload
     }
   };
@@ -510,6 +507,8 @@ class CreateCapstone extends Component {
 
   render() {
     const {classes} = this.props;
+    const {cover, media, thumbnail} = this.state;
+    const {setCover, setMedia, setThumbnail} = this;
 
     return(
       <div>
@@ -550,8 +549,6 @@ class CreateCapstone extends Component {
             selectedUser={this.state.selectedUser}
           />
           <SponsorAndMediaInformation
-            removeImg={this.state.removeImg}
-            setRemoveImg={this.setRemoveImage.bind(this)}
             classes={classes}
             selectedSponsor={this.state.selectedSponsor}
             handleSelectSponsor={this.handleSelectSponsor.bind(this)}
@@ -559,9 +556,12 @@ class CreateCapstone extends Component {
             sponsorList={this.state.sponsorList}
             handleConfirmSponsor={this.handleConfirmSponsor.bind(this)}
             handleRemoveSponsor={this.handleRemoveSponsor.bind(this)}
-            handleAcceptImageThumbnail={this.handleAcceptImageThumbnail.bind(this)}
-            handleAcceptImageCoverPhoto={this.handleAcceptImageCoverPhoto.bind(this)}
-            handleAcceptImageMedia={this.handleAcceptImageMedia.bind(this)}
+            thumbnail={thumbnail}
+            cover={cover}
+            media={media}
+            setThumbnail={setThumbnail}
+            setCover={setCover}
+            setMedia={setMedia}
           />
           <Grid item xs={12} md={10}>
             <Grid container justify='space-around' spacing={3} alignItems='center'>
