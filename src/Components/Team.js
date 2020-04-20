@@ -20,9 +20,6 @@ const styles = (theme) => ({
     paddingRight: '5%',
     paddingLeft: '5%',
   },
-  gridList: {
-
-  },
 });
 
 class Team extends Component {

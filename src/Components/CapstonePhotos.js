@@ -1,12 +1,15 @@
 import {withStyles, withTheme} from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import React, {Component} from 'react';
+import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import PropTypes from 'prop-types';
+import Lightbox from 'react-image-lightbox';
 import routes from '../utils/Routing/routes';
 import history from '../utils/Routing/history';
 import {strapiURL} from '../constants';
+import 'react-image-lightbox/style.css';
 
 const styles = (theme) => ({
   root: {
@@ -15,8 +18,7 @@ const styles = (theme) => ({
     justifyContent: 'space-between',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
+    paddingTop: '3%',
     paddingRight: '5%',
     paddingLeft: '5%',
   },
@@ -27,6 +29,8 @@ class CapstonePhotos extends Component {
     super(props);
     this.state = {
       photos: [],
+      photoIndex: 0,
+      isOpen: false,
     };
   }
 
@@ -36,23 +40,42 @@ class CapstonePhotos extends Component {
     this.setState({photos});
   }
 
-  handleTileClick = (title) => {
-    history.push(routes.viewprofile.genPath(title));
-  };
-
   render() {
     const {classes} = this.props;
-    const {photos} = this.state;
+    const {photos, photoIndex, isOpen} = this.state;
 
     return (
       <div className={classes.root}>
+        <Typography variant='h4'>Photos</Typography>
         <GridList className={classes.gridList} cols={8}>
           {photos.map((photo) => (
-            <GridListTile key={photo.url} cols={2} style={{paddingRight: '2%', paddingTop: '2%'}}>
+            <GridListTile
+              key={photo.url} cols={2}
+              style={{paddingRight: '2%', paddingTop: '2%'}}
+              onClick={() => this.setState({isOpen: true})}
+            >
               <img src={strapiURL + photo.url} alt=''/>
             </GridListTile>
           ))}
         </GridList>
+        {isOpen && (
+          <Lightbox
+            mainSrc={strapiURL + photos[photoIndex].url}
+            nextSrc={strapiURL + photos[(photoIndex + 1) % photos.length].url}
+            prevSrc={strapiURL + photos[(photoIndex + photos.length - 1) % photos.length].url}
+            onCloseRequest={() => this.setState({isOpen: false})}
+            onMovePrevRequest={() =>
+              this.setState({
+                photoIndex: (photoIndex + photos.length - 1) % photos.length,
+              })
+            }
+            onMoveNextRequest={() =>
+              this.setState({
+                photoIndex: (photoIndex + 1) % photos.length,
+              })
+            }
+          />
+        )}
       </div>
     );
   }

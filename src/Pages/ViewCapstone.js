@@ -107,9 +107,11 @@ class ViewCapstone extends Component {
             <Team item capstone={capstone}/>
           </Grid>
         }
-        <Grid container direction='column' justifyContent='center'>
-          <CapstonePhotos item capstone={capstone}/>
-        </Grid>
+        {capstone.media[0] &&
+          <Grid container direction='column'>
+            <CapstonePhotos item capstone={capstone}/>
+          </Grid>
+        }
       </div>
     ;
   }
