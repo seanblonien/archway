@@ -59,9 +59,15 @@ export const formatQuery = (params) => `?${Object.keys(params)
   .map(k => {
     const value = params[k];
     if(typeof value === 'object') {
-      return Object.keys(value).map((subk) => (
-        `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`)
-      ).join('&');
+      return Object.keys(value).map((subk) => {
+        if(Array.isArray(value[subk])){
+          const str = value[subk].reduce((obj, elem) => 
+            `${obj}${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(elem)}&`
+          , '');
+          return str.replace(/&$/, '');
+        }
+        return `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`;
+      }).join('&');
     }
     return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
   }).join('&')}`;
