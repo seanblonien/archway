@@ -83,7 +83,7 @@ class ResultsList extends Component {
             <Collapse in={departmentsOpen} timeout='auto' unmountOnExit>
               <List component='div' disablePadding>
                 {departments.map(department => (
-                  <ListItem key={department.id} button>
+                  <ListItem key={department.id}>
                     <Checkbox name={department.id} checked={checkedDepartments.has(department.id)} onChange={this.handleDepartmentsCheckboxClick}/>
                     <ListItemText primary={department.name}/>
                   </ListItem>
