@@ -44,6 +44,7 @@ class SearchBar extends Component {
   keyPress = e => {
     const searchTerm = formatQuery({search: e.target.value});
 
+    // Enter key pressed
     if(e.keyCode === 13) {
       history.push(routes.search.genPath(searchTerm));
     }
@@ -55,7 +56,6 @@ class SearchBar extends Component {
 
     return (
       <form className={classes.container} noValidate autoComplete='off'>
-
         <TextField
           id='standard-name'
           placeholder='Search...'

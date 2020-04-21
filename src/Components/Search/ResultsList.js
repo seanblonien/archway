@@ -19,9 +19,7 @@ class ResultsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      capstones: [{
-        id: '',
-      }],
+      capstones: [],
     };
     this.selectedDepartments = [];
     this.selectedSponsors = [];
@@ -63,7 +61,7 @@ class ResultsList extends Component {
     const cids = qids.filter(value => dids.includes(value)).filter(value => sids.includes(value));
 
     // Find the capstones that satisfy all the criteria (find by ids)
-    let results = [{id: '',}];
+    let results = [];
     if(cids.length > 0){
       results = await api.capstones.find({id_in: cids});
     }
@@ -86,13 +84,16 @@ class ResultsList extends Component {
             <Filters departments={this.updateDepartments} sponsors={this.updateSponsors}/>
           </Grid>
           <Grid item xs={6}>
-            <GridList cellHeight={160} className={classes.gridList} cols={1}>
-              {capstones.map(capstone => (
-                <GridListTile key={capstone.id}>
-                  <ResultCapstone capstone={capstone}/>
-                </GridListTile>
-              ))}
-            </GridList>
+            {capstones.length > 0 ?
+              <GridList cellHeight={160} className={classes.gridList} cols={1}>
+                {capstones.map(capstone => (
+                  <GridListTile key={capstone.id}>
+                    <ResultCapstone capstone={capstone}/>
+                  </GridListTile>
+                ))}
+              </GridList> :
+              <Typography variant='h6' align='center'>Sorry, your query didn&apos;t return any results...</Typography>
+            }
           </Grid>
         </Grid>
       </Box>
