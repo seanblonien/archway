@@ -268,7 +268,7 @@ class DepartmentForm extends React.Component {
                 <Grid item xs={12}>
                   <PhotoUpload
                     fieldName='selectedCover'
-                    title='Choose Cover'
+                    title='Choose Cover Photos'
                     onChange={handleFileChange}
                     photo={imageURL.department(cover)}
                   />
