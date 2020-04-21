@@ -22,34 +22,51 @@ class ResultsList extends Component {
       capstones: [{
         id: '',
       }],
-      selectedDepartments: new Set(),
-      selectedSponsors: new Set(),
     };
+    const selectedDepartments = [];
+    const selectedSponsors = [];
   }
 
   async componentDidMount() {
-    const {query} = this.props;
+    const {query, limit} = this.props;
 
-    const capstones = await api.capstones.find({_q: query, _limit: 3});
+    const capstones = await api.capstones.find({_q: query, _limit: limit});
 
     this.setState({capstones});
   }
 
   updateDepartments = (departments) => {
-    this.setState({selectedDepartments: departments});
+    this.selectedDepartments = departments;
     this.search();
   };
 
   updateSponsors = (sponsors) => {
-    this.setState({selectedSponsors: sponsors});
+    this.selectedSponsors = sponsors;
     this.search();
   };
 
   search = async () => {
-    const {query} = this.props;
-    const {selectedDepartments, selectedSponsors} = this.state;
+    const {query, limit} = this.props;
 
-    const capstones = await api.capstones.find({_q: query, _limit: 3});
+    // Query the database for capstones with the query string, the selected departments, and the selected sponsors (OR operation)
+    const [queryCapstones, departmentCapstones, sponsorCapstones] = await Promise.all([api.capstones.find({_q: query, _limit: limit}), api.capstones.find({departments: {id: this.selectedDepartments}}), api.capstones.find({sponsors: {id: this.selectedSponsors}})]);
+
+    // Save the capstone ids
+    const qids = [];
+    const dids = [];
+    const sids = [];
+    queryCapstones.map(qc => (qids.push(qc.id)));
+    departmentCapstones.map(dc => (dids.push(dc.id)));
+    sponsorCapstones.map(sc => (sids.push(sc.id)));
+
+    // Find the ids that appear in all 3 lists (AND operation)
+    const cids1 = qids.filter(value => dids.includes(value));
+    const cids2 = cids1.filter(value => sids.includes(value));
+
+    // Find the capstones that satisfy all the criteria (find by ids)
+    const capstones = await api.capstones.find({id_in: cids2});
+
+    // Update the screen
     this.setState({capstones});
   };
 
@@ -69,8 +86,8 @@ class ResultsList extends Component {
           <Grid item xs={6}>
             <GridList cellHeight={160} className={classes.gridList} cols={1}>
               {capstones.map(capstone => (
-                <GridListTile>
-                  <ResultCapstone key={capstone.id} capstone={capstone}/>
+                <GridListTile key={capstone.id}>
+                  <ResultCapstone capstone={capstone}/>
                 </GridListTile>
               ))}
             </GridList>
@@ -84,6 +101,7 @@ class ResultsList extends Component {
 
 ResultsList.propTypes = {
   query: PropTypes.string.isRequired,
+  limit: PropTypes.number.isRequired
 };
 
 export default withStyles(styles) (ResultsList);

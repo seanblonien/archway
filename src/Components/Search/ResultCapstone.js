@@ -31,7 +31,7 @@ const ResultCapstone = ({classes, capstone}) => {
   };
 
   return (
-    <Paper className={classes.paper} onClick={goToCapstone}>
+    <Paper variant='outlined' className={classes.paper} onClick={goToCapstone}>
       <Grid container direction='row'>
         <Grid item xs={2}>
           <img src={imageURL.capstone(capstone.thumbnail)} alt='Capstone' className={classes.image}/>

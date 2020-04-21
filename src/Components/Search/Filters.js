@@ -72,8 +72,8 @@ class ResultsList extends Component {
 
     return (
       <Box mx={5}>
-        <Paper>
-          <Typography variant='h5' align='center'>Limit Search Results</Typography>
+        <Paper variant='outlined'>
+          <Typography variant='h6' align='center'>Limit Search Results</Typography>
           <Divider variant='middle'/>
           <List>
             <ListItem button onClick={this.handleDepartmentsOpen}>
