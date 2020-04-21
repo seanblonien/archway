@@ -14,6 +14,7 @@ import {formatEntryUpload} from "../../utils/utils";
 import {snack} from '../../utils/Snackbar';
 import {withSnackbar} from 'notistack';
 import _ from 'lodash';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 
 
 const styles = theme => ({
@@ -49,6 +50,7 @@ class CreateCapstone extends Component {
     this.state = {
       description: '',
       title: '',
+      preview: '',
       isFeatured: false,
       startDate: new Date(),
       endDate: new Date(),
@@ -71,14 +73,30 @@ class CreateCapstone extends Component {
       selectedProfessor: '',
       selectedTA: '',
       selectedUser: '',
-      dialogOpen: false,
       courseName: '',
       capstoneId: '',
       removeImg: false
     };
   }
 
+  handleChange = name => event => {
+    this.setState({[name]: event.target.value});
+  };
+
+  handleChangeSwitch = name => (event) => {
+    this.setState({[name]: event.target.checked});
+  };
+
   async componentDidMount() {
+
+    ValidatorForm.addValidationRule('isProfane', value => {
+      const filter = new Filter();
+      if (filter.isProfane(value)) {
+        return false
+      }
+      return true;
+    });
+
     // pull data from strapi/backend
     //TODO: do we need this?
     const capstones = await api.capstones.find();
@@ -102,31 +120,8 @@ class CreateCapstone extends Component {
 
   }
 
-  // loadCurrentCapstone = (capstone) => {
-  //   const currentCapstone = JSON.parse(JSON.stringify(capstone));
-  //   this.setState({
-  //     title: currentCapstone.name;
-  //   })
-  // };
-
-  handleChangeDepartment = (event) => {
-    this.setState({Department: event.target.value});
-  };
-
-  handleSelectedProfessor = (event, values) => {
-    this.setState({selectedProfessor: values});
-  };
-
-  handleSelectedTA = (event, values) => {
-    this.setState({selectedTA: values});
-  };
-
-  handleClickDialogClose = () => {
-    this.setState({dialogOpen: false});
-  };
-
-  handleClickDialogOpen = () => {
-    this.setState({dialogOpen: true});
+  handleSelectedPerson = name => (event, values) => {
+    this.setState({[name]: values});
   };
 
   handleConfirmSponsor = (selectedSponsor) => {
@@ -153,9 +148,7 @@ class CreateCapstone extends Component {
     if (user !== '') {
       if (!this.state.Participants.includes(user)) {
         const joinedParticipants = this.state.Participants.concat(user);
-        this.setState({Participants: joinedParticipants}, () => {
-          console.log(this.state.Participants);
-        });
+        this.setState({Participants: joinedParticipants});
       }
     }
   };
@@ -166,13 +159,13 @@ class CreateCapstone extends Component {
       Participants: copyOfParticipants.filter(t => {
         return selectedUserId !== t.id;
       })
-    }, () => {
-      console.log(this.state.Participants);
     });
   };
 
-
   handleStartDate = (startDate) => {
+    if (!startDate) {
+      return;
+    }
     this.setState({startDate}, () => {
       if (this.state.startDate.getTime() > this.state.endDate.getTime()) {
         this.setState({endDate: startDate});
@@ -181,23 +174,14 @@ class CreateCapstone extends Component {
   };
 
   handleEndDate = (endDate) => {
+    if (!endDate) {
+      return;
+    }
     this.setState({endDate}, () => {
       if (this.state.endDate.getTime() < this.state.startDate.getTime()) {
         this.setState({startDate: endDate});
       }
     });
-  };
-
-  handleDescription = (event) => {
-    this.setState({description: event.target.value});
-  };
-
-  handleTitle = (event) => {
-    this.setState({title: event.target.value});
-  };
-
-  handleCourseName = (event) => {
-    this.setState({courseName: event.target.value});
   };
 
   handleNewUser = (newUser) => {
@@ -220,9 +204,6 @@ class CreateCapstone extends Component {
     this.setState({media});
   };
 
-  handleChangeSwitchFeature = (event) => {
-    this.setState({isFeatured: event.target.checked});
-  };
 
   setRemoveImage = (remove) => {
     this.setState({removeImg: remove});
@@ -241,6 +222,7 @@ class CreateCapstone extends Component {
       Participants,
       selectedProfessor,
       selectedTA,
+      preview,
       checkedSponsors
     } = this.state;
     const upload_content = {
@@ -248,7 +230,8 @@ class CreateCapstone extends Component {
       moderator: Username,
       isFeatured: isFeatured,
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      preview: preview
     };
     if (courseName !== '') {
       upload_content.courseName = courseName;
@@ -302,10 +285,9 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
-    console.log(this.state);
-    if (!this.isFormValidForSubmit()) {
-      return;
-    }
+    // if (!this.isFormValidForSubmit()) {
+    //   return;
+    // }
     await this.handleUpload(true);
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('successful submit!', snack.success);
@@ -513,47 +495,31 @@ class CreateCapstone extends Component {
     return(
       <div>
         {/* Page header */}
+        <ValidatorForm
+          ref="form"
+          onSubmit={this.handleSubmit}
+          onError={errors => console.log(errors)}
+        >
         <Grid container justify='center'>
           <BasicInformation
             classes={classes}
-            title={this.state.title}
-            courseName={this.state.courseName}
-            handleTitle={this.handleTitle.bind(this)}
-            isFeatured={this.state.isFeatured}
-            handleCourseName={this.handleCourseName.bind(this)}
-            handleChangeSwitchFeature={this.handleChangeSwitchFeature.bind(this)}
-            startDate={this.state.startDate}
+            handleChange={this.handleChange.bind(this)}
+            handleChangeSwitch={this.handleChangeSwitch.bind(this)}
             handleStartDate={this.handleStartDate.bind(this)}
-            endDate={this.state.endDate}
             handleEndDate={this.handleEndDate.bind(this)}
-            Department={this.state.Department}
-            handleChangeDepartment={this.handleChangeDepartment.bind(this)}
-            departmentList={this.state.departmentList}
-            handleDescription={this.handleDescription.bind(this)}
-            description={this.state.description}
+            {...this.state}
           />
           <MemberInformation
             classes={classes}
-            AllUsers={this.state.AllUsers}
             handleConfirmTeammate={this.handleConfirmTeammate.bind(this)}
             handleRemoveTeammate={this.handleRemoveTeammate.bind(this)}
-            handleClickDialogOpen={this.handleClickDialogOpen.bind(this)}
             handleNewUser={this.handleNewUser.bind(this)}
-            dialogOpen={this.state.dialogOpen}
-            handleClickDialogClose={this.handleClickDialogClose.bind(this)}
-            Participants={this.state.Participants}
-            selectedProfessor={this.state.selectedProfessor}
-            selectedTA={this.state.selectedTA}
-            handleSelectedProfessor={this.handleSelectedProfessor.bind(this)}
-            handleSelectedTA={this.handleSelectedTA.bind(this)}
-            selectedUser={this.state.selectedUser}
+            handleSelectedPerson={this.handleSelectedPerson.bind(this)}
+            {...this.state}
           />
           <SponsorAndMediaInformation
             classes={classes}
-            selectedSponsor={this.state.selectedSponsor}
             handleSelectSponsor={this.handleSelectSponsor.bind(this)}
-            checkedSponsors={this.state.checkedSponsors}
-            sponsorList={this.state.sponsorList}
             handleConfirmSponsor={this.handleConfirmSponsor.bind(this)}
             handleRemoveSponsor={this.handleRemoveSponsor.bind(this)}
             thumbnail={thumbnail}
@@ -562,6 +528,8 @@ class CreateCapstone extends Component {
             setThumbnail={setThumbnail}
             setCover={setCover}
             setMedia={setMedia}
+            {...this.state}
+
           />
           <Grid item xs={12} md={10}>
             <Grid container justify='space-around' spacing={3} alignItems='center'>
@@ -583,7 +551,6 @@ class CreateCapstone extends Component {
                   fullWidth
                   variant='contained'
                   color='primary'
-                  onClick={this.handleSubmit}
                   style={{marginTop: '1%'}}
                 >
                   Add Capstone
@@ -604,6 +571,8 @@ class CreateCapstone extends Component {
             </Grid>
           </Grid>
         </Grid>
+        </ValidatorForm>
+
       </div>
     );
   }

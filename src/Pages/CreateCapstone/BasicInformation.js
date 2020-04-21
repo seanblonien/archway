@@ -17,6 +17,10 @@ import withWidth from '@material-ui/core/withWidth/withWidth';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import PageTitleTypography from '../../Components/PageTitleTypography';
+import {TextValidator} from 'react-material-ui-form-validator';
+import {TextFieldProps} from "@material-ui/core";
+import {Input} from "@material-ui/icons";
+
 
 
 const styles = theme => ({
@@ -48,18 +52,12 @@ const styles = theme => ({
 
 const BasicInformation = (props) => {
 
-  /*
-      classes
-      handleTitle
-      startDate
-      endDate
-      handleStartDate
-      handleEndDate
-      Department
-      handleChangeDepartment
-      departmentList
-      handleDescription
-  */
+  const renderInput = (props: TextFieldProps): any => (
+    <TextValidator
+      {...props.inputProps}
+    />
+  );
+
 
   return (
     <Grid item xs={12} md={10}>
@@ -71,16 +69,16 @@ const BasicInformation = (props) => {
               {/* Form for capstone name */}
               <Grid container spacing={3} direction='row'>
                 <Grid item xs={9}>
-
                   <Tooltip title='Name of Capstone' arrow>
                     <FormControl margin='dense' required fullWidth>
-                      <TextField
+                      <TextValidator
                         value={props.title}
                         id='outlined-textarea'
                         label='Title'
                         placeholder='Type the title for the capstone project'
-                        multiline
-                        onChange={props.handleTitle}
+                        validators={['required', 'isProfane'] }
+                        errorMessages={['this field is required', 'contains illegal word']}
+                        onChange={props.handleChange('title')}
                         variant='outlined'
                       />
                     </FormControl>
@@ -94,25 +92,25 @@ const BasicInformation = (props) => {
                         checked={props.isFeatured}
                         name='is featured'
                         color='primary'
-                        onChange={props.handleChangeSwitchFeature}
+                        onChange={props.handleChangeSwitch('isFeatured')}
                       />
                     }
                     label='Featured'
                   />
                 </Grid>
-
               </Grid>
             </Grid>
             <Grid item xs={12}>
-
               <Tooltip title='Name of Course' arrow>
                 <FormControl margin='dense' required fullWidth>
-                  <TextField
+                  <TextValidator
                     value={props.courseName}
                     id='outlined-textarea'
                     label='Course Name'
                     placeholder='Type the name of the course'
-                    onChange={props.handleCourseName}
+                    validators={['required', 'isProfane'] }
+                    errorMessages={['this field is required', 'contains illegal word']}
+                    onChange={props.handleChange('courseName')}
                     variant='outlined'
                   />
                 </FormControl>
@@ -134,7 +132,8 @@ const BasicInformation = (props) => {
                         mask='____/__/__'
                         keyboardIcon={<EventNoteIcon/>}
                         value={props.startDate}
-                        onChange={date => props.handleStartDate(date)}
+                        onChange={props.handleStartDate}
+                        // TextFieldComponent={renderInput}
                       />
                     </MuiPickersUtilsProvider>
                   </Grid>
@@ -150,7 +149,7 @@ const BasicInformation = (props) => {
                         mask='____/__/__'
                         keyboardIcon={<EventNoteIcon/>}
                         value={props.endDate}
-                        onChange={date => props.handleEndDate(date)}
+                        onChange={props.handleEndDate}
                       />
                     </MuiPickersUtilsProvider>
                   </Grid>
@@ -168,7 +167,7 @@ const BasicInformation = (props) => {
                     labelId='demo-customized-select-label'
                     id='demo-customized-select'
                     value={props.Department}
-                    onChange={props.handleChangeDepartment}
+                    onChange={props.handleChange('Department')}
                   >
                     <MenuItem value=''>
                       <em>None</em>
@@ -182,9 +181,25 @@ const BasicInformation = (props) => {
                 </FormControl>
               </Grid>
             </Tooltip>
-
-            <Tooltip title='Fill description' arrow>
+            <Grid item xs={12}>
+              <Tooltip title='Preview For Search' arrow>
+                <FormControl margin='dense' required fullWidth>
+                  <TextField
+                    value={props.preview}
+                    id='outlined-textarea'
+                    label='Preview'
+                    rows='2'
+                    multiline
+                    placeholder='Type some preivew'
+                    onChange={props.handleChange('preview')}
+                    variant='outlined'
+                  />
+                </FormControl>
+              </Tooltip>
+            </Grid>
               <Grid item xs={12}>
+                <Tooltip title='Fill description' arrow>
+
                 <FormControl margin='dense' required fullWidth>
                   <TextField
                     id='outlined-textarea'
@@ -194,18 +209,18 @@ const BasicInformation = (props) => {
                     multiline
                     variant='outlined'
                     value={props.description}
-                    onChange={props.handleDescription}
+                    onChange={props.handleChange('description')}
                   />
                 </FormControl>
+                </Tooltip>
+
               </Grid>
-            </Tooltip>
 
           </Grid>
         </CardContent>
       </Card>
     </Grid>
   );
-
 };
 
 export default compose(

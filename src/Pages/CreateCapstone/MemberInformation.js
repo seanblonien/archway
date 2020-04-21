@@ -12,7 +12,6 @@ import Avatar from '@material-ui/core/Avatar';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import SimpleDialog from '../../Components/AddUserDialog';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from "../../utils/utils";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
@@ -24,19 +23,7 @@ import List from "@material-ui/core/List";
 
 const MemberInformation = ( props ) => {
 
-  /*
-  * classes
-  * AllUsers
-  * props
-  * handleConfirmTeammate
-  * handleClickDialogOpen
-  * handleNewUser
-  * dialogOpen
-  * handleClickDialogClose
-  * Participants
-  * handleSelectedProfessor
-  * handleSelectedTA
-  */
+
 
   const [selectUser, setSelectUser] = useState('');
 
@@ -137,15 +124,6 @@ const MemberInformation = ( props ) => {
                           Confirm
                         </Button>
                       </Grid>
-                      <Grid item>
-                        <Tooltip title='Add if not existing' arrow>
-                          <Button variant='outlined' color='primary' onClick={props.handleClickDialogOpen}>
-                            Add a new user
-                          </Button>
-                        </Tooltip>
-                        {/* <AddUser/> */}
-                        <SimpleDialog selectedValue={props.handleNewUser} open={props.dialogOpen} onClose={props.handleClickDialogClose}/>
-                      </Grid>
                     </Grid>
 
                   </Grid>
@@ -185,7 +163,7 @@ const MemberInformation = ( props ) => {
                             id='searchProf'
                             {...defaultProps}
                             style={{width: 300}}
-                            onChange={props.handleSelectedProfessor}
+                            onChange={props.handleSelectedPerson('selectedProfessor')}
                             renderInput={(params) => <TextField {...params} label='Search for Professor' variant='outlined'/>}
                           />
                       </Tooltip>
@@ -204,7 +182,7 @@ const MemberInformation = ( props ) => {
                           id='searchTA'
                           {...defaultProps}
                           style={{width: 300}}
-                          onChange={props.handleSelectedTA}
+                          onChange={props.handleSelectedPerson('selectedTA')}
                           renderInput={(params) => <TextField {...params} label='Search for TA' variant='outlined'/>}
                         />
                     </Tooltip>
