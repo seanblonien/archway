@@ -109,11 +109,15 @@ class ViewADepartment extends Component {
           </Grid>
         </Parallax>
         <Grid className={classes.capstones} container direction='column'>
-          <MediaMarkdown>{`####${department.name} Capstones`}</MediaMarkdown>
-          <br/>
-          <CapstonesTab capstones={department.capstones}/>
-          <br/><br/>
-          <Professors capstones={department.capstones}/>
+          {department.capstones[0] &&
+            <div>
+              <MediaMarkdown>{`####${department.name} Capstones`}</MediaMarkdown>
+              <br/>
+              <CapstonesTab capstones={department.capstones}/>
+              <br/><br/>
+            </div>
+          }
+          <Professors department={department}/>
         </Grid>
       </div>
     ;
