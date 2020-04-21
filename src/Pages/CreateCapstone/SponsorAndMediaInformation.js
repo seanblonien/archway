@@ -5,8 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
+import {SelectValidator} from 'react-material-ui-form-validator';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
@@ -98,12 +97,13 @@ const SponsorAndMediaInformation = (props) => {
                   <Tooltip title='Select a Sponsor' arrow>
                     <Grid item xs={9}>
                       <FormControl margin='dense' fullWidth variant='filled'>
-                        <InputLabel ref={null}>Sponsor</InputLabel>
-                        <Select
+                        <SelectValidator
                           labelId='demo-customized-select-label'
                           id='demo-customized-select'
                           value={props.selectedSponsor}
                           onChange={props.handleSelectSponsor}
+                          validators={['required'] }
+                          errorMessages={['this field is required']}
                         >
                           <MenuItem value=''>
                             <em>None</em>
@@ -114,7 +114,7 @@ const SponsorAndMediaInformation = (props) => {
                               value={sponsor}
                             >{sponsor.name}</MenuItem>
                           ))}
-                        </Select>
+                        </SelectValidator>
                       </FormControl>
                     </Grid>
                   </Tooltip>

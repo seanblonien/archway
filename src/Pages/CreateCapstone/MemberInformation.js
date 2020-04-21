@@ -18,12 +18,22 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
 import List from "@material-ui/core/List";
+import {TextFieldProps} from "@material-ui/core";
+import {TextValidator} from "react-material-ui-form-validator";
 
 
 
 const MemberInformation = ( props ) => {
 
-
+  const renderInput = (props: TextFieldProps): any => (
+    <TextValidator
+      validators={['required', 'isProfane'] }
+      errorMessages={['this field is required', 'contains illegal word']}
+      label='Search for Team Members'
+      variant='outlined'
+      {...props}
+    />
+  );
 
   const [selectUser, setSelectUser] = useState('');
 
@@ -112,7 +122,7 @@ const MemberInformation = ( props ) => {
                             style={{width: 300}}
                             value={selectUser}
                             onChange={handleSelectUser}
-                            renderInput={(params) => <TextField {...params} label='Search for Team Members' variant='outlined'/>}
+                            renderInput={renderInput}
                           />
                         </Grid>
                       </Tooltip>
@@ -164,7 +174,7 @@ const MemberInformation = ( props ) => {
                             {...defaultProps}
                             style={{width: 300}}
                             onChange={props.handleSelectedPerson('selectedProfessor')}
-                            renderInput={(params) => <TextField {...params} label='Search for Professor' variant='outlined'/>}
+                            renderInput={renderInput}
                           />
                       </Tooltip>
                     </Grid>
@@ -183,7 +193,7 @@ const MemberInformation = ( props ) => {
                           {...defaultProps}
                           style={{width: 300}}
                           onChange={props.handleSelectedPerson('selectedTA')}
-                          renderInput={(params) => <TextField {...params} label='Search for TA' variant='outlined'/>}
+                          renderInput={renderInput}
                         />
                     </Tooltip>
                   </Grid>

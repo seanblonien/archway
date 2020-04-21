@@ -4,57 +4,25 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import EventNoteIcon from '@material-ui/icons/EventNote';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import compose from 'recompose/compose';
-import {withStyles} from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth/withWidth';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import PageTitleTypography from '../../Components/PageTitleTypography';
-import {TextValidator} from 'react-material-ui-form-validator';
+import {TextValidator, SelectValidator} from 'react-material-ui-form-validator';
 import {TextFieldProps} from "@material-ui/core";
-import {Input} from "@material-ui/icons";
 
 
-
-const styles = theme => ({
-  list: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: '300px',
-
-  },
-  card: {
-    marginTop: '1%',
-  },
-  leftColCard: {
-    marginRight: '2%',
-    marginTop: '1%',
-  },
-  formMargin: {
-    marginTop: '.5%',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit,
-    width: 250,
-    placeholder: 'Search...'
-  },
-});
 
 const BasicInformation = (props) => {
 
   const renderInput = (props: TextFieldProps): any => (
     <TextValidator
-      {...props.inputProps}
+      validators={['required', 'isProfane'] }
+      errorMessages={['this field is required', 'contains illegal word']}
+      {...props}
     />
   );
 
@@ -76,7 +44,7 @@ const BasicInformation = (props) => {
                         id='outlined-textarea'
                         label='Title'
                         placeholder='Type the title for the capstone project'
-                        validators={['required', 'isProfane'] }
+                        validators={['required', 'isProfane']}
                         errorMessages={['this field is required', 'contains illegal word']}
                         onChange={props.handleChange('title')}
                         variant='outlined'
@@ -133,7 +101,7 @@ const BasicInformation = (props) => {
                         keyboardIcon={<EventNoteIcon/>}
                         value={props.startDate}
                         onChange={props.handleStartDate}
-                        // TextFieldComponent={renderInput}
+                        TextFieldComponent={renderInput}
                       />
                     </MuiPickersUtilsProvider>
                   </Grid>
@@ -150,6 +118,7 @@ const BasicInformation = (props) => {
                         keyboardIcon={<EventNoteIcon/>}
                         value={props.endDate}
                         onChange={props.handleEndDate}
+                        TextFieldComponent={renderInput}
                       />
                     </MuiPickersUtilsProvider>
                   </Grid>
@@ -162,12 +131,14 @@ const BasicInformation = (props) => {
               <Grid item xs={12}>
                 {/* select department */}
                 <FormControl margin='dense' fullWidth variant='filled'>
-                  <InputLabel ref={null}>Department</InputLabel>
-                  <Select
-                    labelId='demo-customized-select-label'
+                  <SelectValidator
+                    label='Select a department'
                     id='demo-customized-select'
+                    variant='outlined'
                     value={props.Department}
                     onChange={props.handleChange('Department')}
+                    validators={['required'] }
+                    errorMessages={['this field is required']}
                   >
                     <MenuItem value=''>
                       <em>None</em>
@@ -177,14 +148,14 @@ const BasicInformation = (props) => {
                         key={dept.id}
                         value={dept}>{dept.name}</MenuItem>
                     ))}
-                  </Select>
+                  </SelectValidator>
                 </FormControl>
               </Grid>
             </Tooltip>
             <Grid item xs={12}>
               <Tooltip title='Preview For Search' arrow>
                 <FormControl margin='dense' required fullWidth>
-                  <TextField
+                  <TextValidator
                     value={props.preview}
                     id='outlined-textarea'
                     label='Preview'
@@ -193,6 +164,8 @@ const BasicInformation = (props) => {
                     placeholder='Type some preivew'
                     onChange={props.handleChange('preview')}
                     variant='outlined'
+                    validators={['required', 'isProfane'] }
+                    errorMessages={['this field is required', 'contains illegal word']}
                   />
                 </FormControl>
               </Tooltip>
@@ -201,7 +174,7 @@ const BasicInformation = (props) => {
                 <Tooltip title='Fill description' arrow>
 
                 <FormControl margin='dense' required fullWidth>
-                  <TextField
+                  <TextValidator
                     id='outlined-textarea'
                     label='Description'
                     rows='4'
@@ -210,12 +183,13 @@ const BasicInformation = (props) => {
                     variant='outlined'
                     value={props.description}
                     onChange={props.handleChange('description')}
+                    validators={['required', 'isProfane'] }
+                    errorMessages={['this field is required', 'contains illegal word']}
                   />
                 </FormControl>
                 </Tooltip>
 
               </Grid>
-
           </Grid>
         </CardContent>
       </Card>
@@ -223,7 +197,9 @@ const BasicInformation = (props) => {
   );
 };
 
-export default compose(
-  withStyles(styles),
-  withWidth(),
-)(BasicInformation);
+BasicInformation.propTyoes = {
+  title: PropTypes.string.isRequired,
+
+};
+
+export default BasicInformation;
