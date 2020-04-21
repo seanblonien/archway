@@ -8,6 +8,7 @@ import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import MenuItem from '@material-ui/core/MenuItem';
+import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import PageTitleTypography from '../../Components/PageTitleTypography';
@@ -197,7 +198,7 @@ const BasicInformation = (props) => {
   );
 };
 
-BasicInformation.propTyoes = {
+BasicInformation.propTypes = {
   title: PropTypes.string.isRequired,
 
 };
