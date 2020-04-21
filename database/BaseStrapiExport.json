@@ -239,9 +239,6 @@
           "type": "string",
           "unique": false
         },
-        "contactName": {
-          "type": "string"
-        },
         "isIntellectualPropertyRequired": {
           "type": "boolean"
         },

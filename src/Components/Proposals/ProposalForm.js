@@ -4,23 +4,21 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from "@material-ui/core/Input";
-import MenuItem from "@material-ui/core/MenuItem";
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import gStyle from '../../utils/styles.module.css';
 import api from '../../Services/api';
-import history from "../../utils/history";
-import AuthContext from "../../Contexts/AuthContext";
+import AuthContext from '../../Contexts/AuthContext';
 
 const styles = {
   form: {
@@ -42,8 +40,6 @@ class ProposalForm extends Component {
       creator: '',
       departmentList: [],
       departmentNamesSel: [],
-      contactName: '',
-      sponsoringCompany: '',
       email: '',
       phone: '',
       projectTitle: '',
@@ -53,17 +49,20 @@ class ProposalForm extends Component {
       isNondisclosureRequired: false,
       financialSupport: '',
       projectUse: '',
-      id: ''
+      id: '',
+      profileData: {}
     };
   }
 
   async componentDidMount() {
     const {user} = this.context;
+    const response = await api.users.find({username: user.username});
+    const profileData = response[0];
     const departmentList = await api.departments.find();
-    this.setState({departmentList, creator: user});
+    this.setState({departmentList, creator: user, profileData});
     const {proposal} = this.props;
 
-    if (this.props.proposal !== null) {
+    if (proposal !== null) {
       const selectNames = Array.from(proposal.departments.map(d => d.name));
 
       this.setState({
@@ -78,29 +77,28 @@ class ProposalForm extends Component {
         isNondisclosureRequired: proposal.isNondisclosureRequired,
         financialSupport: proposal.financialSupport,
         projectUse: proposal.projectUse,
-        id: proposal._id
-      })
+        id: proposal.id
+      });
     }
   }
 
   handleChange = name => event => {
     const {departmentList} = this.state;
 
-    debugger;
     if (name === 'departments') {
-      let departments = [];
-      for (let department of departmentList) {
-        for (let sel of event.target.value) {
+      const departments = [];
+      for (const department of departmentList) {
+        for (const sel of event.target.value) {
           if (department.name === sel) {
             departments.push(department);
           }
         }
       }
 
-      let departmentNames = event.target.value;
+      const departmentNames = event.target.value;
 
       this.setState({[name]: departments});
-      this.setState({departmentNamesSel: departmentNames})
+      this.setState({departmentNamesSel: departmentNames});
 
     } else {
       this.setState({[name]: event.target.value});
@@ -116,13 +114,14 @@ class ProposalForm extends Component {
   };
 
   handleClose = () => {
+    const {update} = this.props;
+    update();
     this.setState({open: false});
   };
 
   handleSave = async () => {
     const {email, phone, projectTitle, projectDescription, projectDeliverables, isIntellectualPropertyRequired,
-      isNondisclosureRequired, financialSupport, projectUse, departments, id, creator
-    } = this.state;
+      isNondisclosureRequired, financialSupport, projectUse, departments, id, creator} = this.state;
 
     if (id !== '') {
       await api.proposals.update(id, {
@@ -156,7 +155,7 @@ class ProposalForm extends Component {
       });
     }
 
-    this.setState({open: false});
+    this.handleClose();
   };
 
   handleSubmit = async () => {
@@ -196,16 +195,24 @@ class ProposalForm extends Component {
       });
     }
 
-    this.setState({open: false});
+    this.handleClose();
   };
 
   render() {
     const {classes, title} = this.props;
-    const {open, contactName, sponsoringCompany, email, phone, projectTitle, projectDescription, projectDeliverables, isIntellectualPropertyRequired,
+    const {open, creator, profileData, email, phone, projectTitle, projectDescription, projectDeliverables, isIntellectualPropertyRequired,
       isNondisclosureRequired, financialSupport, projectUse, departmentNamesSel, departmentList} = this.state;
 
+    let organizationInfo;
+    if (profileData.sponsorOrganization) {
+      organizationInfo = <Typography variant='h6'>Sponsoring Organization: {profileData.sponsorOrganization.name}</Typography>;
+    } else {
+      organizationInfo = <Typography>Your are not associated with a sponsoring organization.
+        Please add your organization on your profile page.</Typography>;
+    }
+
     return (
-      <div>
+      <div className={gStyle.gridListContainer}>
         <Button variant='outlined' color='primary' onClick={this.handleClickOpen}>
           {title}
         </Button>
@@ -221,21 +228,8 @@ class ProposalForm extends Component {
             <div className={classes.section}>
               <Grid container spacing={3}>
                 <Grid item xs={5}>
-                  <TextField
-                    autoFocus
-                    margin='dense'
-                    label='Contact Name'
-                    fullWidth
-                    value={contactName}
-                    onChange={this.handleChange('contactName')}
-                  />
-                  <TextField
-                    margin='dense'
-                    label='Sponsoring Organization Name'
-                    fullWidth
-                    value={sponsoringCompany}
-                    onChange={this.handleChange('sponsoringCompany')}
-                  />
+                  <Typography variant='h6'>Name: {creator.Fullname}</Typography>
+                  {organizationInfo}
                 </Grid>
                 <Grid item xs={5}>
                   <TextField
@@ -271,12 +265,12 @@ class ProposalForm extends Component {
               <Typography variant='subtitle2'>Departments</Typography>
               <FormControl className={classes.formMargin}>
                 <Select
-                  labelId="demo-mutiple-name-label"
-                  id="demo-mutiple-name"
+                  labelId='demo-mutiple-name-label'
+                  id='demo-mutiple-name'
                   multiple
                   value={departmentNamesSel}
                   onChange={this.handleChange('departments')}
-                  input={<Input />}
+                  input={<Input/>}
                 >
                   {departmentList.map((dept) => (
                     <MenuItem key={dept.name} value={dept.name}>
@@ -363,9 +357,26 @@ class ProposalForm extends Component {
 
 ProposalForm.contextType = AuthContext;
 
+ProposalForm.defaultProps = {
+  proposal: null
+};
+
 ProposalForm.propTypes = {
-  proposal: PropTypes.object,
-  title: PropTypes.string,
+  proposal: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    projectTitle: PropTypes.string,
+    email: PropTypes.string,
+    phone: PropTypes.string,
+    projectDescription: PropTypes.string,
+    projectDeliverables: PropTypes.string,
+    projectUse: PropTypes.string,
+    financialSupport: PropTypes.string,
+    isNondisclosureRequired: PropTypes.bool,
+    isIntellectualPropertyRequired: PropTypes.bool,
+    departments: PropTypes.isRequired,
+  }),
+  title: PropTypes.string.isRequired,
+  update: PropTypes.func.isRequired,
 };
 
 export default compose(

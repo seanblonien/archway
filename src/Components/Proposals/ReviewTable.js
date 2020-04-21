@@ -19,6 +19,15 @@ import ProposalForm from './ProposalForm';
 import gStyle from '../../utils/styles.module.css';
 import TablePagination from '@material-ui/core/TablePagination';
 
+const styles = (theme) => ({
+  proposalPaper:{
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[3],
+    padding: theme.spacing(4),
+    outline: 'none',
+  },
+});
+
 class ReviewTable extends Component {
 
   constructor(props) {
@@ -30,19 +39,25 @@ class ReviewTable extends Component {
   }
 
   handleDelete = async (e, id) => {
+    const {update} = this.props;
     await api.proposals.delete(id);
+    update();
   };
 
   handleApprove = async (e, id) => {
+    const {update} = this.props;
     await api.proposals.update(id, {
       status: 'submittedApproved'
     });
+    update();
   };
 
   handleDeny = async (e, id) => {
+    const {update} = this.props;
     await api.proposals.update(id, {
-      status: 'submittedApproved'
+      status: 'submittedDenied'
     });
+    update();
   };
 
   handlePageChange = (event, newPage) => {
@@ -70,18 +85,19 @@ class ReviewTable extends Component {
   }
 
   render() {
-    const {proposals, action, title} = this.props;
+    const {proposals, action, title, update} = this.props;
     const {page, rowsPerPage} = this.state;
 
     return (
-      <div>
+      <div className={gStyle.mainContentBorder}>
+        {proposals.length > 0 &&
+          <div>
         <Grid container direction='row' alignItems='flex-end' justify='space-between'>
-          <Grid item align='left'>
+          <Grid item align='left' className={gStyle.gridListContainer}>
             <Typography variant='h4'>{title}</Typography>
           </Grid>
         </Grid>
         <br/>
-        {proposals.length > 0 &&
           <TableContainer component={Paper} className={gStyle.table}>
             <Table>
               <TableHead>
@@ -102,7 +118,10 @@ class ReviewTable extends Component {
                       <TableCell align='right'>
                         {action === 'review' &&
                         <div>
-                          <ViewAProposal proposal={proposal}/>
+                          <ViewAProposal
+                            proposal={proposal}
+                            update={update}
+                          />
                           <Button onClick={(e) => this.handleApprove(e, proposal._id)}>Approve</Button>
                           <Button onClick={(e) => this.handleDeny(e, proposal._id)}>Deny</Button>
                         </div>
@@ -114,7 +133,11 @@ class ReviewTable extends Component {
                         }
                         {action === 'personal' &&
                         <div>
-                          <ProposalForm title='Edit' proposal={proposal}>Edit</ProposalForm>
+                          <ProposalForm
+                            title='Edit'
+                            proposal={proposal}
+                            update={update}
+                          >Edit</ProposalForm>
                           <Button onClick={(e) => this.handleDelete(e, proposal.id)}>Delete</Button>
                         </div>
                         }
@@ -139,7 +162,8 @@ class ReviewTable extends Component {
               </TableFooter>
             </Table>
           </TableContainer>
-        }
+          </div>
+          }
       </div>
     );
   }
