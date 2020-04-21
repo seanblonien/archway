@@ -6,6 +6,7 @@ import {strapiURL} from '../constants';
 import defaultCapstoneImg from '../Static/defaultCapstone.svg';
 import defaultSponsorImg from '../Static/defaultSponsor.svg';
 import defaultDepartmentImg from '../Static/defaultDepartment.svg';
+import defaultCoverImg from '../Static/defaultCover.svg';
 import api from '../Services/api';
 
 // Returns the first n words from the string
@@ -32,6 +33,7 @@ export const imageURL = {
   sponsor: (image) => checkImage(image, defaultSponsorImg),
   department: (image) => checkImage(image, defaultDepartmentImg),
   capstone: (image) => checkImage(image, defaultCapstoneImg),
+  cover: (image) => checkImage(image, defaultCoverImg)
 };
 
 // Gets an image from strapi and reformats it so that it can be used as a

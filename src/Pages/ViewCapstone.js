@@ -59,7 +59,7 @@ class ViewCapstone extends Component {
     return loading ?
       <LoadingCircle/> :
       <div>
-        <Parallax bgImage={strapiURL + capstone.coverPhoto.url} strength={300}>
+        <Parallax bgImage={imageURL.cover(capstone.cover)} strength={300}>
           <div className={classes.cover}/>
         </Parallax>
         <Grid container direction='row' justify='flex-start' alignItems='flex-start' component={Box} px={6} py={2}>
