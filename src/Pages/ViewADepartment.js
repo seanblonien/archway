@@ -94,8 +94,6 @@ class ViewADepartment extends Component {
           <br/>
           <CapstonesTab department={department}/>
           <br/><br/>
-          <MediaMarkdown>#### Professors</MediaMarkdown>
-          <br/>
           <Professors department={department}/>
         </Grid>
       </div>
