@@ -103,8 +103,8 @@ class ViewYourCapstones extends Component {
             <Grid item xs={12} md={10}>
               <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
                 {capstones.map((result) => (
-                  <GridListTile key={result.coverPhoto.url} onClick={() => this.handleTileClick(result.id)}>
-                    <img src={imageURL.capstone(result.coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
+                  <GridListTile key={result.cover.url} onClick={() => this.handleTileClick(result.id)}>
+                    <img src={imageURL.capstone(result.cover)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
 
                     <GridListTileBar
                       title={result.title}
@@ -162,8 +162,8 @@ class ViewYourCapstones extends Component {
             <Grid item xs={12} md={10}>
               <GridList cellHeight={250} cols={ViewYourCapstones.getColumns(this.props)}>
                 {participatedCapstones.map((result2) => (
-                  <GridListTile key={result2.coverPhoto.url} onClick={() => this.handleTileClick(result2.id)}>
-                    <img src={imageURL.capstone(result2.coverPhoto)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
+                  <GridListTile key={result2.cover.url} onClick={() => this.handleTileClick(result2.id)}>
+                    <img src={imageURL.capstone(result2.cover)} alt='Capstone' style={{height: '100%', width: '100%'}}/>
                     <GridListTileBar
                       title={result2.title}
                       subtitle={`Made by: ${result2.moderator.username}`}
