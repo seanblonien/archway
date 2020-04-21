@@ -69,6 +69,12 @@ export const formatQuery = (params) => `?${Object.keys(params)
         return `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`;
       }).join('&');
     }
+    if(Array.isArray(value)) {
+      const str = value.reduce((obj, elem) =>
+        `${obj}${encodeURIComponent(k)}}=${encodeURIComponent(elem)}&`
+      , '');
+      return str.replace(/&$/, '');
+    }
     return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
   }).join('&')}`;
 
