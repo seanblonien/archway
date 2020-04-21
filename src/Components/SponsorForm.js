@@ -153,7 +153,7 @@ class SponsorForm extends React.Component {
 
     return (
       <div>
-        <Button variant='outlined' color='primary' onClick={this.handleClickOpen}>
+        <Button variant='outlined' color='secondary' onClick={this.handleClickOpen}>
           {title}
         </Button>
         <Dialog
