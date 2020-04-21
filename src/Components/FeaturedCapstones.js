@@ -48,7 +48,7 @@ class FeaturedCapstones extends Component {
               {featuredCapstones.map((result, i) => (
                 <GridListTile
                   style={{maxWidth: '300px'}}
-                  key={featuredCapstones[i].thumbnail.url}
+                  key={i}
                   onClick={() => this.handleTileClick(result.id)}
                 >
                   <img
