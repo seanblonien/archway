@@ -62,6 +62,9 @@ const encodeKeyValue = (key, value) => (
 export const formatQuery = (params) => `?${Object.keys(params)
   .map(key => {
     const value = params[key];
+    if(Array.isArray(value)) {
+      return value.map((elem) => encodeKeyValue(key, elem)).join('&');
+    }
     if(typeof value === 'object') {
       return Object.keys(value).map((subKey) => {
         if(Array.isArray(value[subKey])){
@@ -69,9 +72,6 @@ export const formatQuery = (params) => `?${Object.keys(params)
         }
         return encodeKeyValue(`${key}.${subKey}`, value[subKey]);
       }).join('&');
-    }
-    if(Array.isArray(value)) {
-      return value.map((elem) => encodeKeyValue(key, elem)).join('&');
     }
     return encodeKeyValue(key, value);
   }).join('&')}`;
