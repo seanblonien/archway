@@ -6,8 +6,6 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import PropTypes from 'prop-types';
 import Lightbox from 'react-image-lightbox';
-import routes from '../utils/Routing/routes';
-import history from '../utils/Routing/history';
 import {strapiURL} from '../constants';
 import 'react-image-lightbox/style.css';
 
@@ -48,11 +46,11 @@ class CapstonePhotos extends Component {
       <div className={classes.root}>
         <Typography variant='h4'>Photos</Typography>
         <GridList className={classes.gridList} cols={8}>
-          {photos.map((photo) => (
+          {photos.map((photo, i) => (
             <GridListTile
               key={photo.url} cols={2}
               style={{paddingRight: '2%', paddingTop: '2%'}}
-              onClick={() => this.setState({isOpen: true})}
+              onClick={() => this.setState({photoIndex: i, isOpen: true})}
             >
               <img src={strapiURL + photo.url} alt=''/>
             </GridListTile>
