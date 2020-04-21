@@ -123,13 +123,13 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Delete any content types not specified locally
     // Check to see which content types need to be created
     const contentTypesToDeletePromises = contentTypeNamesToDelete.map(contentType =>
-      s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL + 
-                          contentType.replace(' ', '-')}.
-                          ${contentType.replace(' ', '-')}`)
+      s.axios.get(`${s.STRAPI_CONTENT_TYPE_GET_URL}${contentType.replace(' ', '-')}.${contentType.replace(' ', '-')}`)
         .catch(e => ({...e, contentType}))
     );
     const contentTypesToDeleteResponse = await Promise.all(contentTypesToDeletePromises);
-    const contentTypesToDelete = contentTypesToDeleteResponse.filter(r => r.response.status === 200);
+    const contentTypesToDelete = contentTypesToDeleteResponse
+      .filter(r => r.status === 200)
+      .map(r => r.data.data.contentType.apiID);
     for(const name of contentTypesToDelete) {
       const url = `${s.STRAPI_CONTENT_TYPE_UPDATE_APPLICATION_URL + name}.${name}`;
       console.log(`\tDeleting ${name}`);

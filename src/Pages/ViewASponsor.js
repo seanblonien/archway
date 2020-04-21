@@ -46,7 +46,7 @@ class ViewASponsor extends Component {
       loading: false,
       sponsor,
       logoPhoto: imageURL.sponsor(sponsor.logo),
-      coverPhoto: imageURL.sponsor(sponsor.coverPhoto)
+      coverPhoto: imageURL.sponsor(sponsor.cover)
     });
 
     for (const person of sponsor.personnel) {
@@ -61,7 +61,7 @@ class ViewASponsor extends Component {
     const updatedSponsor = await api.sponsors.findOne(sponsor.id);
     this.setState({
       sponsor: updatedSponsor,
-      coverPhoto: imageURL.sponsor(updatedSponsor.coverPhoto),
+      coverPhoto: imageURL.sponsor(updatedSponsor.cover),
       logoPhoto: imageURL.sponsor(updatedSponsor.logo)
     });
   };

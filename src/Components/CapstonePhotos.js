@@ -15,10 +15,7 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-    paddingTop: '3%',
-    paddingRight: '5%',
-    paddingLeft: '5%',
+    backgroundColor: theme.palette.background.paper
   },
 });
 
@@ -49,7 +46,6 @@ class CapstonePhotos extends Component {
           {photos.map((photo, i) => (
             <GridListTile
               key={photo.url} cols={2}
-              style={{paddingRight: '2%', paddingTop: '2%'}}
               onClick={() => this.setState({photoIndex: i, isOpen: true})}
             >
               <img src={strapiURL + photo.url} alt=''/>

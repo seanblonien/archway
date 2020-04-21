@@ -49,7 +49,7 @@ class ViewSponsors extends Component {
   }
 
   async componentDidMount() {
-    const sponsors = await api.sponsors.find({verified: true});
+    const sponsors = await api.sponsors.find({isVerified: true});
     this.setState({loading: false, sponsors});
   }
 
