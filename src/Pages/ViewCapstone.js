@@ -1,3 +1,4 @@
+import {Box} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import 'pure-react-carousel/dist/react-carousel.es.css';
@@ -24,12 +25,6 @@ const styles = () => ({
     backgroundPosition: '0% 0%',
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     color: 'white',
-  },
-  info: {
-    paddingTop: '1%',
-  },
-  title: {
-    marginBottom: '15px',
   }
 });
 
@@ -67,11 +62,9 @@ class ViewCapstone extends Component {
         <Parallax bgImage={strapiURL + capstone.coverPhoto.url} strength={300}>
           <div className={classes.cover}/>
         </Parallax>
-        <Grid container direction='row' className={classes.info} style={{paddingLeft: '5%'}}>
-          <Grid item xs={11}>
+        <Grid container direction='row' justify='flex-start' alignItems='flex-start' component={Box} px={6} py={2}>
+          <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
             <Typography className={classes.title} variant='h3'>{capstone.name}</Typography>
-          </Grid>
-          <Grid item md={4}>
             <Typography variant='h6'>
               <strong>Start Date:</strong> {convertStrapiDate(capstone.startDate).toDateString()}
             </Typography>
@@ -97,21 +90,17 @@ class ViewCapstone extends Component {
             </Grid>}
             <br/>
           </Grid>
-          <Grid item md={7}>
+          <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} mt={1}>
             <MediaMarkdown>{capstone.description}</MediaMarkdown>
             <br/>
           </Grid>
+          {capstone.members[0] &&
+            <Grid item xs={12} component={Team} capstone={capstone}/>
+          }
+          {capstone.media[0] &&
+            <Grid item xs={12} component={CapstonePhotos} capstone={capstone}/>
+          }
         </Grid>
-        {capstone.members[0] &&
-          <Grid container direction='column'>
-            <Team item capstone={capstone}/>
-          </Grid>
-        }
-        {capstone.media[0] &&
-          <Grid container direction='column'>
-            <CapstonePhotos item capstone={capstone}/>
-          </Grid>
-        }
       </div>
     ;
   }

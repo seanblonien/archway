@@ -1,6 +1,6 @@
 import {withStyles, withTheme} from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import React, {Component} from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -19,39 +19,34 @@ const styles = (theme) => ({
   },
 });
 
-class UserGrid extends Component {
-
-  handleTileClick = (title) => {
+const UserGrid = ({classes, userList}) => {
+  const handleTileClick = (title) => {
     history.push(routes.viewprofile.genPath(title));
   };
 
-  render() {
-    const {classes, userList} = this.props;
-
-    return (
-      <div className={classes.root}>
-        <GridList className={classes.gridList} cols={6}>
-          {userList.map((user) => (
-            <div
-              style={{height: '200px', width: '200px'}}
-              key={user.id}
+  return (
+    <div className={classes.root}>
+      <GridList className={classes.gridList} cols={6}>
+        {userList.map((user) => (
+          <div
+            style={{height: '200px', width: '200px'}}
+            key={user.id}
+          >
+            <GridListTile
+              cols={2}
+              style={{height: '150px', width: '150px', paddingRight: '2%', paddingTop: '2%'}}
+              onClick={() => handleTileClick(user.username)}
             >
-              <GridListTile
-                cols={2}
-                style={{height: '150px', width: '150px', paddingRight: '2%', paddingTop: '2%'}}
-                onClick={() => this.handleTileClick(user.username)}
-              >
-                <img src={imageURL.user(user.picture)} alt=''/>
-              </GridListTile>
-              <Typography variant='body2'>{user.Fullname}</Typography>
-              <Typography variant='body2'>{user.email}</Typography>
-            </div>
-          ))}
-        </GridList>
-      </div>
-    );
-  }
-}
+              <img src={imageURL.user(user.picture)} alt=''/>
+            </GridListTile>
+            <Typography variant='body2'>{user.Fullname}</Typography>
+            <Typography variant='body2'>{user.email}</Typography>
+          </div>
+        ))}
+      </GridList>
+    </div>
+  );
+};
 
 UserGrid.propTypes = {
   userList: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
