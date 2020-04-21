@@ -318,7 +318,7 @@ class ViewCapstone extends Component {
 
                 <Divider/>
                 <Typography align='center' style={{marginBottom: '1%'}}>
-                  <img src={imageURL.capstone(capstone.coverPhoto)} className={classes.capstoneImage} alt='Display'/>
+                  <img src={imageURL.capstone(capstone.cover)} className={classes.capstoneImage} alt='Display'/>
                 </Typography>
               </CardContent>
             </Card>

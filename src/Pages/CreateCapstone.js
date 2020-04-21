@@ -61,7 +61,7 @@ class CreateCapstone extends Component {
       startDate: '',
       endDate: '',
       description: '',
-      coverPhoto: '',
+      cover: '',
       Department: '',
       Username: '',
       capstones: [],
@@ -157,8 +157,8 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
-    const {coverPhoto, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers} = this.state;
-    if (coverPhoto == null) {
+    const {cover, checkedSponsors, Participants, title, startDate, endDate, description, Username, Department, Users, AllUsers} = this.state;
+    if (cover == null) {
       return;
     }
 
@@ -185,7 +185,7 @@ class CreateCapstone extends Component {
     formData.append('files', image.files[0], image.files[0].name);
     formData.set('refId', refId);
     formData.set('ref', 'capstone');
-    formData.set('field', 'coverPhoto');
+    formData.set('field', 'cover');
 
     await api.uploads.upload(formData);
 
@@ -195,12 +195,12 @@ class CreateCapstone extends Component {
   };
 
   isFormValid = () => {
-    const {title, description, coverPhoto, checkedSponsors, Department, capstones} = this.state;
+    const {title, description, cover, checkedSponsors, Department, capstones} = this.state;
     const filter = new Filter();
     const profane = filter.isProfane(title) || filter.isProfane(description);
     const validName = capstones.map(c => c.title.toUpperCase()).includes(title.toUpperCase());
 
-    return title && description && coverPhoto && Department && (checkedSponsors.length > 0) && validName && !profane;
+    return title && description && cover && Department && (checkedSponsors.length > 0) && validName && !profane;
   };
 
   render() {
