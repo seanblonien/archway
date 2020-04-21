@@ -149,22 +149,6 @@
       "findone": "application.proposals.findone",
       "count": "application.proposals.count"
     },
-    "courses": {
-      "find": "application.courses.find",
-      "findone": "application.courses.findone",
-      "update": "application.courses.update",
-      "delete": "application.courses.delete",
-      "create": "application.courses.create",
-      "count": "application.courses.count"
-    },
-    "sections": {
-      "find": "application.sections.find",
-      "findone": "application.sections.findone",
-      "create": "application.sections.create",
-      "delete": "application.sections.delete",
-      "count": "application.sections.count",
-      "update": "application.sections.update"
-    },
     "sponsor_page": {
       "find": "application.sponsor-page.find",
       "update": "application.sponsor-page.update",
@@ -179,6 +163,16 @@
       "update": "application.home-page.update",
       "find": "application.home-page.find",
       "delete": "application.home-page.delete"
+    },
+    "about_page": {
+      "find": "application.about-page.find",
+      "delete": "application.about-page.delete",
+      "update": "application.about-page.update"
+    },
+    "proposal_approval": {
+      "find": "application.proposal-approval.find",
+      "update": "application.proposal-approval.update",
+      "delete": "application.proposal-approval.delete"
     }
   }
 }
