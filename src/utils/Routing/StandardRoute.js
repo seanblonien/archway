@@ -1,16 +1,21 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
+import _ from 'lodash';
+import Can from '../../Components/Can';
+import {permissions} from '../../constants';
 import {parentRoutePropTypes, routeNamesPropTypes, routesPropTypes} from '../PropTypesConfig';
 
-const StandardRoute = ({path, routeNames, parentRoute, component: Component, ...rest}) => (
+const StandardRoute = ({path, routeNames, parentRoute, permission, component: Component, ...rest}) => (
   <Route
     {...rest} path={path} render={(props) => (
-      <Component
-        {...props} routes={routeNames && routeNames.reduce((obj, route) => {
-          obj[route] = parentRoute[route];
-          return obj;
-        }, {})}
-      />
+      <Can perform={!_.isNil(permission) && !_.isEmpty(permission) ? permission : permissions.users_permissions.userspermissions.init}>
+        <Component
+          {...props} routes={routeNames && routeNames.reduce((obj, route) => {
+            obj[route] = parentRoute[route];
+            return obj;
+          }, {})}
+        />
+      </Can>
     )}
   />
 );
