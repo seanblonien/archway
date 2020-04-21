@@ -111,9 +111,9 @@ class ViewADepartment extends Component {
         <Grid className={classes.capstones} container direction='column'>
           <MediaMarkdown>{`####${department.name} Capstones`}</MediaMarkdown>
           <br/>
-          <CapstonesTab department={department}/>
+          <CapstonesTab capstones={department.capstones}/>
           <br/><br/>
-          <Professors department={department}/>
+          <Professors capstones={department.capstones}/>
         </Grid>
       </div>
     ;

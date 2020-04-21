@@ -28,28 +28,28 @@ const styles = (theme) => ({
   },
 });
 
-class DepartmentCapstones extends Component {
+class CapstonesList extends Component {
   constructor(props) {
     super(props);
-    const {department} = this.props;
+    const {capstones} = this.props;
     this.state = {
-      departmentCapstones: department.capstones,
+      capstoneList: capstones,
     };
   }
 
   async componentDidMount() {
-    this.setState({departmentCapstones: this.getCurrentOrPastCapstones()});
+    this.setState({capstoneList: this.getCurrentOrPastCapstones()});
   }
 
   getCurrentOrPastCapstones = () => {
     const {current} = this.props;
-    const {departmentCapstones} = this.state;
+    const {capstoneList} = this.state;
     const datedCapstones = [];
     const today = new Date();
 
-    for (const index in departmentCapstones) {
-      if (Object.prototype.hasOwnProperty.call(departmentCapstones, index)) {
-        const capstone = departmentCapstones[index];
+    for (const index in capstoneList) {
+      if (Object.prototype.hasOwnProperty.call(capstoneList, index)) {
+        const capstone = capstoneList[index];
 
         const endDate = convertStrapiDate(capstone.endDate);
         if (current === 'True' && endDate >= today) {
@@ -69,19 +69,19 @@ class DepartmentCapstones extends Component {
 
   render () {
     const {classes} = this.props;
-    const {departmentCapstones} = this.state;
+    const {capstoneList} = this.state;
 
     return (
       <div className={classes.root}>
         <GridList className={classes.gridList} cellHeight={180} cols={1}>
-          {departmentCapstones.map((result, i) => (
+          {capstoneList.map((result, i) => (
             <GridListTile
               style={{maxWidth: '300px', padding: '20px'}}
-              key={departmentCapstones[i].coverPhoto.url}
+              key={capstoneList[i].coverPhoto.url}
               onClick={() => this.handleTileClick(result.id)}
             >
               <img
-                src={imageURL.capstone(departmentCapstones[i].coverPhoto)}
+                src={imageURL.capstone(capstoneList[i].coverPhoto)}
                 alt='Capstone' style={{height: '100%', width: '100%'}}
               />
               <GridListTileBar
@@ -104,12 +104,12 @@ class DepartmentCapstones extends Component {
   }
 }
 
-DepartmentCapstones.propTypes = {
-  department: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
+CapstonesList.propTypes = {
+  capstones: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
   current: PropTypes.string.isRequired,
 };
 
 export default compose(
   withStyles(styles, {withTheme: true}),
   withTheme
-)(DepartmentCapstones);
+)(CapstonesList);
