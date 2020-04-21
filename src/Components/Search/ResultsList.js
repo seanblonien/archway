@@ -23,16 +23,12 @@ class ResultsList extends Component {
         id: '',
       }],
     };
-    const selectedDepartments = [];
-    const selectedSponsors = [];
+    this.selectedDepartments = [];
+    this.selectedSponsors = [];
   }
 
   async componentDidMount() {
-    const {query, limit} = this.props;
-
-    const capstones = await api.capstones.find({_q: query, _limit: limit});
-
-    this.setState({capstones});
+    this.search();
   }
 
   updateDepartments = (departments) => {
@@ -46,12 +42,16 @@ class ResultsList extends Component {
   };
 
   search = async () => {
-    const {query, limit} = this.props;
+    const {query} = this.props;
 
     // Query the database for capstones with the query string, the selected departments, and the selected sponsors (OR operation)
-    const [queryCapstones, departmentCapstones, sponsorCapstones] = await Promise.all([api.capstones.find({_q: query, _limit: limit}), api.capstones.find({departments: {id: this.selectedDepartments}}), api.capstones.find({sponsors: {id: this.selectedSponsors}})]);
+    const [queryCapstones, departmentCapstones, sponsorCapstones] = await Promise.all([
+      api.capstones.find({_q: query}), 
+      api.capstones.find({departments: {id: this.selectedDepartments}}), 
+      api.capstones.find({sponsors: {id: this.selectedSponsors}})
+    ]);
 
-    // Save the capstone ids
+    // Save only the ids from the queried capstones
     const qids = [];
     const dids = [];
     const sids = [];
@@ -60,14 +60,16 @@ class ResultsList extends Component {
     sponsorCapstones.map(sc => (sids.push(sc.id)));
 
     // Find the ids that appear in all 3 lists (AND operation)
-    const cids1 = qids.filter(value => dids.includes(value));
-    const cids2 = cids1.filter(value => sids.includes(value));
+    const cids = qids.filter(value => dids.includes(value)).filter(value => sids.includes(value));
 
     // Find the capstones that satisfy all the criteria (find by ids)
-    const capstones = await api.capstones.find({id_in: cids2});
+    let results = [{id: '',}];
+    if(cids.length > 0){
+      results = await api.capstones.find({id_in: cids});
+    }
 
     // Update the screen
-    this.setState({capstones});
+    this.setState({capstones: results});
   };
 
   render() {
@@ -101,7 +103,6 @@ class ResultsList extends Component {
 
 ResultsList.propTypes = {
   query: PropTypes.string.isRequired,
-  limit: PropTypes.number.isRequired
 };
 
 export default withStyles(styles) (ResultsList);

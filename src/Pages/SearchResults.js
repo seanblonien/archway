@@ -6,7 +6,7 @@ import ResultsList from '../Components/Search/ResultsList';
 const SearchResults = () => {
   const query = useQuery().get('search');
 
-  return <ResultsList query={query} limit={3}/>;
+  return <ResultsList query={query}/>;
 };
 
 export default SearchResults;
