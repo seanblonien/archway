@@ -77,11 +77,11 @@ class CapstonesList extends Component {
           {capstoneList.map((result, i) => (
             <GridListTile
               style={{maxWidth: '300px', padding: '20px'}}
-              key={capstoneList[i].thumbnail.url}
+              key={capstoneList[i].cover.url}
               onClick={() => this.handleTileClick(result.id)}
             >
               <img
-                src={imageURL.capstone(capstoneList[i].coverPhoto)}
+                src={imageURL.capstone(capstoneList[i].thumbnail)}
                 alt='Capstone' style={{height: '100%', width: '100%'}}
               />
               <GridListTileBar
