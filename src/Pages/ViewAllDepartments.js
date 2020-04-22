@@ -3,6 +3,10 @@ import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import CardLayout from '../Components/CardLayout';
+import {permissions} from '../constants';
+import DepartmentForm from '../Components/DepartmentForm';
+import Can from '../Components/Can';
+import gStyle from '../utils/styles.module.css';
 
 class ViewAllDepartments extends Component {
   constructor(props) {
@@ -17,9 +21,34 @@ class ViewAllDepartments extends Component {
     this.setState({departments});
   }
 
+  updateDepartments = async () => {
+    const departments = await api.departments.find();
+    this.setState({departments});
+  };
+
   render() {
     const {departments} = this.state;
-    return <CardLayout title='All Departments' listItems={departments} childURL={routes.viewdepartment.genPath} imageURLFunction={imageURL.department}/>;
+
+    return (
+      <div>
+        <div className={gStyle.gridListContainer}>
+          <Can perform={permissions.application.departments.create}>
+            <DepartmentForm
+              title='Create Department'
+              type='create'
+              department={null}
+              update={this.updateDepartments}
+            />
+          </Can>
+        </div>
+        <CardLayout
+          title='All Departments'
+          listItems={departments}
+          childURL={routes.viewdepartment.genPath}
+          imageURLFunction={imageURL.department}
+        />
+      </div>
+    );
   }
 }
 

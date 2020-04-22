@@ -12,8 +12,11 @@ import LoadingCircle from '../Components/LoadingCircle';
 import CapstonesTab from '../Components/CapstonesTab';
 import Professors from '../Components/Professors';
 import api from '../Services/api';
+import DepartmentForm from '../Components/DepartmentForm';
+import Can from '../Components/Can';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
-import {strapiURL} from '../constants';
+import {strapiURL, permissions} from '../constants';
+import gStyle from '../utils/styles.module.css';
 
 const styles = (theme) => ({
   cover: {
@@ -54,6 +57,12 @@ class ViewADepartment extends Component {
     this.setState({loading: false, department});
   }
 
+  updateData = async () => {
+    const {match} = this.props;
+    const department = await api.departments.findOne(match.params.id);
+    this.setState({loading: false, department});
+  };
+
   render() {
     const {classes} = this.props;
     const {loading, department} = this.state;
@@ -85,6 +94,16 @@ class ViewADepartment extends Component {
                   <ComputerRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
                   <Link className={classes.link} href={department.url}>View Department Page</Link>
                 </Grid>}
+                <div className={gStyle.gridListContainer}>
+                  <Can perform={permissions.application.departments.update}>
+                    <DepartmentForm
+                      title='Edit Department'
+                      department={department}
+                      type='edit'
+                      update={this.updateData}
+                    />
+                  </Can>
+                </div>
               </Grid>
             </Grid>
           </Grid>
@@ -94,8 +113,6 @@ class ViewADepartment extends Component {
           <br/>
           <CapstonesTab department={department}/>
           <br/><br/>
-          <MediaMarkdown>#### Professors</MediaMarkdown>
-          <br/>
           <Professors department={department}/>
         </Grid>
       </div>

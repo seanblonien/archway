@@ -2,24 +2,22 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import {withStyles} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth/withWidth';
 import React, {Component} from 'react';
+import {Link as RouterLink} from 'react-router-dom';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import api from '../Services/api';
+import routes from '../utils/Routing/routes';
 import {getBgImageFromStrapi} from '../utils/utils';
 
 const styles = () => ({
-  button: {
-    color: 'white',
-    border: '2px solid white'
-  },
   sidePanel: {
     height: '800px',
-    backgroundColor: 'black',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     color: 'white',
-    opacity: '0.7'
   }
 });
 
@@ -55,8 +53,10 @@ class Sponsors extends Component {
                   </MediaMarkdown>
                   <br/>
                   <Grid item align='center'>
-                    <Button className={classes.button} size='large'>
-                      Sponsor Signup
+                    <Button variant='contained' color='secondary'>
+                      <Link component={RouterLink} to={routes.auth.signup.path}>
+                        Sponsor Signup
+                      </Link>
                     </Button>
                   </Grid>
                 </CardContent>
