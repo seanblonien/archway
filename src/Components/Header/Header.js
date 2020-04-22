@@ -17,7 +17,6 @@ import api from '../../Services/api';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/Routing/history';
 import routes from '../../utils/Routing/routes';
-import LoadingCircle from '../LoadingCircle';
 import Drawer from './Drawer';
 import SearchBar from './SearchBar';
 import SubMenu from './SubMenu';
@@ -85,8 +84,7 @@ class Header extends Component {
 
   async componentDidMount() {
     const {links} = await api.navbar.find();
-    console.log(links);
-    this.setState({loading: false});
+    this.setState({loading: false, links});
   }
 
   handleLogout = () =>{
@@ -125,7 +123,7 @@ class Header extends Component {
 
     return (
       loading
-        ? <LoadingCircle/>
+        ? null
         : <div className={classes.root}>
           <AppBar position='static'>
             <Toolbar>
@@ -143,35 +141,11 @@ class Header extends Component {
                     key={route.id}
                     style={{color: 'white', fontSize: '15px'}}
                     component={Link}
-                    to={routes.path}
+                    to={route.path}
                   >
-                    <SubMenu
-                      title={route.label}
-                      subRoutes={route.subRoutes}
-                    />
+                    <SubMenu title={route.label} subRoutes={route.subRoutes}/>
                   </Button>
                 ))}
-                <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.about.path}>
-                  <SubMenu
-                    title='About'
-                    items={['FAQ', String(theme.university), 'Archway']}
-                    links={[routes.faq.path, routes.about.path, routes.about.path]}
-                  />
-                </Button>
-                <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.sponsors.path}>
-                  <SubMenu
-                    title='Sponsors'
-                    items={['Become a Sponsor', 'View Current Sponsors']}
-                    links={[routes.sponsors.path, routes.viewsponsors.genPath()]}
-                  />
-                </Button>
-                <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.genPath()}>
-                  <SubMenu
-                    title='Projects'
-                    items={['All Capstones','All Departments']}
-                    links={[routes.capstones.genPath(), routes.viewdepartments.path]}
-                  />
-                </Button>
               </div>
               <div className={classes.grow}/>
               <div className={classes.sectionDesktop}>
