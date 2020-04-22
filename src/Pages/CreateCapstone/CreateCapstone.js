@@ -49,7 +49,7 @@ class CreateCapstone extends Component {
     super(props);
     this.state = {
       description: '',
-      title: '',
+      name: '',
       preview: '',
       isFeatured: false,
       startDate: new Date(),
@@ -69,15 +69,20 @@ class CreateCapstone extends Component {
       selectedSponsor: '',
       AllUsers: [],
       Users: [],
-      Participants: [],
+      members: [],
       selectedProfessor: '',
       selectedTA: '',
       selectedUser: '',
-      courseName: '',
+      course: '',
       capstoneId: '',
-      removeImg: false
+      removeImg: false,
+      semester: ''
     };
   }
+
+  handleDescription = content => {
+    this.setState({'description': content});
+  };
 
   handleChange = name => event => {
     this.setState({[name]: event.target.value});
@@ -95,6 +100,30 @@ class CreateCapstone extends Component {
         return false
       }
       return true;
+    });
+
+    ValidatorForm.addValidationRule('haveMembers', value => {
+      const { members } = this.state;
+      if (members.length > 0) {
+        return true;
+      }
+      return false;
+    });
+
+    ValidatorForm.addValidationRule('haveProfessor', value => {
+      const { selectedProfessor } = this.state;
+      if (selectedProfessor !== '') {
+        return true;
+      }
+      return false;
+    });
+
+    ValidatorForm.addValidationRule('haveTA', value => {
+      const { selectedTA } = this.state;
+      if (selectedTA !== '') {
+        return true;
+      }
+      return false;
     });
 
     // pull data from strapi/backend
@@ -146,17 +175,17 @@ class CreateCapstone extends Component {
   handleConfirmTeammate = (selectedUser) => {
     const user = selectedUser;
     if (user !== '') {
-      if (!this.state.Participants.includes(user)) {
-        const joinedParticipants = this.state.Participants.concat(user);
-        this.setState({Participants: joinedParticipants});
+      if (!this.state.members.includes(user)) {
+        const joinedMembers = this.state.members.concat(user);
+        this.setState({members: joinedMembers});
       }
     }
   };
 
   handleRemoveTeammate = (selectedUserId) => {
-    const copyOfParticipants = _.cloneDeep(this.state.Participants);
+    const copyOfMembers = _.cloneDeep(this.state.members);
     this.setState({
-      Participants: copyOfParticipants.filter(t => {
+      members: copyOfMembers.filter(t => {
         return selectedUserId !== t.id;
       })
     });
@@ -211,30 +240,33 @@ class CreateCapstone extends Component {
 
   extractNonMediaContent = () => {
     const {
-      title,
-      Username,
+      name,
       isFeatured,
-      courseName,
+      course,
       startDate,
       endDate,
       Department,
       description,
-      Participants,
+      members,
       selectedProfessor,
       selectedTA,
       preview,
-      checkedSponsors
+      checkedSponsors,
+      semester
     } = this.state;
     const upload_content = {
-      name: title,
-      moderator: Username,
+      name: name,
       isFeatured: isFeatured,
       startDate: startDate,
       endDate: endDate,
-      preview: preview
+      preview: preview,
+      semester: semester
     };
-    if (courseName !== '') {
-      upload_content.courseName = courseName;
+    if (course !== '') {
+      upload_content.course = course;
+    }
+    if (semester !== '') {
+      upload_content.semester = semester;
     }
     if (Department !== '') {
       upload_content.department = [Department.id,];
@@ -242,15 +274,15 @@ class CreateCapstone extends Component {
     if (description !== '') {
       upload_content.description = description;
     }
-    if (Participants.length > 0) {
-      const UserIDs = Participants.map(p => p.id);
+    if (members.length > 0) {
+      const UserIDs = members.map(p => p.id);
       upload_content.members = UserIDs;
     }
     if (selectedTA !== '') {
-      upload_content.TA = selectedTA.id;
+      upload_content.members.concat(selectedTA.id)
     }
     if (selectedProfessor !== '') {
-      upload_content.professor = selectedProfessor.id;
+      upload_content.members.concat(selectedProfessor.id);
     }
     if (checkedSponsors.length > 0) {
       upload_content.sponsors = checkedSponsors.map(s => s.id);
@@ -260,8 +292,10 @@ class CreateCapstone extends Component {
 
   clearCurrentCapstone = () => {
     this.setState({
-      title: '',
+      name: '',
       description: '',
+      preview: '',
+      semester: '',
       isFeatured: false,
       startDate: new Date(),
       endDate: new Date(),
@@ -272,10 +306,10 @@ class CreateCapstone extends Component {
       capstones: [],
       checkedSponsors: [],
       selectedSponsor: '',
-      Participants: [],
+      members: [],
       selectedProfessor: '',
       selectedTA: '',
-      courseName: '',
+      course: '',
       capstoneId: '',
       removeImg: true,
       oldThumbnail: [],
@@ -285,9 +319,6 @@ class CreateCapstone extends Component {
   };
 
   handleSubmit = async () => {
-    // if (!this.isFormValidForSubmit()) {
-    //   return;
-    // }
     await this.handleUpload(true);
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('successful submit!', snack.success);
@@ -295,9 +326,6 @@ class CreateCapstone extends Component {
   };
 
   handleSave = async () => {
-    if (!this.isFormValidForSave()) {
-      return;
-    }
     await this.handleUpload(false);
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('successful saved!', snack.success);
@@ -316,7 +344,7 @@ class CreateCapstone extends Component {
     // upload thumbnail
     if (thumbnail && thumbnail.length > 0) {
       const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', capstoneId, 'thumbnail');
-      let data = await api.uploads.upload(thumbnailUpload);
+      await api.uploads.upload(thumbnailUpload);
     }
 
     // upload media
@@ -325,7 +353,7 @@ class CreateCapstone extends Component {
         const upload = formatEntryUpload(file, 'capstones', capstoneId, 'media');
         return api.uploads.upload(upload);
       });
-      const respMedia = Promise.all(mediaUploads);
+      await Promise.all(mediaUploads);
     }
 
 
@@ -335,7 +363,7 @@ class CreateCapstone extends Component {
         const upload = formatEntryUpload(file, 'capstones', capstoneId, 'cover');
         return api.uploads.upload(upload);
       });
-      const respCover = Promise.all(coverUploads);
+      await Promise.all(coverUploads);
     }
 
   };
@@ -410,82 +438,6 @@ class CreateCapstone extends Component {
     AllUsers.filter(() => true);
   };
 
-  checkForRequiredField = () => {
-    const { title } = this.state;
-    const {enqueueSnackbar} = this.props;
-
-    if (!title || title === '') {
-      enqueueSnackbar('must include a title', snack.error);
-      return false;
-    }
-    return true;
-  };
-
-  checkForProfane = () => {
-    const {enqueueSnackbar} = this.props;
-    const { title, description, courseName } = this.state;
-    const filter = new Filter();
-    let content = [];
-    if (filter.isProfane(title)) {
-      content.push("title");
-    }
-    if (filter.isProfane(description)) {
-      content.push("description");
-    }
-    if (filter.isProfane(courseName)) {
-      content.push("course name");
-    }
-    if (content.length > 0) {
-      enqueueSnackbar("Eww, following field contains illegal word: " + content.join(' '), snack.error);
-      return false;
-    }
-    return true;
-  };
-
-  checkFilledAllFieldForSubmit = () => {
-    const {enqueueSnackbar} = this.props;
-    const { title, description, courseName, Participants, checkedSponsors, selectedProfessor, selectedTA } = this.state;
-    let valid = true;
-    if (!title || title === '') {
-      valid = false;
-      enqueueSnackbar('must include a title', snack.error);
-    }
-    if (!description || description === '') {
-      valid = false;
-      enqueueSnackbar('must include a description', snack.error);
-    }
-    if (!courseName || courseName === '') {
-      valid = false;
-      enqueueSnackbar('must include a course name', snack.error);
-    }
-    if (!Participants || Participants.length === 0) {
-      valid = false;
-      enqueueSnackbar('must select a team member', snack.error);
-    }
-    if (!checkedSponsors || checkedSponsors.length === 0) {
-      valid = false;
-      enqueueSnackbar('must select a sponsor', snack.error);
-    }
-    if (!selectedProfessor || selectedProfessor === '') {
-      valid = false;
-      enqueueSnackbar('must select a professor', snack.error);
-    }
-    if (!selectedTA || selectedTA === '') {
-      valid = false;
-      enqueueSnackbar('must select a TA', snack.error);
-    }
-    return valid;
-  };
-
-
-  isFormValidForSave = () => {
-    return this.checkForRequiredField() && this.checkForProfane();
-
-  };
-
-  isFormValidForSubmit = () => {
-    return this.checkForRequiredField() && this.checkFilledAllFieldForSubmit() && this.checkForProfane();
-  };
 
   render() {
     const {classes} = this.props;
@@ -507,6 +459,7 @@ class CreateCapstone extends Component {
             handleChangeSwitch={this.handleChangeSwitch.bind(this)}
             handleStartDate={this.handleStartDate.bind(this)}
             handleEndDate={this.handleEndDate.bind(this)}
+            handleDescription={this.handleDescription.bind(this)}
             {...this.state}
           />
           <MemberInformation

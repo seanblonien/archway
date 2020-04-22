@@ -4,7 +4,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -22,15 +21,34 @@ import {TextFieldProps} from "@material-ui/core";
 import {TextValidator} from "react-material-ui-form-validator";
 
 
-
 const MemberInformation = ( props ) => {
 
-  const renderInput = (props: TextFieldProps): any => (
+  const renderInputForMembers = (props: TextFieldProps): any => (
     <TextValidator
-      validators={['required', 'isProfane'] }
-      errorMessages={['this field is required', 'contains illegal word']}
+      validators={['haveMembers']}
+      errorMessages={['Must select at least one']}
       label='Search for Team Members'
       variant='outlined'
+      {...props}
+    />
+  );
+
+  const renderInputForProfessor = (props: TextFieldProps): any => (
+    <TextValidator
+      label='Search for Professor'
+      variant='outlined'
+      validators={['haveProfessor'] }
+      errorMessages={['Must select a professor']}
+      {...props}
+    />
+  );
+
+  const renderInputForTA = (props: TextFieldProps): any => (
+    <TextValidator
+      label='Search for TA'
+      variant='outlined'
+      validators={['haveTA'] }
+      errorMessages={['Must select a TA']}
       {...props}
     />
   );
@@ -122,7 +140,7 @@ const MemberInformation = ( props ) => {
                             style={{width: 300}}
                             value={selectUser}
                             onChange={handleSelectUser}
-                            renderInput={renderInput}
+                            renderInput={renderInputForMembers}
                           />
                         </Grid>
                       </Tooltip>
@@ -140,7 +158,7 @@ const MemberInformation = ( props ) => {
                   {/* team list */}
                   <Grid item xs={9}>
                     <List>
-                    {props.Participants.map(participant => displayUser(participant))
+                    {props.members.map(member => displayUser(member))
                     }
                     </List>
                   </Grid>
@@ -174,7 +192,7 @@ const MemberInformation = ( props ) => {
                             {...defaultProps}
                             style={{width: 300}}
                             onChange={props.handleSelectedPerson('selectedProfessor')}
-                            renderInput={renderInput}
+                            renderInput={renderInputForProfessor}
                           />
                       </Tooltip>
                     </Grid>
@@ -188,13 +206,13 @@ const MemberInformation = ( props ) => {
                   <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
                   <Grid item >
                     <Tooltip title='Search for name' arrow>
-                        <Autocomplete
-                          id='searchTA'
-                          {...defaultProps}
-                          style={{width: 300}}
-                          onChange={props.handleSelectedPerson('selectedTA')}
-                          renderInput={renderInput}
-                        />
+                      <Autocomplete
+                        id='searchTA'
+                        {...defaultProps}
+                        style={{width: 300}}
+                        onChange={props.handleSelectedPerson('selectedTA')}
+                        renderInput={renderInputForTA}
+                      />
                     </Tooltip>
                   </Grid>
                     <Grid item>

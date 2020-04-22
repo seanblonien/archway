@@ -14,6 +14,7 @@ import Switch from '@material-ui/core/Switch';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {TextValidator, SelectValidator} from 'react-material-ui-form-validator';
 import {TextFieldProps} from "@material-ui/core";
+import MarkdownEditor from "../../Components/Markdown/MarkdownEditor";
 
 
 
@@ -41,13 +42,13 @@ const BasicInformation = (props) => {
                   <Tooltip title='Name of Capstone' arrow>
                     <FormControl margin='dense' required fullWidth>
                       <TextValidator
-                        value={props.title}
+                        value={props.name}
                         id='outlined-textarea'
                         label='Title'
                         placeholder='Type the title for the capstone project'
                         validators={['required', 'isProfane']}
                         errorMessages={['this field is required', 'contains illegal word']}
-                        onChange={props.handleChange('title')}
+                        onChange={props.handleChange('name')}
                         variant='outlined'
                       />
                     </FormControl>
@@ -70,20 +71,42 @@ const BasicInformation = (props) => {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Tooltip title='Name of Course' arrow>
-                <FormControl margin='dense' required fullWidth>
-                  <TextValidator
-                    value={props.courseName}
-                    id='outlined-textarea'
-                    label='Course Name'
-                    placeholder='Type the name of the course'
-                    validators={['required', 'isProfane'] }
-                    errorMessages={['this field is required', 'contains illegal word']}
-                    onChange={props.handleChange('courseName')}
-                    variant='outlined'
-                  />
-                </FormControl>
-              </Tooltip>
+              <Grid container justify={'center'} spacing={2} direction={'row'}>
+                <Grid item xs={7}>
+                  <Tooltip title='Name of Course' arrow>
+                    <FormControl margin='dense' required fullWidth>
+                      <TextValidator
+                        value={props.course}
+                        id='outlined-textarea'
+                        label='Course Name'
+                        placeholder='Type the name of the course'
+                        validators={['required', 'isProfane'] }
+                        errorMessages={['this field is required', 'contains illegal word']}
+                        onChange={props.handleChange('course')}
+                        variant='outlined'
+                      />
+                    </FormControl>
+                  </Tooltip>
+                </Grid>
+
+                <Grid item xs={5}>
+                  <Tooltip title='Semester' arrow>
+                    <FormControl margin='dense' required fullWidth>
+                      <TextValidator
+                        value={props.semester}
+                        id='outlined-textarea'
+                        label='Semester'
+                        placeholder='Type the semester'
+                        validators={['required', 'isProfane'] }
+                        errorMessages={['this field is required', 'contains illegal word']}
+                        onChange={props.handleChange('semester')}
+                        variant='outlined'
+                      />
+                    </FormControl>
+                  </Tooltip>
+                </Grid>
+              </Grid>
+
             </Grid>
 
             <Grid item xs={12}>
@@ -162,7 +185,7 @@ const BasicInformation = (props) => {
                     label='Preview'
                     rows='2'
                     multiline
-                    placeholder='Type some preivew'
+                    placeholder='Type some preview'
                     onChange={props.handleChange('preview')}
                     variant='outlined'
                     validators={['required', 'isProfane'] }
@@ -171,26 +194,18 @@ const BasicInformation = (props) => {
                 </FormControl>
               </Tooltip>
             </Grid>
-              <Grid item xs={12}>
-                <Tooltip title='Fill description' arrow>
+            <Tooltip title='Fill description' arrow>
 
-                <FormControl margin='dense' required fullWidth>
-                  <TextValidator
-                    id='outlined-textarea'
-                    label='Description'
-                    rows='4'
-                    placeholder='Type the description'
-                    multiline
-                    variant='outlined'
-                    value={props.description}
-                    onChange={props.handleChange('description')}
-                    validators={['required', 'isProfane'] }
-                    errorMessages={['this field is required', 'contains illegal word']}
-                  />
-                </FormControl>
-                </Tooltip>
-
+            <Grid item xs={12}>
+                <PageTitleTypography text='Add a description' align='left' size='h6'/>
+                <MarkdownEditor
+                  uniqueName='description'
+                  setValue={(value) => props.handleDescription(value)}
+                  value={props.description}
+                />
               </Grid>
+            </Tooltip>
+
           </Grid>
         </CardContent>
       </Card>
@@ -199,7 +214,7 @@ const BasicInformation = (props) => {
 };
 
 BasicInformation.propTypes = {
-  title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 
 };
 
