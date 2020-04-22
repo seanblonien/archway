@@ -137,14 +137,14 @@ class Header extends Component {
                 <SubMenu
                   title='Sponsors'
                   items={['Become a Sponsor', 'View Current Sponsors']}
-                  links={[routes.sponsors.path, routes.viewsponsors.genPath()]}
+                  links={[routes.sponsors.path, routes.viewsponsors.path]}
                 />
               </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.genPath()}>
+              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.path}>
                 <SubMenu
                   title='Projects'
                   items={['All Capstones','All Departments']}
-                  links={[routes.capstones.genPath(), routes.viewdepartments.path]}
+                  links={[routes.capstones.path, routes.viewdepartments.path]}
                 />
               </Button>
             </div>

@@ -109,8 +109,7 @@ const routes = {
   },
   capstones: {
     name: 'Capstones',
-    path: '/Capstones/:searchTerm?',
-    genPath: (searchterm = '') => `/Capstones/${searchterm}`,
+    path: '/Capstones',
     component: Capstone
   },
   about: {
@@ -137,8 +136,7 @@ const routes = {
   },
   viewsponsors: {
     name: 'View Sponsors',
-    path: '/ViewSponsors/:searchTerm?',
-    genPath: (searchTerm = '') => `/ViewSponsors/${searchTerm}`,
+    path: '/ViewSponsors',
     component: ViewSponsors
   },
   viewsponsor: {
