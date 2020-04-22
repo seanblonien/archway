@@ -4,13 +4,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 import React, {useEffect, useState} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 import api from '../Services/api';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
-import {makeStyles} from '@material-ui/core/styles';
 import MediaMarkdown from './Markdown/MediaMarkdown';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
     marginTop: '1%',
   },
@@ -22,39 +22,37 @@ const useStyles = makeStyles((theme) => ({
 const About = () => {
   const [state, setState] = useState({loading: true, sponsors: []});
   const classes = useStyles();
-  const {loading, sponsors, pageContent} = state;
+  const {loading,bubbleSponsors, aboutPageContent} = state;
 
-  useEffect( () => {
+  useEffect(() => {
     async function fetchSponsors() {
-      const sponsors = await api.sponsors.find();
-      const pageContent = await api.aboutpage.find();
-      setState({loading: false, sponsors, pageContent});
+      const bubbleSponsorsTemp = await api.sponsors.find();
+      const aboutPageContentTemp = await api.aboutpage.find();
+      setState({loading: false, bubbleSponsors: bubbleSponsorsTemp, aboutPageContent: aboutPageContentTemp});
     }
+
     fetchSponsors();
   }, []);
 
   const bubbleClickFun = (label) => {
-    const sponsorMatch = sponsors.find(sponsor => sponsor.name === label);
-    if(sponsorMatch) {
+    const sponsorMatch = bubbleSponsors.find(sponsor => (sponsor.name === label));
+    if (sponsorMatch) {
       history.push(routes.viewsponsor.genPath(sponsorMatch.id));
     }
   };
 
-  const createBubbleGraphData = () => {
-    return sponsors.map((result) => ({label: result.name, value: result.capstones.length}));
-  };
+  const createBubbleGraphData = () => bubbleSponsors.map((result) => ({label: result.name, value: result.capstones.length}));
 
   return (
     <div>
-      {!loading &&
-      <Grid container justify='center'>
+      {!loading && <Grid container justify='center'>
         <Grid item xs={12} md={10}>
           <Grid container justify='center'>
             <Grid item xs={12} md={12}>
               <Card className={classes.card}>
                 <CardContent>
                   <MediaMarkdown>
-                    {pageContent.main_paragraph}
+                    {aboutPageContent.main_paragraph}
                   </MediaMarkdown>
                 </CardContent>
               </Card>
@@ -71,9 +69,9 @@ const About = () => {
                 <Grid container justify='center'>
                   <BubbleChart
                     graph={{
-                      zoom: 1,
-                      offsetX: 0,
-                      offsetY: 0,
+                      zoom: 0.9,
+                      offsetX: 0.05,
+                      offsetY: 0.05,
                     }}
                     showLegend={false}
                     width={1000}
@@ -86,8 +84,7 @@ const About = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      }
+      </Grid>}
     </div>
   );
 };
