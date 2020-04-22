@@ -38,12 +38,13 @@ class SearchBar extends Component {
     this.setState({input: event.target.value});
   };
 
-  search = () => {
+  search = event => {
     const {input} = this.state;
     if(input.length > 0) {
       const searchTerm = formatQuery({search: input});
       history.push(routes.search.genPath(searchTerm));
     }
+    event.preventDefault();
   };
 
   render() {
