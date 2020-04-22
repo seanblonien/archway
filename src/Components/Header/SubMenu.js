@@ -24,43 +24,39 @@ const StyledMenuItem = withStyles(theme => ({
   },
 }))(MenuItem);
 
-const SubMenu = ({items, links, title}) => (
-  <>
-    <StyledTooltip
-      disableFocusListener
-      interactive
-      placement='bottom-start'
-      title={
-        <>
-          {items.map((value, index) => {
-            const linkValue = links[index];
-            return (
-              <Link key={index} component={RouterLink} to={linkValue}>
-                <StyledMenuItem>
-                  {value}
-                </StyledMenuItem>
-              </Link>
-            );
-          })}
-        </>}
+const SubMenu = ({subRoutes, title}) => (
+  <StyledTooltip
+    disableFocusListener
+    interactive
+    placement='bottom-start'
+    title={
+      subRoutes.map(route => (
+        <Link key={route.id} component={RouterLink} to={route.path}>
+          <StyledMenuItem>
+            {route.label}
+          </StyledMenuItem>
+        </Link>
+      ))
+    }
+  >
+    <MenuItem
+      aria-controls='customized-menu'
+      aria-haspopup='true'
+      variant='contained'
+      color='primary'
+      style={{color: 'white'}}
     >
-      <MenuItem
-        aria-controls='customized-menu'
-        aria-haspopup='true'
-        variant='contained'
-        color='primary'
-        style={{color: 'white'}}
-      >
-        {title}
-      </MenuItem>
-    </StyledTooltip>
-
-  </>
+      {title}
+    </MenuItem>
+  </StyledTooltip>
 );
 
 SubMenu.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.string).isRequired,
-  links: PropTypes.arrayOf(PropTypes.string).isRequired,
+  subRoutes: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
+  })).isRequired,
   title: PropTypes.string.isRequired
 };
 

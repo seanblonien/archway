@@ -13,6 +13,7 @@ import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
 import AuthContext from '../../Contexts/AuthContext';
+import api from '../../Services/api';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/Routing/history';
 import routes from '../../utils/Routing/routes';
@@ -77,12 +78,14 @@ class Header extends Component {
     super(props);
     this.state = {
       anchorEl: undefined,
-      loading: true
+      loading: true,
+      links: null
     };
   }
 
   async componentDidMount() {
-
+    const {links} = await api.navbar.find();
+    console.log(links);
     this.setState({loading: false});
   }
 
@@ -102,7 +105,7 @@ class Header extends Component {
 
   render() {
     const {isAuthenticated} = this.context;
-    const {loading, anchorEl} = this.state;
+    const {loading, anchorEl, links} = this.state;
     const {classes, theme} = this.props;
     const isMenuOpen = Boolean(anchorEl);
 
@@ -135,6 +138,19 @@ class Header extends Component {
                 {theme.university} | Archway
               </Button>
               <div className={classes.sectionDesktop}>
+                {links && links.routes && links.routes.map(route => (
+                  <Button
+                    key={route.id}
+                    style={{color: 'white', fontSize: '15px'}}
+                    component={Link}
+                    to={routes.path}
+                  >
+                    <SubMenu
+                      title={route.label}
+                      subRoutes={route.subRoutes}
+                    />
+                  </Button>
+                ))}
                 <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.about.path}>
                   <SubMenu
                     title='About'
