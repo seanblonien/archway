@@ -3,13 +3,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import _ from 'lodash';
 import api from '../../Services/api';
 import ResultCapstone from './ResultCapstone';
 import Filters from './Filters';
 import history from '../../utils/Routing/history';
 import routes from '../../utils/Routing/routes';
 import {formatQuery} from '../../utils/utils';
-import _ from 'lodash';
 
 const styles = () => ({
   pointer:{
@@ -23,6 +23,7 @@ class ResultsList extends Component {
     this.state = {
       capstones: [],
       searchTerm: props.query,
+      input: props.query,
     };
     this.selectedDepartments = [];
     this.selectedSponsors = [];
@@ -46,23 +47,22 @@ class ResultsList extends Component {
   };
 
   handleChange = event => {
-    this.setState({searchTerm: event.target.value});
+    this.setState({input: event.target.value});
   };
 
-  keyPress = e => {
-    // If the enter key is pressed
-    const {searchTerm} = this.state;
-    const term = formatQuery({search: searchTerm});
-    if(e.keyCode === 13) {
+  newSearch = event => {
+    const {input} = this.state;
+
+    if(input.length > 0){
+      const term = formatQuery({search: input});
+
       history.push(routes.search.genPath(term));
+      
+      this.setState({searchTerm: input});
     }
-  };
 
-  searchButtonClick = () => {
-    const {searchTerm} = this.state;
-    const term = formatQuery({search: searchTerm});
-    history.push(routes.search.genPath(term));
-  }
+    event.preventDefault();
+  };
 
   updateDepartments = async (departments) => {
     this.selectedDepartments = departments;
@@ -104,25 +104,27 @@ class ResultsList extends Component {
 
   render() {
     const {classes} = this.props;
-    const {capstones, searchTerm} = this.state;
+    const {capstones, input} = this.state;
 
     return (
       <Box>
         <Box width='50%' mx='auto'>
           <Grid container direction='row' alignItems='center'>
             <Grid item xs={11}>
-              <TextField
-                name='query'
-                margin='dense'
-                placeholder='Search...'
-                fullWidth
-                onChange={this.handleChange}
-                onKeyDown={this.keyPress}
-                value={searchTerm}
-              />
+              <form onSubmit={this.newSearch}>
+                <TextField
+                  name='query'
+                  margin='dense'
+                  placeholder='Search...'
+                  fullWidth
+                  onChange={this.handleChange}
+                  value={input}
+                  type='search'
+                />
+              </form>
             </Grid>
             <Grid item xs={1}>
-              <SearchIcon className={classes.pointer} onClick={this.searchButtonClick}/>
+              <SearchIcon className={classes.pointer} onClick={this.newSearch}/>
             </Grid>
           </Grid>
         </Box>
