@@ -42,6 +42,7 @@ class ResultsList extends Component {
     const {query: searchTerm} = this.props;
     if(prevProps.query !== searchTerm) {
       this.setState({searchTerm});
+      this.setState({input: searchTerm});
       await this.search(searchTerm);
     }
   };
@@ -55,9 +56,7 @@ class ResultsList extends Component {
 
     if(input.length > 0){
       const term = formatQuery({search: input});
-
       history.push(routes.search.genPath(term));
-      
       this.setState({searchTerm: input});
     }
 
@@ -113,7 +112,6 @@ class ResultsList extends Component {
             <Grid item xs={11}>
               <form onSubmit={this.newSearch}>
                 <TextField
-                  name='query'
                   margin='dense'
                   placeholder='Search...'
                   fullWidth

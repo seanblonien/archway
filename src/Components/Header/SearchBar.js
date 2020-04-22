@@ -14,7 +14,6 @@ const styles = theme => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(1),
     width: 250,
-    placeholder: 'Search...'
   },
   dense: {
     marginTop: 19,
@@ -35,17 +34,14 @@ class SearchBar extends Component {
     };
   }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
+  handleChange = event => {
+    this.setState({input: event.target.value});
   };
 
-  keyPress = e => {
-    const searchTerm = formatQuery({search: e.target.value});
-
-    // Enter key pressed
-    if(e.keyCode === 13) {
+  search = () => {
+    const {input} = this.state;
+    if(input.length > 0) {
+      const searchTerm = formatQuery({search: input});
       history.push(routes.search.genPath(searchTerm));
     }
   };
@@ -55,18 +51,15 @@ class SearchBar extends Component {
     const {input} = this.state;
 
     return (
-      <form className={classes.container} noValidate autoComplete='off'>
+      <form className={classes.container} noValidate autoComplete='off' onSubmit={this.search}>
         <TextField
-          id='standard-name'
           placeholder='Search...'
           className={classes.textField}
           value={input}
-          onChange={this.handleChange('input')}
+          onChange={this.handleChange}
           margin='normal'
-          onKeyDown={this.keyPress}
-          InputProps={{
-            className: classes.input
-          }}
+          InputProps={{className: classes.input}}
+          type='search'
         />
       </form>
     );
