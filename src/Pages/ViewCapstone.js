@@ -14,7 +14,6 @@ import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import LoadingCircle from '../Components/LoadingCircle';
 import Team from '../Components/Team';
 import CapstonePhotos from '../Components/CapstonePhotos';
-import {strapiURL} from '../constants';
 import {convertStrapiDate, imageURL} from '../utils/utils';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
