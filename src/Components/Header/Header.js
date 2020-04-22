@@ -16,6 +16,7 @@ import AuthContext from '../../Contexts/AuthContext';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/Routing/history';
 import routes from '../../utils/Routing/routes';
+import LoadingCircle from '../LoadingCircle';
 import Drawer from './Drawer';
 import SearchBar from './SearchBar';
 import SubMenu from './SubMenu';
@@ -76,7 +77,13 @@ class Header extends Component {
     super(props);
     this.state = {
       anchorEl: undefined,
+      loading: true
     };
+  }
+
+  async componentDidMount() {
+
+    this.setState({loading: false});
   }
 
   handleLogout = () =>{
@@ -95,7 +102,7 @@ class Header extends Component {
 
   render() {
     const {isAuthenticated} = this.context;
-    const {anchorEl} = this.state;
+    const {loading, anchorEl} = this.state;
     const {classes, theme} = this.props;
     const isMenuOpen = Boolean(anchorEl);
 
@@ -114,78 +121,80 @@ class Header extends Component {
     );
 
     return (
-      <div className={classes.root}>
-        <AppBar position='static'>
-          <Toolbar>
-            {/* hamburger only shows in mobile view :) */}
-            <div className={classes.sectionMobile}>
-              <Drawer/>
-            </div>
-            <Button style={{color: 'white', fontSize: '25px'}} component={Link} to={routes.home.path}>
-              <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40' style={{paddingRight: 7}}/>
-              {theme.university} | Archway
-            </Button>
-            <div className={classes.sectionDesktop}>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.about.path}>
-                <SubMenu
-                  title='About'
-                  items={['FAQ', String(theme.university), 'Archway']}
-                  links={[routes.faq.path, routes.about.path, routes.about.path]}
-                />
+      loading
+        ? <LoadingCircle/>
+        : <div className={classes.root}>
+          <AppBar position='static'>
+            <Toolbar>
+              {/* hamburger only shows in mobile view :) */}
+              <div className={classes.sectionMobile}>
+                <Drawer/>
+              </div>
+              <Button style={{color: 'white', fontSize: '25px'}} component={Link} to={routes.home.path}>
+                <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40' style={{paddingRight: 7}}/>
+                {theme.university} | Archway
               </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.sponsors.path}>
-                <SubMenu
-                  title='Sponsors'
-                  items={['Become a Sponsor', 'View Current Sponsors']}
-                  links={[routes.sponsors.path, routes.viewsponsors.genPath()]}
-                />
-              </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.genPath()}>
-                <SubMenu
-                  title='Projects'
-                  items={['All Capstones','All Departments']}
-                  links={[routes.capstones.genPath(), routes.viewdepartments.path]}
-                />
-              </Button>
-            </div>
-            <div className={classes.grow}/>
-            <div className={classes.sectionDesktop}>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon/>
+              <div className={classes.sectionDesktop}>
+                <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.about.path}>
+                  <SubMenu
+                    title='About'
+                    items={['FAQ', String(theme.university), 'Archway']}
+                    links={[routes.faq.path, routes.about.path, routes.about.path]}
+                  />
+                </Button>
+                <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.sponsors.path}>
+                  <SubMenu
+                    title='Sponsors'
+                    items={['Become a Sponsor', 'View Current Sponsors']}
+                    links={[routes.sponsors.path, routes.viewsponsors.genPath()]}
+                  />
+                </Button>
+                <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.genPath()}>
+                  <SubMenu
+                    title='Projects'
+                    items={['All Capstones','All Departments']}
+                    links={[routes.capstones.genPath(), routes.viewdepartments.path]}
+                  />
+                </Button>
+              </div>
+              <div className={classes.grow}/>
+              <div className={classes.sectionDesktop}>
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon/>
+                  </div>
+                </div>
+                <div key={new Date().getTime()}>
+                  <SearchBar/>
                 </div>
               </div>
-              <div key={new Date().getTime()}>
-                <SearchBar/>
+
+              <div className={classes.sectionDesktop}>
+                <IconButton
+                  aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                  aria-haspopup='true'
+                  onClick={this.handleProfileMenuOpen}
+                  color='inherit'
+                >
+                  <AccountCircle/>
+                </IconButton>
               </div>
-            </div>
-
-            <div className={classes.sectionDesktop}>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup='true'
-                onClick={this.handleProfileMenuOpen}
-                color='inherit'
-              >
-                <AccountCircle/>
-              </IconButton>
-            </div>
 
 
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup='true'
-                onClick={this.handleProfileMenuOpen}
-                color='inherit'
-              >
-                <MoreIcon/>
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-        {renderMenu}
-      </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                  aria-haspopup='true'
+                  onClick={this.handleProfileMenuOpen}
+                  color='inherit'
+                >
+                  <MoreIcon/>
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+          {renderMenu}
+        </div>
     );
   }
 }
