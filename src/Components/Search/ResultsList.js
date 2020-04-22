@@ -107,7 +107,7 @@ class ResultsList extends Component {
 
     return (
       <Box>
-        <Box width='50%' mx='auto'>
+        <Box width='50%' mx='auto' my={1}>
           <Grid container direction='row' alignItems='center'>
             <Grid item xs={11}>
               <form onSubmit={this.newSearch}>
