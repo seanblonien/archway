@@ -1,17 +1,18 @@
-import {Box, Divider, Grid, GridList, GridListTile, Typography} from '@material-ui/core';
+import {Box, Divider, Grid, GridList, GridListTile, TextField, Typography} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import api from '../../Services/api';
 import ResultCapstone from './ResultCapstone';
 import Filters from './Filters';
+import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
+import {formatQuery} from '../../utils/utils';
 
-const styles = (theme) => ({
-  paper:{
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[3],
-    padding: theme.spacing(4),
-    outline: 'none',
+const styles = () => ({
+  pointer:{
+    cursor: 'pointer'
   },
 });
 
@@ -20,6 +21,7 @@ class ResultsList extends Component {
     super(props);
     this.state = {
       capstones: [],
+      searchTerm: props.query,
     };
     this.selectedDepartments = [];
     this.selectedSponsors = [];
@@ -27,6 +29,25 @@ class ResultsList extends Component {
 
   async componentDidMount() {
     this.search();
+  }
+
+  handleChange = event => {
+    this.setState({searchTerm: event.target.value});
+  };
+
+  keyPress = e => {
+    // If the enter key is pressed
+    const {searchTerm} = this.state;
+    const term = formatQuery({search: searchTerm});
+    if(e.keyCode === 13) {
+      history.push(routes.search.genPath(term));
+    }
+  };
+
+  searchButtonClick = () => {
+    const {searchTerm} = this.state;
+    const term = formatQuery({search: searchTerm});
+    history.push(routes.search.genPath(term));
   }
 
   updateDepartments = (departments) => {
@@ -40,11 +61,11 @@ class ResultsList extends Component {
   };
 
   search = async () => {
-    const {query} = this.props;
+    const {searchTerm} = this.state;
 
     // Query the database for capstones with the query string, the selected departments, and the selected sponsors (OR operation)
     const [queryCapstones, departmentCapstones, sponsorCapstones] = await Promise.all([
-      api.capstones.find({_q: query}), 
+      api.capstones.find({_q: searchTerm}), 
       api.capstones.find({departments: {id: this.selectedDepartments}}), 
       api.capstones.find({sponsors: {id: this.selectedSponsors}})
     ]);
@@ -71,12 +92,29 @@ class ResultsList extends Component {
   };
 
   render() {
-    const {classes, query} = this.props;
-    const {capstones} = this.state;
+    const {classes} = this.props;
+    const {capstones, searchTerm} = this.state;
 
     return (
       <Box>
-        <Typography variant='h3' align='center'>Search results for &quot;{query}&quot;</Typography>
+        <Box width='50%' mx='auto'>
+          <Grid container direction='row' alignItems='center'>
+            <Grid item xs={11}>
+              <TextField
+                name='query'
+                margin='dense'
+                placeholder='Search...'
+                fullWidth
+                onChange={this.handleChange}
+                onKeyDown={this.keyPress}
+                value={searchTerm}
+              />
+            </Grid>
+            <Grid item xs={1}>
+              <SearchIcon className={classes.pointer} onClick={this.searchButtonClick}/>
+            </Grid>
+          </Grid>
+        </Box>
         <Divider variant = 'middle'/>
         <br/>
         <Grid container direction = 'row' spacing={2}>

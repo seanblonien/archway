@@ -14,6 +14,7 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[3],
     outline: 'none',
+    cursor: 'pointer',
   },
   image:{
     height: '100%',

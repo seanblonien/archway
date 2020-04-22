@@ -18,8 +18,8 @@ class ResultsList extends Component {
         id: '',
         name: '',
       }],
-      departmentsOpen: false,
-      sponsorsOpen: false,
+      departmentsOpen: true,
+      sponsorsOpen: true,
       checkedDepartments: new Set(),
       checkedSponsors: new Set(),
     };
