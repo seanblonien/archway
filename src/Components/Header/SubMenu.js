@@ -28,36 +28,34 @@ const SubMenu = ({subRoutes, title}) => (
   <StyledTooltip
     disableFocusListener
     interactive
-    placement='bottom-start'
+    placement='bottom'
     title={
-      subRoutes.map(route => (
-        <Link key={route.id} component={RouterLink} to={route.path}>
-          <StyledMenuItem>
-            {route.label}
-          </StyledMenuItem>
-        </Link>
-      ))
+      subRoutes
+        ? subRoutes.map(route => (
+          <Link key={route.id} component={RouterLink} to={route.path}>
+            <StyledMenuItem>
+              {route.label}
+            </StyledMenuItem>
+          </Link>
+        ))
+        : ''
     }
   >
-    <MenuItem
-      aria-controls='customized-menu'
-      aria-haspopup='true'
-      variant='contained'
-      color='primary'
-      style={{color: 'white'}}
-    >
-      {title}
-    </MenuItem>
+    <div>{title}</div>
   </StyledTooltip>
 );
 
 SubMenu.propTypes = {
   subRoutes: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-  })).isRequired,
-  title: PropTypes.string.isRequired
+    id: PropTypes.string,
+    label: PropTypes.string,
+    path: PropTypes.string,
+  })),
+  title: PropTypes.node.isRequired
+};
+
+SubMenu.defaultProps = {
+  subRoutes: null
 };
 
 export default SubMenu;

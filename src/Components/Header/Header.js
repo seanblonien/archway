@@ -1,38 +1,43 @@
+import {Box} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles, withTheme} from '@material-ui/core/styles';
 import {fade} from '@material-ui/core/styles/colorManipulator';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter, Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
 import AuthContext from '../../Contexts/AuthContext';
 import api from '../../Services/api';
 import universityLogo from '../../Static/univ_logo.svg';
 import history from '../../utils/Routing/history';
-import routes from '../../utils/Routing/routes';
 import Drawer from './Drawer';
 import SearchBar from './SearchBar';
 import SubMenu from './SubMenu';
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-  },
-  grow: {
-    flexGrow: 1,
+  tab: {
+    color: 'white',
+    fontSize: '15px',
+    maxWidth: 'none',
+    minWidth: '100px',
+    opacity: 1
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+    fontSize: '25px',
+  },
+  popover: {
+    position: 'relative',
+    pointerEvents: 'none',
+    padding: theme.spacing(1)
   },
   search: {
     position: 'relative',
@@ -78,13 +83,18 @@ class Header extends Component {
     this.state = {
       anchorEl: undefined,
       loading: true,
-      links: null
+      routes: null,
+      tab: 'root',
     };
   }
 
   async componentDidMount() {
-    const {links} = await api.navbar.find();
-    this.setState({loading: false, links});
+    const {links: {routes}} = await api.navbar.find();
+    this.setState({loading: false, routes});
+  }
+
+  setTab = (event, tab) => {
+    this.setState({tab});
   }
 
   handleLogout = () =>{
@@ -103,8 +113,9 @@ class Header extends Component {
 
   render() {
     const {isAuthenticated} = this.context;
-    const {loading, anchorEl, links} = this.state;
+    const {loading, anchorEl, routes, tab} = this.state;
     const {classes, theme} = this.props;
+    const {setTab, handleMenuClose, handleLogout, handleProfileMenuOpen} = this;
     const isMenuOpen = Boolean(anchorEl);
 
     const renderMenu = (
@@ -113,41 +124,55 @@ class Header extends Component {
         anchorOrigin={{vertical: 'top', horizontal: 'right'}}
         transformOrigin={{vertical: 'top', horizontal: 'right'}}
         open={isMenuOpen}
-        onClose={this.handleMenuClose}
+        onClose={handleMenuClose}
       >
         {isAuthenticated && <MenuItem onClick={() => history.push(routes.dashboard.path)}>Dashboard</MenuItem>}
         {!isAuthenticated && <MenuItem onClick={() => history.push(routes.auth.login.path)}>Login / Register</MenuItem>}
-        {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
+        {isAuthenticated && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
       </Menu>
     );
 
     return (
       loading
         ? null
-        : <div className={classes.root}>
+        : <div>
           <AppBar position='static'>
-            <Toolbar>
+            <Toolbar variant='dense'>
               {/* hamburger only shows in mobile view :) */}
-              <div className={classes.sectionMobile}>
-                <Drawer/>
-              </div>
-              <Button style={{color: 'white', fontSize: '25px'}} component={Link} to={routes.home.path}>
-                <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40' style={{paddingRight: 7}}/>
-                {theme.university} | Archway
-              </Button>
+              {/* <div className={classes.sectionMobile}> */}
+              {/*  <Drawer/> */}
+              {/* </div> */}
               <div className={classes.sectionDesktop}>
-                {links && links.routes && links.routes.map(route => (
-                  <Button
-                    key={route.id}
-                    style={{color: 'white', fontSize: '15px'}}
-                    component={Link}
-                    to={route.path}
-                  >
-                    <SubMenu title={route.label} subRoutes={route.subRoutes}/>
-                  </Button>
-                ))}
+
+                <Tabs value={tab} onChange={setTab}>
+                  {routes && routes.map(route => (
+                    <Tab
+                      key={`tab-${route.id}`}
+                      value={route.id}
+                      className={classes.tab}
+                      label={
+                        <SubMenu
+                          subRoutes={route.subRoutes}
+                          title={
+                            route.id === 'root'  ?
+                              <Box component={Grid} container alignItems='center' justify='center'>
+                                <Box mx={2}>
+                                  <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40'/>
+                                </Box>
+                                <span className={classes.title}>{`${theme.university} | Archway`}</span>
+                              </Box>
+                              :
+                              route.label
+                          }
+                        />
+                      }
+                      component={RouterLink}
+                      to={route.path}
+                    />
+                  ))}
+                </Tabs>
               </div>
-              <div className={classes.grow}/>
+
               <div className={classes.sectionDesktop}>
                 <div className={classes.search}>
                   <div className={classes.searchIcon}>
@@ -163,7 +188,7 @@ class Header extends Component {
                 <IconButton
                   aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                   aria-haspopup='true'
-                  onClick={this.handleProfileMenuOpen}
+                  onClick={handleProfileMenuOpen}
                   color='inherit'
                 >
                   <AccountCircle/>
@@ -175,7 +200,7 @@ class Header extends Component {
                 <IconButton
                   aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                   aria-haspopup='true'
-                  onClick={this.handleProfileMenuOpen}
+                  onClick={handleProfileMenuOpen}
                   color='inherit'
                 >
                   <MoreIcon/>

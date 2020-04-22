@@ -14,9 +14,6 @@ const styles = theme => ({
     width: 250,
     placeholder: 'Search...'
   },
-  dense: {
-    marginTop: 19,
-  },
   menu: {
     width: 200,
   },
@@ -77,7 +74,7 @@ class TextFields extends Component {
           className={classes.textField}
           value={input}
           onChange={this.handleChange('input')}
-          margin='normal'
+          margin='none'
           onKeyDown={this.keyPress}
           InputProps={{
             className: classes.input
