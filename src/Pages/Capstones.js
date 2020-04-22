@@ -33,11 +33,7 @@ class Capstone extends Component {
       );
     }
 
-    return (
-      <div>
-        <LoadingCircle/>
-      </div>
-    );
+    return <LoadingCircle/>;
   }
 }
 
