@@ -9,6 +9,7 @@ import Filters from './Filters';
 import history from '../../utils/Routing/history';
 import routes from '../../utils/Routing/routes';
 import {formatQuery} from '../../utils/utils';
+import _ from 'lodash';
 
 const styles = () => ({
   pointer:{
@@ -28,8 +29,21 @@ class ResultsList extends Component {
   }
 
   async componentDidMount() {
-    this.search();
+    const {searchTerm} = this.state;
+    await this.search(searchTerm);
   }
+
+  async componentDidUpdate (prevProps) {
+    await this.updateQuery(prevProps);
+  }
+
+  updateQuery = async (prevProps) => {
+    const {query: searchTerm} = this.props;
+    if(prevProps.query !== searchTerm) {
+      this.setState({searchTerm});
+      await this.search(searchTerm);
+    }
+  };
 
   handleChange = event => {
     this.setState({searchTerm: event.target.value});
@@ -50,45 +64,42 @@ class ResultsList extends Component {
     history.push(routes.search.genPath(term));
   }
 
-  updateDepartments = (departments) => {
+  updateDepartments = async (departments) => {
     this.selectedDepartments = departments;
-    this.search();
-  };
-
-  updateSponsors = (sponsors) => {
-    this.selectedSponsors = sponsors;
-    this.search();
-  };
-
-  search = async () => {
     const {searchTerm} = this.state;
+    await this.search(searchTerm);
+  };
 
+  updateSponsors = async (sponsors) => {
+    this.selectedSponsors = sponsors;
+    const {searchTerm} = this.state;
+    await this.search(searchTerm);
+  };
+
+  search = async (searchTerm) => {
     // Query the database for capstones with the query string, the selected departments, and the selected sponsors (OR operation)
     const [queryCapstones, departmentCapstones, sponsorCapstones] = await Promise.all([
-      api.capstones.find({_q: searchTerm}), 
-      api.capstones.find({departments: {id: this.selectedDepartments}}), 
+      api.capstones.find({_q: searchTerm}),
+      api.capstones.find({departments: {id: this.selectedDepartments}}),
       api.capstones.find({sponsors: {id: this.selectedSponsors}})
     ]);
 
     // Save only the ids from the queried capstones
-    const qids = [];
-    const dids = [];
-    const sids = [];
-    queryCapstones.map(qc => (qids.push(qc.id)));
-    departmentCapstones.map(dc => (dids.push(dc.id)));
-    sponsorCapstones.map(sc => (sids.push(sc.id)));
+    const qids = queryCapstones.map(qc => qc.id);;
+    const dids = departmentCapstones.map(dc => dc.id);
+    const sids = sponsorCapstones.map(sc => sc.id);
 
     // Find the ids that appear in all 3 lists (AND operation)
-    const cids = qids.filter(value => dids.includes(value)).filter(value => sids.includes(value));
+    const cids = qids.filter(value => dids.includes(value) && sids.includes(value));
 
     // Find the capstones that satisfy all the criteria (find by ids)
-    let results = [];
-    if(cids.length > 0){
-      results = await api.capstones.find({id_in: cids});
+    let capstones = [];
+    if(!_.isEmpty(cids)){
+      capstones = await api.capstones.find({id_in: cids});
     }
 
     // Update the screen
-    this.setState({capstones: results});
+    this.setState({capstones});
   };
 
   render() {
