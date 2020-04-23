@@ -69,7 +69,7 @@ class ViewAProposal extends Component {
                 {!proposal.sponsors[0] && this.checkValue(null)}
                 <Typography>Department(s): </Typography>
                 {proposal.departments.map((value) => (
-                  <DialogContentText key={value}>
+                  <DialogContentText key={value.id + proposal.id}>
                     {value.name}
                   </DialogContentText>))
                 }

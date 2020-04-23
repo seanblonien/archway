@@ -293,7 +293,8 @@ class ProposalForm extends Component {
                 <TextField
                   multiline
                   name='projectDescription'
-                  rows='4'
+                  rowsMax={10}
+                  rows={5}
                   fullWidth
                   label='Project Description'
                   value={projectDescription}
@@ -302,7 +303,8 @@ class ProposalForm extends Component {
                 <TextField
                   multiline
                   name='projectDeliverables'
-                  rows='4'
+                  rowsMax={10}
+                  rows={5}
                   fullWidth
                   label='Project Deliverables'
                   value={projectDeliverables}
@@ -334,6 +336,7 @@ class ProposalForm extends Component {
                   name='financialSupport'
                   label='Financial support'
                   value={financialSupport}
+                  rowsMax={4}
                   fullWidth
                   onChange={this.handleChange}
                 />
@@ -343,7 +346,8 @@ class ProposalForm extends Component {
                 <TextField
                   multiline
                   name='projectUse'
-                  rows='2'
+                  rows={2}
+                  rowsMax={6}
                   fullWidth
                   label='Project Use'
                   value={projectUse}
