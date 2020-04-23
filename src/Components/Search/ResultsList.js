@@ -129,7 +129,9 @@ class ResultsList extends Component {
                 ),
                 endAdornment: (
                   <InputAdornment position='end'>
-                    <ClearIcon className={classes.pointer} onClick={this.clearSearch}/>
+                    {input.length > 0 &&
+                      <ClearIcon className={classes.pointer} onClick={this.clearSearch}/>
+                    }
                   </InputAdornment>
                 )
               }}

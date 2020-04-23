@@ -1,5 +1,8 @@
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@material-ui/icons/Search';
 import React, {Component} from 'react';
 import history from '../../utils/Routing/history';
 import routes from '../../utils/Routing/routes';
@@ -23,6 +26,10 @@ const styles = theme => ({
   },
   input: {
     color: 'white',
+  },
+  pointer:{
+    color: 'white',
+    cursor: 'pointer'
   }
 });
 
@@ -47,6 +54,10 @@ class SearchBar extends Component {
     event.preventDefault();
   };
 
+  clearSearch = () => {
+    this.setState({input: ''});
+  }
+
   render() {
     const {classes} = this.props;
     const {input} = this.state;
@@ -59,8 +70,21 @@ class SearchBar extends Component {
           value={input}
           onChange={this.handleChange}
           margin='normal'
-          InputProps={{className: classes.input}}
-          type='search'
+          InputProps={{
+            className: (classes.input),
+            startAdornment: (
+              <InputAdornment position='start'>
+                <SearchIcon className={classes.pointer} onClick={this.search}/>
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position='end'>
+                {input.length > 0 &&
+                  <ClearIcon className={classes.pointer} onClick={this.clearSearch}/>
+                }
+              </InputAdornment>
+            )
+          }}
         />
       </form>
     );
