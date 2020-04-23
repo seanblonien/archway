@@ -1,9 +1,10 @@
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import Box from '@material-ui/core/Box';
 import api from '../../Services/api';
 import ReviewTable from './ReviewTable';
-import Box from "@material-ui/core/Box";
+import AuthContext from '../../Contexts/AuthContext';
 
 class ReviewProposals extends Component {
 
@@ -21,16 +22,31 @@ class ReviewProposals extends Component {
   }
 
   initProposals = async () => {
+    const {user} = this.context;
+    const response = await api.users.find({username: user.username});
+    const profileData = response[0];
     const proposals = await api.proposals.find();
+
     const approved = [];
     const pending = [];
 
-    //load desired arrays of proposals
-    for (const proposal of proposals) {
-      if (proposal.status === 'submittedApproved') {
-        approved.push(proposal);
-      } else if (proposal.status === 'submittedPending') {
-        pending.push(proposal);
+    if (profileData.department) {
+      for (const proposal of proposals) {
+        if (proposal.departments.some(item => profileData.department.id === item.id)) {
+          if (proposal.status === 'submittedApproved') {
+            approved.push(proposal);
+          } else if (proposal.status === 'submittedPending') {
+            pending.push(proposal);
+          }
+        }
+      }
+    } else {
+      for (const proposal of proposals) {
+        if (proposal.status === 'submittedApproved') {
+          approved.push(proposal);
+        } else if (proposal.status === 'submittedPending') {
+          pending.push(proposal);
+        }
       }
     }
 
@@ -47,7 +63,8 @@ class ReviewProposals extends Component {
             title='Pending Proposals'
             proposals={pending}
             update={this.initProposals}
-            action='review'/>
+            action='review'
+          />
         </Box>
         <Box width='80%' my={2}>
           <ReviewTable
@@ -61,6 +78,8 @@ class ReviewProposals extends Component {
     );
   }
 }
+
+ReviewProposals.contextType = AuthContext;
 
 export default compose(
   withWidth(),

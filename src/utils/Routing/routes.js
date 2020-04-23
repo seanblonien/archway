@@ -62,7 +62,7 @@ const routes = {
       path: '/dashboard/review-proposals',
       component: ReviewProposals,
       Icon: ViewList,
-      permission: permissions.application.proposals.create,
+      permission: permissions.application.proposal_approval.find,
     },
     viewyourproposals: {
       name: 'View Your Proposals',
