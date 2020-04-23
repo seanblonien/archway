@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {useContext} from 'react';
 import AuthContext from '../Contexts/AuthContext';
-import RolesContext from '../Contexts/RolesContext';
+import RolesContext from '../Contexts/RoleProvider';
 import defaultRoles from '../utils/AccessControl/roles.json';
 import permissionValues from '../utils/AccessControl/permissionValues.json';
 import roleValues from '../utils/AccessControl/rolesValues.json';

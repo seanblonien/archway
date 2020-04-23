@@ -64,6 +64,11 @@
       "find": "application.proposal-approval.find",
       "update": "application.proposal-approval.update",
       "delete": "application.proposal-approval.delete"
+    },
+    "navbar": {
+      "find": "application.navbar.find",
+      "update": "application.navbar.update",
+      "delete": "application.navbar.delete"
     }
   },
   "content_type_builder": {
