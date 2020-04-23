@@ -121,8 +121,9 @@ class Header extends Component {
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
-        anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-        transformOrigin={{vertical: 'top', horizontal: 'right'}}
+        getContentAnchorEl={null}
+        anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+        transformOrigin={{vertical: 'top', horizontal: 'center'}}
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
@@ -154,15 +155,14 @@ class Header extends Component {
                         <SubMenu
                           subRoutes={route.subRoutes}
                           title={
-                            route.id === 'root'  ?
-                              <Box component={Grid} container alignItems='center' justify='center'>
+                            route.id === 'root'
+                              ? <Box component={Grid} container alignItems='center' justify='center'>
                                 <Box mx={2}>
                                   <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40'/>
                                 </Box>
                                 <span className={classes.title}>{`${theme.university} | Archway`}</span>
                               </Box>
-                              :
-                              route.label
+                              : route.label
                           }
                         />
                       }
