@@ -45,7 +45,7 @@
         },
         "cover": {
           "type": "media",
-          "multiple": false,
+          "multiple": true,
           "required": false
         },
         "media": {
@@ -154,7 +154,7 @@
         },
         "cover": {
           "type": "media",
-          "multiple": false,
+          "multiple": true,
           "required": false
         }
       }
@@ -353,7 +353,7 @@
         },
         "cover": {
           "type": "media",
-          "multiple": false,
+          "multiple": true,
           "required": false
         },
         "proposals": {
