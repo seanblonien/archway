@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
@@ -15,10 +15,16 @@ import PageTitleTypography from '../../Components/PageTitleTypography';
 import {TextValidator, SelectValidator} from 'react-material-ui-form-validator';
 import {TextFieldProps} from "@material-ui/core";
 import MarkdownEditor from "../../Components/Markdown/MarkdownEditor";
-
+import Button from "@material-ui/core/Button";
+import Login from "../../Components/Auth/Login";
+import DeletableCardLayout from "../../Components/DeletableCardLayout";
+import {imageURL} from "../../utils/utils";
+import CardLayout from "../../Components/CardLayout";
 
 
 const BasicInformation = (props) => {
+
+  const [selectedDepartment, setSelectDepartment] = useState('');
 
   const renderInput = (props: TextFieldProps): any => (
     <TextValidator
@@ -27,8 +33,13 @@ const BasicInformation = (props) => {
       {...props}
     />
   );
-
-
+  // TODO: add button to departments
+  // <CardLayout
+  //   title='All Departments'
+  //   listItems={departments}
+  //   childURL={routes.viewdepartment.genPath}
+  //   imageURLFunction={imageURL.department}
+  // />
   return (
     <Grid item xs={12} md={10}>
       <Card className={props.classes.card}>
@@ -151,17 +162,22 @@ const BasicInformation = (props) => {
               </Grid>
             </Grid>
 
-            <Tooltip title='Select A Department' arrow>
               <Grid item xs={12}>
                 {/* select department */}
+                <Grid container alignItems={"center"} spacing={5} direction='row'>
+                  <Tooltip title='Select A Department' arrow>
+
+                  <Grid item xs={8}>
                 <FormControl margin='dense' fullWidth variant='filled'>
                   <SelectValidator
                     label='Select a department'
                     id='demo-customized-select'
                     variant='outlined'
-                    value={props.Department}
-                    onChange={props.handleChange('Department')}
-                    validators={['required'] }
+                    value={selectedDepartment}
+                    onChange={event => {
+                      setSelectDepartment(event.target.value)
+                    }}
+                    validators={['haveDepartment'] }
                     errorMessages={['this field is required']}
                   >
                     <MenuItem value=''>
@@ -174,8 +190,26 @@ const BasicInformation = (props) => {
                     ))}
                   </SelectValidator>
                 </FormControl>
+                  </Grid>
+                  </Tooltip>
+
+                  <Grid item xs={2}>
+                    <Button variant='outlined' color='primary' onClick={() => {
+                      props.handelConfirmDepartment(selectedDepartment);
+                      setSelectDepartment('');
+                    }}>
+                      Confirm
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
-            </Tooltip>
+            <Grid item xs={12}>
+              <DeletableCardLayout
+                listItems={props.departments}
+                imageURLFunction={imageURL.department}
+                removeItem={props.handleRemoveDepartment}
+              />
+            </Grid>
             <Grid item xs={12}>
               <Tooltip title='Preview For Search' arrow>
                 <FormControl margin='dense' required fullWidth>
@@ -215,7 +249,6 @@ const BasicInformation = (props) => {
 
 BasicInformation.propTypes = {
   name: PropTypes.string.isRequired,
-
 };
 
 export default BasicInformation;

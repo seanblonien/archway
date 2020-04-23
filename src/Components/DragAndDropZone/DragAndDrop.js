@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import {useDropzone} from 'react-dropzone';
 import _ from 'lodash';
 import './style.css';
+import {imageURL} from "../../utils/utils";
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -17,13 +18,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function DragAndDrop({files, setFiles, accept, single}) {
+export default function DragAndDrop({files, setFiles, accept, single, deletedFiles}) {
   const classes = useStyles();
 
   const onDrop = useCallback(acceptedFiles => {
     setFiles(single ? [acceptedFiles[0]] : acceptedFiles);
   }, []);
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
+
+
 
   return (
     <>
@@ -39,7 +42,11 @@ export default function DragAndDrop({files, setFiles, accept, single}) {
         <Box my={1} component={GridList} cols={3}>
           {files.map((file) => (
             <GridListTile key={file.name}>
-              <img src={URL.createObjectURL(file)} alt={file.name}/>
+              {file.id
+              ? <img src={imageURL.capstone(file)} alt={file.name}/>
+              : <img src={URL.createObjectURL(file)} alt={file.name}/>
+
+              }
               <GridListTileBar
                 title={file.name}
                 actionIcon={
@@ -47,7 +54,12 @@ export default function DragAndDrop({files, setFiles, accept, single}) {
                     <DeleteIcon
                       className={classes.icon}
                       onClick={() =>
-                        setFiles(files.filter(f => f.name !== file.name))
+                      {
+                        setFiles(files.filter(f => f.name !== file.name));
+                        if (file.id) {
+                          deletedFiles(file.id);
+                        }
+                      }
                       }
                     />
                   </IconButton>

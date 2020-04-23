@@ -54,13 +54,13 @@ class CreateCapstone extends Component {
       isFeatured: false,
       startDate: new Date(),
       endDate: new Date(),
-      oldThumbnail: [],
-      oldCoverPhoto: [],
-      oldMedia: [],
+      deletedThumbnail: [],
+      deletedCoverPhoto: [],
+      deletedMedia: [],
       cover: [],
       thumbnail: [],
       media: [],
-      Department: '',
+      departments: [],
       Username: StorageManager.getItem('user')._id,
       capstones: [],
       departmentList: [],
@@ -86,6 +86,36 @@ class CreateCapstone extends Component {
 
   handleChange = name => event => {
     this.setState({[name]: event.target.value});
+  };
+
+  deletedThumbnail = deletedFileId => {
+    const { deletedThumbnail } = this.state;
+    if (deletedFileId !== '') {
+      if (!deletedThumbnail.includes(deletedFileId)) {
+        const joined = deletedThumbnail.concat(deletedFileId);
+        this.setState({deletedThumbnail: joined});
+      }
+    }
+  };
+
+  deletedCover = deletedFileId => {
+    const { deletedCover } = this.state;
+    if (deletedFileId !== '') {
+      if (!deletedCover.includes(deletedFileId)) {
+        const joined = deletedCover.concat(deletedFileId);
+        this.setState({deletedCover: joined});
+      }
+    }
+  };
+
+  deletedMedia = deletedFileId => {
+    const { deletedMedia } = this.state;
+    if (deletedFileId !== '') {
+      if (!deletedMedia.includes(deletedFileId)) {
+        const joined = deletedMedia.concat(deletedFileId);
+        this.setState({deletedMedia: joined});
+      }
+    }
   };
 
   handleChangeSwitch = name => (event) => {
@@ -126,11 +156,31 @@ class CreateCapstone extends Component {
       return false;
     });
 
+    ValidatorForm.addValidationRule('haveDepartment', value => {
+      const { departments } = this.state;
+      if (departments.length > 0) {
+        return true;
+      }
+      return false;
+    });
+
+
+
     // pull data from strapi/backend
     //TODO: do we need this?
     const capstones = await api.capstones.find();
     const departmentList = await api.departments.find();
     const sponsorList = await api.sponsors.find();
+
+    const {data: {roles}} = await api.getRoles();
+    console.log(roles);
+    let roleIdToName = roles.reduce((map, role) => {
+      map[role.id] = role.name;
+      return map;
+    }, {});
+    console.log(roleIdToName);
+    // const [role] = roles.filter(r => r.name === user.role);
+
     // sets the various states
     this.setState({capstones, sponsorList, departmentList});
 
@@ -142,15 +192,59 @@ class CreateCapstone extends Component {
     // TODO: preview semester
     // TODO: if not a created capstone, clear, else reset all things
     if (this.props.editId) {
-      const editCapstone = await api.capstones.findOne("5e9cead5003a0600319843e1");
+      const editCapstone = await api.capstones.findOne("5e99c90f5350f40031d08f1c");
       console.log(editCapstone);
 
+      let dept = departmentList.filter(dept => dept.id === editCapstone.departments);
+      console.log(editCapstone.members);
+      let members = _.cloneDeep(editCapstone.members);
+      let teamMembers = members.filter(member => roleIdToName[member.role] !== 'TeachingAssistant'
+        && roleIdToName[member.role] !== 'Professor'
+      );
+      let professor = members.filter(member => roleIdToName[member.role] === 'Professor');
+      let TA = members.filter(member => roleIdToName[member.role] === 'TeachingAssistant');
+      console.log(professor);
+      this.setState({
+        name: editCapstone.name,
+        course: editCapstone.course,
+        semester: editCapstone.semester,
+        startDate: editCapstone.startDate,
+        endDate: editCapstone.endDate,
+        isFeatured: editCapstone.isFeatured,
+        departments: _.cloneDeep(editCapstone.departments),
+        preview: editCapstone.preview,
+        description: editCapstone.description,
+        members: teamMembers,
+        selectedProfessor: professor[0],
+        selectedTA: TA[0],
+        thumbnail: [editCapstone.thumbnail,],
+        cover: editCapstone.cover,
+        media: editCapstone.media,
+        capstoneId: this.props.editId
+      });
     }
 
   }
 
   handleSelectedPerson = name => (event, values) => {
     this.setState({[name]: values});
+  };
+
+  handleConfirmDepartment = (selectedDepartment) => {
+    const {departments} = this.state;
+    if (selectedDepartment !== '' && !departments.includes(selectedDepartment)) {
+      const joinedDepartments = departments.concat(selectedDepartment);
+      this.setState({departments: joinedDepartments});
+    }
+  };
+
+  handleRemoveDepartment = (selectDepartmentId) => {
+    const copyOfDepartments = _.cloneDeep(this.state.departments);
+    this.setState({
+      departments: copyOfDepartments.filter(t => {
+        return selectDepartmentId !== t.id;
+      })
+    })
   };
 
   handleConfirmSponsor = (selectedSponsor) => {
@@ -171,6 +265,8 @@ class CreateCapstone extends Component {
       })
     });
   };
+
+
 
   handleConfirmTeammate = (selectedUser) => {
     const user = selectedUser;
@@ -245,7 +341,7 @@ class CreateCapstone extends Component {
       course,
       startDate,
       endDate,
-      Department,
+      departments,
       description,
       members,
       selectedProfessor,
@@ -268,8 +364,8 @@ class CreateCapstone extends Component {
     if (semester !== '') {
       upload_content.semester = semester;
     }
-    if (Department !== '') {
-      upload_content.department = [Department.id,];
+    if (departments.length > 0) {
+      upload_content.departments = departments.map(s => s.id);
     }
     if (description !== '') {
       upload_content.description = description;
@@ -302,7 +398,7 @@ class CreateCapstone extends Component {
       cover: [],
       thumbnail: [],
       media: [],
-      Department: '',
+      departments: [],
       capstones: [],
       checkedSponsors: [],
       selectedSponsor: '',
@@ -312,9 +408,9 @@ class CreateCapstone extends Component {
       course: '',
       capstoneId: '',
       removeImg: true,
-      oldThumbnail: [],
-      oldCoverPhoto: [],
-      oldMedia: []
+      deletedThumbnail: [],
+      deletedCoverPhoto: [],
+      deletedMedia: []
     });
   };
 
@@ -335,71 +431,110 @@ class CreateCapstone extends Component {
     const {
       thumbnail,
       cover,
-      media
+      media,
+      deletedThumbnail,
+      deletedCover,
+      deletedMedia
     } = this.state;
     if (this.state.capstoneId === '') {
       return;
     }
     const capstoneId = this.state.capstoneId;
     // upload thumbnail
-    if (thumbnail && thumbnail.length > 0) {
+    if (thumbnail.length > 0 && !thumbnail[0].id) {
       const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', capstoneId, 'thumbnail');
       await api.uploads.upload(thumbnailUpload);
     }
 
-    // upload media
-    if (media && media.length > 0) {
-      const mediaUploads = media.map(file => {
-        const upload = formatEntryUpload(file, 'capstones', capstoneId, 'media');
-        return api.uploads.upload(upload);
-      });
-      await Promise.all(mediaUploads);
+    if (deletedThumbnail.length > 0) {
+      await api.uploads.delete(deletedThumbnail[0]);
     }
 
-
-    // upload media
-    if (cover && cover.length > 0) {
+    if (cover.length > 0) {
       const coverUploads = cover.map(file => {
-        const upload = formatEntryUpload(file, 'capstones', capstoneId, 'cover');
-        return api.uploads.upload(upload);
+        if (!file.id) {
+          const upload = formatEntryUpload(file, 'capstones', capstoneId, 'cover');
+          return api.uploads.upload(upload);
+        }
       });
       await Promise.all(coverUploads);
     }
 
-  };
-
-  imageNeededToUpload = () => {
-    const {
-      oldThumbnail,
-      oldCoverPhoto,
-      oldMedia,
-      thumbnail,
-      cover,
-      media
-    } = this.state;
-    // not a good code style
-    let thumbnailUpload, coverUpload, mediaUpload;
-    if (oldThumbnail.length === 0 || oldThumbnail[0].name !== thumbnail[0].name) {
-      thumbnailUpload = thumbnail;
+    if (deletedCover.length > 0) {
+      const deleted = deletedCover.map(fileId => {
+        return api.uploads.delete(fileId);
+      });
+      await Promise.all(deleted)
     }
-    else {
-      thumbnailUpload = 'no'
+
+    if (media.length > 0) {
+      const mediaUploads = media.map(file => {
+        if (!file.id) {
+          const upload = formatEntryUpload(file, 'capstones', capstoneId, 'media');
+          return api.uploads.upload(upload);
+        }
+      });
+      await Promise.all(mediaUploads);
     }
-    // old: 1 2 3
-    // new 2 3 4
-    let oldCoverPhotoNames = oldCoverPhoto.map(o => o.name);
 
-
-
-    return {
-      thumbnailUpload,
-      coverUpload,
-      mediaUpload
+    if (deletedMedia.length > 0) {
+      const deleted = deletedMedia.map(fileId => {
+        return api.uploads.delete(fileId);
+      });
+      await Promise.all(deleted)
     }
+    // if have old
+      // if have new && not equal (new does not have id)
+        // delete old && upload new
+      // no new
+        // delete old
+      // nothing
+        // nothing
+    // else
+      // upload new
+    // if (oldThumbnail.length > 0) {
+    //   if (thumbnail.length > 0 && !thumbnail[0].id) {
+    //     const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', capstoneId, 'thumbnail');
+    //     let resp = await api.uploads.upload(thumbnailUpload);
+    //     this.setState({oldThumbnail: resp.data});
+    //     await api.uploads.delete(oldThumbnail[0].id);
+    //   }
+    //   else if (thumbnail.length === 0) {
+    //     await api.uploads.delete(oldThumbnail[0].id);
+    //   }
+    // }
+    // else {
+    //   if (thumbnail.length > 0) {
+    //     const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', capstoneId, 'thumbnail');
+    //     let resp = await api.uploads.upload(thumbnailUpload);
+    //     this.setState({oldThumbnail: resp.data});
+    //   }
+    // }
+
+
+    // upload media
+    // if (media && media.length > 0) {
+    //   const mediaUploads = media.map(file => {
+    //     const upload = formatEntryUpload(file, 'capstones', capstoneId, 'media');
+    //     return api.uploads.upload(upload);
+    //   });
+    //   await Promise.all(mediaUploads);
+    // }
+    //
+    //
+    // // upload media
+    // if (cover && cover.length > 0) {
+    //   const coverUploads = cover.map(file => {
+    //     const upload = formatEntryUpload(file, 'capstones', capstoneId, 'cover');
+    //     return api.uploads.upload(upload);
+    //   });
+    //   await Promise.all(coverUploads);
+    // }
+
   };
 
   // TODO: make every photo different name
-  handleUpload = async (isFinished) => {
+  handleUpload = async (isFinishedEditing) => {
     const {
       Users,
       AllUsers,
@@ -407,7 +542,7 @@ class CreateCapstone extends Component {
     } = this.state;
 
     let upload_data = this.extractNonMediaContent();
-    upload_data.isFinished = isFinished;
+    upload_data.isFinishedEditing = isFinishedEditing;
     let response;
     // no previous capstone id, create
     if (capstoneId === '') {
@@ -418,20 +553,11 @@ class CreateCapstone extends Component {
     }
     // previous capstone id, update
     else {
-      response = await api.capstones.update(capstoneId, upload_data);
+      await api.capstones.update(capstoneId, upload_data);
     }
 
     // upload images
     await this.uploadImage();
-
-    // const resultImages = this.imageNeededToUpload();
-    //
-    // if (resultImages.thumbnailUpload !== 'no') {
-    //   // upload thumbnail
-    // }
-    //
-    // api.uploads.delete();
-
 
     // Use Users and AllUsers eventually
     Users.filter(() => true);
@@ -459,6 +585,8 @@ class CreateCapstone extends Component {
             handleChangeSwitch={this.handleChangeSwitch.bind(this)}
             handleStartDate={this.handleStartDate.bind(this)}
             handleEndDate={this.handleEndDate.bind(this)}
+            handelConfirmDepartment={this.handleConfirmDepartment.bind(this)}
+            handleRemoveDepartment={this.handleRemoveDepartment.bind(this)}
             handleDescription={this.handleDescription.bind(this)}
             {...this.state}
           />
@@ -481,6 +609,9 @@ class CreateCapstone extends Component {
             setThumbnail={setThumbnail}
             setCover={setCover}
             setMedia={setMedia}
+            deletedThumbnail={this.deletedThumbnail.bind(this)}
+            deletedCover={this.deletedCover.bind(this)}
+            deletedMedia={this.deletedMedia.bind(this)}
             {...this.state}
 
           />
@@ -511,11 +642,11 @@ class CreateCapstone extends Component {
               </Grid>
               <Grid item xs={3}>
                 <Button
-                  type='submit'
                   fullWidth
                   variant='contained'
                   color='primary'
                   style={{marginTop: '1%'}}
+                  onClick={this.clearCurrentCapstone}
                 >
                   Cancel
                 </Button>
