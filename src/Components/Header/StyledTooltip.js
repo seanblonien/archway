@@ -10,7 +10,9 @@ const BaseStyledTooltip = withStyles(theme => ({
     boxShadow: theme.shadows[1],
     padding: 0,
     color: theme.palette.primary.main,
-    borderRadius: 0
+    borderRadius: 0,
+    marginTop: 0,
+    marginBottom: 0
   },
 }))(Tooltip);
 
@@ -28,7 +30,6 @@ export const StyledTooltip = ({title, children, ...rest}) => {
     <BaseStyledTooltip
       disableFocusListener
       interactive
-      placement='bottom'
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       title={title}

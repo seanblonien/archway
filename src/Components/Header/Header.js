@@ -1,6 +1,8 @@
 import {Box} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles, withTheme} from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
@@ -14,6 +16,7 @@ import withWidth from '@material-ui/core/withWidth';
 import AuthContext from '../../Contexts/AuthContext';
 import api from '../../Services/api';
 import universityLogo from '../../Static/univ_logo.svg';
+import MenuLink from './MenuLink';
 import {StyledTooltip} from './StyledTooltip';
 import {widthPropTypes} from '../../utils/PropTypesConfig';
 import history from '../../utils/Routing/history';
@@ -25,7 +28,7 @@ import appRoutes from '../../utils/Routing/routes';
 const styles = () => ({
   tab: {
     color: 'white',
-    fontSize: '15px',
+    fontSize: '20px',
     maxWidth: 'none',
     minWidth: '100px',
     opacity: 1
@@ -68,14 +71,18 @@ class Header extends Component {
     const profileMenu = (
       <StyledTooltip
         title={
-          <div>
-            {isAuthenticated && <MenuItem onClick={() => history.push(appRoutes.dashboard.path)}>Dashboard</MenuItem>}
-            {!isAuthenticated && <MenuItem onClick={() => history.push(appRoutes.auth.login.path)}>Login / Register</MenuItem>}
-            {isAuthenticated && <MenuItem onClick={handleLogout}>Logout</MenuItem>}
-          </div>
+          <span>
+            {isAuthenticated ?
+              <>
+                <MenuLink to={appRoutes.dashboard.path}>Dashboard</MenuLink>
+                <MenuLink onClick={handleLogout}>Logout</MenuLink>
+              </>
+              : <MenuLink to={appRoutes.auth.login.path}>Login / Register</MenuLink>
+            }
+          </span>
         }
       >
-        <AccountCircle/>
+        <AccountCircle fontSize='large'/>
       </StyledTooltip>
     );
 
@@ -122,9 +129,10 @@ class Header extends Component {
                   <Grid item xs container justify='flex-end'>
                     <SearchBar/>
                   </Grid>
-                  <Grid item xs={2} container justify='flex-end'>
+                  <Grid item xs={1} container justify='flex-end'>
                     {profileMenu}
                   </Grid>
+                  <Grid item xs={1}/>
                 </Grid>
               </Box>
             </Toolbar>

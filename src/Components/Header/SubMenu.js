@@ -1,8 +1,6 @@
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link as RouterLink} from 'react-router-dom';
+import MenuLink from './MenuLink';
 import {StyledTooltip} from './StyledTooltip';
 
 const SubMenu = ({subRoutes, title}) => (
@@ -10,11 +8,7 @@ const SubMenu = ({subRoutes, title}) => (
     title={
       subRoutes
         ? subRoutes.map(route => (
-          <ListItem key={route.id} button component={RouterLink} to={route.path}>
-            <ListItemText>
-              {route.label}
-            </ListItemText>
-          </ListItem>
+          <MenuLink key={route.id} to={route.path}>{route.label}</MenuLink>
         ))
         : ''
     }
