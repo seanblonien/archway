@@ -1,7 +1,6 @@
 import {AccountCircle, Create, Description, Publish, ViewQuilt} from '@material-ui/icons';
 import About from '../../Components/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
-import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import Login from '../../Components/Auth/Login';
 import {permissions} from '../../constants';
 import AuthPage from '../../Pages/AuthPage';

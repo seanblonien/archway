@@ -5,13 +5,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles, withTheme} from '@material-ui/core/styles';
-import {fade} from '@material-ui/core/styles/colorManipulator';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import SearchIcon from '@material-ui/icons/Search';
 import React, {Component} from 'react';
 import {withRouter, Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
@@ -145,14 +143,7 @@ class Header extends Component {
               </div>
 
               <div className={classes.sectionDesktop}>
-                <div className={classes.search}>
-                  <div className={classes.searchIcon}>
-                    <SearchIcon/>
-                  </div>
-                </div>
-                <div key={new Date().getTime()}>
-                  <SearchBar/>
-                </div>
+                <SearchBar/>
               </div>
 
               <div className={classes.sectionDesktop}>
