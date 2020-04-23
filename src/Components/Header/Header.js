@@ -1,29 +1,25 @@
 import {Box} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles, withTheme} from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
+import withWidth from '@material-ui/core/withWidth';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import React, {Component} from 'react';
-import {withRouter, Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
-import withWidth from '@material-ui/core/withWidth';
 import AuthContext from '../../Contexts/AuthContext';
 import api from '../../Services/api';
 import universityLogo from '../../Static/univ_logo.svg';
-import MenuLink from './MenuLink';
-import {StyledTooltip} from './StyledTooltip';
 import {widthPropTypes} from '../../utils/PropTypesConfig';
-import history from '../../utils/Routing/history';
-import {widthMatchUp} from '../../utils/utils';
-import SearchBar from './SearchBar';
-import SubMenu from './SubMenu';
 import appRoutes from '../../utils/Routing/routes';
+import {widthMatchUp} from '../../utils/utils';
+import MenuLink from './MenuLink';
+import SearchBar from './SearchBar';
+import {StyledTooltip} from './StyledTooltip';
+import SubMenu from './SubMenu';
 
 const styles = () => ({
   tab: {

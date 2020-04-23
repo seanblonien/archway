@@ -1,8 +1,8 @@
 import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import {childrenPropTypes} from '../../utils/PropTypesConfig';
 

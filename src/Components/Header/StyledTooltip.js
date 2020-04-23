@@ -10,7 +10,6 @@ const BaseStyledTooltip = withStyles(theme => ({
     boxShadow: theme.shadows[1],
     padding: 0,
     color: theme.palette.primary.main,
-    borderRadius: 0,
     marginTop: 0,
     marginBottom: 0
   },
