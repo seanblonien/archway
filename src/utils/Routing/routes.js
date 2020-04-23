@@ -1,4 +1,4 @@
-import {AccountCircle, Create, Description, Publish, ViewQuilt} from '@material-ui/icons';
+import {AccountCircle, Create, Description, Publish, ViewList, ViewQuilt} from '@material-ui/icons';
 import About from '../../Components/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import Login from '../../Components/Auth/Login';
@@ -23,6 +23,8 @@ import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import ResetPassword from '../../Components/Auth/ResetPassword';
 import ValidateEmail from '../../Components/Auth/ValidateEmail';
 import ViewYourCapstones from '../../Pages/ViewYourCapstones';
+import ReviewProposals from '../../Components/Proposals/ReviewProposals';
+import ViewYourProposals from '../../Components/Proposals/ViewYourProposals';
 
 const routes = {
   dashboard: {
@@ -30,7 +32,7 @@ const routes = {
     path: '/dashboard',
     component: Dashboard,
     protected: true,
-    routeNames: ['viewprofile','viewyourcapstones','createcapstone','proposals','importusers'],
+    routeNames: ['viewprofile','viewyourcapstones','createcapstone','reviewproposals', 'viewyourproposals', 'importusers'],
     viewprofile: {
       name: 'View Profile',
       path: '/dashboard/profile/:username',
@@ -54,12 +56,19 @@ const routes = {
       Icon: Create,
       permission: permissions.application.capstones.create,
     },
-    proposals: {
-      name: 'Proposals',
-      path: '/dashboard/proposals',
-      component: NotFound,
+    reviewproposals: {
+      name: 'Review Proposals',
+      path: '/dashboard/review-proposals',
+      component: ReviewProposals,
+      Icon: ViewList,
+      permission: permissions.application.proposal_approval.find,
+    },
+    viewyourproposals: {
+      name: 'View Your Proposals',
+      path: '/dashboard/view-your-proposals',
+      component: ViewYourProposals,
       Icon: Description,
-      permission: permissions.application.capstones.create,
+      permission: permissions.application.proposals.create,
     },
     importusers: {
       name: 'Import Users',
