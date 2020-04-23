@@ -33,30 +33,6 @@ const styles = theme => ({
       display: 'block',
     },
   },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    width: theme.spacing(9),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'left'
-  },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -137,27 +113,20 @@ class Header extends Component {
                 <SubMenu
                   title='Sponsors'
                   items={['Become a Sponsor', 'View Current Sponsors']}
-                  links={[routes.sponsors.path, routes.viewsponsors.genPath()]}
+                  links={[routes.sponsors.path, routes.viewsponsors.path]}
                 />
               </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.genPath()}>
+              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.path}>
                 <SubMenu
                   title='Projects'
                   items={['All Capstones','All Departments']}
-                  links={[routes.capstones.genPath(), routes.viewdepartments.path]}
+                  links={[routes.capstones.path, routes.viewdepartments.path]}
                 />
               </Button>
             </div>
             <div className={classes.grow}/>
             <div className={classes.sectionDesktop}>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon/>
-                </div>
-              </div>
-              <div key={new Date().getTime()}>
-                <SearchBar/>
-              </div>
+              <SearchBar/>
             </div>
 
             <div className={classes.sectionDesktop}>

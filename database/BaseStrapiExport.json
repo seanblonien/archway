@@ -7,7 +7,7 @@
       "kind": "singleType",
       "collectionName": "about_pages",
       "attributes": {
-        "text": {
+        "main_paragraph": {
           "type": "richtext"
         }
       }

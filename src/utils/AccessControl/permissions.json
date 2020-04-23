@@ -2,27 +2,19 @@
   "application": {
     "capstones": {
       "find": "application.capstones.find",
-      "count": "application.capstones.count",
       "findone": "application.capstones.findone",
+      "count": "application.capstones.count",
       "create": "application.capstones.create",
       "update": "application.capstones.update",
       "delete": "application.capstones.delete"
     },
     "departments": {
       "find": "application.departments.find",
-      "count": "application.departments.count",
       "findone": "application.departments.findone",
-      "delete": "application.departments.delete",
+      "count": "application.departments.count",
       "create": "application.departments.create",
-      "update": "application.departments.update"
-    },
-    "faqs": {
-      "findone": "application.faqs.findone",
-      "find": "application.faqs.find",
-      "count": "application.faqs.count",
-      "update": "application.faqs.update",
-      "create": "application.faqs.create",
-      "delete": "application.faqs.delete"
+      "update": "application.departments.update",
+      "delete": "application.departments.delete"
     },
     "proposals": {
       "find": "application.proposals.find",
@@ -32,33 +24,41 @@
       "update": "application.proposals.update",
       "delete": "application.proposals.delete"
     },
-    "sponsors": {
-      "find": "application.sponsors.find",
-      "count": "application.sponsors.count",
-      "findone": "application.sponsors.findone",
-      "update": "application.sponsors.update",
-      "create": "application.sponsors.create",
-      "delete": "application.sponsors.delete"
-    },
     "sponsor_page": {
       "find": "application.sponsor-page.find",
       "update": "application.sponsor-page.update",
       "delete": "application.sponsor-page.delete"
     },
     "theme": {
+      "find": "application.theme.find",
       "update": "application.theme.update",
-      "delete": "application.theme.delete",
-      "find": "application.theme.find"
-    },
-    "home_page": {
-      "find": "application.home-page.find",
-      "update": "application.home-page.update",
-      "delete": "application.home-page.delete"
+      "delete": "application.theme.delete"
     },
     "about_page": {
       "find": "application.about-page.find",
       "update": "application.about-page.update",
       "delete": "application.about-page.delete"
+    },
+    "sponsors": {
+      "find": "application.sponsors.find",
+      "findone": "application.sponsors.findone",
+      "count": "application.sponsors.count",
+      "create": "application.sponsors.create",
+      "update": "application.sponsors.update",
+      "delete": "application.sponsors.delete"
+    },
+    "faqs": {
+      "find": "application.faqs.find",
+      "findone": "application.faqs.findone",
+      "count": "application.faqs.count",
+      "create": "application.faqs.create",
+      "update": "application.faqs.update",
+      "delete": "application.faqs.delete"
+    },
+    "home_page": {
+      "find": "application.home-page.find",
+      "update": "application.home-page.update",
+      "delete": "application.home-page.delete"
     },
     "proposal_approval": {
       "find": "application.proposal-approval.find",
@@ -68,15 +68,18 @@
   },
   "content_type_builder": {
     "componentcategories": {
-      "deletecategory": "content-type-builder.componentcategories.deletecategory",
-      "editcategory": "content-type-builder.componentcategories.editcategory"
+      "editcategory": "content-type-builder.componentcategories.editcategory",
+      "deletecategory": "content-type-builder.componentcategories.deletecategory"
     },
     "components": {
       "getcomponents": "content-type-builder.components.getcomponents",
       "getcomponent": "content-type-builder.components.getcomponent",
       "createcomponent": "content-type-builder.components.createcomponent",
-      "deletecomponent": "content-type-builder.components.deletecomponent",
-      "updatecomponent": "content-type-builder.components.updatecomponent"
+      "updatecomponent": "content-type-builder.components.updatecomponent",
+      "deletecomponent": "content-type-builder.components.deletecomponent"
+    },
+    "connections": {
+      "getconnections": "content-type-builder.connections.getconnections"
     },
     "contenttypes": {
       "getcontenttypes": "content-type-builder.contenttypes.getcontenttypes",
@@ -84,9 +87,6 @@
       "createcontenttype": "content-type-builder.contenttypes.createcontenttype",
       "updatecontenttype": "content-type-builder.contenttypes.updatecontenttype",
       "deletecontenttype": "content-type-builder.contenttypes.deletecontenttype"
-    },
-    "connections": {
-      "getconnections": "content-type-builder.connections.getconnections"
     }
   },
   "content_manager": {
@@ -97,18 +97,18 @@
     },
     "contentmanager": {
       "checkuidavailability": "content-manager.contentmanager.checkuidavailability",
-      "deletemany": "content-manager.contentmanager.deletemany",
       "update": "content-manager.contentmanager.update",
+      "deletemany": "content-manager.contentmanager.deletemany",
       "delete": "content-manager.contentmanager.delete",
-      "count": "content-manager.contentmanager.count",
       "findone": "content-manager.contentmanager.findone",
-      "generateuid": "content-manager.contentmanager.generateuid",
+      "count": "content-manager.contentmanager.count",
       "find": "content-manager.contentmanager.find",
+      "generateuid": "content-manager.contentmanager.generateuid",
       "create": "content-manager.contentmanager.create"
     },
     "contenttypes": {
-      "findcontenttype": "content-manager.contenttypes.findcontenttype",
       "listcontenttypes": "content-manager.contenttypes.listcontenttypes",
+      "findcontenttype": "content-manager.contenttypes.findcontenttype",
       "updatecontenttype": "content-manager.contenttypes.updatecontenttype"
     }
   },
@@ -116,29 +116,29 @@
     "auth": {
       "callback": "users-permissions.auth.callback",
       "changepassword": "users-permissions.auth.changepassword",
-      "forgotpassword": "users-permissions.auth.forgotpassword",
       "connect": "users-permissions.auth.connect",
+      "forgotpassword": "users-permissions.auth.forgotpassword",
       "register": "users-permissions.auth.register",
       "emailconfirmation": "users-permissions.auth.emailconfirmation",
       "sendemailconfirmation": "users-permissions.auth.sendemailconfirmation"
     },
     "user": {
-      "me": "users-permissions.user.me",
       "find": "users-permissions.user.find",
-      "create": "users-permissions.user.create",
+      "me": "users-permissions.user.me",
       "findone": "users-permissions.user.findone",
+      "create": "users-permissions.user.create",
       "update": "users-permissions.user.update",
-      "destroyall": "users-permissions.user.destroyall",
-      "destroy": "users-permissions.user.destroy"
+      "destroy": "users-permissions.user.destroy",
+      "destroyall": "users-permissions.user.destroyall"
     },
     "userspermissions": {
-      "searchusers": "users-permissions.userspermissions.searchusers",
       "getemailtemplate": "users-permissions.userspermissions.getemailtemplate",
+      "searchusers": "users-permissions.userspermissions.searchusers",
       "getroutes": "users-permissions.userspermissions.getroutes",
-      "getpolicies": "users-permissions.userspermissions.getpolicies",
       "deleterole": "users-permissions.userspermissions.deleterole",
-      "getrole": "users-permissions.userspermissions.getrole",
+      "getpolicies": "users-permissions.userspermissions.getpolicies",
       "getroles": "users-permissions.userspermissions.getroles",
+      "getrole": "users-permissions.userspermissions.getrole",
       "getproviders": "users-permissions.userspermissions.getproviders",
       "updateemailtemplate": "users-permissions.userspermissions.updateemailtemplate",
       "updateadvancedsettings": "users-permissions.userspermissions.updateadvancedsettings",
@@ -156,23 +156,23 @@
     "email": {
       "send": "email.email.send",
       "getenvironments": "email.email.getenvironments",
-      "updatesettings": "email.email.updatesettings",
-      "getsettings": "email.email.getsettings"
+      "getsettings": "email.email.getsettings",
+      "updatesettings": "email.email.updatesettings"
     }
   },
   "upload": {
-    "upload": {
-      "upload": "upload.upload.upload",
-      "search": "upload.upload.search",
-      "updatesettings": "upload.upload.updatesettings",
-      "count": "upload.upload.count",
-      "findone": "upload.upload.findone",
-      "find": "upload.upload.find",
-      "getsettings": "upload.upload.getsettings",
-      "destroy": "upload.upload.destroy"
-    },
     "proxy": {
       "uploadproxy": "upload.proxy.uploadproxy"
+    },
+    "upload": {
+      "upload": "upload.upload.upload",
+      "getsettings": "upload.upload.getsettings",
+      "updatesettings": "upload.upload.updatesettings",
+      "find": "upload.upload.find",
+      "findone": "upload.upload.findone",
+      "count": "upload.upload.count",
+      "destroy": "upload.upload.destroy",
+      "search": "upload.upload.search"
     }
   }
 }

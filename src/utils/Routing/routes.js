@@ -2,7 +2,6 @@ import {AccountCircle, Create, Description, Publish, ViewList, ViewQuilt} from '
 import About from '../../Components/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import Login from '../../Components/Auth/Login';
-import SearchRedirect from '../../Components/SearchRedirect';
 import {permissions} from '../../constants';
 import Capstone from '../../Pages/Capstones';
 import CreateCapstone from '../../Pages/CreateCapstone';
@@ -18,6 +17,7 @@ import ViewASponsor from '../../Pages/ViewASponsor';
 import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
+import SearchResults from '../../Pages/SearchResults';
 import SignUp from '../../Components/Auth/SignUp';
 import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import ResetPassword from '../../Components/Auth/ResetPassword';
@@ -110,16 +110,15 @@ const routes = {
       component: ValidateEmail
     },
   },
-  searchredirect: {
-    name: 'Search Redirect',
-    path: '/SearchRedirect/:path/:searchTerm?',
-    genPath: (path, searchterm) => `/SearchRedirect/${path}/${searchterm}`,
-    component: SearchRedirect
+  search: {
+    name: 'Search',
+    path: '/SearchResults/:searchTerm?',
+    genPath: (searchterm) => `/SearchResults/${searchterm}`,
+    component: SearchResults
   },
   capstones: {
     name: 'Capstones',
-    path: '/Capstones/:searchTerm?',
-    genPath: (searchterm = '') => `/Capstones/${searchterm}`,
+    path: '/Capstones',
     component: Capstone
   },
   about: {
@@ -146,8 +145,7 @@ const routes = {
   },
   viewsponsors: {
     name: 'View Sponsors',
-    path: '/ViewSponsors/:searchTerm?',
-    genPath: (searchTerm = '') => `/ViewSponsors/${searchTerm}`,
+    path: '/ViewSponsors',
     component: ViewSponsors
   },
   viewsponsor: {
