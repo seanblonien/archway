@@ -4,7 +4,6 @@ import withWidth from '@material-ui/core/withWidth';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import {Parallax} from 'react-parallax';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -12,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import api from '../Services/api';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import LoadingCircle from '../Components/LoadingCircle';
+import Cover from '../Components/Cover';
 import Team from '../Components/Team';
 import CapstonePhotos from '../Components/CapstonePhotos';
 import {convertStrapiDate, imageURL} from '../utils/utils';
@@ -58,9 +58,7 @@ class ViewCapstone extends Component {
     return loading ?
       <LoadingCircle/> :
       <div>
-        <Parallax bgImage={imageURL.cover(capstone.cover)} strength={300}>
-          <div className={classes.cover}/>
-        </Parallax>
+        <Cover covers={capstone.cover}/>
         <Grid container direction='row' justify='flex-start' alignItems='flex-start' component={Box} px={6} py={2}>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
             <Typography className={classes.title} variant='h3'>{capstone.name}</Typography>

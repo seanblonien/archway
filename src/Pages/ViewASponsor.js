@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import {Parallax} from 'react-parallax';
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
 import {withSnackbar} from 'notistack';
@@ -11,6 +10,7 @@ import LoadingCircle from '../Components/LoadingCircle';
 import SponsorForm from '../Components/SponsorForm';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import CapstonesTab from '../Components/CapstonesTab';
+import Cover from '../Components/Cover';
 import api from '../Services/api';
 import {imageURL} from '../utils/utils';
 import {permissions} from '../constants';
@@ -34,7 +34,6 @@ class ViewASponsor extends Component {
       sponsor: [],
       canEdit: false,
       logoPhoto: '',
-      coverPhoto: ''
     };
   }
 
@@ -46,7 +45,6 @@ class ViewASponsor extends Component {
       loading: false,
       sponsor,
       logoPhoto: imageURL.sponsor(sponsor.logo),
-      coverPhoto: imageURL.sponsor(sponsor.cover)
     });
 
     for (const person of sponsor.personnel) {
@@ -61,19 +59,18 @@ class ViewASponsor extends Component {
     const updatedSponsor = await api.sponsors.findOne(sponsor.id);
     this.setState({
       sponsor: updatedSponsor,
-      coverPhoto: imageURL.sponsor(updatedSponsor.cover),
       logoPhoto: imageURL.sponsor(updatedSponsor.logo)
     });
   };
 
   render() {
     const {classes} = this.props;
-    const {loading, sponsor, canEdit, logoPhoto, coverPhoto} = this.state;
+    const {loading, sponsor, canEdit, logoPhoto} = this.state;
 
     return loading ?
       <LoadingCircle/> :
       <div>
-        <Parallax bgImage={coverPhoto} strength={300}>
+        <Cover covers={sponsor.cover}>
           <div className={classes.cover}>
             <Grid container direction='row' justify='flex-end'>
               {canEdit &&
@@ -88,7 +85,7 @@ class ViewASponsor extends Component {
               }
             </Grid>
           </div>
-        </Parallax>
+        </Cover>
         <Grid container direction='column'>
           <Grid item container direction='row' justify='space-evenly' style={{marginTop: '2%'}}>
             <Grid item md={6}>

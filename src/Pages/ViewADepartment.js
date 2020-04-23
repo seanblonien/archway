@@ -2,7 +2,6 @@ import {withStyles, withTheme} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import {Parallax} from 'react-parallax';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
@@ -11,11 +10,12 @@ import ComputerRoundedIcon from '@material-ui/icons/ComputerRounded';
 import LoadingCircle from '../Components/LoadingCircle';
 import CapstonesTab from '../Components/CapstonesTab';
 import Professors from '../Components/Professors';
+import Cover from '../Components/Cover';
 import api from '../Services/api';
 import DepartmentForm from '../Components/DepartmentForm';
 import Can from '../Components/Can';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
-import {strapiURL, permissions} from '../constants';
+import {permissions} from '../constants';
 import gStyle from '../utils/styles.module.css';
 
 const styles = (theme) => ({
@@ -70,7 +70,7 @@ class ViewADepartment extends Component {
     return loading ?
       <LoadingCircle/> :
       <div>
-        <Parallax bgImage={strapiURL + department.cover.url} strength={500}>
+        <Cover covers={department.cover}>
           <Grid className={classes.cover} container direction='row' justify='center' alignItems='center'>
             <Grid item container direction='column' alignItems='center'>
               <Grid item>
@@ -107,7 +107,7 @@ class ViewADepartment extends Component {
               </Grid>
             </Grid>
           </Grid>
-        </Parallax>
+        </Cover>
         <Grid className={classes.capstones} container direction='column'>
           {department.capstones[0] &&
             <div>
