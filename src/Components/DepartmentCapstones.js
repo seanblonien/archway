@@ -77,7 +77,7 @@ class DepartmentCapstones extends Component {
           {departmentCapstones.map((result, i) => (
             <GridListTile
               style={{maxWidth: '300px', padding: '20px'}}
-              key={departmentCapstones[i].thumbnail.url}
+              key={i}
               onClick={() => this.handleTileClick(result.id)}
             >
               <img
@@ -90,7 +90,7 @@ class DepartmentCapstones extends Component {
                   <IconButton
                     className={classes.icon}
                     component={RouterLink}
-                    to={`/ViewCapstone/${result.id}`}
+                    to={routes.viewcapstone.genPath(result.id)}
                   >
                     <InfoIcon/>
                   </IconButton>

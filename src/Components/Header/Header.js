@@ -1,167 +1,148 @@
+import {Box} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Grid from '@material-ui/core/Grid';
 import {withStyles, withTheme} from '@material-ui/core/styles';
-import {fade} from '@material-ui/core/styles/colorManipulator';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
+import withWidth from '@material-ui/core/withWidth';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import SearchIcon from '@material-ui/icons/Search';
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link as RouterLink, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
 import AuthContext from '../../Contexts/AuthContext';
+import api from '../../Services/api';
 import universityLogo from '../../Static/univ_logo.svg';
-import history from '../../utils/Routing/history';
-import routes from '../../utils/Routing/routes';
-import Drawer from './Drawer';
+import {widthPropTypes} from '../../utils/PropTypesConfig';
+import appRoutes from '../../utils/Routing/routes';
+import {widthMatchUp} from '../../utils/utils';
+import MenuLink from './MenuLink';
 import SearchBar from './SearchBar';
+import {StyledTooltip} from './StyledTooltip';
 import SubMenu from './SubMenu';
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-  },
-  grow: {
-    flexGrow: 1,
+const styles = () => ({
+  tab: {
+    color: 'white',
+    fontSize: '20px',
+    maxWidth: 'none',
+    minWidth: '100px',
+    opacity: 1
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+    fontSize: '25px',
   },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  }
 });
 
 class Header extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      anchorEl: undefined,
+      loading: true,
+      routes: null,
+      tab: 'root',
     };
+  }
+
+  async componentDidMount() {
+    const {links: {routes}} = await api.navbar.find();
+    this.setState({loading: false, routes});
+  }
+
+  setTab = (event, tab) => {
+    this.setState({tab});
   }
 
   handleLogout = () =>{
     const {logout} = this.context;
-    this.handleMenuClose();
     logout();
-  };
-
-  handleMenuClose = () => {
-    this.setState({anchorEl: null});
-  };
-
-  handleProfileMenuOpen = event => {
-    this.setState({anchorEl: event.currentTarget});
   };
 
   render() {
     const {isAuthenticated} = this.context;
-    const {anchorEl} = this.state;
-    const {classes, theme} = this.props;
-    const isMenuOpen = Boolean(anchorEl);
+    const {loading, routes, tab} = this.state;
+    const {classes, theme, width} = this.props;
+    const {setTab, handleLogout} = this;
 
-    const renderMenu = (
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-        transformOrigin={{vertical: 'top', horizontal: 'right'}}
-        open={isMenuOpen}
-        onClose={this.handleMenuClose}
+    const profileMenu = (
+      <StyledTooltip
+        title={
+          <span>
+            {isAuthenticated ?
+              <>
+                <MenuLink to={appRoutes.dashboard.path}>Dashboard</MenuLink>
+                <MenuLink onClick={handleLogout}>Logout</MenuLink>
+              </>
+              : <MenuLink to={appRoutes.auth.login.path}>Login / Register</MenuLink>
+            }
+          </span>
+        }
       >
-        {isAuthenticated && <MenuItem onClick={() => history.push(routes.dashboard.path)}>Dashboard</MenuItem>}
-        {!isAuthenticated && <MenuItem onClick={() => history.push(routes.auth.login.path)}>Login / Register</MenuItem>}
-        {isAuthenticated && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
-      </Menu>
+        <AccountCircle fontSize='large'/>
+      </StyledTooltip>
+    );
+
+    const rootLabel = (useArchway) => (
+      <Box component={Grid} container alignItems='center' justify='center'>
+        <Box mx={2}>
+          <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40'/>
+        </Box>
+        <span className={classes.title}>{theme.university}{useArchway && ' | Archway'}</span>
+      </Box>
     );
 
     return (
-      <div className={classes.root}>
-        <AppBar position='static'>
-          <Toolbar>
-            {/* hamburger only shows in mobile view :) */}
-            <div className={classes.sectionMobile}>
-              <Drawer/>
-            </div>
-            <Button style={{color: 'white', fontSize: '25px'}} component={Link} to={routes.home.path}>
-              <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40' style={{paddingRight: 7}}/>
-              {theme.university} | Archway
-            </Button>
-            <div className={classes.sectionDesktop}>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.about.path}>
-                <SubMenu
-                  title='About'
-                  items={['FAQ', String(theme.university), 'Archway']}
-                  links={[routes.faq.path, routes.about.path, routes.about.path]}
-                />
-              </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.sponsors.path}>
-                <SubMenu
-                  title='Sponsors'
-                  items={['Become a Sponsor', 'View Current Sponsors']}
-                  links={[routes.sponsors.path, routes.viewsponsors.path]}
-                />
-              </Button>
-              <Button style={{color: 'white', fontSize: '15px'}} component={Link} to={routes.capstones.path}>
-                <SubMenu
-                  title='Projects'
-                  items={['All Capstones','All Departments']}
-                  links={[routes.capstones.path, routes.viewdepartments.path]}
-                />
-              </Button>
-            </div>
-            <div className={classes.grow}/>
-            <div className={classes.sectionDesktop}>
-              <SearchBar/>
-            </div>
+      loading
+        ? null
+        : <div>
+          <AppBar position='static'>
+            <Toolbar variant='dense'>
+              <Box display='flex' component={Grid} container justify='center'>
+                <Grid item xs={12} md={8}>
+                  <Tabs
+                    value={tab}
+                    onChange={setTab}
+                    component={Grid} container orientation={widthMatchUp(width, 'md') ? 'horizontal' : 'vertical'}
+                  >
+                    {routes && routes.map(route => (
+                      <Tab
+                        key={`tab-${route.id}`} value={route.id}
+                        className={classes.tab}
+                        component={RouterLink}
+                        to={route.path}
+                        label={
+                          <SubMenu
+                            subRoutes={route.subRoutes}
+                            title={route.isRoot ? rootLabel(route.useArchway) : route.label}
+                          />
+                        }
+                      />
+                    ))}
+                  </Tabs>
+                </Grid>
 
-            <div className={classes.sectionDesktop}>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup='true'
-                onClick={this.handleProfileMenuOpen}
-                color='inherit'
-              >
-                <AccountCircle/>
-              </IconButton>
-            </div>
-
-
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup='true'
-                onClick={this.handleProfileMenuOpen}
-                color='inherit'
-              >
-                <MoreIcon/>
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-        {renderMenu}
-      </div>
+                <Grid item xs={12} md={4} container direction='row' alignItems='center' wrap='nowrap'>
+                  <Grid item xs container justify='flex-end'>
+                    <SearchBar/>
+                  </Grid>
+                  <Grid item xs={1} container justify='flex-end'>
+                    {profileMenu}
+                  </Grid>
+                  <Grid item xs={1}/>
+                </Grid>
+              </Box>
+            </Toolbar>
+          </AppBar>
+        </div>
     );
   }
 }
 
 Header.contextType = AuthContext;
+Header.propTypes = widthPropTypes;
 
 export default compose(
+  withWidth(),
   withStyles(styles),
   withRouter,
   withTheme

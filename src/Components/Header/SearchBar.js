@@ -18,9 +18,6 @@ const styles = theme => ({
     marginRight: theme.spacing(1),
     width: 250,
   },
-  dense: {
-    marginTop: 19,
-  },
   menu: {
     width: 200,
   },
@@ -69,7 +66,8 @@ class SearchBar extends Component {
           className={classes.textField}
           value={input}
           onChange={this.handleChange}
-          margin='normal'
+          fullWidth
+          margin='none'
           InputProps={{
             className: (classes.input),
             startAdornment: (

@@ -3,12 +3,12 @@ import About from '../../Components/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import Login from '../../Components/Auth/Login';
 import {permissions} from '../../constants';
+import AuthPage from '../../Pages/AuthPage';
 import Capstone from '../../Pages/Capstones';
 import CreateCapstone from '../../Pages/CreateCapstone';
 import Dashboard from '../../Pages/Dashboard';
 import FAQ from '../../Pages/FAQ';
 import Home from '../../Pages/Home';
-import AuthPage from '../../Pages/AuthPage';
 import NotFound from '../../Pages/NotFound';
 import Sponsors from '../../Pages/Sponsors';
 import ViewADepartment from '../../Pages/ViewADepartment';
@@ -26,7 +26,6 @@ import ViewYourCapstones from '../../Pages/ViewYourCapstones';
 import ReviewProposals from '../../Components/Proposals/ReviewProposals';
 import ViewYourProposals from '../../Components/Proposals/ViewYourProposals';
 
-
 const routes = {
   dashboard: {
     name: 'Dashboard',
@@ -36,16 +35,16 @@ const routes = {
     routeNames: ['viewprofile','viewyourcapstones','createcapstone','reviewproposals', 'viewyourproposals', 'importusers'],
     viewprofile: {
       name: 'View Profile',
-      path: '/dashboard/viewprofile/:username',
-      genPath: (username ) => `/dashboard/viewprofile/${username}`,
+      path: '/dashboard/profile/:username',
+      genPath: (username ) => `/dashboard/profile/${username}`,
       component: ViewProfile,
       Icon: AccountCircle,
       permission: permissions.users_permissions.user.me,
     },
     viewyourcapstones: {
       name: 'View Your Capstones',
-      path: '/dashboard/my-capstones/:username',
-      genPath: (username ) => `/dashboard/view-your-capstones/${username}`,
+      path: '/dashboard/capstones/:username',
+      genPath: (username ) => `/dashboard/capstones/${username}`,
       component: ViewYourCapstones,
       Icon: ViewQuilt,
       permission: permissions.application.capstones.update,
@@ -112,13 +111,13 @@ const routes = {
   },
   search: {
     name: 'Search',
-    path: '/SearchResults/:searchTerm?',
-    genPath: (searchterm) => `/SearchResults/${searchterm}`,
+    path: '/search/:searchTerm?',
+    genPath: (searchterm) => `/search/${searchterm}`,
     component: SearchResults
   },
   capstones: {
     name: 'Capstones',
-    path: '/Capstones',
+    path: '/capstones',
     component: Capstone
   },
   about: {
@@ -128,46 +127,46 @@ const routes = {
   },
   viewcapstone: {
     name: 'View Capstone',
-    path: '/ViewCapstone/:capstoneID',
-    genPath: (capstoneID ) => `/ViewCapstone/${capstoneID}`,
+    path: '/capstone/:capstoneID',
+    genPath: (capstoneID ) => `/capstone/${capstoneID}`,
     component: ViewCapstone
   },
   viewprofile: {
     name: 'View Profile',
-    path: '/viewprofile/:username',
-    genPath: (username ) => `/viewprofile/${username}`,
+    path: '/profile/:username',
+    genPath: (username ) => `/profile/${username}`,
     component: ViewProfile
   },
   sponsors: {
-    name: 'Sponsors',
-    path: '/sponsors',
+    name: 'About Sponsors',
+    path: '/about-sponsors',
     component: Sponsors
   },
   viewsponsors: {
     name: 'View Sponsors',
-    path: '/ViewSponsors',
+    path: '/sponsors',
     component: ViewSponsors
   },
   viewsponsor: {
     name: 'View Sponsor',
-    path: '/ViewASponsor/:id',
-    genPath: (id) => `/ViewASponsor/${id}`,
+    path: '/sponsor/:id',
+    genPath: (id) => `/sponsor/${id}`,
     component: ViewASponsor
   },
   viewdepartments: {
     name: 'View Departments',
-    path: '/ViewAllDepartments',
+    path: '/departments',
     component: ViewAllDepartments
   },
   viewdepartment: {
     name: 'View Department',
-    path: '/ViewADepartment/:id',
-    genPath: (id) => `/ViewADepartment/${id}`,
+    path: '/department/:id',
+    genPath: (id) => `/department/${id}`,
     component: ViewADepartment
   },
   faq: {
     name: 'FAQ',
-    path: '/FAQ',
+    path: '/faq',
     component: FAQ
   },
   home: {
