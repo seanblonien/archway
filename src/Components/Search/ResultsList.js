@@ -1,4 +1,6 @@
 import {Box, Divider, Grid, GridList, GridListTile, TextField, Typography} from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -14,7 +16,7 @@ import {formatQuery} from '../../utils/utils';
 const styles = () => ({
   pointer:{
     cursor: 'pointer'
-  },
+  }
 });
 
 class ResultsList extends Component {
@@ -63,6 +65,10 @@ class ResultsList extends Component {
     event.preventDefault();
   };
 
+  clearSearch = () => {
+    this.setState({input: ''});
+  }
+
   updateDepartments = async (departments) => {
     this.selectedDepartments = departments;
     const {searchTerm} = this.state;
@@ -108,23 +114,27 @@ class ResultsList extends Component {
     return (
       <Box>
         <Box width='50%' mx='auto' my={1}>
-          <Grid container direction='row' alignItems='center'>
-            <Grid item xs={11}>
-              <form onSubmit={this.newSearch}>
-                <TextField
-                  margin='dense'
-                  placeholder='Search...'
-                  fullWidth
-                  onChange={this.handleChange}
-                  value={input}
-                  type='search'
-                />
-              </form>
-            </Grid>
-            <Grid item xs={1}>
-              <SearchIcon className={classes.pointer} onClick={this.newSearch}/>
-            </Grid>
-          </Grid>
+          <form onSubmit={this.newSearch}>
+            <TextField
+              margin='dense'
+              placeholder='Search...'
+              fullWidth
+              onChange={this.handleChange}
+              value={input}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <SearchIcon className={classes.pointer} onClick={this.newSearch}/>
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <ClearIcon className={classes.pointer} onClick={this.clearSearch}/>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </form>
         </Box>
         <Divider variant = 'middle'/>
         <br/>
