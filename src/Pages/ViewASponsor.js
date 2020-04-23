@@ -1,7 +1,6 @@
 import {Link} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
@@ -16,15 +15,6 @@ import {imageURL} from '../utils/utils';
 import {permissions} from '../constants';
 import Can from '../Components/Can';
 import AuthContext from '../Contexts/AuthContext';
-
-const styles = () => ({
-  cover: {
-    height: '500px',
-    backgroundPosition: '0% 0%',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    color: 'white',
-  },
-});
 
 class ViewASponsor extends Component {
   constructor(props) {
@@ -64,27 +54,24 @@ class ViewASponsor extends Component {
   };
 
   render() {
-    const {classes} = this.props;
     const {loading, sponsor, canEdit, logoPhoto} = this.state;
 
     return loading ?
       <LoadingCircle/> :
       <div>
         <Cover covers={sponsor.cover}>
-          <div className={classes.cover}>
-            <Grid container direction='row' justify='flex-end'>
-              {canEdit &&
-                <Can perform={permissions.application.sponsors.update}>
-                  <SponsorForm
-                    title='Edit Sponsor'
-                    sponsor={sponsor}
-                    type='edit'
-                    update={this.updateData}
-                  />
-                </Can>
-              }
-            </Grid>
-          </div>
+          <Grid container direction='row' justify='flex-end'>
+            {canEdit &&
+              <Can perform={permissions.application.sponsors.update}>
+                <SponsorForm
+                  title='Edit Sponsor'
+                  sponsor={sponsor}
+                  type='edit'
+                  update={this.updateData}
+                />
+              </Can>
+            }
+          </Grid>
         </Cover>
         <Grid container direction='column'>
           <Grid item container direction='row' justify='space-evenly' style={{marginTop: '2%'}}>
@@ -113,4 +100,4 @@ class ViewASponsor extends Component {
 
 ViewASponsor.contextType = AuthContext;
 
-export default withSnackbar((withStyles(styles)(withWidth()(ViewASponsor))));
+export default withSnackbar(((withWidth()(ViewASponsor))));

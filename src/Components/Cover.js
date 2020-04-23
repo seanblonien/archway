@@ -13,7 +13,6 @@ const styles = () => ({
     height: '500px',
     backgroundPosition: '0% 0%',
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    color: 'white',
   }
 });
 
