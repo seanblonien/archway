@@ -25,8 +25,7 @@ class FeaturedCapstones extends Component {
   }
 
   async componentDidMount() {
-    const capstones = await api.capstones.find();
-    const featuredCapstones = capstones.filter(capstone => capstone.isFeatured);
+    const featuredCapstones = await api.capstones.find({isFeatured: true});
     this.setState({loading: false, featuredCapstones});
   }
 
@@ -49,11 +48,11 @@ class FeaturedCapstones extends Component {
               {featuredCapstones.map((result, i) => (
                 <GridListTile
                   style={{maxWidth: '300px'}}
-                  key={featuredCapstones[i].coverPhoto.url}
+                  key={i}
                   onClick={() => this.handleTileClick(result.id)}
                 >
                   <img
-                    src={imageURL.capstone(featuredCapstones[i].coverPhoto)}
+                    src={imageURL.capstone(featuredCapstones[i].thumbnail)}
                     alt='Capstone' style={{height: '100%', width: '100%'}}
                   />
                   <GridListTileBar
@@ -62,7 +61,7 @@ class FeaturedCapstones extends Component {
                       <IconButton
                         className={classes.icon}
                         component={RouterLink}
-                        to={`/ViewCapstone/${result.id}`}
+                        to={routes.viewcapstone.genPath(result.id)}
                       >
                         <InfoIcon/>
                       </IconButton>
@@ -72,7 +71,7 @@ class FeaturedCapstones extends Component {
               ))}
             </GridList>
           </div>
-          <Link component={RouterLink} to={routes.capstones.genPath()}>See More</Link>
+          <Link component={RouterLink} to={routes.capstones.path}>See More</Link>
         </Paper>
       </Grid>
     ;

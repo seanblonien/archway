@@ -76,7 +76,7 @@ class ViewASponsor extends Component {
       sponsor: [],
       canEdit: false,
       logoPhoto: '',
-      coverPhoto: ''
+      cover: ''
     };
   }
 
@@ -88,7 +88,7 @@ class ViewASponsor extends Component {
       loading: false,
       sponsor,
       logoPhoto: imageURL.sponsor(sponsor.logo),
-      coverPhoto: imageURL.sponsor(sponsor.coverPhoto)
+      cover: imageURL.sponsor(sponsor.cover)
     });
 
     for (const person of sponsor.personnel) {
@@ -103,14 +103,14 @@ class ViewASponsor extends Component {
     const updatedSponsor = await api.sponsors.findOne(sponsor.id);
     this.setState({
       sponsor: updatedSponsor,
-      coverPhoto: imageURL.sponsor(updatedSponsor.coverPhoto),
+      cover: imageURL.sponsor(updatedSponsor.cover),
       logoPhoto: imageURL.sponsor(updatedSponsor.logo)
     });
   };
 
   render() {
     const {classes} = this.props;
-    const {loading, sponsor, canEdit, logoPhoto} = this.state;
+    const {loading, sponsor, canEdit, logoPhoto, cover} = this.state;
 
     if (!loading) {
       return (
@@ -145,6 +145,9 @@ class ViewASponsor extends Component {
                       <Typography align='center' style={{marginBottom: '1%'}}>
                         <img src={logoPhoto} className={classes.sponsorImage} alt='Display'/>
                       </Typography>
+                      <div>
+                        <img src={cover} className={classes.sponsorImage} alt='Cover'/>
+                      </div>
                       <CardContent>
                         <MediaMarkdown>
                           {sponsor.description}
