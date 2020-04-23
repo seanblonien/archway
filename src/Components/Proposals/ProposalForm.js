@@ -138,9 +138,12 @@ class ProposalForm extends Component {
       projectUse,
       departments,
       status: 'notSubmitted',
-      sponsors: [profileData.sponsorOrganization],
+      sponsors: [],
       creator
     };
+    if (profileData.sponsorOrganization) {
+      save.sponsors = [profileData.sponsorOrganization];
+    }
 
     try {
       if (id !== '') {
@@ -172,9 +175,12 @@ class ProposalForm extends Component {
       projectUse,
       departments,
       status: 'submittedPending',
-      sponsors: [profileData.sponsorOrganization],
+      sponsors: [],
       creator
     };
+    if (profileData.sponsorOrganization) {
+      submit.sponsors = [profileData.sponsorOrganization];
+    }
 
     try {
       if (id === '') {
@@ -328,6 +334,7 @@ class ProposalForm extends Component {
                   name='financialSupport'
                   label='Financial support'
                   value={financialSupport}
+                  fullWidth
                   onChange={this.handleChange}
                 />
               </div>

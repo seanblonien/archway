@@ -1,11 +1,11 @@
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import Box from "@material-ui/core/Box";
+import Box from '@material-ui/core/Box';
 import api from '../../Services/api';
 import ReviewTable from './ReviewTable';
 import ProposalForm from './ProposalForm';
-import AuthContext from "../../Contexts/AuthContext";
+import AuthContext from '../../Contexts/AuthContext';
 
 class ViewYourProposals extends Component {
 
@@ -32,19 +32,18 @@ class ViewYourProposals extends Component {
 
     return (
       <div>
-        {/*create a new proposal from empty form}*/}
         <ProposalForm
           title='New Proposal'
           update={this.initProposals}
           proposal={null}
         />
-        {/*table for sponsors, only their created proposals*/}
         <Box width='80%' my={2}>
           <ReviewTable
             title='Your Proposals'
             proposals={proposals}
             update={this.initProposals}
-            action='personal'/>
+            action='personal'
+          />
         </Box>
       </div>
     );

@@ -279,6 +279,13 @@
         },
         "sponsoringCompany": {
           "type": "string"
+        },
+        "sponsors": {
+          "nature": "manyToMany",
+          "target": "application::sponsors.sponsors",
+          "dominant": true,
+          "targetAttribute": "proposals",
+          "unique": false
         }
       }
     },
