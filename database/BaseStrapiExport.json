@@ -277,9 +277,6 @@
         "email": {
           "type": "email"
         },
-        "sponsoringCompany": {
-          "type": "string"
-        },
         "sponsors": {
           "nature": "manyToMany",
           "target": "application::sponsors.sponsors",
