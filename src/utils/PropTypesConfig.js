@@ -32,3 +32,11 @@ export const routesPropTypes = {
 export const parentRoutePropTypes = {
   parent: routePropTypes
 };
+
+export const widthPropTypes = {
+  width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired
+};
+
+export const childrenPropTypes = {
+  children: PropTypes.node.isRequired
+};

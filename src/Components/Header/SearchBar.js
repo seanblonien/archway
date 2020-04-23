@@ -66,6 +66,7 @@ class SearchBar extends Component {
           className={classes.textField}
           value={input}
           onChange={this.handleChange}
+          fullWidth
           margin='none'
           InputProps={{
             className: (classes.input),
