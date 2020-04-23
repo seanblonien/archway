@@ -34,35 +34,6 @@ const styles = theme => ({
   title: {
     fontSize: '25px',
   },
-  popover: {
-    position: 'relative',
-    pointerEvents: 'none',
-    padding: theme.spacing(1)
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    width: theme.spacing(9),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'left'
-  },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {

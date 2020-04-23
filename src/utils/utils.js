@@ -51,6 +51,10 @@ export const transformUserFields = async (user) => {
   if (!user.password) user.password = p;
 };
 
+const encodeKeyValue = (key, value) => (
+  `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+);
+
 /**
  * Format query params
  *
@@ -58,14 +62,20 @@ export const transformUserFields = async (user) => {
  * @returns {string}
  */
 export const formatQuery = (params) => `?${Object.keys(params)
-  .map(k => {
-    const value = params[k];
-    if(typeof value === 'object') {
-      return Object.keys(value).map((subk) => (
-        `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`)
-      ).join('&');
+  .map(key => {
+    const value = params[key];
+    if(Array.isArray(value)) {
+      return value.map((elem) => encodeKeyValue(key, elem)).join('&');
     }
-    return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
+    if(typeof value === 'object') {
+      return Object.keys(value).map((subKey) => {
+        if(Array.isArray(value[subKey])){
+          return value[subKey].map((elem) => encodeKeyValue(`${key}.${subKey}`, elem)).join('&');
+        }
+        return encodeKeyValue(`${key}.${subKey}`, value[subKey]);
+      }).join('&');
+    }
+    return encodeKeyValue(key, value);
   }).join('&')}`;
 
 /**

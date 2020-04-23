@@ -3,10 +3,6 @@ import About from '../../Components/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import Login from '../../Components/Auth/Login';
-import ResetPassword from '../../Components/Auth/ResetPassword';
-import SignUp from '../../Components/Auth/SignUp';
-import ValidateEmail from '../../Components/Auth/ValidateEmail';
-import SearchRedirect from '../../Components/SearchRedirect';
 import {permissions} from '../../constants';
 import AuthPage from '../../Pages/AuthPage';
 import Capstone from '../../Pages/Capstones';
@@ -22,6 +18,11 @@ import ViewASponsor from '../../Pages/ViewASponsor';
 import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
+import SearchResults from '../../Pages/SearchResults';
+import SignUp from '../../Components/Auth/SignUp';
+import ForgotPassword from '../../Components/Auth/ForgotPassword';
+import ResetPassword from '../../Components/Auth/ResetPassword';
+import ValidateEmail from '../../Components/Auth/ValidateEmail';
 import ViewYourCapstones from '../../Pages/ViewYourCapstones';
 
 const routes = {
@@ -100,16 +101,15 @@ const routes = {
       component: ValidateEmail
     },
   },
-  searchredirect: {
-    name: 'Search Redirect',
-    path: '/search/:path/:searchTerm?',
-    genPath: (path, searchterm) => `/search/${path}/${searchterm}`,
-    component: SearchRedirect
+  search: {
+    name: 'Search',
+    path: '/search/:searchTerm?',
+    genPath: (searchterm) => `/search/${searchterm}`,
+    component: SearchResults
   },
   capstones: {
     name: 'Capstones',
-    path: '/capstones/:searchTerm?',
-    genPath: (searchterm = '') => `/capstones/${searchterm}`,
+    path: '/capstones',
     component: Capstone
   },
   about: {
@@ -136,8 +136,7 @@ const routes = {
   },
   viewsponsors: {
     name: 'View Sponsors',
-    path: '/sponsors/:searchTerm?',
-    genPath: (searchTerm = '') => `/sponsors/${searchTerm}`,
+    path: '/sponsors',
     component: ViewSponsors
   },
   viewsponsor: {

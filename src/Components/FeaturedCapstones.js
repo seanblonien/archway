@@ -71,7 +71,7 @@ class FeaturedCapstones extends Component {
               ))}
             </GridList>
           </div>
-          <Link component={RouterLink} to={routes.capstones.genPath()}>See More</Link>
+          <Link component={RouterLink} to={routes.capstones.path}>See More</Link>
         </Paper>
       </Grid>
     ;
