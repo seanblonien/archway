@@ -8,7 +8,7 @@ import api from '../../Services/api';
 import {USER_IMPORT_TYPE, userImport} from '../../constants';
 import exampleImport from '../../Static/exampleImport.csv';
 import {transformUserFields} from '../../utils/utils';
-import FieldList from '../FieldList';
+import FieldList from './FieldList';
 import UploadCSV from './UploadCSV';
 import UploadText from './UploadText';
 

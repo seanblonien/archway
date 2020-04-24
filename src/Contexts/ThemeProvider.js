@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {ThemeProvider as MUIThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import LoadingCircle from './LoadingCircle';
+import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
 
-class ThemeManager extends Component {
+class ThemeProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +24,7 @@ class ThemeManager extends Component {
 
     return loading ?
       <LoadingCircle/> :
-      <ThemeProvider
+      <MUIThemeProvider
         theme={createMuiTheme(
           {
             university: customTheme.universityName,
@@ -53,13 +53,13 @@ class ThemeManager extends Component {
         <div>
           {children}
         </div>
-      </ThemeProvider>;
+      </MUIThemeProvider>;
   }
 
 }
 
-ThemeManager.propTypes = {
+ThemeProvider.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export default ThemeManager;
+export default ThemeProvider;

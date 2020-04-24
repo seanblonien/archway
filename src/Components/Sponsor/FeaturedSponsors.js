@@ -3,13 +3,13 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
-import {permissions} from '../constants';
-import api from '../Services/api';
-import history from '../utils/Routing/history';
-import routes from '../utils/Routing/routes';
-import {imageURL} from '../utils/utils';
-import Can from './Can';
-import LoadingCircle from './LoadingCircle';
+import {permissions} from '../../constants';
+import api from '../../Services/api';
+import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
+import {imageURL} from '../../utils/utils';
+import Can from '../Can';
+import LoadingCircle from '../LoadingCircle';
 
 class FeaturedSponsors extends Component {
   constructor(props) {

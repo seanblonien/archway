@@ -10,12 +10,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
-import api from '../Services/api';
-import MarkdownEditor from './Markdown/MarkdownEditor';
-import {formatEntryUpload, imageURL} from '../utils/utils';
-import {snack} from '../utils/Snackbar';
-import AuthContext from '../Contexts/AuthContext';
-import PhotoUpload from './PhotoUpload';
+import api from '../../Services/api';
+import MarkdownEditor from '../Markdown/MarkdownEditor';
+import {formatEntryUpload, imageURL} from '../../utils/utils';
+import {snack} from '../../utils/Snackbar';
+import AuthContext from '../../Contexts/AuthContext';
+import PhotoUpload from '../PhotoUpload';
 
 class SponsorForm extends React.Component {
 
@@ -31,7 +31,7 @@ class SponsorForm extends React.Component {
       url: '',
       description: '',
       preview: '',
-      coverPhoto: '',
+      cover: '',
       logo: '',
       thumbnail: '',
       selectedCover: null,
@@ -58,7 +58,7 @@ class SponsorForm extends React.Component {
       description: sponsor.description,
       url: sponsor.url,
       preview: sponsor.preview,
-      coverPhoto: sponsor.coverPhoto,
+      cover: sponsor.cover,
       logo: sponsor.logo,
       thumbnail: sponsor.thumbnail
     });
@@ -70,7 +70,7 @@ class SponsorForm extends React.Component {
 
     try{
       if (selectedCover) {
-        const fileUpload = formatEntryUpload(selectedCover, 'sponsors', id, 'coverPhoto');
+        const fileUpload = formatEntryUpload(selectedCover, 'sponsors', id, 'cover');
         await api.uploads.upload(fileUpload);
       }
       if (selectedLogo) {
@@ -148,12 +148,12 @@ class SponsorForm extends React.Component {
   };
 
   render() {
-    const {open, type, id, name, url, description, preview, coverPhoto, logo, thumbnail} = this.state;
+    const {open, type, id, name, url, description, preview, cover, logo, thumbnail} = this.state;
     const {title} = this.props;
 
     return (
       <div>
-        <Button variant='outlined' color='primary' onClick={this.handleClickOpen}>
+        <Button variant='outlined' color='secondary' onClick={this.handleClickOpen}>
           {title}
         </Button>
         <Dialog
@@ -200,10 +200,10 @@ class SponsorForm extends React.Component {
                 <PhotoUpload
                   fieldName='selectedCover'
                   contentType='sponsors'
-                  title='Choose Cover Photo'
+                  title='Choose Cover Photos'
                   id={id}
                   onChange={this.handleFileChange}
-                  photo={imageURL.sponsor(coverPhoto)}
+                  photo={imageURL.sponsor(cover)}
                 />
                 <PhotoUpload
                   fieldName='selectedLogo'
@@ -256,7 +256,7 @@ SponsorForm.propTypes = {
     url: PropTypes.string.isRequired,
     description: PropTypes.string,
     preview: PropTypes.string.isRequired,
-    coverPhoto: PropTypes.isRequired,
+    cover: PropTypes.isRequired,
     thumbnail: PropTypes.isRequired,
     logo: PropTypes.isRequired
   }),
@@ -267,5 +267,4 @@ SponsorForm.propTypes = {
 
 SponsorForm.contextType = AuthContext;
 
-export default withSnackbar(compose(
-)(SponsorForm));
+export default withSnackbar(compose()(SponsorForm));

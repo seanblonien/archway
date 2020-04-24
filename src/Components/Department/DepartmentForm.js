@@ -10,13 +10,13 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import {withSnackbar} from 'notistack';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import api from '../Services/api';
-import MarkdownEditor from './Markdown/MarkdownEditor';
-import PhotoUpload from './PhotoUpload';
-import {formatEntryUpload, imageURL} from '../utils/utils';
-import {snack} from '../utils/Snackbar';
-import AuthContext from '../Contexts/AuthContext';
-import PeopleSelect from './PeopleSelect';
+import api from '../../Services/api';
+import MarkdownEditor from '../Markdown/MarkdownEditor';
+import PhotoUpload from '../PhotoUpload';
+import {formatEntryUpload, imageURL} from '../../utils/utils';
+import {snack} from '../../utils/Snackbar';
+import AuthContext from '../../Contexts/AuthContext';
+import PeopleSelect from '../PeopleSelect';
 
 class DepartmentForm extends React.Component {
 
@@ -268,7 +268,7 @@ class DepartmentForm extends React.Component {
                 <Grid item xs={12}>
                   <PhotoUpload
                     fieldName='selectedCover'
-                    title='Choose Cover'
+                    title='Choose Cover Photos'
                     onChange={handleFileChange}
                     photo={imageURL.department(cover)}
                   />

@@ -6,7 +6,9 @@ import {strapiURL} from '../constants';
 import defaultCapstoneImg from '../Static/defaultCapstone.svg';
 import defaultSponsorImg from '../Static/defaultSponsor.svg';
 import defaultDepartmentImg from '../Static/defaultDepartment.svg';
+import defaultCoverImg from '../Static/defaultCover.svg';
 import api from '../Services/api';
+import {widthPropTypes} from './PropTypesConfig';
 
 // Returns the first n words from the string
 export const getFirstNWords = (str, n) => {
@@ -32,6 +34,7 @@ export const imageURL = {
   sponsor: (image) => checkImage(image, defaultSponsorImg),
   department: (image) => checkImage(image, defaultDepartmentImg),
   capstone: (image) => checkImage(image, defaultCapstoneImg),
+  cover: (image) => checkImage(image, defaultCoverImg)
 };
 
 // Gets an image from strapi and reformats it so that it can be used as a
@@ -49,6 +52,10 @@ export const transformUserFields = async (user) => {
   if (!user.password) user.password = p;
 };
 
+const encodeKeyValue = (key, value) => (
+  `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+);
+
 /**
  * Format query params
  *
@@ -56,14 +63,20 @@ export const transformUserFields = async (user) => {
  * @returns {string}
  */
 export const formatQuery = (params) => `?${Object.keys(params)
-  .map(k => {
-    const value = params[k];
-    if(typeof value === 'object') {
-      return Object.keys(value).map((subk) => (
-        `${encodeURIComponent(k)}.${encodeURIComponent(subk)}=${encodeURIComponent(value[subk])}`)
-      ).join('&');
+  .map(key => {
+    const value = params[key];
+    if(Array.isArray(value)) {
+      return value.map((elem) => encodeKeyValue(key, elem)).join('&');
     }
-    return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
+    if(typeof value === 'object') {
+      return Object.keys(value).map((subKey) => {
+        if(Array.isArray(value[subKey])){
+          return value[subKey].map((elem) => encodeKeyValue(`${key}.${subKey}`, elem)).join('&');
+        }
+        return encodeKeyValue(`${key}.${subKey}`, value[subKey]);
+      }).join('&');
+    }
+    return encodeKeyValue(key, value);
   }).join('&')}`;
 
 /**
@@ -98,6 +111,7 @@ export const formatEntryUpload = (file, entryModel, entryID, entryField, entryPl
   return entryUpload;
 };
 
+// Returns the current search query from the current route location
 export const useQuery = () => new URLSearchParams(useLocation().search);
 
 // Strapi dates are returned as a string in the format of MM/DD/YYYY.
@@ -107,3 +121,24 @@ export const convertStrapiDate = (date) => {
   const convertedDate = new Date(d[0], d[1]-1, d[2]);
   return convertedDate;
 };
+
+// Material-UI's relative width sizes defined in the theme (smallest to largest)
+const widthSizes = {'xs': 0,'sm': 1,'md': 2,'lg': 3, 'xl': 4};
+
+// Whether or not the given width is greater than or equal to the desired width
+export const widthMatchUp = (width, desiredMinWidth) => (
+  widthSizes[width] >= widthSizes[desiredMinWidth]
+);
+widthMatchUp.propTpes = widthPropTypes;
+
+// Whether or not the given width is less than or equal to the desired width
+export const widthMatchDown = (width, desiredMaxWidth) => (
+  widthSizes[width] <= widthSizes[desiredMaxWidth]
+);
+widthMatchDown.propTpes = widthPropTypes;
+
+// Whether or not the given width is less than or equal to the desired width
+export const widthMatchOnly = (width, exactWidth) => (
+  widthSizes[width] === widthSizes[exactWidth]
+);
+widthMatchOnly.propTpes = widthPropTypes;

@@ -8,8 +8,8 @@ import {Parallax} from 'react-parallax';
 import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
 import Can from '../Components/Can';
-import FeaturedCapstones from '../Components/FeaturedCapstones';
-import FeaturedSponsors from '../Components/FeaturedSponsors';
+import FeaturedCapstones from '../Components/Capstone/FeaturedCapstones';
+import FeaturedSponsors from '../Components/Sponsor/FeaturedSponsors';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import {permissions, strapiURL} from '../constants';
@@ -106,7 +106,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to={routes.capstones.genPath('')}
+                      to={routes.capstones.path}
                     >
                       Check out Current Capstones
                     </Button>

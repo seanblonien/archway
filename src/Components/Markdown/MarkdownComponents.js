@@ -26,7 +26,7 @@ export const Image = (props) => {
   propValues.src = src.split('?')[0];
   propValues.style = style;
 
-  return <img {...propValues}/>;
+  return <span style={{textAlign: 'center', display: 'block'}}><img {...propValues}/></span>;
 };
 
 Image.propTypes = {

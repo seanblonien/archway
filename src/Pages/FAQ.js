@@ -8,6 +8,7 @@ import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import routes from '../utils/Routing/routes';
 import gStyle from '../utils/styles.module.css';
 
 const styles = theme => ({
@@ -73,7 +74,7 @@ class FAQ extends Component {
                     { category === question.category &&
                       <Grid item xs={12} style={{marginLeft: '4%'}}>
 
-                        <Link className={classes.link} to={`/FAQ#question${index}`}>
+                        <Link className={classes.link} to={`${routes.faq.path}#question${index}`}>
                           <Typography align='left'>
                             {question.question}
                           </Typography>
