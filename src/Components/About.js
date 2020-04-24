@@ -1,28 +1,19 @@
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import {Box, useTheme} from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 import React, {useEffect, useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import api from '../Services/api';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
 import MediaMarkdown from './Markdown/MediaMarkdown';
 
-const useStyles = makeStyles(() => ({
-  card: {
-    marginTop: '1%',
-  },
-  leftColCard: {
-    marginTop: '1%',
-  },
-}));
-
 const About = () => {
   const [state, setState] = useState({loading: true, sponsors: []});
-  const classes = useStyles();
   const {loading,bubbleSponsors, aboutPageContent} = state;
+  const theme = useTheme();
 
   useEffect(() => {
     async function fetchSponsors() {
@@ -41,51 +32,44 @@ const About = () => {
     }
   };
 
-  const createBubbleGraphData = () => bubbleSponsors.map((result) => ({label: result.name, value: result.capstones.length}));
+  const createBubbleGraphData = () => bubbleSponsors.map((result) => (
+    {label: result.name, value: result.capstones.length}
+  ));
 
   return (
-    <div>
-      {!loading && <Grid container justify='center'>
-        <Grid item xs={12} md={10}>
-          <Grid container justify='center'>
-            <Grid item xs={12} md={12}>
-              <Card className={classes.card}>
-                <CardContent>
-                  <MediaMarkdown>
-                    {aboutPageContent.main_paragraph}
-                  </MediaMarkdown>
-                </CardContent>
-              </Card>
-            </Grid>
+    !loading &&
+      <Container maxWidth='md'>
+        <Grid container direction='column' spacing={3}>
+          <Grid item xs>
+            <Paper component={Box} pb={3}>
+              <MediaMarkdown>
+                {aboutPageContent.main_paragraph}
+              </MediaMarkdown>
+            </Paper>
           </Grid>
-          <Grid container justify='center'>
-            <Grid item xs={12}>
-              <Card className={classes.card}>
-                <Grid container justify='center'>
-                  <Typography align='center' style={{marginBottom: '1%'}}>
-                    <b>Check out our Sponsors below!</b>
-                  </Typography>
-                </Grid>
-                <Grid container justify='center'>
-                  <BubbleChart
-                    graph={{
-                      zoom: 0.9,
-                      offsetX: 0.05,
-                      offsetY: 0.05,
-                    }}
-                    showLegend={false}
-                    width={1000}
-                    height={1000}
-                    bubbleClickFun={bubbleClickFun}
-                    data={createBubbleGraphData()}
-                  />
-                </Grid>
-              </Card>
-            </Grid>
+          <Grid item xs>
+            <Paper>
+              <Grid container justify='center'>
+                <Typography>Check out past sponsors below!</Typography>
+              </Grid>
+              <Grid container justify='center'>
+                <BubbleChart
+                  graph={{
+                    zoom: .8,
+                    offsetX: 0.05,
+                    offsetY: 0.05,
+                  }}
+                  showLegend={false}
+                  width={theme.breakpoints.width('sm')}
+                  height='600'
+                  bubbleClickFun={bubbleClickFun}
+                  data={createBubbleGraphData()}
+                />
+              </Grid>
+            </Paper>
           </Grid>
         </Grid>
-      </Grid>}
-    </div>
+      </Container>
   );
 };
 

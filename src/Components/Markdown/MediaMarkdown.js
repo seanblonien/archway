@@ -1,3 +1,5 @@
+import {Box} from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef} from 'react';
@@ -22,7 +24,7 @@ const MediaMarkdown = ({children}) => {
   newChildren = newChildren.replace(/\/uploads\/.*\)/g,encodeURI);
 
   return (
-    <div ref={rootRef}>
+    <Container ref={rootRef} maxWidth='md' component={Box}>
       <Markdown
         options={{overrides: {
           img: {component: Image},
@@ -39,7 +41,7 @@ const MediaMarkdown = ({children}) => {
       >
         {newChildren}
       </Markdown>
-    </div>
+    </Container>
   );
 };
 
