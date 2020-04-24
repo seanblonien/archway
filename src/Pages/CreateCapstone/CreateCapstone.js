@@ -5,16 +5,16 @@ import withWidth from '@material-ui/core/withWidth/withWidth';
 import Filter from 'bad-words';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import {withSnackbar} from 'notistack';
+import _ from 'lodash';
+import {ValidatorForm} from 'react-material-ui-form-validator';
 import api from '../../Services/api';
 import BasicInformation from './BasicInformation';
 import StorageManager from '../../Contexts/StorageManager';
 import MemberInformation from './MemberInformation';
 import SponsorAndMediaInformation from './SponsorAndMediaInformation';
-import {formatEntryUpload} from "../../utils/utils";
+import {formatEntryUpload} from '../../utils/utils';
 import {snack} from '../../utils/Snackbar';
-import {withSnackbar} from 'notistack';
-import _ from 'lodash';
-import { ValidatorForm } from 'react-material-ui-form-validator';
 
 
 const styles = theme => ({
@@ -89,7 +89,7 @@ class CreateCapstone extends Component {
   };
 
   deletedThumbnail = deletedFileId => {
-    const { deletedThumbnail } = this.state;
+    const {deletedThumbnail} = this.state;
     if (deletedFileId !== '') {
       if (!deletedThumbnail.includes(deletedFileId)) {
         const joined = deletedThumbnail.concat(deletedFileId);
@@ -99,7 +99,7 @@ class CreateCapstone extends Component {
   };
 
   deletedCover = deletedFileId => {
-    const { deletedCover } = this.state;
+    const {deletedCover} = this.state;
     if (deletedFileId !== '') {
       if (!deletedCover.includes(deletedFileId)) {
         const joined = deletedCover.concat(deletedFileId);
@@ -109,7 +109,7 @@ class CreateCapstone extends Component {
   };
 
   deletedMedia = deletedFileId => {
-    const { deletedMedia } = this.state;
+    const {deletedMedia} = this.state;
     if (deletedFileId !== '') {
       if (!deletedMedia.includes(deletedFileId)) {
         const joined = deletedMedia.concat(deletedFileId);
@@ -127,13 +127,13 @@ class CreateCapstone extends Component {
     ValidatorForm.addValidationRule('isProfane', value => {
       const filter = new Filter();
       if (filter.isProfane(value)) {
-        return false
+        return false;
       }
       return true;
     });
 
     ValidatorForm.addValidationRule('haveMembers', value => {
-      const { members } = this.state;
+      const {members} = this.state;
       if (members.length > 0) {
         return true;
       }
@@ -141,7 +141,7 @@ class CreateCapstone extends Component {
     });
 
     ValidatorForm.addValidationRule('haveProfessor', value => {
-      const { selectedProfessor } = this.state;
+      const {selectedProfessor} = this.state;
       if (selectedProfessor !== '') {
         return true;
       }
@@ -149,7 +149,7 @@ class CreateCapstone extends Component {
     });
 
     ValidatorForm.addValidationRule('haveTA', value => {
-      const { selectedTA } = this.state;
+      const {selectedTA} = this.state;
       if (selectedTA !== '') {
         return true;
       }
@@ -157,7 +157,7 @@ class CreateCapstone extends Component {
     });
 
     ValidatorForm.addValidationRule('haveDepartment', value => {
-      const { departments } = this.state;
+      const {departments} = this.state;
       if (departments.length > 0) {
         return true;
       }
@@ -165,16 +165,15 @@ class CreateCapstone extends Component {
     });
 
 
-
     // pull data from strapi/backend
-    //TODO: do we need this?
+    // TODO: do we need this?
     const capstones = await api.capstones.find();
     const departmentList = await api.departments.find();
     const sponsorList = await api.sponsors.find();
 
     const {data: {roles}} = await api.getRoles();
     console.log(roles);
-    let roleIdToName = roles.reduce((map, role) => {
+    const roleIdToName = roles.reduce((map, role) => {
       map[role.id] = role.name;
       return map;
     }, {});
@@ -192,17 +191,17 @@ class CreateCapstone extends Component {
     // TODO: preview semester
     // TODO: if not a created capstone, clear, else reset all things
     if (this.props.editId) {
-      const editCapstone = await api.capstones.findOne("5e99c90f5350f40031d08f1c");
+      const editCapstone = await api.capstones.findOne('5e99c90f5350f40031d08f1c');
       console.log(editCapstone);
 
-      let dept = departmentList.filter(dept => dept.id === editCapstone.departments);
+      const dept = departmentList.filter(dept => dept.id === editCapstone.departments);
       console.log(editCapstone.members);
-      let members = _.cloneDeep(editCapstone.members);
-      let teamMembers = members.filter(member => roleIdToName[member.role] !== 'TeachingAssistant'
+      const members = _.cloneDeep(editCapstone.members);
+      const teamMembers = members.filter(member => roleIdToName[member.role] !== 'TeachingAssistant'
         && roleIdToName[member.role] !== 'Professor'
       );
-      let professor = members.filter(member => roleIdToName[member.role] === 'Professor');
-      let TA = members.filter(member => roleIdToName[member.role] === 'TeachingAssistant');
+      const professor = members.filter(member => roleIdToName[member.role] === 'Professor');
+      const TA = members.filter(member => roleIdToName[member.role] === 'TeachingAssistant');
       console.log(professor);
       this.setState({
         name: editCapstone.name,
@@ -241,10 +240,8 @@ class CreateCapstone extends Component {
   handleRemoveDepartment = (selectDepartmentId) => {
     const copyOfDepartments = _.cloneDeep(this.state.departments);
     this.setState({
-      departments: copyOfDepartments.filter(t => {
-        return selectDepartmentId !== t.id;
-      })
-    })
+      departments: copyOfDepartments.filter(t => selectDepartmentId !== t.id)
+    });
   };
 
   handleConfirmSponsor = (selectedSponsor) => {
@@ -260,12 +257,9 @@ class CreateCapstone extends Component {
   handleRemoveSponsor = (selectedSponsorId) => {
     const copyOfSponsors = _.cloneDeep(this.state.checkedSponsors);
     this.setState({
-      checkedSponsors: copyOfSponsors.filter(t => {
-        return selectedSponsorId !== t.id;
-      })
+      checkedSponsors: copyOfSponsors.filter(t => selectedSponsorId !== t.id)
     });
   };
-
 
 
   handleConfirmTeammate = (selectedUser) => {
@@ -281,9 +275,7 @@ class CreateCapstone extends Component {
   handleRemoveTeammate = (selectedUserId) => {
     const copyOfMembers = _.cloneDeep(this.state.members);
     this.setState({
-      members: copyOfMembers.filter(t => {
-        return selectedUserId !== t.id;
-      })
+      members: copyOfMembers.filter(t => selectedUserId !== t.id)
     });
   };
 
@@ -351,12 +343,12 @@ class CreateCapstone extends Component {
       semester
     } = this.state;
     const upload_content = {
-      name: name,
-      isFeatured: isFeatured,
-      startDate: startDate,
-      endDate: endDate,
-      preview: preview,
-      semester: semester
+      name,
+      isFeatured,
+      startDate,
+      endDate,
+      preview,
+      semester
     };
     if (course !== '') {
       upload_content.course = course;
@@ -375,7 +367,7 @@ class CreateCapstone extends Component {
       upload_content.members = UserIDs;
     }
     if (selectedTA !== '') {
-      upload_content.members.concat(selectedTA.id)
+      upload_content.members.concat(selectedTA.id);
     }
     if (selectedProfessor !== '') {
       upload_content.members.concat(selectedProfessor.id);
@@ -439,7 +431,7 @@ class CreateCapstone extends Component {
     if (this.state.capstoneId === '') {
       return;
     }
-    const capstoneId = this.state.capstoneId;
+    const {capstoneId} = this.state;
     // upload thumbnail
     if (thumbnail.length > 0 && !thumbnail[0].id) {
       const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', capstoneId, 'thumbnail');
@@ -461,10 +453,8 @@ class CreateCapstone extends Component {
     }
 
     if (deletedCover.length > 0) {
-      const deleted = deletedCover.map(fileId => {
-        return api.uploads.delete(fileId);
-      });
-      await Promise.all(deleted)
+      const deleted = deletedCover.map(fileId => api.uploads.delete(fileId));
+      await Promise.all(deleted);
     }
 
     if (media.length > 0) {
@@ -478,20 +468,18 @@ class CreateCapstone extends Component {
     }
 
     if (deletedMedia.length > 0) {
-      const deleted = deletedMedia.map(fileId => {
-        return api.uploads.delete(fileId);
-      });
-      await Promise.all(deleted)
+      const deleted = deletedMedia.map(fileId => api.uploads.delete(fileId));
+      await Promise.all(deleted);
     }
     // if have old
-      // if have new && not equal (new does not have id)
-        // delete old && upload new
-      // no new
-        // delete old
-      // nothing
-        // nothing
+    // if have new && not equal (new does not have id)
+    // delete old && upload new
+    // no new
+    // delete old
+    // nothing
+    // nothing
     // else
-      // upload new
+    // upload new
     // if (oldThumbnail.length > 0) {
     //   if (thumbnail.length > 0 && !thumbnail[0].id) {
     //     const thumbnailUpload = formatEntryUpload(thumbnail[0], 'capstones', capstoneId, 'thumbnail');
@@ -541,7 +529,7 @@ class CreateCapstone extends Component {
       capstoneId
     } = this.state;
 
-    let upload_data = this.extractNonMediaContent();
+    const upload_data = this.extractNonMediaContent();
     upload_data.isFinishedEditing = isFinishedEditing;
     let response;
     // no previous capstone id, create
@@ -574,94 +562,93 @@ class CreateCapstone extends Component {
       <div>
         {/* Page header */}
         <ValidatorForm
-          ref="form"
+          ref='form'
           onSubmit={this.handleSubmit}
           onError={errors => console.log(errors)}
         >
-        <Grid container justify='center'>
-          <BasicInformation
-            classes={classes}
-            handleChange={this.handleChange.bind(this)}
-            handleChangeSwitch={this.handleChangeSwitch.bind(this)}
-            handleStartDate={this.handleStartDate.bind(this)}
-            handleEndDate={this.handleEndDate.bind(this)}
-            handelConfirmDepartment={this.handleConfirmDepartment.bind(this)}
-            handleRemoveDepartment={this.handleRemoveDepartment.bind(this)}
-            handleDescription={this.handleDescription.bind(this)}
-            {...this.state}
-          />
-          <MemberInformation
-            classes={classes}
-            handleConfirmTeammate={this.handleConfirmTeammate.bind(this)}
-            handleRemoveTeammate={this.handleRemoveTeammate.bind(this)}
-            handleNewUser={this.handleNewUser.bind(this)}
-            handleSelectedPerson={this.handleSelectedPerson.bind(this)}
-            {...this.state}
-          />
-          <SponsorAndMediaInformation
-            classes={classes}
-            handleSelectSponsor={this.handleSelectSponsor.bind(this)}
-            handleConfirmSponsor={this.handleConfirmSponsor.bind(this)}
-            handleRemoveSponsor={this.handleRemoveSponsor.bind(this)}
-            thumbnail={thumbnail}
-            cover={cover}
-            media={media}
-            setThumbnail={setThumbnail}
-            setCover={setCover}
-            setMedia={setMedia}
-            deletedThumbnail={this.deletedThumbnail.bind(this)}
-            deletedCover={this.deletedCover.bind(this)}
-            deletedMedia={this.deletedMedia.bind(this)}
-            {...this.state}
+          <Grid container justify='center'>
+            <BasicInformation
+              classes={classes}
+              handleChange={this.handleChange.bind(this)}
+              handleChangeSwitch={this.handleChangeSwitch.bind(this)}
+              handleStartDate={this.handleStartDate.bind(this)}
+              handleEndDate={this.handleEndDate.bind(this)}
+              handelConfirmDepartment={this.handleConfirmDepartment.bind(this)}
+              handleRemoveDepartment={this.handleRemoveDepartment.bind(this)}
+              handleDescription={this.handleDescription.bind(this)}
+              {...this.state}
+            />
+            <MemberInformation
+              classes={classes}
+              handleConfirmTeammate={this.handleConfirmTeammate.bind(this)}
+              handleRemoveTeammate={this.handleRemoveTeammate.bind(this)}
+              handleNewUser={this.handleNewUser.bind(this)}
+              handleSelectedPerson={this.handleSelectedPerson.bind(this)}
+              {...this.state}
+            />
+            <SponsorAndMediaInformation
+              classes={classes}
+              handleSelectSponsor={this.handleSelectSponsor.bind(this)}
+              handleConfirmSponsor={this.handleConfirmSponsor.bind(this)}
+              handleRemoveSponsor={this.handleRemoveSponsor.bind(this)}
+              thumbnail={thumbnail}
+              cover={cover}
+              media={media}
+              setThumbnail={setThumbnail}
+              setCover={setCover}
+              setMedia={setMedia}
+              deletedThumbnail={this.deletedThumbnail.bind(this)}
+              deletedCover={this.deletedCover.bind(this)}
+              deletedMedia={this.deletedMedia.bind(this)}
+              {...this.state}
 
-          />
-          <Grid item xs={12} md={10}>
-            <Grid container justify='space-around' spacing={3} alignItems='center'>
-              <Grid item xs={3}>
-                <Button
-                  type='submit'
-                  fullWidth
-                  variant='contained'
-                  color='primary'
-                  onClick={this.handleSave}
-                  style={{marginTop: '1%'}}
-                >
-                  Save
-                </Button>
-              </Grid>
-              <Grid item xs={3}>
-                <Button
-                  type='submit'
-                  fullWidth
-                  variant='contained'
-                  color='primary'
-                  style={{marginTop: '1%'}}
-                >
-                  Add Capstone
-                </Button>
-              </Grid>
-              <Grid item xs={3}>
-                <Button
-                  fullWidth
-                  variant='contained'
-                  color='primary'
-                  style={{marginTop: '1%'}}
-                  onClick={this.clearCurrentCapstone}
-                >
-                  Cancel
-                </Button>
-              </Grid>
+            />
+            <Grid item xs={12} md={10}>
+              <Grid container justify='space-around' spacing={3} alignItems='center'>
+                <Grid item xs={3}>
+                  <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    onClick={this.handleSave}
+                    style={{marginTop: '1%'}}
+                  >
+                    Save
+                  </Button>
+                </Grid>
+                <Grid item xs={3}>
+                  <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    style={{marginTop: '1%'}}
+                  >
+                    Add Capstone
+                  </Button>
+                </Grid>
+                <Grid item xs={3}>
+                  <Button
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    style={{marginTop: '1%'}}
+                    onClick={this.clearCurrentCapstone}
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
 
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
         </ValidatorForm>
 
       </div>
     );
   }
 }
-
 
 
 export default compose(

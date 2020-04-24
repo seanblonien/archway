@@ -1,36 +1,33 @@
-import React, {useState} from 'react';
+import DateFnsUtils from '@date-io/date-fns';
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import Tooltip from '@material-ui/core/Tooltip';
 import FormControl from '@material-ui/core/FormControl';
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import EventNoteIcon from '@material-ui/icons/EventNote';
-import MenuItem from '@material-ui/core/MenuItem';
-import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
+import Tooltip from '@material-ui/core/Tooltip';
+import EventNoteIcon from '@material-ui/icons/EventNote';
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import PropTypes from 'prop-types';
+import React, {useState} from 'react';
+import {SelectValidator, TextValidator} from 'react-material-ui-form-validator';
+import DeletableCardLayout from '../../Components/DeletableCardLayout';
+import MarkdownEditor from '../../Components/Markdown/MarkdownEditor';
 import PageTitleTypography from '../../Components/PageTitleTypography';
-import {TextValidator, SelectValidator} from 'react-material-ui-form-validator';
-import {TextFieldProps} from "@material-ui/core";
-import MarkdownEditor from "../../Components/Markdown/MarkdownEditor";
-import Button from "@material-ui/core/Button";
-import Login from "../../Components/Auth/Login";
-import DeletableCardLayout from "../../Components/DeletableCardLayout";
-import {imageURL} from "../../utils/utils";
-import CardLayout from "../../Components/CardLayout";
+import {imageURL} from '../../utils/utils';
 
 
 const BasicInformation = (props) => {
 
   const [selectedDepartment, setSelectDepartment] = useState('');
 
-  const renderInput = (props: TextFieldProps): any => (
+  const renderInput = (p) => (
     <TextValidator
       validators={['required', 'isProfane'] }
       errorMessages={['this field is required', 'contains illegal word']}
-      {...props}
+      {...p}
     />
   );
   // TODO: add button to departments
@@ -82,7 +79,7 @@ const BasicInformation = (props) => {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Grid container justify={'center'} spacing={2} direction={'row'}>
+              <Grid container justify='center' spacing={2} direction='row'>
                 <Grid item xs={7}>
                   <Tooltip title='Name of Course' arrow>
                     <FormControl margin='dense' required fullWidth>
@@ -162,47 +159,50 @@ const BasicInformation = (props) => {
               </Grid>
             </Grid>
 
-              <Grid item xs={12}>
-                {/* select department */}
-                <Grid container alignItems={"center"} spacing={5} direction='row'>
-                  <Tooltip title='Select A Department' arrow>
+            <Grid item xs={12}>
+              {/* select department */}
+              <Grid container alignItems='center' spacing={5} direction='row'>
+                <Tooltip title='Select A Department' arrow>
 
                   <Grid item xs={8}>
-                <FormControl margin='dense' fullWidth variant='filled'>
-                  <SelectValidator
-                    label='Select a department'
-                    id='demo-customized-select'
-                    variant='outlined'
-                    value={selectedDepartment}
-                    onChange={event => {
-                      setSelectDepartment(event.target.value)
-                    }}
-                    validators={['haveDepartment'] }
-                    errorMessages={['this field is required']}
-                  >
-                    <MenuItem value=''>
-                      <em>None</em>
-                    </MenuItem>
-                    {props.departmentList.map(dept => (
-                      <MenuItem
-                        key={dept.id}
-                        value={dept}>{dept.name}</MenuItem>
-                    ))}
-                  </SelectValidator>
-                </FormControl>
+                    <FormControl margin='dense' fullWidth variant='filled'>
+                      <SelectValidator
+                        label='Select a department'
+                        id='demo-customized-select'
+                        variant='outlined'
+                        value={selectedDepartment}
+                        onChange={event => {
+                          setSelectDepartment(event.target.value);
+                        }}
+                        validators={['haveDepartment'] }
+                        errorMessages={['this field is required']}
+                      >
+                        <MenuItem value=''>
+                          <em>None</em>
+                        </MenuItem>
+                        {props.departmentList.map(dept => (
+                          <MenuItem
+                            key={dept.id}
+                            value={dept}
+                          >{dept.name}</MenuItem>
+                        ))}
+                      </SelectValidator>
+                    </FormControl>
                   </Grid>
-                  </Tooltip>
+                </Tooltip>
 
-                  <Grid item xs={2}>
-                    <Button variant='outlined' color='primary' onClick={() => {
+                <Grid item xs={2}>
+                  <Button
+                    variant='outlined' color='primary' onClick={() => {
                       props.handelConfirmDepartment(selectedDepartment);
                       setSelectDepartment('');
-                    }}>
-                      Confirm
-                    </Button>
-                  </Grid>
+                    }}
+                  >
+                    Confirm
+                  </Button>
                 </Grid>
               </Grid>
+            </Grid>
             <Grid item xs={12}>
               <DeletableCardLayout
                 listItems={props.departments}
@@ -230,7 +230,7 @@ const BasicInformation = (props) => {
             </Grid>
             <Tooltip title='Fill description' arrow>
 
-            <Grid item xs={12}>
+              <Grid item xs={12}>
                 <PageTitleTypography text='Add a description' align='left' size='h6'/>
                 <MarkdownEditor
                   uniqueName='description'

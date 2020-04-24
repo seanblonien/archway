@@ -1,55 +1,55 @@
-import React, {useState} from 'react';
+import {TextFieldProps} from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import PageTitleTypography from '../../Components/PageTitleTypography';
-import {imageURL} from "../../utils/utils";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
-import List from "@material-ui/core/List";
-import {TextFieldProps} from "@material-ui/core";
-import {TextValidator} from "react-material-ui-form-validator";
-import FormControl from "@material-ui/core/FormControl";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import React, {useState} from 'react';
+import {TextValidator} from 'react-material-ui-form-validator';
+import PageTitleTypography from '../../Components/PageTitleTypography';
+import {imageURL} from '../../utils/utils';
 
 
 const MemberInformation = ( props ) => {
 
-  const renderInputForMembers = (props: TextFieldProps): any => (
+  const renderInputForMembers = (inputProps) => (
     <TextValidator
       validators={['haveMembers']}
       errorMessages={['Must select at least one']}
       label='Search for Team Members'
       variant='outlined'
-      {...props}
+      {...inputProps}
     />
   );
 
-  const renderInputForProfessor = (props: TextFieldProps): any => (
+  const renderInputForProfessor = (inputProps) => (
     <TextValidator
       label='Search for Professor'
       variant='outlined'
       validators={['haveProfessor'] }
       errorMessages={['Must select a professor']}
-      {...props}
+      {...inputProps}
     />
   );
 
-  const renderInputForTA = (props: TextFieldProps): any => (
+  const renderInputForTA = (inputProps) => (
     <TextValidator
       label='Search for TA'
       variant='outlined'
       validators={['haveTA'] }
       errorMessages={['Must select a TA']}
-      {...props}
+      {...inputProps}
     />
   );
 
@@ -59,39 +59,36 @@ const MemberInformation = ( props ) => {
     setSelectUser(values);
   };
 
-
-
   const defaultProps = {
     options: props.AllUsers,
     getOptionLabel: (option) => {
       if (option.Fullname) {
         return option.Fullname;
       }
-        return '';
+      return '';
     }
   };
 
-  const displayUser = (participant, canDelete=true) => {
-      return (
-        <ListItem
-          key={participant.id}
-          alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar alt={participant.Fullname} src={imageURL.user(participant.picture)} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={participant.Fullname}
-            secondary={participant.email}
-          />
-          {canDelete &&
-            <ListItemSecondaryAction>
-              <IconButton aria-label="delete">
-                <DeleteIcon onClick={() => props.handleRemoveTeammate(participant.id)}/>
-              </IconButton>
-            </ListItemSecondaryAction>
-          }
-        </ListItem>);
-  };
+  const displayUser = (participant, canDelete=true) => (
+    <ListItem
+      key={participant.id}
+      alignItems='flex-start'
+    >
+      <ListItemAvatar>
+        <Avatar alt={participant.Fullname} src={imageURL.user(participant.picture)}/>
+      </ListItemAvatar>
+      <ListItemText
+        primary={participant.Fullname}
+        secondary={participant.email}
+      />
+      {canDelete &&
+        <ListItemSecondaryAction>
+          <IconButton aria-label='delete'>
+            <DeleteIcon onClick={() => props.handleRemoveTeammate(participant.id)}/>
+          </IconButton>
+        </ListItemSecondaryAction>
+      }
+    </ListItem>);
 
   return (
     <Grid container justify='center'>
@@ -108,26 +105,28 @@ const MemberInformation = ( props ) => {
 
                   <Grid item xs={12}>
                     <Grid container alignItems='center' spacing={1} direction='row'>
-                        <Grid item xs={8}>
-                          <Tooltip title='Search for name' arrow>
-                            <FormControl margin='dense' fullWidth variant='filled'>
+                      <Grid item xs={8}>
+                        <Tooltip title='Search for name' arrow>
+                          <FormControl margin='dense' fullWidth variant='filled'>
 
-                              <Autocomplete
+                            <Autocomplete
                               id='Search for Team Members'
                               {...defaultProps}
                               style={{width: 300}}
                               value={selectUser}
                               onChange={handleSelectUser}
                               renderInput={renderInputForMembers}
-                              />
-                            </FormControl>
-                          </Tooltip>
-                        </Grid>
+                            />
+                          </FormControl>
+                        </Tooltip>
+                      </Grid>
                       <Grid item xs={2}>
-                        <Button variant='outlined' color='primary' onClick={() => {
-                          props.handleConfirmTeammate(selectUser);
-                          setSelectUser('');
-                        }}>
+                        <Button
+                          variant='outlined' color='primary' onClick={() => {
+                            props.handleConfirmTeammate(selectUser);
+                            setSelectUser('');
+                          }}
+                        >
                           Confirm
                         </Button>
                       </Grid>
@@ -137,8 +136,8 @@ const MemberInformation = ( props ) => {
                   {/* team list */}
                   <Grid item xs={9}>
                     <List>
-                    {props.members.map(member => displayUser(member))
-                    }
+                      {props.members.map(member => displayUser(member))
+                      }
                     </List>
                   </Grid>
 
@@ -163,41 +162,41 @@ const MemberInformation = ( props ) => {
                 <Grid container alignItems='center' spacing={6}>
                   {/* search professor */}
                   <Grid item>
-                  <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
-                    <Grid item >
-                      <Tooltip title='Search for name' arrow>
-                        <Autocomplete
-                          id='Search for Professor'
-                          {...defaultProps}
-                          style={{width: 300}}
-                          onChange={props.handleSelectedPerson('selectedProfessor')}
-                          renderInput={renderInputForProfessor}
-                        />
-                      </Tooltip>
+                    <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
+                      <Grid item>
+                        <Tooltip title='Search for name' arrow>
+                          <Autocomplete
+                            id='Search for Professor'
+                            {...defaultProps}
+                            style={{width: 300}}
+                            onChange={props.handleSelectedPerson('selectedProfessor')}
+                            renderInput={renderInputForProfessor}
+                          />
+                        </Tooltip>
+                      </Grid>
+                      <Grid>
+                        {(props.selectedProfessor && props.selectedProfessor !== '') && displayUser(props.selectedProfessor, false)}
+                      </Grid>
                     </Grid>
-                    <Grid>
-                      {(props.selectedProfessor && props.selectedProfessor !== '') && displayUser(props.selectedProfessor, false)}
-                    </Grid>
-                  </Grid>
                   </Grid>
                   {/* search TA */}
                   <Grid item>
-                  <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
-                  <Grid item >
-                    <Tooltip title='Search for name' arrow>
-                      <Autocomplete
-                        id='Search for TA'
-                        {...defaultProps}
-                        style={{width: 300}}
-                        onChange={props.handleSelectedPerson('selectedTA')}
-                        renderInput={renderInputForTA}
-                      />
-                    </Tooltip>
-                  </Grid>
-                    <Grid item>
-                      {(props.selectedTA && props.selectedTA !== '') && displayUser(props.selectedTA, false)}
+                    <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
+                      <Grid item>
+                        <Tooltip title='Search for name' arrow>
+                          <Autocomplete
+                            id='Search for TA'
+                            {...defaultProps}
+                            style={{width: 300}}
+                            onChange={props.handleSelectedPerson('selectedTA')}
+                            renderInput={renderInputForTA}
+                          />
+                        </Tooltip>
+                      </Grid>
+                      <Grid item>
+                        {(props.selectedTA && props.selectedTA !== '') && displayUser(props.selectedTA, false)}
+                      </Grid>
                     </Grid>
-                  </Grid>
                   </Grid>
                 </Grid>
               </Grid>
