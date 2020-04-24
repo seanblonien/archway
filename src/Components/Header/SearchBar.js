@@ -1,7 +1,12 @@
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@material-ui/icons/Search';
 import React, {Component} from 'react';
-import {Redirect, withRouter} from 'react-router-dom';
+import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
+import {formatQuery} from '../../utils/utils';
 
 const styles = theme => ({
   container: {
@@ -12,75 +17,71 @@ const styles = theme => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(1),
     width: 250,
-    placeholder: 'Search...'
-  },
-  dense: {
-    marginTop: 19,
   },
   menu: {
     width: 200,
   },
   input: {
     color: 'white',
+  },
+  pointer:{
+    color: 'white',
+    cursor: 'pointer'
   }
 });
 
-class TextFields extends Component {
+class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       input: '',
-      redirect: false,
-      redirectPath: '/SearchRedirect/'
     };
   }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
+  handleChange = event => {
+    this.setState({input: event.target.value});
   };
 
-  keyPress = e => {
-    const {redirectPath} = this.state;
-    if(e.keyCode === 13) {
-      let newPath = redirectPath;
-
-      if (window.location.pathname.includes('ViewSponsors')) {
-        newPath += `ViewSponsors/${e.target.value}`;
-      }
-      else {
-        newPath += `Capstones/${e.target.value}`;
-      }
-
-      this.setState(() => ({
-        redirect: true,
-        redirectPath: newPath,
-      }));
+  search = event => {
+    const {input} = this.state;
+    if(input.length > 0) {
+      const searchTerm = formatQuery({search: input});
+      history.push(routes.search.genPath(searchTerm));
     }
+    event.preventDefault();
   };
+
+  clearSearch = () => {
+    this.setState({input: ''});
+  }
 
   render() {
     const {classes} = this.props;
-    const {redirect, redirectPath, input} = this.state;
-
-    if (redirect === true) {
-      this.setState({redirect: false});
-      return <Redirect to={redirectPath}/>;
-    }
+    const {input} = this.state;
 
     return (
-      <form className={classes.container} noValidate autoComplete='off'>
+      <form className={classes.container} noValidate autoComplete='off' onSubmit={this.search}>
         <TextField
-          id='standard-name'
           placeholder='Search...'
           className={classes.textField}
           value={input}
-          onChange={this.handleChange('input')}
-          margin='normal'
-          onKeyDown={this.keyPress}
+          onChange={this.handleChange}
+          fullWidth
+          margin='none'
           InputProps={{
-            className: classes.input
+            className: (classes.input),
+            startAdornment: (
+              <InputAdornment position='start'>
+                <SearchIcon className={classes.pointer} onClick={this.search}/>
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position='end'>
+                {input.length > 0 &&
+                  <ClearIcon className={classes.pointer} onClick={this.clearSearch}/>
+                }
+              </InputAdornment>
+            )
           }}
         />
       </form>
@@ -88,4 +89,4 @@ class TextFields extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(TextFields));
+export default withStyles(styles) (SearchBar);

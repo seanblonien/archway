@@ -106,7 +106,7 @@ class Home extends Component {
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to={routes.capstones.genPath('')}
+                      to={routes.capstones.path}
                     >
                       Check out Current Capstones
                     </Button>

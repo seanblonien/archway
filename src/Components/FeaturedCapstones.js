@@ -61,7 +61,7 @@ class FeaturedCapstones extends Component {
                       <IconButton
                         className={classes.icon}
                         component={RouterLink}
-                        to={`/ViewCapstone/${result.id}`}
+                        to={routes.viewcapstone.genPath(result.id)}
                       >
                         <InfoIcon/>
                       </IconButton>
@@ -71,7 +71,7 @@ class FeaturedCapstones extends Component {
               ))}
             </GridList>
           </div>
-          <Link component={RouterLink} to={routes.capstones.genPath()}>See More</Link>
+          <Link component={RouterLink} to={routes.capstones.path}>See More</Link>
         </Paper>
       </Grid>
     ;

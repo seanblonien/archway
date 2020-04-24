@@ -198,6 +198,18 @@
       }
     },
     {
+      "name": "navbar",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "navbars",
+      "attributes": {
+        "links": {
+          "type": "json"
+        }
+      }
+    },
+    {
       "name": "proposal approval",
       "description": "",
       "connection": "default",
