@@ -21,7 +21,7 @@ import gStyle from '../utils/styles.module.css';
 const styles = (theme) => ({
   cover: {
     height: '500px',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     color: 'white',
   },
   link: {
@@ -94,16 +94,16 @@ class ViewADepartment extends Component {
                   <ComputerRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
                   <Link className={classes.link} href={department.url}>View Department Page</Link>
                 </Grid>}
-                <div className={gStyle.gridListContainer}>
-                  <Can perform={permissions.application.departments.update}>
+                <Can perform={permissions.application.departments.update}>
+                  <div className={gStyle.gridListContainer}>
                     <DepartmentForm
                       title='Edit Department'
                       department={department}
                       type='edit'
                       update={this.updateData}
                     />
-                  </Can>
-                </div>
+                  </div>
+                </Can>
               </Grid>
             </Grid>
           </Grid>

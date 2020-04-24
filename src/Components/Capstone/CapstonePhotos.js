@@ -2,6 +2,7 @@ import {withStyles, withTheme} from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import PropTypes from 'prop-types';
@@ -41,7 +42,9 @@ class CapstonePhotos extends Component {
 
     return (
       <div className={classes.root}>
-        <Typography variant='h4'>Photos</Typography>
+        <Grid xs={12}>
+          <Typography variant='h4'>Photos</Typography>
+        </Grid>
         <GridList className={classes.gridList} cols={8}>
           {photos.map((photo, i) => (
             <GridListTile
