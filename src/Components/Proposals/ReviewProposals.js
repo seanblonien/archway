@@ -1,13 +1,14 @@
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import Box from '@material-ui/core/Box';
-import api from '../../Services/api';
-import ReviewTable from './ReviewTable';
 import AuthContext from '../../Contexts/AuthContext';
+import api from '../../Services/api';
+import GridBox from '../LayoutWrappers/GridBox';
+import GridPageContainer from '../LayoutWrappers/GridPageContainer';
+import SectionTitle from '../Typography/SectionTitle';
+import ReviewTable from './ReviewTable';
 
 class ReviewProposals extends Component {
-
   constructor(props) {
     super(props);
 
@@ -57,24 +58,24 @@ class ReviewProposals extends Component {
     const {pending, approved} = this.state;
 
     return (
-      <div>
-        <Box width='80%' my={2}>
+      <GridPageContainer>
+        <GridBox>
+          <SectionTitle>Pending Proposals</SectionTitle>
           <ReviewTable
-            title='Pending Proposals'
             proposals={pending}
             update={this.initProposals}
             action='review'
           />
-        </Box>
-        <Box width='80%' my={2}>
+        </GridBox>
+        <GridBox>
+          <SectionTitle>Approved Proposals</SectionTitle>
           <ReviewTable
-            title='Approved Proposals'
             proposals={approved}
             update={this.initProposals}
             action='approved'
           />
-        </Box>
-      </div>
+        </GridBox>
+      </GridPageContainer>
     );
   }
 }

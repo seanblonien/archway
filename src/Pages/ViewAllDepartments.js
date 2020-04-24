@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
-import CardLayout from '../Components/CardLayout';
+import CardLayout from '../Components/LayoutWrappers/CardLayout';
 import {permissions} from '../constants';
-import DepartmentForm from '../Components/DepartmentForm';
+import DepartmentForm from '../Components/Department/DepartmentForm';
 import Can from '../Components/Can';
 import gStyle from '../utils/styles.module.css';
 

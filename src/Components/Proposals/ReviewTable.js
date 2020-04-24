@@ -6,17 +6,15 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {withSnackbar} from 'notistack';
 import api from '../../Services/api';
-import ViewAProposal from './ViewAProposal';
-import ProposalForm from './ProposalForm';
-import gStyle from '../../utils/styles.module.css';
 import {snack} from '../../utils/Snackbar';
+import ProposalForm from './ProposalForm';
+import ViewAProposal from './ViewAProposal';
 
 class ReviewTable extends Component {
 
@@ -91,20 +89,14 @@ class ReviewTable extends Component {
   };
 
   render() {
-    const {proposals, action, title, update} = this.props;
+    const {proposals, action, update} = this.props;
     const {page, rowsPerPage} = this.state;
 
     return (
-      <div className={gStyle.mainContentBorder}>
+      <div>
         {proposals.length > 0 &&
           <div>
-            <Grid container direction='row' alignItems='flex-end' justify='space-between'>
-              <Grid item align='left' className={gStyle.gridListContainer}>
-                <Typography variant='h4'>{title}</Typography>
-              </Grid>
-            </Grid>
-            <br/>
-            <TableContainer component={Paper} className={gStyle.table}>
+            <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
@@ -178,7 +170,6 @@ ReviewTable.propTypes = {
     })
   ).isRequired,
   action: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
   update: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired
 };

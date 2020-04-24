@@ -3,8 +3,8 @@ import compose from 'recompose/compose';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Typography} from '@material-ui/core';
-import api from '../Services/api';
-import UserGrid from './UserGrid';
+import api from '../../Services/api';
+import UserGrid from '../Capstone/UserGrid';
 
 const styles = (theme) => ({
   root: {

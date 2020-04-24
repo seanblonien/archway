@@ -8,12 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import InfoIcon from '@material-ui/icons/Info';
 import React, {Component} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
-import routes from '../utils/Routing/routes';
-import LoadingCircle from './LoadingCircle';
-import history from '../utils/Routing/history';
-import {imageURL} from '../utils/utils';
-import api from '../Services/api';
-import gStyle from '../utils/styles.module.css';
+import routes from '../../utils/Routing/routes';
+import LoadingCircle from '../LoadingCircle';
+import history from '../../utils/Routing/history';
+import {imageURL} from '../../utils/utils';
+import api from '../../Services/api';
+import gStyle from '../../utils/styles.module.css';
 
 class FeaturedCapstones extends Component {
   constructor(props) {

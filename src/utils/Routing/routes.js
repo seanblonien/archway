@@ -1,7 +1,13 @@
 import {AccountCircle, Create, Description, Publish, ViewList, ViewQuilt} from '@material-ui/icons';
-import About from '../../Components/About';
+import About from '../../Pages/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
+import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import Login from '../../Components/Auth/Login';
+import ResetPassword from '../../Components/Auth/ResetPassword';
+import SignUp from '../../Components/Auth/SignUp';
+import ValidateEmail from '../../Components/Auth/ValidateEmail';
+import ReviewProposals from '../../Components/Proposals/ReviewProposals';
+import ViewYourProposals from '../../Components/Proposals/ViewYourProposals';
 import {permissions} from '../../constants';
 import AuthPage from '../../Pages/AuthPage';
 import Capstone from '../../Pages/Capstones';
@@ -10,6 +16,7 @@ import Dashboard from '../../Pages/Dashboard';
 import FAQ from '../../Pages/FAQ';
 import Home from '../../Pages/Home';
 import NotFound from '../../Pages/NotFound';
+import SearchResults from '../../Pages/SearchResults';
 import Sponsors from '../../Pages/Sponsors';
 import ViewADepartment from '../../Pages/ViewADepartment';
 import ViewAllDepartments from '../../Pages/ViewAllDepartments';
@@ -17,14 +24,7 @@ import ViewASponsor from '../../Pages/ViewASponsor';
 import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
-import SearchResults from '../../Pages/SearchResults';
-import SignUp from '../../Components/Auth/SignUp';
-import ForgotPassword from '../../Components/Auth/ForgotPassword';
-import ResetPassword from '../../Components/Auth/ResetPassword';
-import ValidateEmail from '../../Components/Auth/ValidateEmail';
 import ViewYourCapstones from '../../Pages/ViewYourCapstones';
-import ReviewProposals from '../../Components/Proposals/ReviewProposals';
-import ViewYourProposals from '../../Components/Proposals/ViewYourProposals';
 
 const routes = {
   dashboard: {
@@ -47,7 +47,7 @@ const routes = {
       genPath: (username ) => `/dashboard/capstones/${username}`,
       component: ViewYourCapstones,
       Icon: ViewQuilt,
-      permission: permissions.application.capstones.update,
+      permission: permissions.application.capstones.find,
     },
     createcapstone: {
       name: 'Create Capstone',

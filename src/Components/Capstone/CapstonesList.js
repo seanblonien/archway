@@ -8,9 +8,9 @@ import InfoIcon from '@material-ui/icons/Info';
 import React, {Component} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import routes from '../utils/Routing/routes';
-import history from '../utils/Routing/history';
-import {imageURL, convertStrapiDate} from '../utils/utils';
+import routes from '../../utils/Routing/routes';
+import history from '../../utils/Routing/history';
+import {imageURL, convertStrapiDate} from '../../utils/utils';
 
 const styles = (theme) => ({
   root: {

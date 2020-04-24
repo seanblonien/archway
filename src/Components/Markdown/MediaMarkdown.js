@@ -1,12 +1,12 @@
 import {Box} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef} from 'react';
-import hljs from 'highlight.js';
 import {strapiURL} from '../../constants';
 import {A, B1, B2, H1, H2, H3, H4, H5, H6, Image} from './MarkdownComponents';
-import 'highlight.js/styles/atom-one-dark.css';
 
 const MediaMarkdown = ({children}) => {
   const rootRef = useRef();
@@ -24,7 +24,7 @@ const MediaMarkdown = ({children}) => {
   newChildren = newChildren.replace(/\/uploads\/.*\)/g,encodeURI);
 
   return (
-    <Container ref={rootRef} maxWidth='md' component={Box}>
+    <Container ref={rootRef} maxWidth='md' disableGutters component={Box}>
       <Markdown
         options={{overrides: {
           img: {component: Image},
