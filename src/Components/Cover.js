@@ -20,7 +20,7 @@ const Cover = (props) => {
   const {classes, covers, children} = props;
 
   return covers.length > 1 ?
-    <Carousel showThumbs={false} autoPlay>
+    <Carousel showThumbs={false} autoPlay infiniteLoop>
       {covers.map((cover) => (
         <Parallax bgImage={imageURL.cover(cover)} strength={300} key={cover.id}>
           <div className={classes.cover}>
