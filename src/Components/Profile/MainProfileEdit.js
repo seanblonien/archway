@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import React from 'react';
 import MarkdownEditor from '../Markdown/MarkdownEditor';
-import SubSectionTitle from '../SubsectionTitle';
+import SubSectionTitle from '../Typography/SubsectionTitle';
 
 const MainProfileEdit = ({user, update}) => {
 

@@ -6,7 +6,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import PropTypes from 'prop-types';
 import Lightbox from 'react-image-lightbox';
-import {strapiURL} from '../constants';
+import {strapiURL} from '../../constants';
 import 'react-image-lightbox/style.css';
 
 const styles = (theme) => ({

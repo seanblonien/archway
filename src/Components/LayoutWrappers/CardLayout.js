@@ -2,8 +2,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Cards from './Cards';
-import gStyle from '../utils/styles.module.css';
+import Cards from '../Cards';
+import gStyle from '../../utils/styles.module.css';
 
 const cardLayout = ({title, listItems, childURL, imageURLFunction}) => (
   <div className={gStyle.mainContentBorder}>

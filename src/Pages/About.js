@@ -6,9 +6,9 @@ import React, {useEffect, useState} from 'react';
 import api from '../Services/api';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
-import GridPageContainer from './LayoutWrappers/GridPageContainer';
-import GridPaper from './LayoutWrappers/GridPaper';
-import MediaMarkdown from './Markdown/MediaMarkdown';
+import GridPageContainer from '../Components/LayoutWrappers/GridPageContainer';
+import GridPaper from '../Components/LayoutWrappers/GridPaper';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 
 const About = () => {
   const [state, setState] = useState({loading: true, sponsors: []});

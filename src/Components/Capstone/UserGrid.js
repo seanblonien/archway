@@ -5,9 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import PropTypes from 'prop-types';
-import routes from '../utils/Routing/routes';
-import history from '../utils/Routing/history';
-import {imageURL} from '../utils/utils';
+import routes from '../../utils/Routing/routes';
+import history from '../../utils/Routing/history';
+import {imageURL} from '../../utils/utils';
 
 const styles = (theme) => ({
   root: {

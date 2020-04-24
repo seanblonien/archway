@@ -7,8 +7,8 @@ import React, {Component} from 'react';
 import {permissions} from '../../constants';
 import api from '../../Services/api';
 import Can from '../Can';
-import SponsorForm from '../SponsorForm';
-import SubSectionTitle from '../SubsectionTitle';
+import SponsorForm from '../Sponsor/SponsorForm';
+import SubSectionTitle from '../Typography/SubsectionTitle';
 
 class SponsorProfileEdit extends Component {
   constructor(props) {

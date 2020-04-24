@@ -10,12 +10,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
-import api from '../Services/api';
-import MarkdownEditor from './Markdown/MarkdownEditor';
-import {formatEntryUpload, imageURL} from '../utils/utils';
-import {snack} from '../utils/Snackbar';
-import AuthContext from '../Contexts/AuthContext';
-import PhotoUpload from './PhotoUpload';
+import api from '../../Services/api';
+import MarkdownEditor from '../Markdown/MarkdownEditor';
+import {formatEntryUpload, imageURL} from '../../utils/utils';
+import {snack} from '../../utils/Snackbar';
+import AuthContext from '../../Contexts/AuthContext';
+import PhotoUpload from '../PhotoUpload';
 
 class SponsorForm extends React.Component {
 

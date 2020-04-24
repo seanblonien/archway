@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CapstonesTab from '../Components/CapstonesTab';
+import CapstonesTab from '../Components/Capstone/CapstonesTab';
 import GridBox from '../Components/LayoutWrappers/GridBox';
 import GridPageContainer from '../Components/LayoutWrappers/GridPageContainer';
 import LoadingCircle from '../Components/LoadingCircle';

@@ -21,7 +21,7 @@ import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import Filter from 'bad-words';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import SimpleDialog from '../Components/AddUserDialog';
+import SimpleDialog from '../Components/Admin/AddUserDialog';
 import ArchwayDatePicker from '../Components/ArchwayDatePicker';
 import DragAndDropZone from '../Components/DragAndDropZone/DragAndDropZone';
 import api from '../Services/api';

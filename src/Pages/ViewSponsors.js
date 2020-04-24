@@ -6,7 +6,7 @@ import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
 import LoadingCircle from '../Components/LoadingCircle';
-import CardLayout from '../Components/CardLayout';
+import CardLayout from '../Components/LayoutWrappers/CardLayout';
 
 const styles = {
   card: {

@@ -5,7 +5,7 @@ import AuthContext from '../../Contexts/AuthContext';
 import api from '../../Services/api';
 import GridBox from '../LayoutWrappers/GridBox';
 import GridPageContainer from '../LayoutWrappers/GridPageContainer';
-import SectionTitle from '../SectionTitle';
+import SectionTitle from '../Typography/SectionTitle';
 import ProposalForm from './ProposalForm';
 import ReviewTable from './ReviewTable';
 
