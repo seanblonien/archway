@@ -43,7 +43,6 @@
     "react-router-dom": "^5.1.2",
     "react-router-hash-link": "^1.2.2",
     "react-scripts": "^3.4.0",
-    "react-share": "^4.0.1",
     "recompose": "^0.30.0",
     "typescript": "^3.8.3"
   },
