@@ -78,8 +78,8 @@ class ViewASponsor extends Component {
             <Grid item md={6}>
               <MediaMarkdown>{sponsor.description}</MediaMarkdown>
             </Grid>
-            <Grid item md={4} align='center'>
-              <img src={logoPhoto} alt={sponsor.name} style={{maxWidth: '400px'}}/>
+            <Grid item container direction='column' md={4} align='center'>
+              <img item src={logoPhoto} alt={sponsor.name} style={{maxWidth: '400px'}}/>
               <Link item href={sponsor.url}>
                 <Button style={{marginTop: '5%', border: '2px solid'}}>
                   <Typography>Visit {sponsor.name} Website</Typography>
