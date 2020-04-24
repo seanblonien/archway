@@ -3,3 +3,4 @@ node_modules/
 mongodata/
 database/dump.zip
 .vs/
+build/
