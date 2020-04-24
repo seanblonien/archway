@@ -45,7 +45,7 @@ class Sponsors extends Component {
       <div>
         <div style={{width: '100%', height: '800px', backgroundImage: getBgImageFromStrapi(pageContent.bgimage.url), backgroundSize: 'cover'}}>
           <Grid container direction='row' display='inline' justify='flex-end'>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} lg={3}>
               <Card className={classes.sidePanel}>
                 <CardContent>
                   <MediaMarkdown>
