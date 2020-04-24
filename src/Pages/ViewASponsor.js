@@ -38,8 +38,10 @@ class ViewASponsor extends Component {
     });
 
     for (const person of sponsor.personnel) {
-      if (person.id === user.id) {
-        this.setState({canEdit: true});
+      if (user) {
+        if (person.id === user.id) {
+          this.setState({canEdit: true});
+        }
       }
     }
   }
