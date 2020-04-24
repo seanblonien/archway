@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import DepartmentCapstones from './DepartmentCapstones';
+import CapstonesList from './CapstonesList';
 
 function TabPanel(props) {
   const {children, value, index, ...other} = props;
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CapstonesTab(props) {
-  const {department} = props;
+  const {capstones} = props;
   const classes = useStyles();
   const [value, setValue] = React.useState('current');
 
@@ -59,15 +59,15 @@ export default function CapstonesTab(props) {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index='current'>
-        <DepartmentCapstones department={department} current='True'/>
+        <CapstonesList capstones={capstones} current='True'/>
       </TabPanel>
       <TabPanel value={value} index='past'>
-        <DepartmentCapstones department={department} current='False'/>
+        <CapstonesList capstones={capstones} current='False'/>
       </TabPanel>
     </div>
   );
 }
 
 CapstonesTab.propTypes = {
-  department: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
+  capstones: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
 };
