@@ -1,33 +1,23 @@
-import {withSnackbar} from 'notistack';
-import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/core/styles';
+import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import api from '../Services/api';
-import ProfileHeader from '../Components/Profile/ProfileHeader';
-import ProfilePic from '../Components/Profile/ProfilePic';
-import MainProfile from '../Components/Profile/MainProfile';
-import MainProfileEdit from '../Components/Profile/MainProfileEdit';
-import SponsorProfile from '../Components/Profile/SponsorProfile';
-import SponsorProfileEdit from '../Components/Profile/SponsorProfileEdit';
+import Can from '../Components/Can';
+import GridPageContainer from '../Components/LayoutWrappers/GridPageContainer';
+import GridPaper from '../Components/LayoutWrappers/GridPaper';
 import CancelSubmit from '../Components/Profile/CancelSubmit';
 import EditButton from '../Components/Profile/EditButton';
-import AuthContext from '../Contexts/AuthContext';
+import MainProfile from '../Components/Profile/MainProfile';
+import MainProfileEdit from '../Components/Profile/MainProfileEdit';
+import ProfileHeader from '../Components/Profile/ProfileHeader';
+import ProfilePic from '../Components/Profile/ProfilePic';
+import SponsorProfile from '../Components/Profile/SponsorProfile';
+import SponsorProfileEdit from '../Components/Profile/SponsorProfileEdit';
 import {permissions} from '../constants';
-import Can from '../Components/Can';
+import AuthContext from '../Contexts/AuthContext';
+import api from '../Services/api';
 import {snack} from '../utils/Snackbar';
-
-const styles = (theme) => ({
-  profilePaper:{
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[3],
-    padding: theme.spacing(4),
-    outline: 'none',
-  },
-});
 
 const initialState = {
   id: '',
@@ -100,64 +90,61 @@ class ViewProfile extends Component {
 
   render() {
     const {editing, profile} = this.state;
-    const {match, classes} = this.props;
+    const {match} = this.props;
     const {user, isAuthenticated} = this.context;
 
     // The logged in (authenticated) user can only edit their own profile
     const canEdit = isAuthenticated && profile && user.username === profile.username;
 
     return (
-      <div>
-        {profile ?
-          <Box width='60%' mx='auto' my={2}>
-            <Paper className={classes.profilePaper}>
-              <ProfileHeader user={profile} edit={editing}/>
-              <Divider/>
-              <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} canEdit={canEdit}/>
-            </Paper>
-            <br/>
-            {(editing) ?
-              (
-                // It is assumed that if you can get here, that you are editing your own profile, and you have permisison to do so
-                <div>
-                  <Paper className={classes.profilePaper}>
-                    <MainProfileEdit user={profile} update={this.updateProfile}/>
-                  </Paper>
-                  <Can perform={permissions.application.proposals.create} role={profile.role.name}>
-                    <br/>
-                    <Paper className={classes.profilePaper}>
-                      <SponsorProfileEdit user={profile} update={this.updateProfile}/>
-                    </Paper>
-                  </Can>
-                  <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
-                </div>
-              ) :
-              (
-                <div>
-                  <Paper className={classes.profilePaper}>
-                    <MainProfile user={profile}/>
-                  </Paper>
-                  <Can perform={permissions.application.proposals.create} role={profile.role.name}>
-                    <br/>
-                    <Paper className={classes.profilePaper}>
-                      <SponsorProfile user={profile}/>
-                    </Paper>
-                  </Can>
-                  <Can perform={permissions.users_permissions.user.update}>
-                    <div>
-                      {canEdit && <EditButton edit={this.handleEdit}/>}
-                    </div>
-                  </Can>
-                </div>
-              )
-            }
-          </Box>
-          :
-          <Box width='50%' mx='auto' my={12}>
-            <Typography variant='h3'>Sorry, we could not find the profile you were looking for...</Typography>
-          </Box>
-        }
-      </div>
+      profile ?
+        <GridPageContainer>
+          <GridPaper>
+            <ProfileHeader user={profile} edit={editing}/>
+            <Divider/>
+            <ProfilePic user={profile} username={match.params.username} picture={this.updatePicture} canEdit={canEdit}/>
+          </GridPaper>
+
+          {(editing) ?
+            <>
+              {/* It is assumed that if you can get here, that you are editing your own profile, and you have permission to do so */}
+              <GridPaper>
+                <MainProfileEdit user={profile} update={this.updateProfile}/>
+              </GridPaper>
+              <Can perform={permissions.application.proposals.create} role={profile.role.name}>
+                <GridPaper>
+                  <SponsorProfileEdit user={profile} update={this.updateProfile}/>
+                </GridPaper>
+              </Can>
+              <CancelSubmit cancel={this.handleCancel} submit={this.handleSubmit}/>
+            </>
+            :
+            <>
+              <GridPaper>
+                <MainProfile user={profile}/>
+              </GridPaper>
+              <Can perform={permissions.application.proposals.create} role={profile.role.name}>
+                <GridPaper>
+                  <SponsorProfile user={profile}/>
+                </GridPaper>
+              </Can>
+            </>
+          }
+
+          <Can perform={permissions.users_permissions.user.update}>
+            <>
+              {canEdit && <EditButton edit={this.handleEdit}/>}
+            </>
+          </Can>
+        </GridPageContainer>
+        :
+        <GridPageContainer>
+          <GridPaper>
+            <Typography variant='h4'>
+              Sorry, we could not find the profile you were looking for...
+            </Typography>
+          </GridPaper>
+        </GridPageContainer>
     );
   }
 }
@@ -168,4 +155,4 @@ ViewProfile.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired
 };
 
-export default withSnackbar(withStyles(styles) (ViewProfile));
+export default withSnackbar(ViewProfile);

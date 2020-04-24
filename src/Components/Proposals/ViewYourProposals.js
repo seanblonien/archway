@@ -1,11 +1,13 @@
 import withWidth from '@material-ui/core/withWidth';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
-import Box from '@material-ui/core/Box';
-import api from '../../Services/api';
-import ReviewTable from './ReviewTable';
-import ProposalForm from './ProposalForm';
 import AuthContext from '../../Contexts/AuthContext';
+import api from '../../Services/api';
+import GridBox from '../LayoutWrappers/GridBox';
+import GridPageContainer from '../LayoutWrappers/GridPageContainer';
+import SectionTitle from '../SectionTitle';
+import ProposalForm from './ProposalForm';
+import ReviewTable from './ReviewTable';
 
 class ViewYourProposals extends Component {
 
@@ -31,21 +33,22 @@ class ViewYourProposals extends Component {
     const {proposals} = this.state;
 
     return (
-      <div>
-        <ProposalForm
-          title='New Proposal'
-          update={this.initProposals}
-          proposal={null}
-        />
-        <Box width='80%' my={2}>
+      <GridPageContainer>
+        <GridBox>
+          <SectionTitle>Your Proposals</SectionTitle>
           <ReviewTable
             title='Your Proposals'
             proposals={proposals}
             update={this.initProposals}
             action='personal'
           />
-        </Box>
-      </div>
+          <ProposalForm
+            title='New Proposal'
+            update={this.initProposals}
+            proposal={null}
+          />
+        </GridBox>
+      </GridPageContainer>
     );
   }
 }

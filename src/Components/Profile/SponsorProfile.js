@@ -1,28 +1,23 @@
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SubSectionTitle from '../SubsectionTitle';
 
 const SponsorProfile = ({user}) => (
-  <div>
-    <Box my={2}>
-      <Typography variant='h5'>{user.role.name} Info</Typography>
-      <Divider/>
-      <br/>
-      <Grid container direction='row' spacing={2}>
-        <Grid item xs={12}>
-          <Typography>Organization: </Typography>
-          <Typography>{user.sponsorOrganization && user.sponsorOrganization.name}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography>Job Title: </Typography>
-          <Typography>{user.jobTitle}</Typography>
-        </Grid>
+  <>
+    <SubSectionTitle>{user.role.name} Info</SubSectionTitle>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Typography>Organization: </Typography>
+        <Typography>{user.sponsorOrganization && user.sponsorOrganization.name}</Typography>
       </Grid>
-    </Box>
-  </div>
+      <Grid item xs={12}>
+        <Typography>Job Title: </Typography>
+        <Typography>{user.jobTitle}</Typography>
+      </Grid>
+    </Grid>
+  </>
 );
 
 SponsorProfile.propTypes = {

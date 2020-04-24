@@ -1,16 +1,14 @@
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import api from '../../Services/api';
 import {permissions} from '../../constants';
-import SponsorForm from '../SponsorForm';
+import api from '../../Services/api';
 import Can from '../Can';
+import SponsorForm from '../SponsorForm';
+import SubSectionTitle from '../SubsectionTitle';
 
 class SponsorProfileEdit extends Component {
   constructor(props) {
@@ -40,45 +38,41 @@ class SponsorProfileEdit extends Component {
     const {sponsors} = this.state;
 
     return (
-      <div>
-        <Box my={2}>
-          <Typography variant='h5'>{user.role.name} Settings</Typography>
-          <Divider/>
-          <br/>
-          <Grid container direction='row' spacing={2}>
-            <Grid item xs={12}>
-              <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
-              <Select
-                name='sponsorOrganization'
-                labelId='sponsor-organization-select-label'
-                margin='dense'
-                fullWidth
-                onChange={this.handleChange}
-                value={user.sponsorOrganization}
-              >
-                {sponsors.map(sponsor => (
-                  <option key={sponsor.id} value={sponsor}>
-                    {sponsor.name}
-                  </option>
-                ))}
-              </Select>
-            </Grid>
-            <Can perform={permissions.application.sponsors.create} role={user.role.name}>
-              <SponsorForm title='Create New Sponsor' type='create' update={this.updateListOfSponsors}/>
-            </Can>
-            <Grid item xs={12}>
-              <TextField
-                name='jobTitle'
-                label='Job Title'
-                margin='dense'
-                fullWidth
-                onChange={this.handleChange}
-                value={user.jobTitle}
-              />
-            </Grid>
+      <>
+        <SubSectionTitle>{user.role.name} Settings</SubSectionTitle>
+        <Grid container direction='row' spacing={2}>
+          <Grid item xs={12}>
+            <InputLabel id='sponsor-organization-select-label'>Organization</InputLabel>
+            <Select
+              name='sponsorOrganization'
+              labelId='sponsor-organization-select-label'
+              margin='dense'
+              fullWidth
+              onChange={this.handleChange}
+              value={user.sponsorOrganization}
+            >
+              {sponsors.map(sponsor => (
+                <option key={sponsor.id} value={sponsor}>
+                  {sponsor.name}
+                </option>
+              ))}
+            </Select>
           </Grid>
-        </Box>
-      </div>
+          <Can perform={permissions.application.sponsors.create} role={user.role.name}>
+            <SponsorForm title='Create New Sponsor' type='create' update={this.updateListOfSponsors}/>
+          </Can>
+          <Grid item xs={12}>
+            <TextField
+              name='jobTitle'
+              label='Job Title'
+              margin='dense'
+              fullWidth
+              onChange={this.handleChange}
+              value={user.jobTitle}
+            />
+          </Grid>
+        </Grid>
+      </>
     );
   }
 }
