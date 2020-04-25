@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import {useDropzone} from 'react-dropzone';
 import _ from 'lodash';
 import './style.css';
-import {imageURL} from "../../utils/utils";
+import {imageURL} from '../../utils/utils';
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -25,7 +25,6 @@ export default function DragAndDrop({files, setFiles, accept, single, deletedFil
     setFiles(single ? [acceptedFiles[0]] : acceptedFiles, false);
   }, []);
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
-
 
 
   return (
@@ -43,8 +42,8 @@ export default function DragAndDrop({files, setFiles, accept, single, deletedFil
           {files.map((file) => (
             <GridListTile key={file.name}>
               {file.id
-              ? <img src={imageURL.capstone(file)} alt={file.name}/>
-              : <img src={URL.createObjectURL(file)} alt={file.name}/>
+                ? <img src={imageURL.capstone(file)} alt={file.name}/>
+                : <img src={URL.createObjectURL(file)} alt={file.name}/>
 
               }
               <GridListTileBar
@@ -56,7 +55,7 @@ export default function DragAndDrop({files, setFiles, accept, single, deletedFil
                       onClick={() =>
                       {
                         setFiles(files.filter(f => f.name !== file.name), true);
-                        if (typeof deletedFiles === "function" && file.id) {
+                        if (typeof deletedFiles === 'function' && file.id) {
                           deletedFiles(file.id);
                         }
                       }
@@ -83,5 +82,6 @@ DragAndDrop.propTypes = {
 
 DragAndDrop.defaultProps = {
   accept: '*',
-  single: false
+  single: false,
+  deletedFiles: false
 };
