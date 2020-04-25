@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import {Router} from 'react-router-dom';
@@ -12,6 +13,7 @@ import history from './utils/Routing/history';
 import routes from './utils/Routing/routes';
 import RoutesToRender from './utils/Routing/RoutesToRender';
 import Snackbar from './utils/Snackbar';
+import root from './utils/styles.module.css';
 
 export default function App () {
   return <>
@@ -22,12 +24,16 @@ export default function App () {
             <AuthProvider>
               <Can perform={permissions.users_permissions.userspermissions.init}>
                 <Router history={history}>
-                  <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
-                    <Header/>
-                    <div style={{paddingBottom: '140px'}}>
-                      <RoutesToRender routes={routes} switch/>
+                  <div className={root.bodyContainer}>
+                    <div className={root.bodyContent}>
+                      <div>
+                        <Header/>
+                        <Box mb={1}>
+                          <RoutesToRender routes={routes} switch/>
+                        </Box>
+                      </div>
                     </div>
-                    <Footer/>
+                    <Footer className={root.bodyFooter}/>
                   </div>
                 </Router>
               </Can>
