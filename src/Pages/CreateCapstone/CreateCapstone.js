@@ -55,7 +55,7 @@ class CreateCapstone extends Component {
       startDate: new Date(),
       endDate: new Date(),
       deletedThumbnail: [],
-      deletedCoverPhoto: [],
+      deletedCover: [],
       deletedMedia: [],
       cover: [],
       thumbnail: [],
@@ -88,7 +88,7 @@ class CreateCapstone extends Component {
     this.setState({[name]: event.target.value});
   };
 
-  deletedThumbnail = deletedFileId => {
+  toDeletedThumbnail = deletedFileId => {
     const { deletedThumbnail } = this.state;
     if (deletedFileId !== '') {
       if (!deletedThumbnail.includes(deletedFileId)) {
@@ -98,7 +98,7 @@ class CreateCapstone extends Component {
     }
   };
 
-  deletedCover = deletedFileId => {
+  toDeletedCover = deletedFileId => {
     const { deletedCover } = this.state;
     if (deletedFileId !== '') {
       if (!deletedCover.includes(deletedFileId)) {
@@ -108,7 +108,7 @@ class CreateCapstone extends Component {
     }
   };
 
-  deletedMedia = deletedFileId => {
+  toDeletedMedia = deletedFileId => {
     const { deletedMedia } = this.state;
     if (deletedFileId !== '') {
       if (!deletedMedia.includes(deletedFileId)) {
@@ -126,34 +126,26 @@ class CreateCapstone extends Component {
 
     ValidatorForm.addValidationRule('isProfane', value => {
       const filter = new Filter();
-      if (filter.isProfane(value)) {
-        return false
-      }
-      return true;
+      return !filter.isProfane(value);
+
     });
 
     ValidatorForm.addValidationRule('haveMembers', value => {
       const { members } = this.state;
-      if (members.length > 0) {
-        return true;
-      }
-      return false;
+      return members.length > 0;
+
     });
 
     ValidatorForm.addValidationRule('haveProfessor', value => {
       const { selectedProfessor } = this.state;
-      if (selectedProfessor !== '') {
-        return true;
-      }
-      return false;
+      return selectedProfessor !== '';
+
     });
 
     ValidatorForm.addValidationRule('haveTA', value => {
       const { selectedTA } = this.state;
-      if (selectedTA !== '') {
-        return true;
-      }
-      return false;
+      return selectedTA !== '';
+
     });
 
     ValidatorForm.addValidationRule('haveDepartment', value => {
@@ -191,8 +183,9 @@ class CreateCapstone extends Component {
     // TODO: test upload image
     // TODO: preview semester
     // TODO: if not a created capstone, clear, else reset all things
-    if (this.props.editId) {
-      const editCapstone = await api.capstones.findOne("5e99c90f5350f40031d08f1c");
+    let editId = "5e99c90f5350f40031d08f1c";
+    if (editId) {
+      const editCapstone = await api.capstones.findOne(editId);
       console.log(editCapstone);
 
       let dept = departmentList.filter(dept => dept.id === editCapstone.departments);
@@ -203,6 +196,9 @@ class CreateCapstone extends Component {
       );
       let professor = members.filter(member => roleIdToName[member.role] === 'Professor');
       let TA = members.filter(member => roleIdToName[member.role] === 'TeachingAssistant');
+      let thumbnail = editCapstone.thumbnail ? [editCapstone.thumbnail, ] : [];
+      let cover = editCapstone.cover ? editCapstone.cover : [];
+      let media = editCapstone.media ? editCapstone.media : [];
       console.log(professor);
       this.setState({
         name: editCapstone.name,
@@ -217,16 +213,18 @@ class CreateCapstone extends Component {
         members: teamMembers,
         selectedProfessor: professor[0],
         selectedTA: TA[0],
-        thumbnail: [editCapstone.thumbnail,],
-        cover: editCapstone.cover,
-        media: editCapstone.media,
-        capstoneId: this.props.editId
+        thumbnail: thumbnail,
+        cover: cover,
+        media: media,
+        checkedSponsors: editCapstone.sponsors,
+        capstoneId: editId
       });
     }
 
   }
 
   handleSelectedPerson = name => (event, values) => {
+    console.log(values);
     this.setState({[name]: values});
   };
 
@@ -317,16 +315,38 @@ class CreateCapstone extends Component {
     this.setState({selectedSponsor: event.target.value});
   };
 
-  setThumbnail = (thumbnail) => {
+  setThumbnail = (thumbnail, replace=false) => {
     this.setState({thumbnail});
   };
 
-  setCover = (cover) => {
-    this.setState({cover});
+  setCover = (coverPic, replace=false) => {
+    if (!replace) {
+      const {cover} = this.state;
+      if (cover.length > 0) {
+        this.setState({cover: cover.concat(coverPic)})
+      } else {
+        this.setState({cover: coverPic});
+      }
+    }
+    else {
+      this.setState({cover: coverPic});
+    }
   };
 
-  setMedia = (media) => {
-    this.setState({media});
+  setMedia = (mediaPic, replace=false) => {
+    if (!replace) {
+      const {media} = this.state;
+      if (media.length > 0) {
+        this.setState({media: media.concat(mediaPic)})
+      }
+      else {
+        this.setState({media: mediaPic});
+      }
+    }
+    else {
+      this.setState({media: mediaPic});
+    }
+
   };
 
 
@@ -358,6 +378,7 @@ class CreateCapstone extends Component {
       preview: preview,
       semester: semester
     };
+    console.log(selectedTA);
     if (course !== '') {
       upload_content.course = course;
     }
@@ -374,15 +395,16 @@ class CreateCapstone extends Component {
       const UserIDs = members.map(p => p.id);
       upload_content.members = UserIDs;
     }
-    if (selectedTA !== '') {
-      upload_content.members.concat(selectedTA.id)
+    if (selectedTA && selectedTA !== '' && selectedTA !== []) {
+      upload_content.members = upload_content.members.concat(selectedTA.id)
     }
-    if (selectedProfessor !== '') {
-      upload_content.members.concat(selectedProfessor.id);
+    if (selectedProfessor && selectedProfessor !== '' && selectedProfessor !== []) {
+      upload_content.members = upload_content.members.concat(selectedProfessor.id);
     }
     if (checkedSponsors.length > 0) {
       upload_content.sponsors = checkedSponsors.map(s => s.id);
     }
+    console.log(upload_content);
     return upload_content;
   };
 
@@ -409,7 +431,7 @@ class CreateCapstone extends Component {
       capstoneId: '',
       removeImg: true,
       deletedThumbnail: [],
-      deletedCoverPhoto: [],
+      deletedCover: [],
       deletedMedia: []
     });
   };
@@ -439,6 +461,16 @@ class CreateCapstone extends Component {
     if (this.state.capstoneId === '') {
       return;
     }
+    console.log(thumbnail);
+    console.log(cover);
+    console.log(media);
+    console.log(deletedThumbnail);
+    console.log(deletedCover);
+    console.log(deletedMedia);
+
+
+
+
     const capstoneId = this.state.capstoneId;
     // upload thumbnail
     if (thumbnail.length > 0 && !thumbnail[0].id) {
@@ -609,9 +641,9 @@ class CreateCapstone extends Component {
             setThumbnail={setThumbnail}
             setCover={setCover}
             setMedia={setMedia}
-            deletedThumbnail={this.deletedThumbnail.bind(this)}
-            deletedCover={this.deletedCover.bind(this)}
-            deletedMedia={this.deletedMedia.bind(this)}
+            toDeleteThumbnail={this.toDeletedThumbnail.bind(this)}
+            toDeleteCover={this.toDeletedCover.bind(this)}
+            toDeleteMedia={this.toDeletedMedia.bind(this)}
             {...this.state}
 
           />
@@ -619,7 +651,6 @@ class CreateCapstone extends Component {
             <Grid container justify='space-around' spacing={3} alignItems='center'>
               <Grid item xs={3}>
                 <Button
-                  type='submit'
                   fullWidth
                   variant='contained'
                   color='primary'

@@ -103,7 +103,7 @@ const SponsorAndMediaInformation = (props) => {
               files={thumbnail}
               accept='image/*'
               single
-              deletedFiles={props.deletedThumbnail}
+              deletedFiles={props.toDeleteThumbnail}
             />
           </CardContent>
         </Card>
@@ -120,7 +120,7 @@ const SponsorAndMediaInformation = (props) => {
               setFiles={setCover}
               files={cover}
               accept='image/*'
-              deletedFiles={props.deletedCover}
+              deletedFiles={props.toDeleteCover}
             />
           </CardContent>
         </Card>
@@ -135,7 +135,7 @@ const SponsorAndMediaInformation = (props) => {
             <DragAndDrop
               setFiles={setMedia}
               files={media}
-              deletedFiles={props.deletedMedia}
+              deletedFiles={props.toDeleteMedia}
 
             />
           </CardContent>
