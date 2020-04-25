@@ -24,6 +24,8 @@ const handleResponseError = async (error) => {
   // 401 means bad token/bad authentication values
   if(response.status === 401){
     StorageManager.clearLocalStorage();
+    window.location.reload();
+    return Promise.resolve();
   }
   return Promise.reject(response);
 };
@@ -52,7 +54,7 @@ const API = {
   homepage: new Endpoint('home-page', axios),
   sponsorpage: new Endpoint('sponsor-page', axios),
   aboutpage: new Endpoint('about-page', axios),
-  navbar: new Endpoint('navbar', axios),
+  headerfooter: new Endpoint('header-footer', axios),
 
   // Other non-content type Strapi API endpoints
 

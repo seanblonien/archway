@@ -1,28 +1,31 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 import {Link} from '@material-ui/core';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import React from 'react';
 import {Link as RouterLink} from 'react-router-dom';
+import {A} from '../Markdown/MarkdownComponents';
 
 export const useLinkStyles = makeStyles(theme => ({
   link: {
     color: theme.palette.primary.main,
     '&:hover, &:active': {
-      color: theme.palette.action.hover
+      color: theme.palette.secondary.main,
+      textDecorationLine: 'underline'
     },
-    '&:visited': {
-      color: theme.palette.action.selected,
-    },
+    textDecorationLine: 'none'
   }
 }));
 
+const ixExternal = /^https?:\/\//;
 
+// eslint-disable-next-line react/prop-types
 export const StyledLink = React.forwardRef(({to, ...rest}, ref) => {
   const theme = useTheme();
-  const classes = useLinkStyles(theme);
-  return <Link ref={ref} className={classes.link} component={RouterLink} to={to} {...rest}/>;
+  const linkClasses = useLinkStyles(theme);
+  return (
+    ixExternal.test(to) ?
+      <A ref={ref} href={to} {...rest}/>
+      :
+      <Link ref={ref} {...rest} className={`${linkClasses.link}`} component={RouterLink} to={to}/>
+  );
 });
-
-StyledLink.propTypes = {
-  to: PropTypes.string.isRequired
-};

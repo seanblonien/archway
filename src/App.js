@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import {Router} from 'react-router-dom';
@@ -22,12 +23,16 @@ export default function App () {
             <AuthProvider>
               <Can perform={permissions.users_permissions.userspermissions.init}>
                 <Router history={history}>
-                  <div className='App' style={{minHeight: '100vh', position: 'relative'}}>
-                    <Header/>
-                    <div style={{paddingBottom: '140px'}}>
-                      <RoutesToRender routes={routes} switch/>
+                  <div style={{display: 'grid', gridTemplateRows: '1fr auto'}}>
+                    <div className='App' style={{minHeight: '100vh'}}>
+                      <div>
+                        <Header/>
+                        <Box mb={1}>
+                          <RoutesToRender routes={routes} switch/>
+                        </Box>
+                      </div>
                     </div>
-                    <Footer/>
+                    <Footer style={{gridRowStart: 2, gridRowEnd: 3}}/>
                   </div>
                 </Router>
               </Can>

@@ -2,6 +2,7 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable jsx-a11y/alt-text */
 import {Typography} from '@material-ui/core';
+import {useTheme} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {useLinkStyles} from '../Typography/StyledLink';
@@ -59,7 +60,8 @@ export const B1 = (props) => <Typography {...props} variant='body1' paragraph/>;
 export const B2 = (props) => <Typography {...props} variant='body2' component='span'/>;
 
 // Returns styled MaterialUI link component for **external** links.
-export const A = (props) =>  {
-  const classes = useLinkStyles();
+export const A = ({...props}) =>  {
+  const theme = useTheme();
+  const classes = useLinkStyles(theme);
   return <a {...props} className={classes.link} target='_blank'/>;
 };
