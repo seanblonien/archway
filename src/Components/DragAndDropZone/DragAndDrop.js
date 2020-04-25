@@ -71,7 +71,7 @@ export default function DragAndDrop({files, setFiles, accept, single, deletedFil
     </>
   );
 }
-
+// TODO :failed propTypes of Object
 DragAndDrop.propTypes = {
   files: PropTypes.arrayOf(PropTypes.instanceOf(File)).isRequired,
   setFiles: PropTypes.func.isRequired,
