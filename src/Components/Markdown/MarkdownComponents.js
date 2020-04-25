@@ -2,9 +2,9 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable jsx-a11y/alt-text */
 import {Typography} from '@material-ui/core';
-import {makeStyles, useTheme} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {useLinkStyles} from '../Typography/StyledLink';
 
 // Formats an img src to use Strapi's absolute URL on any /uploads files.
 // Image component will parse a src URL's width/height query parameters and
@@ -58,21 +58,8 @@ export const B1 = (props) => <Typography {...props} variant='body1' paragraph/>;
 // Returns styled MaterialUI Typography component for body2 variant.
 export const B2 = (props) => <Typography {...props} variant='body2' component='span'/>;
 
-const useStyles = makeStyles(theme => ({
-  link: {
-    color: theme.palette.primary.main,
-    '&:hover, &:active': {
-      color: theme.palette.action.hover
-    },
-    '&:visited': {
-      color: theme.palette.action.selected,
-    },
-  }
-}));
-
 // Returns styled MaterialUI link component for **external** links.
 export const A = (props) =>  {
-  const theme = useTheme();
-  const classes = useStyles(theme);
+  const classes = useLinkStyles();
   return <a {...props} className={classes.link} target='_blank'/>;
 };

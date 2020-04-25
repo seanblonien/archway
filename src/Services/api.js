@@ -1,8 +1,7 @@
-/* eslint-disable import/no-cycle */
 import axios from 'axios';
+import StorageManager from '../Contexts/StorageManager';
 import Endpoint from './Endpoint';
 import UploadEndpoint from './UploadEndpoint';
-import StorageManager from '../Contexts/StorageManager';
 
 // Handles all axios request interception
 const handleRequest = (config) => {

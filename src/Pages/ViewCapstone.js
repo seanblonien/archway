@@ -1,21 +1,21 @@
 import {Box} from '@material-ui/core';
-import withWidth from '@material-ui/core/withWidth';
-import 'pure-react-carousel/dist/react-carousel.es.css';
-import React, {Component} from 'react';
-import compose from 'recompose/compose';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
-import api from '../Services/api';
-import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
-import LoadingCircle from '../Components/LoadingCircle';
-import Cover from '../Components/Cover';
-import Team from '../Components/Capstone/Team';
+import withWidth from '@material-ui/core/withWidth';
+import 'pure-react-carousel/dist/react-carousel.es.css';
+import React, {Component} from 'react';
+import compose from 'recompose/compose';
 import CapstonePhotos from '../Components/Capstone/CapstonePhotos';
-import {convertStrapiDate, imageURL} from '../utils/utils';
+import Team from '../Components/Capstone/Team';
+import Cover from '../Components/Cover';
+import LoadingCircle from '../Components/LoadingCircle';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import api from '../Services/api';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
+import {convertStrapiDate, imageURL} from '../utils/utils';
 
 class ViewCapstone extends Component {
   constructor(props) {
@@ -48,7 +48,7 @@ class ViewCapstone extends Component {
       <LoadingCircle/> :
       <div>
         <Cover covers={capstone.cover}/>
-        <Grid container direction='row' justify='flex-start' alignItems='flex-start' component={Box} px={6} py={2}>
+        <Grid container justify='flex-start' alignItems='flex-start' component={Box} px={6} py={2}>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
             <Typography variant='h3'>{capstone.name}</Typography>
             <Typography variant='h6'>
@@ -76,15 +76,18 @@ class ViewCapstone extends Component {
             </Grid>}
             <br/>
           </Grid>
-          <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} mt={1}>
+          <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} my={2}>
             <MediaMarkdown>{capstone.description}</MediaMarkdown>
-            <br/>
           </Grid>
           {capstone.members[0] &&
-            <Grid item xs={12} component={Team} capstone={capstone}/>
+            <Grid item xs={12} component={Box} py={2}>
+              <Team capstone={capstone}/>
+            </Grid>
           }
           {capstone.media[0] &&
-            <Grid item xs={12} component={CapstonePhotos} capstone={capstone}/>
+            <Grid item xs={12} component={Box} py={2}>
+              <CapstonePhotos capstone={capstone}/>
+            </Grid>
           }
         </Grid>
       </div>

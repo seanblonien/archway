@@ -1,13 +1,12 @@
-/* eslint-disable import/no-cycle */
 import _ from 'lodash';
 import {useLocation} from 'react-router-dom';
-import defaultUserImg from '../Static/defaultUser.png';
 import {strapiURL} from '../constants';
-import defaultCapstoneImg from '../Static/defaultCapstone.svg';
-import defaultSponsorImg from '../Static/defaultSponsor.svg';
-import defaultDepartmentImg from '../Static/defaultDepartment.svg';
-import defaultCoverImg from '../Static/defaultCover.svg';
 import api from '../Services/api';
+import defaultCapstoneImg from '../Static/defaultCapstone.svg';
+import defaultCoverImg from '../Static/defaultCover.svg';
+import defaultDepartmentImg from '../Static/defaultDepartment.svg';
+import defaultSponsorImg from '../Static/defaultSponsor.svg';
+import defaultUserImg from '../Static/defaultUser.png';
 import {widthPropTypes} from './PropTypesConfig';
 
 // Returns the first n words from the string
