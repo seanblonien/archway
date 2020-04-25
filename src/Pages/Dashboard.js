@@ -1,9 +1,9 @@
 import {Box, Grid, List, ListItem, ListItemText, Paper, Typography} from '@material-ui/core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import React, {useContext} from 'react';
-import {Link} from 'react-router-dom';
 import Can from '../Components/Can';
 import PageWithMargin from '../Components/LayoutWrappers/PageWithMargin';
+import {StyledLink} from '../Components/Typography/StyledLink';
 import AuthContext from '../Contexts/AuthContext';
 import {routesPropTypes} from '../utils/PropTypesConfig';
 import RoutesToRender from '../utils/Routing/RoutesToRender';
@@ -23,7 +23,7 @@ const Dashboard = ({routes}) => {
           <List>
             {Object.values(routes).map(({name, Icon, path, permission, genPath}) =>
               <Can perform={permission} key={name}>
-                <ListItem component={Link} to={genPath ? genPath(user.username) : path}>
+                <ListItem button component={StyledLink} to={genPath ? genPath(user.username) : path}>
                   <ListItemIcon>
                     <Icon/>
                   </ListItemIcon>
