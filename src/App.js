@@ -13,6 +13,7 @@ import history from './utils/Routing/history';
 import routes from './utils/Routing/routes';
 import RoutesToRender from './utils/Routing/RoutesToRender';
 import Snackbar from './utils/Snackbar';
+import root from './utils/styles.module.css';
 
 export default function App () {
   return <>
@@ -23,8 +24,8 @@ export default function App () {
             <AuthProvider>
               <Can perform={permissions.users_permissions.userspermissions.init}>
                 <Router history={history}>
-                  <div style={{display: 'grid', gridTemplateRows: '1fr auto'}}>
-                    <div className='App' style={{minHeight: '100vh'}}>
+                  <div className={root.bodyContainer}>
+                    <div className={root.bodyContent}>
                       <div>
                         <Header/>
                         <Box mb={1}>
@@ -32,7 +33,7 @@ export default function App () {
                         </Box>
                       </div>
                     </div>
-                    <Footer style={{gridRowStart: 2, gridRowEnd: 3}}/>
+                    <Footer className={root.bodyFooter}/>
                   </div>
                 </Router>
               </Can>
