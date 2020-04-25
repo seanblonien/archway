@@ -2,20 +2,19 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth/withWidth';
-import Filter from 'bad-words';
-import React, {Component} from 'react';
-import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
-import {withSnackbar} from 'notistack';
 import _ from 'lodash';
+import {withSnackbar} from 'notistack';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {ValidatorForm} from 'react-material-ui-form-validator';
+import compose from 'recompose/compose';
 import api from '../../Services/api';
+import {snack} from '../../utils/Snackbar';
+import {isProfane} from '../../utils/validation';
 import BasicInformation from './BasicInformation';
-import StorageManager from '../../Contexts/StorageManager';
+import {uploadImage} from './CapstoneUtils';
 import MemberInformation from './MemberInformation';
 import SponsorAndMediaInformation from './SponsorAndMediaInformation';
-import {uploadImage} from './CapstoneUtils';
-import {snack} from '../../utils/Snackbar';
 
 const styles = theme => ({
   list: {
@@ -37,92 +36,64 @@ const styles = theme => ({
     marginTop: '.5%',
   },
   textField: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(1),
     width: 250,
     placeholder: 'Search...'
   },
 });
 
+const initialState = {
+  description: '',
+  name: '',
+  preview: '',
+  isFeatured: false,
+  startDate: new Date(),
+  endDate: new Date(),
+  deletedThumbnail: [],
+  deletedCover: [],
+  deletedMedia: [],
+  cover: [],
+  thumbnail: [],
+  media: [],
+  departments: [],
+  departmentList: [],
+  sponsorList: [],
+  checkedSponsors: [],
+  selectedSponsor: '',
+  AllUsers: [],
+  Users: [],
+  members: [],
+  selectedProfessor: '',
+  selectedTA: '',
+  selectedUser: '',
+  course: '',
+  capstoneId: '',
+  removeImg: false,
+  semester: ''
+};
+
 class CreateCapstone extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      description: '',
-      name: '',
-      preview: '',
-      isFeatured: false,
-      startDate: new Date(),
-      endDate: new Date(),
-      deletedThumbnail: [],
-      deletedCover: [],
-      deletedMedia: [],
-      cover: [],
-      thumbnail: [],
-      media: [],
-      departments: [],
-      Username: StorageManager.getItem('user')._id,
-      capstones: [],
-      departmentList: [],
-      sponsorList: [],
-      checkedSponsors: [],
-      selectedSponsor: '',
-      AllUsers: [],
-      Users: [],
-      members: [],
-      selectedProfessor: '',
-      selectedTA: '',
-      selectedUser: '',
-      course: '',
-      capstoneId: '',
-      removeImg: false,
-      semester: ''
-    };
+    this.state = initialState;
   }
 
   async componentDidMount() {
+    /* eslint-disable react/destructuring-assignment */
+    ValidatorForm.addValidationRule('isProfane', isProfane);
+    ValidatorForm.addValidationRule('haveMembers', () => !_.isEmpty(this.state.members));
+    ValidatorForm.addValidationRule('haveProfessor', () => !_.isEmpty(this.state.selectedProfessor));
+    ValidatorForm.addValidationRule('haveTA', () => !_.isEmpty(this.state.selectedTA));
+    ValidatorForm.addValidationRule('haveDepartment', () => !_.isEmpty(this.state.departments));
+    /* eslint-enable react/destructuring-assignment */
 
-    ValidatorForm.addValidationRule('isProfane', value => {
-      const filter = new Filter();
-      return !filter.isProfane(value);
-    });
-
-    ValidatorForm.addValidationRule('haveMembers', () => {
-      const {members} = this.state;
-      return members.length > 0;
-    });
-
-    ValidatorForm.addValidationRule('haveProfessor', () => {
-      const {selectedProfessor} = this.state;
-      return selectedProfessor !== '';
-    });
-
-    ValidatorForm.addValidationRule('haveTA', () => {
-      const {selectedTA} = this.state;
-      return selectedTA !== '';
-    });
-
-    ValidatorForm.addValidationRule('haveDepartment', () => {
-      const {departments} = this.state;
-      if (departments.length > 0) {
-        return true;
-      }
-      return false;
-    });
-
-    // pull data from strapi/backend
-    // TODO: do we need this?
-    const capstones = await api.capstones.find();
     const departmentList = await api.departments.find();
     const sponsorList = await api.sponsors.find();
+    // fetch all professors
+    // const professors = await api.users.find({department_null: false});
 
-    const {data: {roles}} = await api.getRoles();
-    const roleIdToName = roles.reduce((map, role) => {
-      map[role.id] = role.name;
-      return map;
-    }, {});
-    // sets the various states
-    this.setState({capstones, sponsorList, departmentList});
+    this.setState({sponsorList, departmentList});
 
     const response = await api.users.find();
     this.setState({Users: response, AllUsers: response});
@@ -132,14 +103,15 @@ class CreateCapstone extends Component {
     if (editId) {
       const editCapstone = await api.capstones.findOne(editId);
 
-      // const dept = departmentList.filter(dept => dept.id === editCapstone.departments);
-      const members = _.cloneDeep(editCapstone.members);
-      const teamMembers = members.filter(member => roleIdToName[member.role] !== 'TeachingAssistant'
-        && roleIdToName[member.role] !== 'Professor'
-      );
-      const professor = members.filter(member => roleIdToName[member.role] === 'Professor');
-      const TA = members.filter(member => roleIdToName[member.role] === 'TeachingAssistant');
-      const thumbnail = editCapstone.thumbnail ? [editCapstone.thumbnail, ] : [];
+      const teachingAssistantID = await api.getRoleIDFromName('TeachingAssistant');
+      const professorID = await api.getRoleIDFromName('Professor');
+      const teamMembers = editCapstone.members.filter(member => (
+        member.role !== teachingAssistantID && member.role !== professorID
+      ));
+      const professor = editCapstone.members.filter(member => member.role !== professorID);
+      const TA = editCapstone.members.filter(member => member.role !== teachingAssistantID);
+
+      const thumbnail = editCapstone.thumbnail ? [editCapstone.thumbnail] : [];
       const cover = editCapstone.cover ? editCapstone.cover : [];
       const media = editCapstone.media ? editCapstone.media : [];
       this.setState({
@@ -162,49 +134,15 @@ class CreateCapstone extends Component {
         capstoneId: editId
       });
     }
-
   }
 
   handleDescription = content => {
     this.setState({'description': content});
   };
 
-  handleChange = name => event => {
-    this.setState({[name]: event.target.value});
-  };
-
-  toDeletedThumbnail = deletedFileId => {
-    const {deletedThumbnail} = this.state;
-    if (deletedFileId !== '') {
-      if (!deletedThumbnail.includes(deletedFileId)) {
-        const joined = deletedThumbnail.concat(deletedFileId);
-        this.setState({deletedThumbnail: joined});
-      }
-    }
-  };
-
-  toDeletedCover = deletedFileId => {
-    const {deletedCover} = this.state;
-    if (deletedFileId !== '') {
-      if (!deletedCover.includes(deletedFileId)) {
-        const joined = deletedCover.concat(deletedFileId);
-        this.setState({deletedCover: joined});
-      }
-    }
-  };
-
-  toDeletedMedia = deletedFileId => {
-    const {deletedMedia} = this.state;
-    if (deletedFileId !== '') {
-      if (!deletedMedia.includes(deletedFileId)) {
-        const joined = deletedMedia.concat(deletedFileId);
-        this.setState({deletedMedia: joined});
-      }
-    }
-  };
-
-  handleChangeSwitch = name => (event) => {
-    this.setState({[name]: event.target.checked});
+  handleChange = (event) => {
+    const {checked, value, name, type} = event.target;
+    this.setState({[name]: type === 'checkbox' ? checked : value});
   };
 
   handleSelectedPerson = name => (event, values) => {
@@ -245,7 +183,6 @@ class CreateCapstone extends Component {
     });
   };
 
-
   handleConfirmTeammate = (selectedUser) => {
     const user = selectedUser;
     const {members} = this.state;
@@ -266,27 +203,25 @@ class CreateCapstone extends Component {
   };
 
   handleStartDate = (startDateInput) => {
-    const {startDate, endDate} = this.state;
+    const {endDate} = this.state;
     if (!startDateInput) {
       return;
     }
-    this.setState({startDate: startDateInput}, () => {
-      if (startDate.getTime() > endDate.getTime()) {
-        this.setState({endDate: startDateInput});
-      }
-    });
+    this.setState({startDate: startDateInput});
+    if(startDateInput.getTime() > endDate.getTime()) {
+      this.setState({endDate: startDateInput});
+    }
   };
 
   handleEndDate = (endDateInput) => {
-    const {startDate, endDate} = this.state;
+    const {startDate} = this.state;
     if (!endDateInput) {
       return;
     }
-    this.setState({endDate: endDateInput}, () => {
-      if (endDate.getTime() < startDate.getTime()) {
-        this.setState({startDate: endDateInput});
-      }
-    });
+    this.setState({endDate: endDateInput});
+    if(endDateInput.getTime() < startDate.getTime()) {
+      this.setState({startDate: endDateInput});
+    }
   };
 
   handleNewUser = (newUser) => {
@@ -295,44 +230,6 @@ class CreateCapstone extends Component {
 
   handleSelectSponsor = (event) => {
     this.setState({selectedSponsor: event.target.value});
-  };
-
-  setThumbnail = (thumbnail) => {
-    this.setState({thumbnail});
-  };
-
-  setCover = (coverPic, replace=false) => {
-    if (!replace) {
-      const {cover} = this.state;
-      if (cover.length > 0) {
-        this.setState({cover: cover.concat(coverPic)});
-      } else {
-        this.setState({cover: coverPic});
-      }
-    }
-    else {
-      this.setState({cover: coverPic});
-    }
-  };
-
-  setMedia = (mediaPic, replace=false) => {
-    if (!replace) {
-      const {media} = this.state;
-      if (media.length > 0) {
-        this.setState({media: media.concat(mediaPic)});
-      }
-      else {
-        this.setState({media: mediaPic});
-      }
-    }
-    else {
-      this.setState({media: mediaPic});
-    }
-
-  };
-
-  setRemoveImage = (remove) => {
-    this.setState({removeImg: remove});
   };
 
   extractNonMediaContent = () => {
@@ -387,39 +284,11 @@ class CreateCapstone extends Component {
     return uploadContent;
   };
 
-  clearCurrentCapstone = () => {
-    this.setState({
-      name: '',
-      description: '',
-      preview: '',
-      semester: '',
-      isFeatured: false,
-      startDate: new Date(),
-      endDate: new Date(),
-      cover: [],
-      thumbnail: [],
-      media: [],
-      departments: [],
-      capstones: [],
-      checkedSponsors: [],
-      selectedSponsor: '',
-      members: [],
-      selectedProfessor: '',
-      selectedTA: '',
-      course: '',
-      capstoneId: '',
-      removeImg: true,
-      deletedThumbnail: [],
-      deletedCover: [],
-      deletedMedia: []
-    });
-  };
-
   handleSubmit = async () => {
     await this.handleUpload(true);
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('successful submit!', snack.success);
-    await this.clearCurrentCapstone();
+    this.setState(initialState);
   };
 
   handleSave = async () => {
@@ -458,12 +327,9 @@ class CreateCapstone extends Component {
     AllUsers.filter(() => true);
   };
 
-
   render() {
     const {classes} = this.props;
     const {enqueueSnackbar} = this.props;
-    const {cover, media, thumbnail} = this.state;
-    const {setCover, setMedia, setThumbnail} = this;
 
     return(
       <div>
@@ -476,12 +342,10 @@ class CreateCapstone extends Component {
             <BasicInformation
               classes={classes}
               handleChange={this.handleChange}
-              handleChangeSwitch={this.handleChangeSwitch}
               handleStartDate={this.handleStartDate}
               handleEndDate={this.handleEndDate}
-              handleConfirmDepartment={this.handleConfirmDepartment}
-              handleRemoveDepartment={this.handleRemoveDepartment}
-              handleDescription={this.handleDescription}
+              setDepartments={(departments) => this.setState({departments})}
+              setDescription={(description) => this.setState({description})}
               {...this.state}
             />
             <MemberInformation
@@ -496,18 +360,11 @@ class CreateCapstone extends Component {
               classes={classes}
               handleSelectSponsor={this.handleSelectSponsor}
               handleConfirmSponsor={this.handleConfirmSponsor}
-              handleRemoveSponsor={this.handleRemoveSponsor}
-              thumbnail={thumbnail}
-              cover={cover}
-              media={media}
-              setThumbnail={setThumbnail}
-              setCover={setCover}
-              setMedia={setMedia}
-              toDeleteThumbnail={this.toDeletedThumbnail}
-              toDeleteCover={this.toDeletedCover}
-              toDeleteMedia={this.toDeletedMedia}
+              setCheckedSponsor={(checkedSponsors) => this.setState({checkedSponsors})}
+              setThumbnail={(thumbnail) => this.setState({thumbnail})}
+              setCover={(cover) => this.setState({cover})}
+              setMedia={(media) => this.setState({media})}
               {...this.state}
-
             />
             <Grid item xs={12} md={10}>
               <Grid container justify='space-around' spacing={3} alignItems='center'>
@@ -539,7 +396,7 @@ class CreateCapstone extends Component {
                     variant='contained'
                     color='primary'
                     style={{marginTop: '1%'}}
-                    onClick={this.clearCurrentCapstone}
+                    onClick={() => this.setState(initialState)}
                   >
                     Cancel
                   </Button>

@@ -17,7 +17,7 @@ import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import SectionTitle from '../Components/Typography/SectionTitle';
 import {permissions} from '../constants';
 import api from '../Services/api';
-import gStyle from '../utils/styles.module.css';
+import root from '../utils/styles.module.css';
 
 const styles = (theme) => ({
   cover: {
@@ -96,7 +96,7 @@ class ViewADepartment extends Component {
                   <Link className={classes.link} href={department.url}>View Department Page</Link>
                 </Grid>}
                 <Can perform={permissions.application.departments.update}>
-                  <div className={gStyle.gridListContainer}>
+                  <div className={root.gridListContainer}>
                     <DepartmentForm
                       title='Edit Department'
                       department={department}

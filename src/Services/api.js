@@ -64,7 +64,22 @@ const API = {
 
   getRoles: () => axios.get('/users-permissions/roles'),
   getRole: (id) => axios.get(`/users-permissions/roles/${id}`),
-
+  getRoleNameFromID: async (id) => {
+    const {data: {roles}} = await API.getRoles();
+    const roleIDToName = roles.reduce((map, role) => {
+      map[role.id] = role.name;
+      return map;
+    }, {});
+    return roleIDToName[id];
+  },
+  getRoleIDFromName: async (roleName) => {
+    const {data: {roles}} = await API.getRoles();
+    const roleNameToID = roles.reduce((map, role) => {
+      map[role.name] = role.id;
+      return map;
+    }, {});
+    return roleNameToID[roleName];
+  },
   login: (identifier, password) =>
     axios.post('/auth/local', {
       identifier,
