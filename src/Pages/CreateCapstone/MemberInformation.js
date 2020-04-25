@@ -1,29 +1,30 @@
-import {TextFieldProps} from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import React, {useState} from 'react';
+import List from '@material-ui/core/List';
+import {TextFieldProps} from '@material-ui/core';
 import {TextValidator} from 'react-material-ui-form-validator';
-import PageTitleTypography from '../../Components/PageTitleTypography';
+import FormControl from '@material-ui/core/FormControl';
 import {imageURL} from '../../utils/utils';
+import PageTitleTypography from '../../Components/PageTitleTypography';
 
 
 const MemberInformation = ( props ) => {
 
-  const renderInputForMembers = (inputProps) => (
+  const renderInputForMembers = (inputProps: TextFieldProps): any => (
     <TextValidator
       validators={['haveMembers']}
       errorMessages={['Must select at least one']}
@@ -33,7 +34,7 @@ const MemberInformation = ( props ) => {
     />
   );
 
-  const renderInputForProfessor = (inputProps) => (
+  const renderInputForProfessor = (inputProps: TextFieldProps): any => (
     <TextValidator
       label='Search for Professor'
       variant='outlined'
@@ -43,7 +44,7 @@ const MemberInformation = ( props ) => {
     />
   );
 
-  const renderInputForTA = (inputProps) => (
+  const renderInputForTA = (inputProps: TextFieldProps): any => (
     <TextValidator
       label='Search for TA'
       variant='outlined'
@@ -55,12 +56,16 @@ const MemberInformation = ( props ) => {
 
   const [selectUser, setSelectUser] = useState('');
 
+  const {AllUsers, classes, members, selectedProfessor, selectedTA,
+    handleConfirmTeammate, handleSelectedPerson, handleRemoveTeammate
+  } = props;
+
   const handleSelectUser = (event, values) => {
     setSelectUser(values);
   };
 
   const defaultProps = {
-    options: props.AllUsers,
+    options: AllUsers,
     getOptionLabel: (option) => {
       if (option.Fullname) {
         return option.Fullname;
@@ -84,7 +89,7 @@ const MemberInformation = ( props ) => {
       {canDelete &&
         <ListItemSecondaryAction>
           <IconButton aria-label='delete'>
-            <DeleteIcon onClick={() => props.handleRemoveTeammate(participant.id)}/>
+            <DeleteIcon onClick={() => handleRemoveTeammate(participant.id)}/>
           </IconButton>
         </ListItemSecondaryAction>
       }
@@ -93,7 +98,7 @@ const MemberInformation = ( props ) => {
   return (
     <Grid container justify='center'>
       <Grid item xs={12} md={10}>
-        <Card className={props.classes.card}>
+        <Card className={classes.card}>
           <CardContent>
             <Grid container  alignItems='center' spacing={2}>
               <Grid item xs={12}>
@@ -123,7 +128,7 @@ const MemberInformation = ( props ) => {
                       <Grid item xs={2}>
                         <Button
                           variant='outlined' color='primary' onClick={() => {
-                            props.handleConfirmTeammate(selectUser);
+                            handleConfirmTeammate(selectUser);
                             setSelectUser('');
                           }}
                         >
@@ -136,7 +141,7 @@ const MemberInformation = ( props ) => {
                   {/* team list */}
                   <Grid item xs={9}>
                     <List>
-                      {props.members.map(member => displayUser(member))
+                      {members.map(member => displayUser(member))
                       }
                     </List>
                   </Grid>
@@ -150,7 +155,7 @@ const MemberInformation = ( props ) => {
 
       </Grid>
       <Grid item xs={12} md={10}>
-        <Card className={props.classes.card}>
+        <Card className={classes.card}>
           <CardContent>
             <Grid container alignItems='center' spacing={2}>
               <Grid item xs={12}>
@@ -169,13 +174,13 @@ const MemberInformation = ( props ) => {
                             id='Search for Professor'
                             {...defaultProps}
                             style={{width: 300}}
-                            onChange={props.handleSelectedPerson('selectedProfessor')}
+                            onChange={handleSelectedPerson('selectedProfessor')}
                             renderInput={renderInputForProfessor}
                           />
                         </Tooltip>
                       </Grid>
                       <Grid>
-                        {(props.selectedProfessor && props.selectedProfessor !== '') && displayUser(props.selectedProfessor, false)}
+                        {(selectedProfessor && selectedProfessor !== '') && displayUser(selectedProfessor, false)}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -188,13 +193,13 @@ const MemberInformation = ( props ) => {
                             id='Search for TA'
                             {...defaultProps}
                             style={{width: 300}}
-                            onChange={props.handleSelectedPerson('selectedTA')}
+                            onChange={handleSelectedPerson('selectedTA')}
                             renderInput={renderInputForTA}
                           />
                         </Tooltip>
                       </Grid>
                       <Grid item>
-                        {(props.selectedTA && props.selectedTA !== '') && displayUser(props.selectedTA, false)}
+                        {(selectedTA && selectedTA !== '') && displayUser(selectedTA, false)}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -206,6 +211,39 @@ const MemberInformation = ( props ) => {
       </Grid>
     </Grid>
   );
+};
+
+MemberInformation.propTypes = {
+  AllUsers: PropTypes.arrayOf(PropTypes.shape({
+    Fullname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
+  }).isRequired).isRequired,
+  members: PropTypes.arrayOf(PropTypes.shape({
+    Fullname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
+  }).isRequired).isRequired,
+  selectedTA: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      Fullname: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
+    })
+  ]).isRequired,
+  selectedProfessor: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      Fullname: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
+    })
+  ]).isRequired,
+  handleConfirmTeammate: PropTypes.func.isRequired,
+  handleSelectedPerson: PropTypes.func.isRequired,
+  handleRemoveTeammate: PropTypes.func.isRequired
 };
 
 export default MemberInformation;

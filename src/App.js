@@ -16,7 +16,6 @@ import Snackbar from './utils/Snackbar';
 import root from './utils/styles.module.css';
 
 export default function App () {
-  // Then run sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
   return <>
     <ThemeProvider>
       <CssBaseline>

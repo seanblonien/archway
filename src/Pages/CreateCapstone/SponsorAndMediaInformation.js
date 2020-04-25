@@ -1,39 +1,30 @@
-import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
-import React from 'react';
 import {SelectValidator} from 'react-material-ui-form-validator';
-import DeletableCardLayout from '../../Components/DeletableCardLayout';
-import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import PageTitleTypography from '../../Components/PageTitleTypography';
+import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import {imageURL} from '../../utils/utils';
+import DeletableCardLayout from '../../Components/DeletableCardLayout';
 
 const SponsorAndMediaInformation = (props) => {
 
-  /*
-    * classes
-    * selectedSponsor
-    * handleSelectSponsor
-    * sponsorList
-    * handleConfirmSponsor
-    * checkedSponsors
-    * handleAcceptImageThumbnail
-    * handleAcceptImageCoverPhoto
-    * handleAcceptImageMedia
-    */
-
-  const {setCover, cover, thumbnail, media, setThumbnail, setMedia} = props;
+  const {classes, setCover, cover, thumbnail, media, setThumbnail, setMedia,
+    selectedSponsor, handleSelectSponsor, sponsorList, handleConfirmSponsor, checkedSponsors,
+    handleRemoveSponsor, toDeleteThumbnail, toDeleteMedia, toDeleteCover
+  } = props;
   return (
     <Grid container justify='center'>
       <Grid item xs={12} md={10}>
-        <Card className={props.classes.card}>
+        <Card className={classes.card}>
           <CardContent>
             <PageTitleTypography text='Sponsor Information' align='left' size='h5'/>
             <Divider/>
@@ -47,16 +38,15 @@ const SponsorAndMediaInformation = (props) => {
                           variant='outlined'
                           id='demo-customized-select'
                           label='Select a sponsor'
-
-                          value={props.selectedSponsor}
-                          onChange={props.handleSelectSponsor}
+                          value={selectedSponsor}
+                          onChange={handleSelectSponsor}
                           validators={['required'] }
                           errorMessages={['this field is required']}
                         >
                           <MenuItem value=''>
                             <em>None</em>
                           </MenuItem>
-                          {props.sponsorList.map(sponsor => (
+                          {sponsorList.map(sponsor => (
                             <MenuItem
                               key={sponsor.id}
                               value={sponsor}
@@ -70,7 +60,7 @@ const SponsorAndMediaInformation = (props) => {
                     <Button
                       variant='outlined' color='primary'
                       onClick={() => {
-                        props.handleConfirmSponsor(props.selectedSponsor);}
+                        handleConfirmSponsor(selectedSponsor);}
                       }
                     >
                       Confirm
@@ -80,9 +70,9 @@ const SponsorAndMediaInformation = (props) => {
               </Grid>
               <Grid item>
                 <DeletableCardLayout
-                  listItems={props.checkedSponsors}
+                  listItems={checkedSponsors}
                   imageURLFunction={imageURL.sponsor}
-                  removeItem={props.handleRemoveSponsor}
+                  removeItem={handleRemoveSponsor}
                 />
               </Grid>
             </Grid>
@@ -92,7 +82,7 @@ const SponsorAndMediaInformation = (props) => {
 
       </Grid>
       <Grid item xs={12} md={10}>
-        <Card className={props.classes.card}>
+        <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>
               Upload a Thumbnail
@@ -103,14 +93,14 @@ const SponsorAndMediaInformation = (props) => {
               files={thumbnail}
               accept='image/*'
               single
-              deletedFiles={props.deletedThumbnail}
+              deletedFiles={toDeleteThumbnail}
             />
           </CardContent>
         </Card>
 
       </Grid>
       <Grid item xs={12} md={10}>
-        <Card className={props.classes.card}>
+        <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>
               Upload Cover Photo
@@ -120,14 +110,14 @@ const SponsorAndMediaInformation = (props) => {
               setFiles={setCover}
               files={cover}
               accept='image/*'
-              deletedFiles={props.deletedCover}
+              deletedFiles={toDeleteCover}
             />
           </CardContent>
         </Card>
 
       </Grid>
       <Grid item xs={12} md={10}>
-        <Card className={props.classes.card}>
+        <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>
               Upload Media
@@ -135,8 +125,7 @@ const SponsorAndMediaInformation = (props) => {
             <DragAndDrop
               setFiles={setMedia}
               files={media}
-              deletedFiles={props.deletedMedia}
-
+              deletedFiles={toDeleteMedia}
             />
           </CardContent>
         </Card>
@@ -153,6 +142,42 @@ SponsorAndMediaInformation.propTypes = {
   setCover: PropTypes.func.isRequired,
   setThumbnail: PropTypes.func.isRequired,
   setMedia: PropTypes.func.isRequired,
+  toDeleteThumbnail: PropTypes.func.isRequired,
+  toDeleteMedia: PropTypes.func.isRequired,
+  toDeleteCover: PropTypes.func.isRequired,
+  handleSelectSponsor: PropTypes.func.isRequired,
+  handleConfirmSponsor: PropTypes.func.isRequired,
+  handleRemoveSponsor: PropTypes.func.isRequired,
+  selectedSponsor: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      preview: PropTypes.string.isRequired,
+      thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
+    }),
+  ]).isRequired,
+  sponsorList: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    preview: PropTypes.string.isRequired,
+    thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
+  })).isRequired,
+  checkedSponsors: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      preview: PropTypes.string.isRequired,
+      thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
+    })).isRequired
+  ]).isRequired,
 };
 
 export default SponsorAndMediaInformation;

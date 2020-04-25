@@ -22,10 +22,9 @@ export default function DragAndDrop({files, setFiles, accept, single, deletedFil
   const classes = useStyles();
 
   const onDrop = useCallback(acceptedFiles => {
-    setFiles(single ? [acceptedFiles[0]] : acceptedFiles);
-  }, []);
+    setFiles(single ? [acceptedFiles[0]] : acceptedFiles, false);
+  }, [single, setFiles]);
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
-
 
   return (
     <>
@@ -54,8 +53,8 @@ export default function DragAndDrop({files, setFiles, accept, single, deletedFil
                       className={classes.icon}
                       onClick={() =>
                       {
-                        setFiles(files.filter(f => f.name !== file.name));
-                        if (file.id) {
+                        setFiles(files.filter(f => f.name !== file.name), true);
+                        if (typeof deletedFiles === 'function' && file.id) {
                           deletedFiles(file.id);
                         }
                       }
@@ -76,10 +75,12 @@ DragAndDrop.propTypes = {
   files: PropTypes.arrayOf(PropTypes.instanceOf(File)).isRequired,
   setFiles: PropTypes.func.isRequired,
   accept: PropTypes.string,
-  single: PropTypes.bool
+  single: PropTypes.bool,
+  deletedFiles: PropTypes.func
 };
 
 DragAndDrop.defaultProps = {
   accept: '*',
-  single: false
+  single: false,
+  deletedFiles: false
 };
