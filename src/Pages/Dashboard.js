@@ -6,10 +6,16 @@ import Can from '../Components/Can';
 import PageWithMargin from '../Components/LayoutWrappers/PageWithMargin';
 import AuthContext from '../Contexts/AuthContext';
 import {routesPropTypes} from '../utils/PropTypesConfig';
+import history from '../utils/Routing/history';
+import appRoutes from '../utils/Routing/routes';
 import RoutesToRender from '../utils/Routing/RoutesToRender';
 
-const Dashboard = ({routes}) => {
+const Dashboard = ({routes, match}) => {
   const {user} = useContext(AuthContext);
+
+  if(match === appRoutes.dashboard.path){
+    history.push(appRoutes.dashboard.routeNames[0]);
+  }
 
   return (
     <PageWithMargin>
@@ -23,7 +29,7 @@ const Dashboard = ({routes}) => {
           <List>
             {Object.values(routes).map(({name, Icon, path, permission, genPath}) =>
               <Can perform={permission} key={name}>
-                <ListItem component={Link} to={genPath ? genPath(user.username) : path}>
+                <ListItem button component={Link} to={genPath ? genPath(user.username) : path}>
                   <ListItemIcon>
                     <Icon/>
                   </ListItemIcon>
@@ -37,7 +43,7 @@ const Dashboard = ({routes}) => {
         </Grid>
         <Grid item xs={12} sm={12} md={8} lg={9} xl={10}>
           <Box>
-            <RoutesToRender routes={routes}/>
+            <RoutesToRender routes={routes} hasSwitch={false}/>
           </Box>
         </Grid>
       </Grid>

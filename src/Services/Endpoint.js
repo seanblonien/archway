@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import {formatQuery} from '../utils/utils';
 
 // Represents a Strapi content type's endpoint

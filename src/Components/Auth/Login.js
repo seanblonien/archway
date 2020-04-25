@@ -1,15 +1,15 @@
-import {Box, TextField, Button,Link} from '@material-ui/core';
+import {Box, Button, TextField} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React, {useContext, useState} from 'react';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import {Link as RouterLink} from 'react-router-dom';
+import React, {useContext, useState} from 'react';
 import AuthContext from '../../Contexts/AuthContext';
 import routes from '../../utils/Routing/routes';
+import {StyledLink} from '../Typography/StyledLink';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -115,14 +115,14 @@ const Login = () => {
             <Grid item>
               <Grid container direction='column' className={classes.options}>
                 <Grid item xs>
-                  <Link component={RouterLink} to={routes.auth.forgotpassword.path}>
+                  <StyledLink to={routes.auth.forgotpassword.path}>
                     Forgot password?
-                  </Link>
+                  </StyledLink>
                 </Grid>
                 <Grid item>
-                  <Link component={RouterLink} to={routes.auth.signup.path}>
+                  <StyledLink to={routes.auth.signup.path}>
                     Looking to be a Sponsor? Sign Up
-                  </Link>
+                  </StyledLink>
                 </Grid>
               </Grid>
             </Grid>

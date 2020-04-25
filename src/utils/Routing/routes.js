@@ -1,5 +1,4 @@
 import {AccountCircle, Create, Description, Publish, ViewList, ViewQuilt} from '@material-ui/icons';
-import About from '../../Pages/About';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import Login from '../../Components/Auth/Login';
@@ -9,6 +8,7 @@ import ValidateEmail from '../../Components/Auth/ValidateEmail';
 import ReviewProposals from '../../Components/Proposals/ReviewProposals';
 import ViewYourProposals from '../../Components/Proposals/ViewYourProposals';
 import {permissions} from '../../constants';
+import About from '../../Pages/About';
 import AuthPage from '../../Pages/AuthPage';
 import Capstone from '../../Pages/Capstones';
 import CreateCapstone from '../../Pages/CreateCapstone/CreateCapstone';
@@ -34,7 +34,7 @@ const routes = {
     protected: true,
     routeNames: ['viewprofile','viewyourcapstones','createcapstone','reviewproposals', 'viewyourproposals', 'importusers'],
     viewprofile: {
-      name: 'View Profile',
+      name: 'Profile',
       path: '/dashboard/profile/:username',
       genPath: (username ) => `/dashboard/profile/${username}`,
       component: ViewProfile,
@@ -42,7 +42,7 @@ const routes = {
       permission: permissions.users_permissions.user.me,
     },
     viewyourcapstones: {
-      name: 'View Your Capstones',
+      name: 'Your Capstones',
       path: '/dashboard/capstones/:username',
       genPath: (username ) => `/dashboard/capstones/${username}`,
       component: ViewYourCapstones,
@@ -64,7 +64,7 @@ const routes = {
       permission: permissions.application.proposal_approval.find,
     },
     viewyourproposals: {
-      name: 'View Your Proposals',
+      name: 'Your Proposals',
       path: '/dashboard/view-your-proposals',
       component: ViewYourProposals,
       Icon: Description,

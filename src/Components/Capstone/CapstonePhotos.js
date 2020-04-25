@@ -1,23 +1,11 @@
-import {withStyles, withTheme} from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import React, {Component} from 'react';
-import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import Lightbox from 'react-image-lightbox';
-import {strapiURL} from '../../constants';
 import 'react-image-lightbox/style.css';
-
-const styles = (theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper
-  },
-});
+import {strapiURL} from '../../constants';
+import SectionTitle from '../Typography/SectionTitle';
 
 class CapstonePhotos extends Component {
   constructor(props) {
@@ -36,13 +24,12 @@ class CapstonePhotos extends Component {
   }
 
   render() {
-    const {classes} = this.props;
     const {photos, photoIndex, isOpen} = this.state;
 
     return (
-      <div className={classes.root}>
-        <Typography variant='h4'>Photos</Typography>
-        <GridList className={classes.gridList} cols={8}>
+      <div>
+        <SectionTitle>Photos</SectionTitle>
+        <GridList cols={8}>
           {photos.map((photo, i) => (
             <GridListTile
               key={photo.url} cols={2}
@@ -79,7 +66,4 @@ CapstonePhotos.propTypes = {
   capstone: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
 };
 
-export default compose(
-  withStyles(styles, {withTheme: true}),
-  withTheme
-)(CapstonePhotos);
+export default CapstonePhotos;

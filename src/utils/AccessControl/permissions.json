@@ -65,10 +65,10 @@
       "update": "application.proposal-approval.update",
       "delete": "application.proposal-approval.delete"
     },
-    "navbar": {
-      "find": "application.navbar.find",
-      "update": "application.navbar.update",
-      "delete": "application.navbar.delete"
+    "header_footer": {
+      "find": "application.header-footer.find",
+      "update": "application.header-footer.update",
+      "delete": "application.header-footer.delete"
     }
   },
   "content_type_builder": {

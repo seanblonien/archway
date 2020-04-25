@@ -45,7 +45,7 @@ class Header extends Component {
   }
 
   async componentDidMount() {
-    const {links: {routes}} = await api.navbar.find();
+    const {headerLinks: {routes}} = await api.headerfooter.find();
     this.setState({loading: false, routes});
   }
 

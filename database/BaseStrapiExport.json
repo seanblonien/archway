@@ -181,6 +181,21 @@
       }
     },
     {
+      "name": "header-footer",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "header_footers",
+      "attributes": {
+        "headerLinks": {
+          "type": "json"
+        },
+        "footerLinks": {
+          "type": "json"
+        }
+      }
+    },
+    {
       "name": "home page",
       "description": "",
       "connection": "default",
@@ -194,18 +209,6 @@
           "type": "media",
           "multiple": false,
           "required": false
-        }
-      }
-    },
-    {
-      "name": "navbar",
-      "description": "",
-      "connection": "default",
-      "kind": "singleType",
-      "collectionName": "navbars",
-      "attributes": {
-        "links": {
-          "type": "json"
         }
       }
     },

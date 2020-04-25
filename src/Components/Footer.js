@@ -1,89 +1,126 @@
-import {withStyles} from '@material-ui/core';
+import {Box} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import React from 'react';
-import {Link} from 'react-router-dom';
-import compose from 'recompose/compose';
-import arch from '../Static/arch.svg';
-import routes from '../utils/Routing/routes';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
+import React, {Component} from 'react';
+import {SocialIcon} from 'react-social-icons';
+import api from '../Services/api';
+import archway from '../Static/arch.svg';
+import universityLogo from '../Static/univ_logo.svg';
+import PageWithMargin from './LayoutWrappers/PageWithMargin';
+import LoadingCircle from './LoadingCircle';
+import MediaMarkdown from './Markdown/MediaMarkdown';
+import {StyledLink} from './Typography/StyledLink';
 
-const styles = () => ({
-  divStyle: {
-    background: 'white',
-    width: '100%',
-    bottom: 0,
-    position: 'absolute',
-    maxHeight: '120px',
-    paddingTop: '5px',
-    // paddingLeft: '5px',
-    // paddingRight: '5px',
-    // borderTop: '2px solid #535353',
-  },
-  textStyle: {
-    color: '#535353',
-    textDecoration: 'none',
-    marginTop: '0px',
-    marginBottom: '0px',
-  },
-  navigationHeading: {
-    color: '#535353',
-    textDecoration: 'none',
-    marginTop: '0px',
-    marginBottom: '5px',
-    // borderBottom: '2px solid white',
-  },
-  gridItem: {
-    paddingTop: '10px', // idk why this doesn't change things
-    textAlign: 'center',
-    color: '#535353',
-  },
-  linkStyle: {
-    color: '#0366D6',
-    textDecoration: 'none',
-  },
-});
+class Footer extends Component {
+  constructor (props) {
+    super(props);
 
-const Footer = props => {
-  const {classes} = props;
+    this.state = {
+      loading: true,
+      sections: [],
+      lastLine: {}
+    };
+  }
 
-  return(
-    <div className={classes.divStyle}>
-      <Grid container justify='center'>
-        <Grid container justify='center'>
-          <Grid item xs={10}>
-            <Divider light/>
+  async componentDidMount() {
+    const {footerLinks: {sections,  lastLine}} = await api.headerfooter.find();
+    this.setState({loading: false, sections, lastLine});
+  }
+
+  getLogo = (logoType) => {
+    switch (logoType) {
+      case 'university':
+        return universityLogo;
+      case 'archway':
+      default:
+        return archway;
+    }
+  };
+
+  alignSection = (index) => {
+    const {sections} = this.state;
+    if(index === 0) {
+      return 'flex-start';
+    }
+    if(index === sections.length - 1){
+      return 'flex-end';
+    }
+    return 'center';
+  };
+
+  render () {
+    const {loading, sections, lastLine} = this.state;
+    const {getLogo, alignSection, props} = this;
+
+    return (
+      loading ?
+        <LoadingCircle/>
+        :
+        <PageWithMargin {...props}>
+          <Grid container justify='center' alignItems='center'>
+            <Grid item xs={12} component={Box} pt={10} pb={3}>
+              <Divider light/>
+            </Grid>
+            <Grid item xs={12} md={10} lg={9} xl={8} container>
+              <Grid item xs={12} container justify='space-between'>
+                {sections && sections.map((section, i) => (
+                  <Grid item xs key={`footer-section-${section.id}`} container direction='column' alignContent={alignSection(i)}>
+                    <Typography variant='h6'>{section.sectionHeader}</Typography>
+                    <List disablePadding dense>
+                      {section.links && section.links.map((link) => (
+                        link.isLogo ?
+                          <ListItem key={`footer-logo-${link.id}`}>
+                            <Box m={1}>
+                              <StyledLink to={link.path}>
+                                <img src={getLogo(link.logoType)} alt={link.label} title={link.label} height={link.logoHeight} width={link.logoWidth}/>
+                              </StyledLink>
+                            </Box>
+                          </ListItem>
+                          :
+                          <ListItem key={`footer-link-${link.id}`}>
+                            {link.isSocial &&
+                              <ListItemIcon>
+                                <SocialIcon url={link.path} style={{height: 32, width: 32}}/>
+                              </ListItemIcon>
+                            }
+                            <ListItemText>
+                              <StyledLink to={link.path}>{link.label}</StyledLink>
+                            </ListItemText>
+                          </ListItem>
+                      ))}
+                    </List>
+                  </Grid>
+                ))}
+              </Grid>
+              <Grid item xs={12} container justify='space-between' component={Box} pt={1}>
+                <Grid item xs={12} component={Box} py={1}>
+                  <Divider light/>
+                </Grid>
+                <Grid item xs={6} container justify='flex-start'>
+                  {lastLine.left &&
+                    <Grid item>
+                      <MediaMarkdown>{lastLine.left}</MediaMarkdown>
+                    </Grid>
+                  }
+                </Grid>
+                <Grid item xs={6} container justify='flex-end'>
+                  {lastLine.left &&
+                    <Grid item>
+                      <MediaMarkdown>{lastLine.right}</MediaMarkdown>
+                    </Grid>
+                  }
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container justify='center' style={{paddingTop: 30, paddingBottom: 40}}>
-          <Grid container justify='center' style={{paddingLeft: 250, paddingRight: 250}}>
-            <Grid className={classes.gridItem} item xs>
-              <Link to={routes.home.path} className={classes.linkStyle}>Home Page</Link>
-            </Grid>
-            <Grid className={classes.gridItem} item xs>
-              <Link to={routes.about.path} className={classes.linkStyle}>About Page</Link>
-            </Grid>
-            <Grid className={classes.gridItem} item xs>
-              <Link to={routes.sponsors.path} className={classes.linkStyle}>Sponsor A Project</Link>
-            </Grid>
-            <Grid className={classes.gridItem} item xs={2}>
-              <img src={arch} alt='Powered by Archway' title='Powered by Archway' height='30' width='30'/>
-            </Grid>
-            <Grid className={classes.gridItem} item xs>
-              <Link to={routes.viewdepartments.path} className={classes.linkStyle}>Departments</Link>
-            </Grid>
-            <Grid className={classes.gridItem} item xs>
-              <Link to={routes.faq.path} className={classes.linkStyle}>Help and Info</Link>
-            </Grid>
-            <Grid className={classes.gridItem} item xs>
-              <Link to={routes.sponsors.path} className={classes.linkStyle}>View Sponsors</Link>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    </div>
-  );
-};
+        </PageWithMargin>
+    );
+  }
+}
 
-export default compose(
-  withStyles(styles),
-)(Footer);
+export default Footer;

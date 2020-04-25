@@ -1,4 +1,4 @@
-import {Link, Paper} from '@material-ui/core';
+import {Paper} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -8,12 +8,13 @@ import Typography from '@material-ui/core/Typography';
 import InfoIcon from '@material-ui/icons/Info';
 import React, {Component} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
-import routes from '../../utils/Routing/routes';
-import LoadingCircle from '../LoadingCircle';
-import history from '../../utils/Routing/history';
-import {imageURL} from '../../utils/utils';
 import api from '../../Services/api';
+import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
 import gStyle from '../../utils/styles.module.css';
+import {imageURL} from '../../utils/utils';
+import LoadingCircle from '../LoadingCircle';
+import {StyledLink} from '../Typography/StyledLink';
 
 class FeaturedCapstones extends Component {
   constructor(props) {
@@ -48,7 +49,7 @@ class FeaturedCapstones extends Component {
               {featuredCapstones.map((result, i) => (
                 <GridListTile
                   style={{maxWidth: '300px'}}
-                  key={i}
+                  key={result.id}
                   onClick={() => this.handleTileClick(result.id)}
                 >
                   <img
@@ -71,7 +72,9 @@ class FeaturedCapstones extends Component {
               ))}
             </GridList>
           </div>
-          <Link component={RouterLink} to={routes.capstones.path}>See More</Link>
+          <Typography>
+            <StyledLink to={routes.capstones.path}>See More</StyledLink>
+          </Typography>
         </Paper>
       </Grid>
     ;

@@ -1,17 +1,16 @@
-import Box from '@material-ui/core/Box';
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+import React from 'react';
+import SectionTitle from '../Typography/SectionTitle';
 import UserGrid from './UserGrid';
 
 const Team = ({capstone}) => {
   const {members} = capstone;
 
   return (
-    <Box my={1}>
-      <Typography variant='h4'>Meet the Team</Typography>
+    <div>
+      <SectionTitle>Meet the Team</SectionTitle>
       <UserGrid userList={members}/>
-    </Box>
+    </div>
   );
 };
 

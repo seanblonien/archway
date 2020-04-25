@@ -3,18 +3,18 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import React, {Component} from 'react';
 import {withSnackbar} from 'notistack';
-import LoadingCircle from '../Components/LoadingCircle';
-import SponsorForm from '../Components/Sponsor/SponsorForm';
-import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import React, {Component} from 'react';
+import Can from '../Components/Can';
 import CapstonesTab from '../Components/Capstone/CapstonesTab';
 import Cover from '../Components/Cover';
+import LoadingCircle from '../Components/LoadingCircle';
+import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import SponsorForm from '../Components/Sponsor/SponsorForm';
+import {permissions} from '../constants';
+import AuthContext from '../Contexts/AuthContext';
 import api from '../Services/api';
 import {imageURL} from '../utils/utils';
-import {permissions} from '../constants';
-import Can from '../Components/Can';
-import AuthContext from '../Contexts/AuthContext';
 
 class ViewASponsor extends Component {
   constructor(props) {
@@ -38,8 +38,10 @@ class ViewASponsor extends Component {
     });
 
     for (const person of sponsor.personnel) {
-      if (person.id === user.id) {
-        this.setState({canEdit: true});
+      if (user) {
+        if (person.id === user.id) {
+          this.setState({canEdit: true});
+        }
       }
     }
   }
@@ -78,9 +80,9 @@ class ViewASponsor extends Component {
             <Grid item md={6}>
               <MediaMarkdown>{sponsor.description}</MediaMarkdown>
             </Grid>
-            <Grid item md={4} align='center'>
+            <Grid item container direction='column' md={4} align='center'>
               <img src={logoPhoto} alt={sponsor.name} style={{maxWidth: '400px'}}/>
-              <Link item href={sponsor.url}>
+              <Link href={sponsor.url}>
                 <Button style={{marginTop: '5%', border: '2px solid'}}>
                   <Typography>Visit {sponsor.name} Website</Typography>
                 </Button>

@@ -1,16 +1,16 @@
-import {Box, Button, Link} from '@material-ui/core';
+import {Box, Button} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React, {useContext, useEffect, useState} from 'react';
 import PersonIcon from '@material-ui/icons/Person';
+import React, {useContext, useEffect, useState} from 'react';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
-import {passwordMatch, validateEmail, validatePassword, validateUsername} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
+import {passwordMatch, validateEmail, validatePassword, validateUsername} from '../../utils/validation';
 import {verifyEmailInStrapi} from '../../utils/verification';
+import {StyledLink} from '../Typography/StyledLink';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +77,7 @@ const SignUp = () => {
           <PersonIcon/>
         </Avatar>
         <Typography component='h1' variant='h5'>
-          Sign Up as a <Link component={RouterLink} to={routes.sponsors.path}>Sponsor</Link>
+          Sign Up as a <StyledLink to={routes.sponsors.path}>Sponsor</StyledLink>
         </Typography>
         <br/>
         <Box maxWidth='300px'>
@@ -165,9 +165,9 @@ const SignUp = () => {
             </Grid>
           </Grid>
         </ValidatorForm>
-        <Link component={RouterLink} to={routes.auth.login.path}>
+        <StyledLink to={routes.auth.login.path}>
           Return to login screen
-        </Link>
+        </StyledLink>
       </div>
     </Box>
   );

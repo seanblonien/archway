@@ -1,27 +1,28 @@
-import {withStyles, withTheme} from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth';
-import React, {Component} from 'react';
-import compose from 'recompose/compose';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
-import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
-import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
+import {withStyles, withTheme} from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth';
 import ComputerRoundedIcon from '@material-ui/icons/ComputerRounded';
-import LoadingCircle from '../Components/LoadingCircle';
-import CapstonesTab from '../Components/Capstone/CapstonesTab';
-import Professors from '../Components/Department/Professors';
-import Cover from '../Components/Cover';
-import api from '../Services/api';
-import DepartmentForm from '../Components/Department/DepartmentForm';
+import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
+import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
+import React, {Component} from 'react';
+import compose from 'recompose/compose';
 import Can from '../Components/Can';
+import CapstonesTab from '../Components/Capstone/CapstonesTab';
+import Cover from '../Components/Cover';
+import DepartmentForm from '../Components/Department/DepartmentForm';
+import Professors from '../Components/Department/Professors';
+import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import SectionTitle from '../Components/Typography/SectionTitle';
 import {permissions} from '../constants';
+import api from '../Services/api';
 import gStyle from '../utils/styles.module.css';
 
 const styles = (theme) => ({
   cover: {
     height: '500px',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     color: 'white',
   },
   link: {
@@ -74,11 +75,11 @@ class ViewADepartment extends Component {
           <Grid className={classes.cover} container direction='row' justify='center' alignItems='center'>
             <Grid item container direction='column' alignItems='center'>
               <Grid item>
-                <MediaMarkdown item>{`###${department.name}`}</MediaMarkdown>
+                <MediaMarkdown>{`###${department.name}`}</MediaMarkdown>
               </Grid>
               <br/>
               <Grid item md={5}>
-                <MediaMarkdown item>{department.description}</MediaMarkdown>
+                <MediaMarkdown>{department.description}</MediaMarkdown>
               </Grid>
               <br/>
               <Grid item container md={6} direction='row' justify='space-evenly'>
@@ -94,28 +95,30 @@ class ViewADepartment extends Component {
                   <ComputerRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
                   <Link className={classes.link} href={department.url}>View Department Page</Link>
                 </Grid>}
-                <div className={gStyle.gridListContainer}>
-                  <Can perform={permissions.application.departments.update}>
+                <Can perform={permissions.application.departments.update}>
+                  <div className={gStyle.gridListContainer}>
                     <DepartmentForm
                       title='Edit Department'
                       department={department}
                       type='edit'
                       update={this.updateData}
                     />
-                  </Can>
-                </div>
+                  </div>
+                </Can>
               </Grid>
             </Grid>
           </Grid>
         </Cover>
         <Grid className={classes.capstones} container direction='column'>
           {department.capstones[0] &&
-            <div>
-              <MediaMarkdown>{`####${department.name} Capstones`}</MediaMarkdown>
-              <br/>
-              <CapstonesTab capstones={department.capstones}/>
-              <br/><br/>
-            </div>
+            <>
+              <Grid item xs={12}>
+                <SectionTitle>{department.name} Capstones</SectionTitle>
+              </Grid>
+              <Grid item xs={12}>
+                <CapstonesTab capstones={department.capstones}/>
+              </Grid>
+            </>
           }
           <Professors department={department}/>
         </Grid>
