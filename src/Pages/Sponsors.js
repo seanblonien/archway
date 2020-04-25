@@ -7,19 +7,16 @@ import withWidth from '@material-ui/core/withWidth/withWidth';
 import React, {Component} from 'react';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import {StyledLink} from '../Components/Typography/StyledLink';
 import api from '../Services/api';
+import routes from '../utils/Routing/routes';
 import {getBgImageFromStrapi} from '../utils/utils';
 
 const styles = () => ({
-  button: {
-    color: 'white',
-    border: '2px solid white'
-  },
   sidePanel: {
     height: '800px',
-    backgroundColor: 'black',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     color: 'white',
-    opacity: '0.7'
   }
 });
 
@@ -47,7 +44,7 @@ class Sponsors extends Component {
       <div>
         <div style={{width: '100%', height: '800px', backgroundImage: getBgImageFromStrapi(pageContent.bgimage.url), backgroundSize: 'cover'}}>
           <Grid container direction='row' display='inline' justify='flex-end'>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} lg={3}>
               <Card className={classes.sidePanel}>
                 <CardContent>
                   <MediaMarkdown>
@@ -55,8 +52,10 @@ class Sponsors extends Component {
                   </MediaMarkdown>
                   <br/>
                   <Grid item align='center'>
-                    <Button className={classes.button} size='large'>
-                      Sponsor Signup
+                    <Button variant='contained' color='secondary'>
+                      <StyledLink to={routes.auth.signup.path}>
+                        Sponsor Signup
+                      </StyledLink>
                     </Button>
                   </Grid>
                 </CardContent>

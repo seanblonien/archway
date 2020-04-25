@@ -1,16 +1,16 @@
-import {Box, Button, Link} from '@material-ui/core';
+import {Box, Button} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React, {useContext, useEffect, useState} from 'react';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import React, {useContext, useEffect, useState} from 'react';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
+import routes from '../../utils/Routing/routes';
 import {useQuery} from '../../utils/utils';
 import {passwordMatch, validatePassword} from '../../utils/validation';
-import routes from '../../utils/Routing/routes';
+import {StyledLink} from '../Typography/StyledLink';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -125,9 +125,9 @@ const ResetPassword = () => {
             </Grid>
           </Grid>
         </ValidatorForm>
-        <Link component={RouterLink} to={routes.auth.login.path}>
+        <StyledLink to={routes.auth.login.path}>
           Return to login screen
-        </Link>
+        </StyledLink>
       </div>
     </Box>
   );

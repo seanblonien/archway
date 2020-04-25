@@ -15,7 +15,7 @@
     background-color: lightgray !important;
 }
 .card {
-    height: 450px;
+    max-height: 450px;
     max-width: 400px;
 }
 
@@ -42,4 +42,15 @@
 .table {
     margin-left: 5%;
     margin-right: 5%;
+}
+.bodyContainer {
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+.bodyContent {
+    min-height: 100vh;
+}
+.bodyFooter {
+    grid-row-start: 2;
+    grid-row-end: 3;
 }

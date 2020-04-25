@@ -1,11 +1,9 @@
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import MarkdownEditor from '../Markdown/MarkdownEditor';
+import SubSectionTitle from '../Typography/SubsectionTitle';
 
 const MainProfileEdit = ({user, update}) => {
 
@@ -14,10 +12,8 @@ const MainProfileEdit = ({user, update}) => {
   };
 
   return (
-    <Box my={2}>
-      <Typography variant='h5'>Main Settings</Typography>
-      <Divider/>
-      <br/>
+    <>
+      <SubSectionTitle>Main Settings</SubSectionTitle>
       <Grid container direction='row' spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -47,7 +43,7 @@ const MainProfileEdit = ({user, update}) => {
           />
         </Grid>
       </Grid>
-    </Box>
+    </>
   );
 };
 

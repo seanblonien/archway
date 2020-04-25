@@ -1,16 +1,22 @@
-import {AccountCircle, Create, Description, Publish, ViewQuilt} from '@material-ui/icons';
-import About from '../../Components/About';
+import {AccountCircle, Create, Description, Publish, ViewList, ViewQuilt} from '@material-ui/icons';
 import ImportUsers from '../../Components/Admin/ImportUsers';
+import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import Login from '../../Components/Auth/Login';
-import SearchRedirect from '../../Components/SearchRedirect';
+import ResetPassword from '../../Components/Auth/ResetPassword';
+import SignUp from '../../Components/Auth/SignUp';
+import ValidateEmail from '../../Components/Auth/ValidateEmail';
+import ReviewProposals from '../../Components/Proposals/ReviewProposals';
+import ViewYourProposals from '../../Components/Proposals/ViewYourProposals';
 import {permissions} from '../../constants';
+import About from '../../Pages/About';
+import AuthPage from '../../Pages/AuthPage';
 import Capstone from '../../Pages/Capstones';
 import CreateCapstone from '../../Pages/CreateCapstone/CreateCapstone';
 import Dashboard from '../../Pages/Dashboard';
 import FAQ from '../../Pages/FAQ';
 import Home from '../../Pages/Home';
-import AuthPage from '../../Pages/AuthPage';
 import NotFound from '../../Pages/NotFound';
+import SearchResults from '../../Pages/SearchResults';
 import Sponsors from '../../Pages/Sponsors';
 import ViewADepartment from '../../Pages/ViewADepartment';
 import ViewAllDepartments from '../../Pages/ViewAllDepartments';
@@ -18,12 +24,7 @@ import ViewASponsor from '../../Pages/ViewASponsor';
 import ViewCapstone from '../../Pages/ViewCapstone';
 import ViewProfile from '../../Pages/ViewProfile';
 import ViewSponsors from '../../Pages/ViewSponsors';
-import SignUp from '../../Components/Auth/SignUp';
-import ForgotPassword from '../../Components/Auth/ForgotPassword';
-import ResetPassword from '../../Components/Auth/ResetPassword';
-import ValidateEmail from '../../Components/Auth/ValidateEmail';
 import ViewYourCapstones from '../../Pages/ViewYourCapstones';
-
 
 const routes = {
   dashboard: {
@@ -31,22 +32,22 @@ const routes = {
     path: '/dashboard',
     component: Dashboard,
     protected: true,
-    routeNames: ['viewprofile','viewyourcapstones','createcapstone','proposals','importusers'],
+    routeNames: ['viewprofile','viewyourcapstones','createcapstone','reviewproposals', 'viewyourproposals', 'importusers'],
     viewprofile: {
-      name: 'View Profile',
-      path: '/dashboard/viewprofile/:username',
-      genPath: (username ) => `/dashboard/viewprofile/${username}`,
+      name: 'Profile',
+      path: '/dashboard/profile/:username',
+      genPath: (username ) => `/dashboard/profile/${username}`,
       component: ViewProfile,
       Icon: AccountCircle,
       permission: permissions.users_permissions.user.me,
     },
     viewyourcapstones: {
-      name: 'View Your Capstones',
-      path: '/dashboard/my-capstones/:username',
-      genPath: (username ) => `/dashboard/view-your-capstones/${username}`,
+      name: 'Your Capstones',
+      path: '/dashboard/capstones/:username',
+      genPath: (username ) => `/dashboard/capstones/${username}`,
       component: ViewYourCapstones,
       Icon: ViewQuilt,
-      permission: permissions.application.capstones.update,
+      permission: permissions.application.capstones.find,
     },
     createcapstone: {
       name: 'Create Capstone',
@@ -55,12 +56,19 @@ const routes = {
       Icon: Create,
       permission: permissions.application.capstones.create,
     },
-    proposals: {
-      name: 'Proposals',
-      path: '/dashboard/proposals',
-      component: NotFound,
+    reviewproposals: {
+      name: 'Review Proposals',
+      path: '/dashboard/review-proposals',
+      component: ReviewProposals,
+      Icon: ViewList,
+      permission: permissions.application.proposal_approval.find,
+    },
+    viewyourproposals: {
+      name: 'Your Proposals',
+      path: '/dashboard/view-your-proposals',
+      component: ViewYourProposals,
       Icon: Description,
-      permission: permissions.application.capstones.create,
+      permission: permissions.application.proposals.create,
     },
     importusers: {
       name: 'Import Users',
@@ -101,16 +109,15 @@ const routes = {
       component: ValidateEmail
     },
   },
-  searchredirect: {
-    name: 'Search Redirect',
-    path: '/SearchRedirect/:path/:searchTerm?',
-    genPath: (path, searchterm) => `/SearchRedirect/${path}/${searchterm}`,
-    component: SearchRedirect
+  search: {
+    name: 'Search',
+    path: '/search/:searchTerm?',
+    genPath: (searchterm) => `/search/${searchterm}`,
+    component: SearchResults
   },
   capstones: {
     name: 'Capstones',
-    path: '/Capstones/:searchTerm?',
-    genPath: (searchterm = '') => `/Capstones/${searchterm}`,
+    path: '/capstones',
     component: Capstone
   },
   about: {
@@ -120,47 +127,46 @@ const routes = {
   },
   viewcapstone: {
     name: 'View Capstone',
-    path: '/ViewCapstone/:capstoneID',
-    genPath: (capstoneID ) => `/ViewCapstone/${capstoneID}`,
+    path: '/capstone/:capstoneID',
+    genPath: (capstoneID ) => `/capstone/${capstoneID}`,
     component: ViewCapstone
   },
   viewprofile: {
     name: 'View Profile',
-    path: '/viewprofile/:username',
-    genPath: (username ) => `/viewprofile/${username}`,
+    path: '/profile/:username',
+    genPath: (username ) => `/profile/${username}`,
     component: ViewProfile
   },
   sponsors: {
-    name: 'Sponsors',
-    path: '/sponsors',
+    name: 'About Sponsors',
+    path: '/about-sponsors',
     component: Sponsors
   },
   viewsponsors: {
     name: 'View Sponsors',
-    path: '/ViewSponsors/:searchTerm?',
-    genPath: (searchTerm = '') => `/ViewSponsors/${searchTerm}`,
+    path: '/sponsors',
     component: ViewSponsors
   },
   viewsponsor: {
     name: 'View Sponsor',
-    path: '/ViewASponsor/:id',
-    genPath: (id) => `/ViewASponsor/${id}`,
+    path: '/sponsor/:id',
+    genPath: (id) => `/sponsor/${id}`,
     component: ViewASponsor
   },
   viewdepartments: {
     name: 'View Departments',
-    path: '/ViewAllDepartments',
+    path: '/departments',
     component: ViewAllDepartments
   },
   viewdepartment: {
     name: 'View Department',
-    path: '/ViewADepartment/:id',
-    genPath: (id) => `/ViewADepartment/${id}`,
+    path: '/department/:id',
+    genPath: (id) => `/department/${id}`,
     component: ViewADepartment
   },
   faq: {
     name: 'FAQ',
-    path: '/FAQ',
+    path: '/faq',
     component: FAQ
   },
   home: {

@@ -6,9 +6,10 @@ import React, {Component} from 'react';
 import {HashLink as Link} from 'react-router-hash-link';
 import compose from 'recompose/compose';
 import LoadingCircle from '../Components/LoadingCircle';
-import api from '../Services/api';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
-import gStyle from '../utils/styles.module.css';
+import api from '../Services/api';
+import routes from '../utils/Routing/routes';
+import root from '../utils/styles.module.css';
 
 const styles = theme => ({
   questions: {
@@ -60,7 +61,7 @@ class FAQ extends Component {
     if (!loading) {
       return (
         <div align='center'>
-          <Typography className={gStyle.pageTitle} variant='h2'>Frequently Asked Questions</Typography>
+          <Typography className={root.pageTitle} variant='h2'>Frequently Asked Questions</Typography>
 
           <Grid container className={classes.questions} spacing={2} direction='row' alignItems='flex-start'>
             {categories.map((category) => (
@@ -73,7 +74,7 @@ class FAQ extends Component {
                     { category === question.category &&
                       <Grid item xs={12} style={{marginLeft: '4%'}}>
 
-                        <Link className={classes.link} to={`/FAQ#question${index}`}>
+                        <Link className={classes.link} to={`${routes.faq.path}#question${index}`}>
                           <Typography align='left'>
                             {question.question}
                           </Typography>
@@ -90,7 +91,7 @@ class FAQ extends Component {
           <Grid container alignItems='stretch'>
 
             {categories.map((category) => (
-              <Paper key={category.toString()} className={gStyle.largePaper}>
+              <Paper key={category.toString()} className={root.largePaper}>
                 <Grid item xs={12}>
                   <Typography variant='h4' align='center' className={classes.subtitle}>
                     {category}

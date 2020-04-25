@@ -1,8 +1,7 @@
-/* eslint-disable import/no-cycle */
 import axios from 'axios';
+import StorageManager from '../Contexts/StorageManager';
 import Endpoint from './Endpoint';
 import UploadEndpoint from './UploadEndpoint';
-import StorageManager from '../Contexts/StorageManager';
 
 // Handles all axios request interception
 const handleRequest = (config) => {
@@ -25,6 +24,8 @@ const handleResponseError = async (error) => {
   // 401 means bad token/bad authentication values
   if(response.status === 401){
     StorageManager.clearLocalStorage();
+    window.location.reload();
+    return Promise.resolve();
   }
   return Promise.reject(response);
 };
@@ -52,6 +53,8 @@ const API = {
   theme: new Endpoint('theme', axios),
   homepage: new Endpoint('home-page', axios),
   sponsorpage: new Endpoint('sponsor-page', axios),
+  aboutpage: new Endpoint('about-page', axios),
+  headerfooter: new Endpoint('header-footer', axios),
 
   // Other non-content type Strapi API endpoints
 
@@ -61,7 +64,22 @@ const API = {
 
   getRoles: () => axios.get('/users-permissions/roles'),
   getRole: (id) => axios.get(`/users-permissions/roles/${id}`),
-
+  getRoleNameFromID: async (id) => {
+    const {data: {roles}} = await API.getRoles();
+    const roleIDToName = roles.reduce((map, role) => {
+      map[role.id] = role.name;
+      return map;
+    }, {});
+    return roleIDToName[id];
+  },
+  getRoleIDFromName: async (roleName) => {
+    const {data: {roles}} = await API.getRoles();
+    const roleNameToID = roles.reduce((map, role) => {
+      map[role.name] = role.id;
+      return map;
+    }, {});
+    return roleNameToID[roleName];
+  },
   login: (identifier, password) =>
     axios.post('/auth/local', {
       identifier,

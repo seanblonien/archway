@@ -1,23 +1,18 @@
 import withWidth from '@material-ui/core/withWidth';
-import Fuse from 'fuse.js';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import routes from '../utils/Routing/routes';
 import {imageURL} from '../utils/utils';
 import api from '../Services/api';
-import FilterBar from '../Components/FilterBar';
 import LoadingCircle from '../Components/LoadingCircle';
-import CardLayout from '../Components/CardLayout';
+import CardLayout from '../Components/LayoutWrappers/CardLayout';
 
 class Capstone extends Component {
 
   constructor(props) {
     super(props);
-    const {match: {params}} = this.props;
-
     this.state = {
       loading: true,
-      searchTerm: params,
       capstones: []
     };
   }
@@ -28,47 +23,17 @@ class Capstone extends Component {
   }
 
   render() {
-    const {loading, searchTerm, capstones} = this.state;
+    const {loading, capstones} = this.state;
 
     if (!loading) {
-      // Search functionality
-      let match;
-      let phrase;
-      const searchOptions = {
-        shouldSort: true,
-        threshold: 0.3,
-        minMatchCharLength: 1,
-        keys: ['title',
-          'department.name',
-          'sponsors.name',
-        ]
-      };
-
-      if (searchTerm.searchTerm !== undefined) {
-        phrase = searchTerm.searchTerm;
-      }
-
-      if (phrase !== undefined) {
-        const fuse = new Fuse(capstones, searchOptions);
-        match = fuse.search(phrase);
-      } else {
-        match = capstones;
-      }
-
       return (
         <div>
-          <FilterBar/>
-          <CardLayout title='Capstone Projects' listItems={match} childURL={routes.viewcapstone.genPath} imageURLFunction={imageURL.capstone}/>
+          <CardLayout title='Capstone Projects' listItems={capstones} childURL={routes.viewcapstone.genPath} imageURLFunction={imageURL.capstone}/>
         </div>
       );
     }
 
-    return (
-      <>
-        <FilterBar/>
-        <LoadingCircle/>
-      </>
-    );
+    return <LoadingCircle/>;
   }
 }
 

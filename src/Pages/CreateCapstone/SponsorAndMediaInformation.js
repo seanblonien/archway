@@ -1,25 +1,25 @@
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
-import {SelectValidator} from 'react-material-ui-form-validator';
+import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import PageTitleTypography from '../../Components/PageTitleTypography';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React from 'react';
+import {SelectValidator} from 'react-material-ui-form-validator';
+import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
+import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
-import DeletableCardLayout from '../../Components/DeletableCardLayout';
+import Button from '@material-ui/core/Button';
 
 const SponsorAndMediaInformation = (props) => {
 
   const {classes, setCover, cover, thumbnail, media, setThumbnail, setMedia,
     selectedSponsor, handleSelectSponsor, sponsorList, handleConfirmSponsor, checkedSponsors,
-    handleRemoveSponsor, toDeleteThumbnail, toDeleteMedia, toDeleteCover
+    setCheckedSponsor
   } = props;
   return (
     <Grid container justify='center'>
@@ -59,20 +59,24 @@ const SponsorAndMediaInformation = (props) => {
                   <Grid item xs>
                     <Button
                       variant='outlined' color='primary'
-                      onClick={() => {
-                        handleConfirmSponsor(selectedSponsor);}
-                      }
+                      onClick={() => (
+                        setCheckedSponsor([...checkedSponsors, selectedSponsor])
+                      )}
                     >
                       Confirm
                     </Button>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item>
-                <DeletableCardLayout
+              <Grid item xs={12}>
+                <Cards
                   listItems={checkedSponsors}
                   imageURLFunction={imageURL.sponsor}
-                  removeItem={handleRemoveSponsor}
+                  setListItems={setCheckedSponsor}
+                  canRoute={false}
+                  canDelete
+                  previewWords={10}
+                  mediaHeight={100}
                 />
               </Grid>
             </Grid>
@@ -93,7 +97,6 @@ const SponsorAndMediaInformation = (props) => {
               files={thumbnail}
               accept='image/*'
               single
-              deletedFiles={toDeleteThumbnail}
             />
           </CardContent>
         </Card>
@@ -110,7 +113,6 @@ const SponsorAndMediaInformation = (props) => {
               setFiles={setCover}
               files={cover}
               accept='image/*'
-              deletedFiles={toDeleteCover}
             />
           </CardContent>
         </Card>
@@ -125,7 +127,6 @@ const SponsorAndMediaInformation = (props) => {
             <DragAndDrop
               setFiles={setMedia}
               files={media}
-              deletedFiles={toDeleteMedia}
             />
           </CardContent>
         </Card>
@@ -142,12 +143,9 @@ SponsorAndMediaInformation.propTypes = {
   setCover: PropTypes.func.isRequired,
   setThumbnail: PropTypes.func.isRequired,
   setMedia: PropTypes.func.isRequired,
-  toDeleteThumbnail: PropTypes.func.isRequired,
-  toDeleteMedia: PropTypes.func.isRequired,
-  toDeleteCover: PropTypes.func.isRequired,
   handleSelectSponsor: PropTypes.func.isRequired,
   handleConfirmSponsor: PropTypes.func.isRequired,
-  handleRemoveSponsor: PropTypes.func.isRequired,
+  setCheckedSponsor: PropTypes.func.isRequired,
   selectedSponsor: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.shape({

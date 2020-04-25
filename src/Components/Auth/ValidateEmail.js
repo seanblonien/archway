@@ -1,11 +1,11 @@
-import {Box, Link} from '@material-ui/core';
+import {Box} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
 import EmailIcon from '@material-ui/icons/Person';
-import {Link as RouterLink} from 'react-router-dom';
+import React from 'react';
 import routes from '../../utils/Routing/routes';
+import {StyledLink} from '../Typography/StyledLink';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,9 +41,9 @@ const ValidateEmail = () => {
         <Typography component='h1' variant='h5'>
           Please check your email for a confirmation link.
         </Typography>
-        <Link component={RouterLink} to={routes.auth.login.path}>
+        <StyledLink to={routes.auth.login.path}>
           Return to login screen
-        </Link>
+        </StyledLink>
       </div>
     </Box>
   );

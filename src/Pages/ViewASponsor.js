@@ -1,72 +1,20 @@
 import {Link} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import React, {Component} from 'react';
 import {withSnackbar} from 'notistack';
+import React, {Component} from 'react';
+import Can from '../Components/Can';
+import CapstonesTab from '../Components/Capstone/CapstonesTab';
+import Cover from '../Components/Cover';
 import LoadingCircle from '../Components/LoadingCircle';
-import SponsorForm from '../Components/SponsorForm';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import SponsorForm from '../Components/Sponsor/SponsorForm';
+import {permissions} from '../constants';
+import AuthContext from '../Contexts/AuthContext';
 import api from '../Services/api';
 import {imageURL} from '../utils/utils';
-import {permissions} from '../constants';
-import Can from '../Components/Can';
-import AuthContext from '../Contexts/AuthContext';
-
-const styles = theme => ({
-  card: {
-    raised: true,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  sponsorImage: {
-    height: 'auto',
-    maxWidth: '80%',
-    borderRadius: '5px',
-  },
-  title: {
-    fontSize: 14,
-  },
-  button: {
-    border: '2px solid currentColor',
-    borderRadius: 0,
-    height: 'auto',
-    padding: `${theme.spacing(1)}px ${theme.spacing(5)}px`,
-  },
-  pos: {
-    marginBottom: 100,
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
-  },
-  capstoneCard: {
-    background: '#f1f1f1f1',
-  },
-  associatedCard: {
-    raised: true,
-    height: '200px',
-    overflow: 'auto',
-  },
-  media: {
-    maxWidth: 400,
-    borderRadius: '25px',
-  },
-  primaryButton: {
-    color: 'primary',
-  },
-  center: {
-    display: 'block',
-    width: '50%',
-  }
-});
 
 class ViewASponsor extends Component {
   constructor(props) {
@@ -76,7 +24,6 @@ class ViewASponsor extends Component {
       sponsor: [],
       canEdit: false,
       logoPhoto: '',
-      coverPhoto: ''
     };
   }
 
@@ -88,12 +35,13 @@ class ViewASponsor extends Component {
       loading: false,
       sponsor,
       logoPhoto: imageURL.sponsor(sponsor.logo),
-      coverPhoto: imageURL.sponsor(sponsor.coverPhoto)
     });
 
     for (const person of sponsor.personnel) {
-      if (person.id === user.id) {
-        this.setState({canEdit: true});
+      if (user) {
+        if (person.id === user.id) {
+          this.setState({canEdit: true});
+        }
       }
     }
   }
@@ -103,109 +51,55 @@ class ViewASponsor extends Component {
     const updatedSponsor = await api.sponsors.findOne(sponsor.id);
     this.setState({
       sponsor: updatedSponsor,
-      coverPhoto: imageURL.sponsor(updatedSponsor.coverPhoto),
       logoPhoto: imageURL.sponsor(updatedSponsor.logo)
     });
   };
 
   render() {
-    const {classes} = this.props;
     const {loading, sponsor, canEdit, logoPhoto} = this.state;
 
-    if (!loading) {
-      return (
-        <div className='ViewASponsor'>
-          <Grid container justify='center'>
-            <Grid item xs={10}>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Card>
-                    {canEdit &&
-                      <Can perform={permissions.application.sponsors.update}>
-                        <SponsorForm
-                          title='Edit Sponsor'
-                          sponsor={sponsor}
-                          type='edit'
-                          update={this.updateData}
-                        />
-                      </Can>
-                    }
-                    <Typography variant='h1'>{sponsor.name}</Typography>
-                    <Divider style={{marginTop: '2%'}}/>
-                  </Card>
-                </Grid>
-                <Card>
-                  <Grid container justify='center'>
-                    <Grid item xs={6}>
-
-                      <Typography color='primary' align='center' component='span'>
-                        <h1> Logo </h1>
-                      </Typography>
-                      <Divider style={{marginBottom: '2%'}}/>
-                      <Typography align='center' style={{marginBottom: '1%'}}>
-                        <img src={logoPhoto} className={classes.sponsorImage} alt='Display'/>
-                      </Typography>
-                      <CardContent>
-                        <MediaMarkdown>
-                          {sponsor.description}
-                        </MediaMarkdown>
-                      </CardContent>
-
-                      <Grid container justify='center'>
-                        <Link href={sponsor.url}>
-                          <Button
-                            className={classes.button}
-                            style={{marginTop: '2%'}}
-                          >
-                            <Typography color='primary' variant='h6' component='span'>
-                              Visit {sponsor.name} Website
-                            </Typography>
-                          </Button>
-                        </Link>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Card>
-
-                <Grid item xs={12}>
-                  <Card>
-                    <Divider style={{marginTop: '2%'}}/>
-                    <Typography variant='h4' align='center'>
-                      {`${sponsor.name}'s`} Sponsored Capstones
-                    </Typography>
-                    <CardContent>
-                      <Typography>
-                        {`Currently involved in ${sponsor.capstones.length} capstones`}
-                      </Typography>
-                      <Grid container spacing={8}>
-                        {sponsor.capstones.map((result) => (
-                          <Grid item xs={12} md={6} style={{marginTop: '2%'}} key={result.id}>
-                            <Card className={classes.capstoneCard} style={{height: '200px', overflow: 'auto'}}>
-                              <CardContent>
-                                <Typography variant='subtitle1'>{result.title}</Typography>
-                                <Divider/>
-                                <MediaMarkdown>
-                                  {result.description}
-                                </MediaMarkdown>
-                              </CardContent>
-                            </Card>
-                          </Grid>
-                        ))}
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Grid>
+    return loading ?
+      <LoadingCircle/> :
+      <div>
+        <Cover covers={sponsor.cover}>
+          <Grid container direction='row' justify='flex-end'>
+            {canEdit &&
+              <Can perform={permissions.application.sponsors.update}>
+                <SponsorForm
+                  title='Edit Sponsor'
+                  sponsor={sponsor}
+                  type='edit'
+                  update={this.updateData}
+                />
+              </Can>
+            }
+          </Grid>
+        </Cover>
+        <Grid container direction='column'>
+          <Grid item container direction='row' justify='space-evenly' style={{marginTop: '2%'}}>
+            <Grid item md={6}>
+              <MediaMarkdown>{sponsor.description}</MediaMarkdown>
+            </Grid>
+            <Grid item container direction='column' md={4} align='center'>
+              <img src={logoPhoto} alt={sponsor.name} style={{maxWidth: '400px'}}/>
+              <Link href={sponsor.url}>
+                <Button style={{marginTop: '5%', border: '2px solid'}}>
+                  <Typography>Visit {sponsor.name} Website</Typography>
+                </Button>
+              </Link>
             </Grid>
           </Grid>
-        </div>
-      );
-    }
-
-    return <LoadingCircle/>;
+          <Grid item container direction='row' justify='space-around' style={{marginTop: '4%'}}>
+            <Grid item xs={11}>
+              {sponsor.capstones[0] && <CapstonesTab capstones={sponsor.capstones}/>}
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+    ;
   }
 }
 
 ViewASponsor.contextType = AuthContext;
 
-export default withSnackbar((withStyles(styles)(withWidth()(ViewASponsor))));
+export default withSnackbar(((withWidth()(ViewASponsor))));

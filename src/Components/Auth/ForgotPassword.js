@@ -1,15 +1,15 @@
-import {Box, Button, Link} from '@material-ui/core';
+import {Box, Button} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React, {useContext, useEffect, useState} from 'react';
 import EmailIcon from '@material-ui/icons/Email';
+import React, {useContext, useEffect, useState} from 'react';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {Link as RouterLink} from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
-import {validateEmail} from '../../utils/validation';
 import routes from '../../utils/Routing/routes';
+import {validateEmail} from '../../utils/validation';
+import {StyledLink} from '../Typography/StyledLink';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,12 +93,12 @@ const ForgotPassword = () => {
             </Grid>
           </Grid>
         </ValidatorForm>
-        <Link component={RouterLink} to={routes.auth.login.path}>
+        <StyledLink to={routes.auth.login.path}>
           Return to login screen
-        </Link>
-        <Link component={RouterLink} to={routes.auth.resetpassword.path}>
+        </StyledLink>
+        <StyledLink to={routes.auth.resetpassword.path}>
           I already have my unique code from my email
-        </Link>
+        </StyledLink>
       </div>
     </Box>
   );

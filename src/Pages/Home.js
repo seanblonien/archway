@@ -8,14 +8,14 @@ import {Parallax} from 'react-parallax';
 import {Link as RouterLink} from 'react-router-dom';
 import compose from 'recompose/compose';
 import Can from '../Components/Can';
-import FeaturedCapstones from '../Components/FeaturedCapstones';
-import FeaturedSponsors from '../Components/FeaturedSponsors';
+import FeaturedCapstones from '../Components/Capstone/FeaturedCapstones';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import FeaturedSponsors from '../Components/Sponsor/FeaturedSponsors';
 import {permissions, strapiURL} from '../constants';
 import api from '../Services/api';
 import routes from '../utils/Routing/routes';
-import gStyle from '../utils/styles.module.css';
+import root from '../utils/styles.module.css';
 
 const insideStyles = theme => ({
   background: theme.palette.primary.main,
@@ -102,16 +102,16 @@ class Home extends Component {
                   <Typography variant='h2' style={{color: 'white'}}>Capstones</Typography>
                   <div>
                     <Button
-                      className={gStyle.largeButton}
+                      className={root.largeButton}
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
-                      to={routes.capstones.genPath('')}
+                      to={routes.capstones.path}
                     >
                       Check out Current Capstones
                     </Button>
                     <Button
-                      className={gStyle.largeButton}
+                      className={root.largeButton}
                       variant='contained'
                       color='secondary'
                       component={RouterLink}
@@ -120,7 +120,7 @@ class Home extends Component {
                       Check Out Our Sponsors
                     </Button>
                     <Button
-                      className={gStyle.largeButton}
+                      className={root.largeButton}
                       variant='contained'
                       color='secondary'
                       component={RouterLink}

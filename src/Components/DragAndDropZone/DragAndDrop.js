@@ -1,16 +1,16 @@
 import {Box} from '@material-ui/core';
-import React, {useCallback} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
+import {makeStyles} from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
-import PropTypes from 'prop-types';
-import {useDropzone} from 'react-dropzone';
 import _ from 'lodash';
-import './style.css';
+import PropTypes from 'prop-types';
+import React, {useCallback} from 'react';
+import {useDropzone} from 'react-dropzone';
 import {imageURL} from '../../utils/utils';
+import './style.css';
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -18,14 +18,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function DragAndDrop({files, setFiles, accept, single, deletedFiles}) {
+export default function DragAndDrop({files, setFiles, accept, single}) {
   const classes = useStyles();
 
   const onDrop = useCallback(acceptedFiles => {
     setFiles(single ? [acceptedFiles[0]] : acceptedFiles, false);
-  }, []);
+  }, [single, setFiles]);
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
-
 
   return (
     <>
@@ -44,7 +43,6 @@ export default function DragAndDrop({files, setFiles, accept, single, deletedFil
               {file.id
                 ? <img src={imageURL.capstone(file)} alt={file.name}/>
                 : <img src={URL.createObjectURL(file)} alt={file.name}/>
-
               }
               <GridListTileBar
                 title={file.name}
@@ -52,14 +50,9 @@ export default function DragAndDrop({files, setFiles, accept, single, deletedFil
                   <IconButton aria-label={`Delete ${file.name}`}>
                     <DeleteIcon
                       className={classes.icon}
-                      onClick={() =>
-                      {
-                        setFiles(files.filter(f => f.name !== file.name), true);
-                        if (typeof deletedFiles === 'function' && file.id) {
-                          deletedFiles(file.id);
-                        }
-                      }
-                      }
+                      onClick={() => (
+                        setFiles(files.filter(f => f.name !== file.name))
+                      )}
                     />
                   </IconButton>
                 }
@@ -77,11 +70,9 @@ DragAndDrop.propTypes = {
   setFiles: PropTypes.func.isRequired,
   accept: PropTypes.string,
   single: PropTypes.bool,
-  deletedFiles: PropTypes.func
 };
 
 DragAndDrop.defaultProps = {
   accept: '*',
   single: false,
-  deletedFiles: false
 };
