@@ -9,9 +9,9 @@ import React, {Component} from 'react';
 import compose from 'recompose/compose';
 import Can from '../Components/Can';
 import CapstonesTab from '../Components/Capstone/CapstonesTab';
+import UserGrid from '../Components/Capstone/UserGrid';
 import Cover from '../Components/Cover';
 import DepartmentForm from '../Components/Department/DepartmentForm';
-import Professors from '../Components/Department/Professors';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import SectionTitle from '../Components/Typography/SectionTitle';
@@ -120,7 +120,13 @@ class ViewADepartment extends Component {
               </Grid>
             </>
           }
-          <Professors department={department}/>
+          {department.professors ?
+            <div>
+              <SectionTitle>Professors</SectionTitle>
+              <UserGrid userList={department.professors}/>
+            </div>
+            : null
+          }
         </Grid>
       </div>
     ;
