@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
@@ -7,27 +6,22 @@ import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React from 'react';
 import {SelectValidator} from 'react-material-ui-form-validator';
 import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
-import _ from 'lodash';
 
 const SponsorAndMediaInformation = (props) => {
 
   const {classes, setCover, cover, thumbnail, media, setThumbnail, setMedia,
-    selectedSponsor, handleSelectSponsor, sponsorList, checkedSponsors,
-    setCheckedSponsor
+    sponsorList, checkedSponsors, setCheckedSponsor
   } = props;
 
-  const [availableSponsors, setAvailableSponsors] = useState(sponsorList);
-
-  // useEffect(() => {
-  //   setAvailableSponsors(_.differenceWith(availableSponsors, checkedSponsors, _.isEqual))
-  // }, [checkedSponsors, availableSponsors]);
+  const availableSponsors = _.differenceWith(sponsorList, checkedSponsors, _.isEqual);
 
   return (
     <Grid container justify='center'>
@@ -46,8 +40,10 @@ const SponsorAndMediaInformation = (props) => {
                           variant='outlined'
                           id='demo-customized-select'
                           label='Select a sponsor'
-                          value={selectedSponsor}
-                          onChange={handleSelectSponsor}
+                          value={null}
+                          onChange={(event) => {
+                            setCheckedSponsor([...checkedSponsors, event.target.value]);
+                          }}
                         >
                           {availableSponsors.map(sponsor => (
                             <MenuItem
@@ -59,21 +55,6 @@ const SponsorAndMediaInformation = (props) => {
                       </FormControl>
                     </Grid>
                   </Tooltip>
-                  <Grid item xs>
-                    <Button
-                      variant='outlined' color='primary'
-                      onClick={() => {
-                        if (selectedSponsor === '') {
-                          return;
-                        }
-                        setCheckedSponsor([...checkedSponsors, selectedSponsor]);
-                        setAvailableSponsors(_.differenceWith(availableSponsors, checkedSponsors, _.isEqual));
-
-                      }}
-                    >
-                      Confirm
-                    </Button>
-                  </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12}>
@@ -151,19 +132,7 @@ SponsorAndMediaInformation.propTypes = {
   setCover: PropTypes.func.isRequired,
   setThumbnail: PropTypes.func.isRequired,
   setMedia: PropTypes.func.isRequired,
-  handleSelectSponsor: PropTypes.func.isRequired,
   setCheckedSponsor: PropTypes.func.isRequired,
-  selectedSponsor: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      preview: PropTypes.string.isRequired,
-      thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
-    }),
-  ]).isRequired,
   sponsorList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

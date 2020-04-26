@@ -3,12 +3,12 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth/withWidth';
-import {withSnackbar} from 'notistack';
-import React, {Component} from 'react';
-import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
+import {withSnackbar} from 'notistack';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {ValidatorForm} from 'react-material-ui-form-validator';
+import compose from 'recompose/compose';
 import GridBox from '../../Components/LayoutWrappers/GridBox';
 import GridPageContainer from '../../Components/LayoutWrappers/GridPageContainer';
 import LoadingCircle from '../../Components/LoadingCircle';
@@ -150,16 +150,6 @@ class CreateCapstone extends Component {
     this.setState({[name]: type === 'checkbox' ? checked : value});
   };
 
-  handleConfirmSponsor = (selectedSponsor) => {
-    const {checkedSponsors} = this.state;
-    if (selectedSponsor !== '') {
-      if (!checkedSponsors.includes(selectedSponsor)) {
-        const joinedSponsor = checkedSponsors.concat(selectedSponsor);
-        this.setState({checkedSponsors: joinedSponsor});
-      }
-    }
-  };
-
   handleStartDate = (startDateInput) => {
     const {endDate} = this.state;
     if (!startDateInput) {
@@ -180,10 +170,6 @@ class CreateCapstone extends Component {
     if(endDateInput.getTime() < startDate.getTime()) {
       this.setState({startDate: endDateInput});
     }
-  };
-
-  handleSelectSponsor = (event) => {
-    this.setState({selectedSponsor: event.target.value});
   };
 
   extractNonMediaContent = () => {
@@ -311,8 +297,6 @@ class CreateCapstone extends Component {
                 />
                 <SponsorAndMediaInformation
                   classes={classes}
-                  handleSelectSponsor={this.handleSelectSponsor}
-                  handleConfirmSponsor={this.handleConfirmSponsor}
                   setCheckedSponsor={(checkedSponsors) => this.setState({checkedSponsors})}
                   setThumbnail={(thumbnail) => this.setState({thumbnail})}
                   setCover={(cover) => this.setState({cover})}

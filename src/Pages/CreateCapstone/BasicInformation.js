@@ -13,12 +13,11 @@ import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers'
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {SelectValidator, TextValidator} from 'react-material-ui-form-validator';
+import _ from 'lodash';
 import Cards from '../../Components/Cards';
 import MarkdownEditor from '../../Components/Markdown/MarkdownEditor';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
-import _ from 'lodash';
-
 
 const BasicInformation = ({classes, name, isFeatured, course, semester,
   startDate, endDate, departmentList, departments, preview, description,
@@ -192,7 +191,7 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                       setSelectDepartment('');
                       setAvailableDepartments(_.differenceWith(availableDepartments, departments, _.isEqual));
 
-                  }}
+                    }}
                   >
                     Confirm
                   </Button>
