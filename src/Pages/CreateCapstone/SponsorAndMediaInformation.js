@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
@@ -13,7 +14,6 @@ import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
-import Button from '@material-ui/core/Button';
 
 const SponsorAndMediaInformation = (props) => {
 
@@ -23,7 +23,7 @@ const SponsorAndMediaInformation = (props) => {
   } = props;
   return (
     <Grid container justify='center'>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <PageTitleTypography text='Sponsor Information' align='left' size='h5'/>
@@ -40,8 +40,6 @@ const SponsorAndMediaInformation = (props) => {
                           label='Select a sponsor'
                           value={selectedSponsor}
                           onChange={handleSelectSponsor}
-                          validators={['required'] }
-                          errorMessages={['this field is required']}
                         >
                           {sponsorList.map(sponsor => (
                             <MenuItem
@@ -82,7 +80,7 @@ const SponsorAndMediaInformation = (props) => {
         </Card>
 
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>
@@ -99,7 +97,7 @@ const SponsorAndMediaInformation = (props) => {
         </Card>
 
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>
@@ -115,7 +113,7 @@ const SponsorAndMediaInformation = (props) => {
         </Card>
 
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>
@@ -141,7 +139,6 @@ SponsorAndMediaInformation.propTypes = {
   setThumbnail: PropTypes.func.isRequired,
   setMedia: PropTypes.func.isRequired,
   handleSelectSponsor: PropTypes.func.isRequired,
-  handleConfirmSponsor: PropTypes.func.isRequired,
   setCheckedSponsor: PropTypes.func.isRequired,
   selectedSponsor: PropTypes.oneOfType([
     PropTypes.string,

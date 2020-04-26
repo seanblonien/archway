@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import CapstonesTab from '../Components/Capstone/CapstonesTab';
-import GridBox from '../Components/LayoutWrappers/GridBox';
 import GridPageContainer from '../Components/LayoutWrappers/GridPageContainer';
 import LoadingCircle from '../Components/LoadingCircle';
 import SectionTitle from '../Components/Typography/SectionTitle';
@@ -18,7 +18,8 @@ class ViewYourCapstones extends Component {
 
   async componentDidMount() {
     const {user} = this.context;
-    const {capstones} = await api.users.findOne(user.id);
+    const {studentCapstones, professorCapstones} = await api.users.findOne(user.id);
+    const capstones = _.uniqBy([...studentCapstones, ...professorCapstones], 'id');
     this.setState({capstones, loading: false});
   }
 
@@ -30,10 +31,10 @@ class ViewYourCapstones extends Component {
         ? <LoadingCircle/>
         :
         <GridPageContainer>
-          <GridBox>
-            <SectionTitle>Your Capstones</SectionTitle>
+          <SectionTitle>Your Capstones</SectionTitle>
+          {capstones &&
             <CapstonesTab capstones={capstones}/>
-          </GridBox>
+          }
         </GridPageContainer>
     );
   }

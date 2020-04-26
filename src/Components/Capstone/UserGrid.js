@@ -9,13 +9,12 @@ import routes from '../../utils/Routing/routes';
 import history from '../../utils/Routing/history';
 import {imageURL} from '../../utils/utils';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
   },
 });
 

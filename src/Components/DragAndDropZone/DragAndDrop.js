@@ -22,8 +22,8 @@ export default function DragAndDrop({files, setFiles, accept, single}) {
   const classes = useStyles();
 
   const onDrop = useCallback(acceptedFiles => {
-    setFiles(single ? [acceptedFiles[0]] : acceptedFiles, false);
-  }, [single, setFiles]);
+    setFiles(single ? [acceptedFiles[0]] : [...files, ...acceptedFiles], false);
+  }, [single, files, setFiles]);
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
 
   return (
@@ -47,9 +47,11 @@ export default function DragAndDrop({files, setFiles, accept, single}) {
               <GridListTileBar
                 title={file.name}
                 actionIcon={
-                  <IconButton aria-label={`Delete ${file.name}`} onClick={() => (
-                    setFiles(files.filter(f => f.name !== file.name))
-                  )}>
+                  <IconButton
+                    aria-label={`Delete ${file.name}`} onClick={() => (
+                      setFiles(files.filter(f => f.name !== file.name))
+                    )}
+                  >
                     <DeleteIcon
                       className={classes.icon}
 

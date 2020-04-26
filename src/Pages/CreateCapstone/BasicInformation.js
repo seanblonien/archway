@@ -33,10 +33,9 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
   );
 
   return (
-    <Grid item xs={12} md={10}>
+    <Grid item xs={12}>
       <Card className={classes.card}>
         <CardContent>
-          <PageTitleTypography text='Create Capstone' align='left' size='h4'/>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               {/* Form for capstone name */}
@@ -47,7 +46,7 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                       <TextValidator
                         value={name}
                         name='name'
-                        label="Name"
+                        label='Name'
                         placeholder='Type the title for the capstone project'
                         validators={['required', 'isProfane']}
                         errorMessages={['this field is required', 'contains illegal word']}
