@@ -2,6 +2,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import FormControl from '@material-ui/core/FormControl';
+import _ from 'lodash';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -16,8 +17,6 @@ import Cards from '../../Components/Cards';
 import MarkdownEditor from '../../Components/Markdown/MarkdownEditor';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
-import _ from 'lodash';
-
 
 const BasicInformation = ({classes, name, isFeatured, course, semester,
   startDate, endDate, departmentList, departments, preview, description,

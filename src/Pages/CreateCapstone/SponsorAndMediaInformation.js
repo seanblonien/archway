@@ -7,13 +7,13 @@ import {TextValidator} from 'react-material-ui-form-validator';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
-import _ from 'lodash';
 
 const SponsorAndMediaInformation = (props) => {
 
@@ -141,19 +141,7 @@ SponsorAndMediaInformation.propTypes = {
   setCover: PropTypes.func.isRequired,
   setThumbnail: PropTypes.func.isRequired,
   setMedia: PropTypes.func.isRequired,
-  handleSelectSponsor: PropTypes.func.isRequired,
   setCheckedSponsor: PropTypes.func.isRequired,
-  selectedSponsor: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      preview: PropTypes.string.isRequired,
-      thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
-    }),
-  ]).isRequired,
   sponsorList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
