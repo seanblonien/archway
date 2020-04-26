@@ -66,12 +66,12 @@ class ViewADepartment extends Component {
       <>
         <Box position='relative' zIndex={1}>
           <Cover covers={department.cover}/>
-          <Box className={classes.cover} px={1} position='absolute' zIndex={3} top={0} component={Grid} container justify='center'>
+          <Box className={classes.cover} px={1} py={18} position='absolute' zIndex={3} top={0} component={Grid} container justify='center'>
             <Grid item xs={12} sm={8} md={7} lg={6} xl={5}>
               <Typography variant='h3' align='center'>{department.name}</Typography>
               <Typography>{department.description}</Typography>
             </Grid>
-            <Grid item xs={12} container justify='space-evenly'>
+            <Grid item xs={12} md={8} container justify='space-evenly'>
               {department.phone &&
                 <Grid item xs container justify='center'>
                   <Box mx={2}><PhoneRoundedIcon color='secondary'/></Box>
