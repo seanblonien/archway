@@ -98,8 +98,8 @@ class CreateCapstone extends Component {
     this.setState({Users: response, AllUsers: response});
 
     // TODO: if not a created capstone, clear, else reset all things
-    // const editId = '5e99c90f5350f40031d08f1c';
-    const editId = false;
+    const editId = '5e99c90f5350f40031d08f1c';
+    // const editId = false;
     if (editId) {
       const editCapstone = await api.capstones.findOne(editId);
       const teachingAssistantID = await api.getRoleIDFromName('TeachingAssistant');
@@ -107,8 +107,8 @@ class CreateCapstone extends Component {
       const teamMembers = editCapstone.members.filter(member => (
         member.role !== teachingAssistantID && member.role !== professorID
       ));
-      const professor = editCapstone.members.filter(member => member.role !== professorID);
-      const TA = editCapstone.members.filter(member => member.role !== teachingAssistantID);
+      const professor = editCapstone.members.filter(member => member.role === professorID);
+      const TA = editCapstone.members.filter(member => member.role === teachingAssistantID);
 
       const thumbnail = editCapstone.thumbnail ? [editCapstone.thumbnail] : [];
       const cover = editCapstone.cover ? editCapstone.cover : [];
