@@ -41,16 +41,8 @@ const MemberInformation = ( props ) => {
     />
   );
 
-  const renderInputForTA = (inputProps) => (
-    <TextValidator
-      label='Search for TA'
-      variant='outlined'
-      {...inputProps}
-    />
-  );
-
   const {AllUsers, classes, students, professors,
-    setStudents, setProfessors, setTeachingAssistants,
+    setStudents, setProfessors,
   } = props;
 
   const defaultProps = {
@@ -191,15 +183,9 @@ MemberInformation.propTypes = {
   }).isRequired).isRequired,
   students: arrayOfPersons.isRequired,
   professors: arrayOfPersons.isRequired,
-  teachingAssistants: arrayOfPersons.isRequired,
   setStudents: PropTypes.func.isRequired,
   setProfessors: PropTypes.func.isRequired,
   setTeachingAssistants: PropTypes.func.isRequired,
-};
-
-MemberInformation.defaultProps = {
-  selectedTA: '',
-  selectedProfessor: '',
 };
 
 export default MemberInformation;

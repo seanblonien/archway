@@ -55,8 +55,8 @@ class ViewCapstone extends Component {
     const {loading, capstone} = this.state;
     const {user, isAuthenticated} = this.context;
     const {handleEdit} = this;
-    let x = capstone.professors && capstone.professors.filter(prof => prof.id === user.id)[0];
-    const canEdit = isAuthenticated && x;
+    const isThisProfessors = capstone.professors && capstone.professors.filter(prof => prof.id === user.id)[0];
+    const canEdit = isAuthenticated && isThisProfessors;
 
     return loading ?
       <LoadingCircle/> :
@@ -100,10 +100,10 @@ class ViewCapstone extends Component {
             </Grid>
           }
           {capstone.professors[0] &&
-          <Grid item xs={12} component={Box} py={2}>
-            <SectionTitle>Professors</SectionTitle>
-            <UserGrid userList={capstone.professors}/>
-          </Grid>
+            <Grid item xs={12} component={Box} py={2}>
+              <SectionTitle>Professors</SectionTitle>
+              <UserGrid userList={capstone.professors}/>
+            </Grid>
           }
           {capstone.media[0] &&
             <Grid item xs={12} component={Box} py={2}>

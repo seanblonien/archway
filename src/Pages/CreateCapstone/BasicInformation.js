@@ -46,7 +46,7 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                       <TextValidator
                         value={name}
                         name='name'
-                        label="Name"
+                        label='Name'
                         placeholder='Type the title for the capstone project'
                         validators={['required', 'isProfane']}
                         errorMessages={['this field is required', 'contains illegal word']}

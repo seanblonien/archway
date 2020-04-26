@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
@@ -13,7 +14,6 @@ import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
-import Button from '@material-ui/core/Button';
 
 const SponsorAndMediaInformation = (props) => {
 
@@ -139,7 +139,6 @@ SponsorAndMediaInformation.propTypes = {
   setThumbnail: PropTypes.func.isRequired,
   setMedia: PropTypes.func.isRequired,
   handleSelectSponsor: PropTypes.func.isRequired,
-  handleConfirmSponsor: PropTypes.func.isRequired,
   setCheckedSponsor: PropTypes.func.isRequired,
   selectedSponsor: PropTypes.oneOfType([
     PropTypes.string,
