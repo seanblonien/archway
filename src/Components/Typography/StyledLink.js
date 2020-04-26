@@ -5,7 +5,7 @@ import React from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import {A} from '../Markdown/MarkdownComponents';
 
-export const useLinkStyles = makeStyles(theme => ({
+export const linkStyles = theme => ({
   link: {
     color: theme.palette.primary.main,
     '&:hover, &:active': {
@@ -14,7 +14,9 @@ export const useLinkStyles = makeStyles(theme => ({
     },
     textDecorationLine: 'none'
   }
-}));
+});
+
+export const useLinkStyles = makeStyles(linkStyles);
 
 const ixExternal = /^https?:\/\//;
 

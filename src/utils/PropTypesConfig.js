@@ -40,3 +40,7 @@ export const widthPropTypes = {
 export const childrenPropTypes = {
   children: PropTypes.node.isRequired
 };
+
+export const snackbarPropTypes = {
+  enqueueSnackbar: PropTypes.func.isRequired
+};
