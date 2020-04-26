@@ -16,11 +16,9 @@ const styles = () => ({
   }
 });
 
-const Cover = (props) => {
-  const {classes, covers, children} = props;
-
-  return covers.length > 1 ?
-    <Carousel showThumbs={false} autoPlay infiniteLoop>
+const Cover = ({classes, covers, children, ...rest}) => (
+  covers.length > 1 ?
+    <Carousel showThumbs={false} autoPlay infiniteLoop {...rest}>
       {covers.map((cover) => (
         <Parallax bgImage={imageURL.cover(cover)} strength={300} key={cover.id}>
           <div className={classes.cover}>
@@ -30,18 +28,20 @@ const Cover = (props) => {
       ))}
     </Carousel>
     :
-    <Parallax bgImage={imageURL.cover(covers[0])} strength={300}>
+    <Parallax bgImage={imageURL.cover(covers[0])} strength={300} {...rest}>
       <div className={classes.cover}>
         {children}
       </div>
     </Parallax>
-  ;
-};
+);
 
 Cover.propTypes = {
   covers: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
-  // eslint-disable-next-line react/require-default-props
   children: PropTypes.node,
+};
+
+Cover.defaultProps = {
+  children: null
 };
 
 export default compose(

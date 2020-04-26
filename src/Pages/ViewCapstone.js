@@ -12,6 +12,7 @@ import Can from '../Components/Can';
 import CapstonePhotos from '../Components/Capstone/CapstonePhotos';
 import UserGrid from '../Components/Capstone/UserGrid';
 import Cover from '../Components/Cover';
+import PageWithMargin from '../Components/LayoutWrappers/PageWithMargin';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import SectionTitle from '../Components/Typography/SectionTitle';
@@ -60,9 +61,9 @@ class ViewCapstone extends Component {
 
     return loading ?
       <LoadingCircle/> :
-      <div>
+      <>
         <Cover covers={capstone.cover}/>
-        <Grid container justify='flex-start' alignItems='flex-start' component={Box} px={6} py={2}>
+        <PageWithMargin>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
             <Typography variant='h3'>{capstone.name}</Typography>
             <Typography variant='h6'>
@@ -74,20 +75,22 @@ class ViewCapstone extends Component {
             <Typography variant='h6'>
               <strong>Sponsor(s):</strong> {this.getSponsors().join(', ') || 'None'}
             </Typography>
-            {capstone.sponsors[0] && <Grid item>
-              <GridList cellHeight={120} cols={1}>
-                <GridListTile
-                  style={{maxWidth: '320px'}}
-                  key={capstone.sponsors[0].logo.url}
-                  onClick={() => this.handleSponsorClick(capstone.sponsors[0].id)}
-                >
-                  <img
-                    src={imageURL.sponsor(capstone.sponsors[0].logo)}
-                    alt='Sponsor' style={{height: '100%', width: '100%'}}
-                  />
-                </GridListTile>
+            <Grid item>
+              <GridList cellHeight={120} cols={2}>
+                {capstone.sponsors && capstone.sponsors.map(sponsor => (
+                  <GridListTile
+                    style={{maxWidth: '320px'}}
+                    key={`sponsor-${sponsor.id}`}
+                    onClick={() => this.handleSponsorClick(sponsor.id)}
+                  >
+                    <img
+                      src={imageURL.sponsor(sponsor.logo)}
+                      alt='Sponsor' style={{height: '100%', width: '100%'}}
+                    />
+                  </GridListTile>
+                ))}
               </GridList>
-            </Grid>}
+            </Grid>
             <br/>
           </Grid>
           <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} my={2}>
@@ -119,8 +122,8 @@ class ViewCapstone extends Component {
               </Can>
             </Grid>
           }
-        </Grid>
-      </div>
+        </PageWithMargin>
+      </>
     ;
   }
 }
