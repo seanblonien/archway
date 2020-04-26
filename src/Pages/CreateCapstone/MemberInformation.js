@@ -90,24 +90,19 @@ const MemberInformation = ( props ) => {
                 <Grid container  justify='center' alignItems='center'>
 
                   <Grid item xs={12}>
-                    <Grid container alignItems='center' spacing={1} direction='row'>
-                      <Grid item xs={8}>
-                        <Tooltip title='Search for name' arrow>
-                          <FormControl margin='dense' fullWidth variant='filled'>
-                            <Autocomplete
-                              id='Search for Student Team Members'
-                              {...defaultProps}
-                              style={{width: 300}}
-                              value={null}
-                              onChange={(event, value) => {
-                                setStudents([...students, value]);
-                              }}
-                              renderInput={renderInputForMembers}
-                            />
-                          </FormControl>
-                        </Tooltip>
-                      </Grid>
-                    </Grid>
+                    <Tooltip title='Search for name' arrow>
+                      <FormControl margin='dense' fullWidth variant='filled'>
+                        <Autocomplete
+                          id='Search for Student Team Members'
+                          {...defaultProps}
+                          value={null}
+                          onChange={(event, value) => {
+                            setStudents([...students, value]);
+                          }}
+                          renderInput={renderInputForMembers}
+                        />
+                      </FormControl>
+                    </Tooltip>
                   </Grid>
                   {/* team list */}
                   <Grid item xs={9}>
