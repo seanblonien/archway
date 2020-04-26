@@ -2,20 +2,20 @@ import DateFnsUtils from '@date-io/date-fns';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import FormControl from '@material-ui/core/FormControl';
-import _ from 'lodash';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Switch from '@material-ui/core/Switch';
 import Tooltip from '@material-ui/core/Tooltip';
 import EventNoteIcon from '@material-ui/icons/EventNote';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {TextValidator} from 'react-material-ui-form-validator';
 import Cards from '../../Components/Cards';
 import MarkdownEditor from '../../Components/Markdown/MarkdownEditor';
-import PageTitleTypography from '../../Components/PageTitleTypography';
+import SubSectionTitle from '../../Components/Typography/SubsectionTitle';
 import {imageURL} from '../../utils/utils';
 
 const BasicInformation = ({classes, name, isFeatured, course, semester,
@@ -33,7 +33,6 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
   const renderInputForDepartment = (inputProps) => (
     <TextValidator
       label='Search for a Department'
-      variant='outlined'
       validators={['haveDepartment'] }
       errorMessages={['Must select a department']}
       {...inputProps}
@@ -70,7 +69,6 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                         validators={['required', 'isProfane']}
                         errorMessages={['this field is required', 'contains illegal word']}
                         onChange={handleChange}
-                        variant='outlined'
                       />
                     </FormControl>
                   </Tooltip>
@@ -103,7 +101,6 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                         validators={['required', 'isProfane'] }
                         errorMessages={['this field is required', 'contains illegal word']}
                         onChange={handleChange}
-                        variant='outlined'
                       />
                     </FormControl>
                   </Tooltip>
@@ -120,7 +117,6 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                         validators={['required', 'isProfane'] }
                         errorMessages={['this field is required', 'contains illegal word']}
                         onChange={handleChange}
-                        variant='outlined'
                       />
                     </FormControl>
                   </Tooltip>
@@ -137,7 +133,6 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
                         autoOk
-                        variant='outlined'
                         label='Start Date'
                         placeholder='2018/01/01'
                         format='yyyy/MM/dd'
@@ -155,13 +150,11 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
                         autoOk
-                        variant='outlined'
                         label='End Date'
                         format='yyyy/MM/dd'
                         mask='____/__/__'
                         keyboardIcon={<EventNoteIcon/>}
                         value = {endDate !== ''? new Date(endDate) : null}
-
                         onChange={handleEndDate}
                         TextFieldComponent={renderInput}
                       />
@@ -212,7 +205,6 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                     multiline
                     placeholder='Type some preview'
                     onChange={handleChange}
-                    variant='outlined'
                     validators={['required', 'isProfane'] }
                     errorMessages={['this field is required', 'contains illegal word']}
                   />
@@ -220,9 +212,8 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
               </Tooltip>
             </Grid>
             <Tooltip title='Fill description' arrow>
-
               <Grid item xs={12}>
-                <PageTitleTypography text='Add a description' align='left' size='h6'/>
+                <SubSectionTitle>Add a description</SubSectionTitle>
                 <MarkdownEditor
                   uniqueName='description'
                   setValue={setDescription}

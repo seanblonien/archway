@@ -1,18 +1,18 @@
-import React, {useState} from 'react';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import ListItemText from '@material-ui/core/ListItemText';
+import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import React, {useState} from 'react';
 
 const PeopleSelect = ({title, users, selectedUsers, setSelectedUsers}) => {
   const [selectUser, setSelectUser] = useState(null);
@@ -43,7 +43,7 @@ const PeopleSelect = ({title, users, selectedUsers, setSelectedUsers}) => {
                     renderInput={(params) =>
                       <TextField
                         {...params}
-                        label='Search for Team Members'
+                        label='Search for Students'
                         variant='outlined'
                       />
                     }

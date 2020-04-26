@@ -3,29 +3,28 @@ import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import {TextValidator} from 'react-material-ui-form-validator';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {TextValidator} from 'react-material-ui-form-validator';
 import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
-import PageTitleTypography from '../../Components/PageTitleTypography';
+import SubSectionTitle from '../../Components/Typography/SubsectionTitle';
 import {imageURL} from '../../utils/utils';
 
 const SponsorAndMediaInformation = (props) => {
 
   const {classes, setCover, cover, thumbnail, media, setThumbnail, setMedia,
-     sponsorList, checkedSponsors,
+    sponsorList, checkedSponsors,
     setCheckedSponsor
   } = props;
 
   const renderInputForSponsor = (inputProps) => (
     <TextValidator
       label='Search for a Sponsor'
-      variant='outlined'
       validators={['haveDepartment'] }
       errorMessages={['Must select a department']}
       {...inputProps}
@@ -48,8 +47,7 @@ const SponsorAndMediaInformation = (props) => {
       <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
-            <PageTitleTypography text='Sponsor Information' align='left' size='h5'/>
-            <Divider/>
+            <SubSectionTitle>Add Sponsors</SubSectionTitle>
             <Grid container justify='center'>
               <Grid item xs={12}>
                 <Tooltip title='Select a Sponsor' arrow>

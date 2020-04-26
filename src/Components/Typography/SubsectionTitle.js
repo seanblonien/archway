@@ -5,7 +5,7 @@ import React from 'react';
 import {childrenPropTypes} from '../../utils/PropTypesConfig';
 
 const SubSectionTitle = ({children, ...rest}) => (
-  <Box mb={3}>
+  <Box mb={2}>
     <Typography variant='h5' {...rest}>{children}</Typography>
     <Divider/>
   </Box>

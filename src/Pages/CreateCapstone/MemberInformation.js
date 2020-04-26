@@ -1,7 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,11 +12,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import _ from 'lodash';
 import {TextValidator} from 'react-material-ui-form-validator';
-import PageTitleTypography from '../../Components/PageTitleTypography';
+import SubSectionTitle from '../../Components/Typography/SubsectionTitle';
 import {imageURL} from '../../utils/utils';
 
 const MemberInformation = ( props ) => {
@@ -26,8 +25,7 @@ const MemberInformation = ( props ) => {
     <TextValidator
       validators={['haveMembers']}
       errorMessages={['Must select at least one']}
-      label='Search for Team Members'
-      variant='outlined'
+      label='Search for Students'
       {...inputProps}
     />
   );
@@ -35,7 +33,6 @@ const MemberInformation = ( props ) => {
   const renderInputForProfessor = (inputProps) => (
     <TextValidator
       label='Search for Professors and TA'
-      variant='outlined'
       validators={['haveProfessor'] }
       errorMessages={['Must select a professor']}
       {...inputProps}
@@ -95,8 +92,7 @@ const MemberInformation = ( props ) => {
           <CardContent>
             <Grid container  alignItems='center' spacing={2}>
               <Grid item xs={12}>
-                <PageTitleTypography text='Team Member Information' align='left' size='h5'/>
-                <Divider/>
+                <SubSectionTitle>Add Students</SubSectionTitle>
               </Grid>
               <Grid item xs={12}>
                 <Grid container  justify='center' alignItems='center'>
@@ -136,8 +132,7 @@ const MemberInformation = ( props ) => {
           <CardContent>
             <Grid container alignItems='center' spacing={2}>
               <Grid item xs={12}>
-                <PageTitleTypography text='Professors and Teaching Assitants' align='left' size='h5'/>
-                <Divider/>
+                <SubSectionTitle>Add Professors and Teaching Assistants</SubSectionTitle>
               </Grid>
 
               <Grid item xs={12}>
