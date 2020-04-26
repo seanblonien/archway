@@ -236,7 +236,7 @@ class CreateCapstone extends Component {
   handleSubmit = async () => {
     await this.handleUpload(true);
     const {enqueueSnackbar} = this.props;
-    enqueueSnackbar('successful submit!', snack.success);
+    enqueueSnackbar('Capstone submitted successfully!', snack.success);
     const {user}= this.context;
     history.push(routes.dashboard.viewyourcapstones.genPath(user.username));
     this.setState({...initialState, loading: false});
@@ -245,7 +245,7 @@ class CreateCapstone extends Component {
   handleSave = async () => {
     await this.handleUpload(false);
     const {enqueueSnackbar} = this.props;
-    enqueueSnackbar('successful saved!', snack.success);
+    enqueueSnackbar('Capstone saved successfully!', snack.success);
   };
 
   handleUpload = async (isFinishedEditing) => {
@@ -291,7 +291,7 @@ class CreateCapstone extends Component {
             <SectionTitle>{isEditing ? 'Edit Capstone' : 'Create Capstone'}</SectionTitle>
             <ValidatorForm
               onSubmit={this.handleSubmit}
-              onError={() => enqueueSnackbar('problem submitting', snack.error)}
+              onError={() => enqueueSnackbar('Invalid capstone fields', snack.error)}
             >
               <div>
                 <BasicInformation

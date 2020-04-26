@@ -184,7 +184,7 @@ MemberInformation.propTypes = {
   students: arrayOfPersons.isRequired,
   professors: arrayOfPersons.isRequired,
   setStudents: PropTypes.func.isRequired,
-  setProfessors: PropTypes.func.isRequired,
+  setProfessors: PropTypes.func.isRequired
 };
 
 export default MemberInformation;
