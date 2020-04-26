@@ -1,3 +1,4 @@
+import Filter from 'bad-words';
 import api from '../Services/api';
 
 export const validatePassword = (password) => (password !== undefined && (password.length >= 6));
@@ -17,3 +18,8 @@ export const validateEmail = (email) => {
 };
 
 export const passwordMatch = (password, secondPassword) => password === secondPassword;
+
+export const isProfane = value => {
+  const filter = new Filter();
+  return !filter.isProfane(value);
+};

@@ -1,7 +1,7 @@
+import {Box, Typography} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import {withStyles, withTheme} from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth';
 import ComputerRoundedIcon from '@material-ui/icons/ComputerRounded';
 import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
@@ -12,18 +12,18 @@ import CapstonesTab from '../Components/Capstone/CapstonesTab';
 import UserGrid from '../Components/Capstone/UserGrid';
 import Cover from '../Components/Cover';
 import DepartmentForm from '../Components/Department/DepartmentForm';
+import PageWithMargin from '../Components/LayoutWrappers/PageWithMargin';
 import LoadingCircle from '../Components/LoadingCircle';
-import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import SectionTitle from '../Components/Typography/SectionTitle';
 import {permissions} from '../constants';
 import api from '../Services/api';
-import gStyle from '../utils/styles.module.css';
 
 const styles = (theme) => ({
   cover: {
     height: '500px',
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     color: 'white',
+    overflow: 'visible'
   },
   link: {
     color: 'white',
@@ -33,13 +33,6 @@ const styles = (theme) => ({
     '&:visited': {
       color: theme.palette.secondary.main,
     }
-  },
-  contact: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  capstones: {
-    padding: '3%',
   }
 });
 
@@ -70,46 +63,47 @@ class ViewADepartment extends Component {
 
     return loading ?
       <LoadingCircle/> :
-      <div>
-        <Cover covers={department.cover}>
-          <Grid className={classes.cover} container direction='row' justify='center' alignItems='center'>
-            <Grid item container direction='column' alignItems='center'>
-              <Grid item>
-                <MediaMarkdown>{`###${department.name}`}</MediaMarkdown>
-              </Grid>
-              <br/>
-              <Grid item md={5}>
-                <MediaMarkdown>{department.description}</MediaMarkdown>
-              </Grid>
-              <br/>
-              <Grid item container md={6} direction='row' justify='space-evenly'>
-                {department.phone && <Grid item className={classes.contact}>
-                  <PhoneRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
-                  <Link className={classes.link} href={`tel:${department.phone}`}>{department.phone}</Link>
-                </Grid>}
-                {department.email && <Grid item className={classes.contact}>
-                  <MailOutlineRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
-                  <Link className={classes.link} href={`mailto:${department.email}`}>{department.email}</Link>
-                </Grid>}
-                {department.url && <Grid item className={classes.contact}>
-                  <ComputerRoundedIcon color='secondary' style={{marginRight: '5px'}}/>
-                  <Link className={classes.link} href={department.url}>View Department Page</Link>
-                </Grid>}
-                <Can perform={permissions.application.departments.update}>
-                  <div className={gStyle.gridListContainer}>
-                    <DepartmentForm
-                      title='Edit Department'
-                      department={department}
-                      type='edit'
-                      update={this.updateData}
-                    />
-                  </div>
-                </Can>
-              </Grid>
+      <>
+        <Box position='relative' zIndex={1}>
+          <Cover covers={department.cover}/>
+          <Box className={classes.cover} px={1} position='absolute' zIndex={3} top={0} component={Grid} container justify='center'>
+            <Grid item xs={12} sm={8} md={7} lg={6} xl={5}>
+              <Typography variant='h3' align='center'>{department.name}</Typography>
+              <Typography>{department.description}</Typography>
             </Grid>
-          </Grid>
-        </Cover>
-        <Grid className={classes.capstones} container direction='column'>
+            <Grid item xs={12} container justify='space-evenly'>
+              {department.phone &&
+                <Grid item xs container justify='center'>
+                  <Box mx={2}><PhoneRoundedIcon color='secondary'/></Box>
+                  <Link className={classes.link} href={`tel:${department.phone}`}>{department.phone}</Link>
+                </Grid>
+              }
+              {department.email &&
+                <Grid item xs container justify='center'>
+                  <Box mx={2}><MailOutlineRoundedIcon color='secondary'/></Box>
+                  <Link className={classes.link} href={`mailto:${department.email}`}>{department.email}</Link>
+                </Grid>
+              }
+              {department.url &&
+                <Grid item xs container justify='center'>
+                  <Box mx={2}><ComputerRoundedIcon color='secondary'/></Box>
+                  <Link className={classes.link} href={department.url}>View Department Page</Link>
+                </Grid>
+              }
+            </Grid>
+            <Grid item xs={12} container justify='center'>
+              <Can perform={permissions.application.departments.update}>
+                <DepartmentForm
+                  title='Edit Department'
+                  department={department}
+                  type='edit'
+                  update={this.updateData}
+                />
+              </Can>
+            </Grid>
+          </Box>
+        </Box>
+        <PageWithMargin>
           {department.capstones[0] &&
             <>
               <Grid item xs={12}>
@@ -120,20 +114,19 @@ class ViewADepartment extends Component {
               </Grid>
             </>
           }
-          {department.professors ?
-            <div>
+          {department.professors[0] ?
+            <Grid item xs={12}>
               <SectionTitle>Professors</SectionTitle>
               <UserGrid userList={department.professors}/>
-            </div>
+            </Grid>
             : null
           }
-        </Grid>
-      </div>
+        </PageWithMargin>
+      </>
     ;
   }
 }
 export default compose(
   withStyles(styles),
-  withWidth(),
   withTheme
 )(ViewADepartment);

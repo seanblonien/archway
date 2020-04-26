@@ -60,11 +60,11 @@
           "targetAttribute": "capstones",
           "unique": false
         },
-        "members": {
+        "students": {
           "nature": "manyToMany",
           "target": "plugins::users-permissions.user",
           "dominant": true,
-          "targetAttribute": "capstones",
+          "targetAttribute": "studentCapstones",
           "unique": false
         },
         "thumbnail": {
@@ -82,19 +82,20 @@
         "course": {
           "type": "string"
         },
-        "semester": {
-          "type": "enumeration",
-          "enum": [
-            "fall",
-            "winter",
-            "spring",
-            "summer"
-          ]
-        },
         "isFinishedEditing": {
           "type": "boolean",
           "default": false,
           "required": false
+        },
+        "professors": {
+          "nature": "manyToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": true,
+          "targetAttribute": "professorCapstones",
+          "unique": false
+        },
+        "semester": {
+          "type": "string"
         }
       }
     },
@@ -139,13 +140,6 @@
           "targetAttribute": "departments",
           "unique": false
         },
-        "professors": {
-          "nature": "oneToMany",
-          "target": "plugins::users-permissions.user",
-          "dominant": false,
-          "targetAttribute": "department",
-          "unique": false
-        },
         "phone": {
           "type": "string"
         },
@@ -156,6 +150,13 @@
           "type": "media",
           "multiple": true,
           "required": false
+        },
+        "professors": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "professorDepartment",
+          "unique": false
         }
       }
     },
@@ -575,14 +576,7 @@
           "multiple": false,
           "required": false
         },
-        "capstones": {
-          "nature": "manyToMany",
-          "target": "application::capstones.capstones",
-          "dominant": false,
-          "targetAttribute": "members",
-          "unique": false
-        },
-        "department": {
+        "professorDepartment": {
           "nature": "manyToOne",
           "target": "application::departments.departments",
           "dominant": false,
@@ -598,6 +592,20 @@
         },
         "jobTitle": {
           "type": "string"
+        },
+        "professorCapstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "professors",
+          "unique": false
+        },
+        "studentCapstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "students",
+          "unique": false
         }
       }
     }

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import routes from '../utils/Routing/routes';
-import {imageURL} from '../utils/utils';
-import api from '../Services/api';
+import Can from '../Components/Can';
+import DepartmentForm from '../Components/Department/DepartmentForm';
 import CardLayout from '../Components/LayoutWrappers/CardLayout';
 import {permissions} from '../constants';
-import DepartmentForm from '../Components/Department/DepartmentForm';
-import Can from '../Components/Can';
-import gStyle from '../utils/styles.module.css';
+import api from '../Services/api';
+import routes from '../utils/Routing/routes';
+import root from '../utils/styles.module.css';
+import {imageURL} from '../utils/utils';
 
 class ViewAllDepartments extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class ViewAllDepartments extends Component {
 
     return (
       <div>
-        <div className={gStyle.gridListContainer}>
+        <div className={root.gridListContainer}>
           <Can perform={permissions.application.departments.create}>
             <DepartmentForm
               title='Create Department'

@@ -30,10 +30,9 @@ TabPanel.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
   },
 }));
 
