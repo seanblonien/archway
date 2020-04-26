@@ -1,11 +1,10 @@
-import React from 'react';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import {Carousel} from 'react-responsive-carousel';
 import {withStyles} from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth';
-import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
+import React from 'react';
 import {Parallax} from 'react-parallax';
+import {Carousel} from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import compose from 'recompose/compose';
 import {imageURL} from '../utils/utils';
 
 const styles = () => ({
@@ -46,5 +45,4 @@ Cover.defaultProps = {
 
 export default compose(
   withStyles(styles),
-  withWidth(),
 )(Cover);

@@ -5,7 +5,7 @@ import {childrenPropTypes} from '../../utils/PropTypesConfig';
 
 const GridBox = ({children, ...rest}) => (
   <Grid item xs>
-    <Box mx={2} mb={2} px={3} pb={2} {...rest}>
+    <Box mx={2} mb={2} px={2} pb={2} {...rest}>
       {children}
     </Box>
   </Grid>

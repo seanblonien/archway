@@ -1,12 +1,11 @@
 import {Box, Button, ButtonGroup, Typography} from '@material-ui/core';
 import React, {Component} from 'react';
-import {USER_IMPORT_TYPE} from '../../constants';
 import AddUser from './AddUser';
 import GridBox from '../LayoutWrappers/GridBox';
 import GridPageContainer from '../LayoutWrappers/GridPageContainer';
 import GridPaper from '../LayoutWrappers/GridPaper';
 import SectionTitle from '../Typography/SectionTitle';
-import ImportDelimit from './ImportDelimit';
+import ImportDelimit, {USER_IMPORT_TYPE} from './ImportDelimit';
 
 class ImportUsers extends Component {
   constructor(props) {

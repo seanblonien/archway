@@ -1,6 +1,6 @@
 import {Box, Grid, List, ListItem, ListItemText, Paper, Typography} from '@material-ui/core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import Can from '../Components/Can';
 import PageWithMargin from '../Components/LayoutWrappers/PageWithMargin';
@@ -12,10 +12,15 @@ import RoutesToRender from '../utils/Routing/RoutesToRender';
 
 const Dashboard = ({routes, match}) => {
   const {user} = useContext(AuthContext);
+  const [hasRoutedToDefault, setHasRoutedToDefault] = useState(false);
 
-  if(match === appRoutes.dashboard.path){
-    history.push(appRoutes.dashboard.routeNames[0]);
-  }
+  useEffect(() => {
+    if(match.path === appRoutes.dashboard.path && !hasRoutedToDefault){
+      setHasRoutedToDefault(true);
+      const defaultChild = appRoutes.dashboard[appRoutes.dashboard.routeNames[0]].genPath(user.username);
+      history.push(defaultChild);
+    }
+  }, [match, user, hasRoutedToDefault]);
 
   return (
     <PageWithMargin>

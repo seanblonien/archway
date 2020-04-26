@@ -32,16 +32,7 @@ const routes = {
     path: '/dashboard',
     component: Dashboard,
     protected: true,
-    routeNames: ['viewprofile','viewyourcapstones','createcapstone','reviewproposals', 'viewyourproposals', 'importusers'],
-    viewprofile: {
-      name: 'Profile',
-      path: '/dashboard/profile/:username',
-      genPath: (username ) => `/dashboard/profile/${username}`,
-      useUser: true,
-      component: ViewProfile,
-      Icon: AccountCircle,
-      permission: permissions.users_permissions.user.me,
-    },
+    routeNames: ['viewyourcapstones','viewprofile','createcapstone','reviewproposals', 'viewyourproposals', 'importusers'],
     viewyourcapstones: {
       name: 'Your Capstones',
       path: '/dashboard/capstones/:username',
@@ -50,6 +41,15 @@ const routes = {
       component: ViewYourCapstones,
       Icon: ViewQuilt,
       permission: permissions.application.capstones.find,
+    },
+    viewprofile: {
+      name: 'Profile',
+      path: '/dashboard/profile/:username',
+      genPath: (username ) => `/dashboard/profile/${username}`,
+      useUser: true,
+      component: ViewProfile,
+      Icon: AccountCircle,
+      permission: permissions.users_permissions.user.me,
     },
     createcapstone: {
       name: 'Create Capstone',
