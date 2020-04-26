@@ -5,7 +5,7 @@ import GridBox from './GridBox';
 
 // Additional props are applied to a Paper and Box component
 const GridPaper = ({children, ...rest}) => (
-  <GridBox component={Paper} pt={2} {...rest}>
+  <GridBox component={Paper} pt={2} my={1} {...rest}>
     {children}
   </GridBox>
 );
