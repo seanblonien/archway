@@ -143,13 +143,12 @@ const MemberInformation = ( props ) => {
               <Grid item xs={12}>
                 <Grid container alignItems='center' spacing={6}>
                   {/* search professor */}
-                  <Grid item>
-                    <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
-                      <Grid item>
+                  <Grid item xs={12}>
+                    <Grid container alignItems='center' justify='center' spacing={2}>
+                      <Grid item xs={12}>
                         <Tooltip title='Search for name' arrow>
                           <Autocomplete
                             {...defaultPropsProfessors}
-                            style={{width: 300}}
                             value={null}
                             onChange={(event, value) => {
                               setProfessors([...professors, value]);
