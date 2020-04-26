@@ -86,8 +86,8 @@ const MemberInformation = ( props ) => {
       />
       {canDelete &&
         <ListItemSecondaryAction>
-          <IconButton aria-label='delete'>
-            <DeleteIcon onClick={() => handleRemoveTeammate(participant.id)}/>
+          <IconButton aria-label='delete' onClick={() => handleRemoveTeammate(participant.id)}>
+            <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>
       }
@@ -111,16 +111,14 @@ const MemberInformation = ( props ) => {
                       <Grid item xs={8}>
                         <Tooltip title='Search for name' arrow>
                           <FormControl margin='dense' fullWidth variant='filled'>
-
-                            <Autocomplete
-                              id='Search for Team Members'
-                              {...defaultProps}
-                              style={{width: 300}}
-                              value={selectUser}
-                              onChange={handleSelectUser}
-                              renderInput={renderInputForMembers}
-                            />
-                          </FormControl>
+                          <Autocomplete
+                            id='Search for Team Members'
+                            {...defaultProps}
+                            style={{width: 300}}
+                            onChange={handleSelectUser}
+                            renderInput={renderInputForMembers}
+                          />
+                        </FormControl>
                         </Tooltip>
                       </Grid>
                       <Grid item xs={2}>
@@ -134,7 +132,6 @@ const MemberInformation = ( props ) => {
                         </Button>
                       </Grid>
                     </Grid>
-
                   </Grid>
                   {/* team list */}
                   <Grid item xs={9}>
@@ -230,7 +227,7 @@ MemberInformation.propTypes = {
       email: PropTypes.string.isRequired,
       picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
     })
-  ]).isRequired,
+  ]),
   selectedProfessor: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.shape({
@@ -238,10 +235,15 @@ MemberInformation.propTypes = {
       email: PropTypes.string.isRequired,
       picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
     })
-  ]).isRequired,
+  ]),
   handleConfirmTeammate: PropTypes.func.isRequired,
   handleSelectedPerson: PropTypes.func.isRequired,
   handleRemoveTeammate: PropTypes.func.isRequired
+};
+
+MemberInformation.defaultProps = {
+  selectedTA: '',
+  selectedProfessor: '',
 };
 
 export default MemberInformation;

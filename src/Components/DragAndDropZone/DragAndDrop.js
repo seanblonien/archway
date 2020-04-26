@@ -47,12 +47,12 @@ export default function DragAndDrop({files, setFiles, accept, single}) {
               <GridListTileBar
                 title={file.name}
                 actionIcon={
-                  <IconButton aria-label={`Delete ${file.name}`}>
+                  <IconButton aria-label={`Delete ${file.name}`} onClick={() => (
+                    setFiles(files.filter(f => f.name !== file.name))
+                  )}>
                     <DeleteIcon
                       className={classes.icon}
-                      onClick={() => (
-                        setFiles(files.filter(f => f.name !== file.name))
-                      )}
+
                     />
                   </IconButton>
                 }
@@ -66,7 +66,7 @@ export default function DragAndDrop({files, setFiles, accept, single}) {
 }
 // TODO :failed propTypes of Object
 DragAndDrop.propTypes = {
-  files: PropTypes.arrayOf(PropTypes.instanceOf(File)).isRequired,
+  files: PropTypes.arrayOf(PropTypes.shape(File)).isRequired,
   setFiles: PropTypes.func.isRequired,
   accept: PropTypes.string,
   single: PropTypes.bool,

@@ -98,7 +98,8 @@ class CreateCapstone extends Component {
     this.setState({Users: response, AllUsers: response});
 
     // TODO: if not a created capstone, clear, else reset all things
-    const editId = '5e99c90f5350f40031d08f1c';
+    // const editId = '5e99c90f5350f40031d08f1c';
+    const editId = false;
     if (editId) {
       const editCapstone = await api.capstones.findOne(editId);
       const teachingAssistantID = await api.getRoleIDFromName('TeachingAssistant');
@@ -411,6 +412,11 @@ class CreateCapstone extends Component {
 
 CreateCapstone.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired,
+  editId: PropTypes.string
+};
+
+CreateCapstone.defaultProps = {
+  editId: ''
 };
 
 export default compose(

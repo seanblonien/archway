@@ -23,7 +23,7 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
   startDate, endDate, departmentList, departments, preview, description,
   handleChange, handleStartDate, handleEndDate,
   setDepartments, setDescription}) => {
-  const [selectedDepartment, setSelectDepartment] = useState('none');
+  const [selectedDepartment, setSelectDepartment] = useState('');
   const renderInput = (inputProps) => (
     <TextValidator
       validators={['required', 'isProfane'] }
@@ -46,7 +46,8 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                     <FormControl margin='dense' required fullWidth>
                       <TextValidator
                         value={name}
-                        label='Title'
+                        name='name'
+                        label="Name"
                         placeholder='Type the title for the capstone project'
                         validators={['required', 'isProfane']}
                         errorMessages={['this field is required', 'contains illegal word']}
@@ -56,7 +57,6 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                     </FormControl>
                   </Tooltip>
                 </Grid>
-
                 <Grid item xs={2}>
                   <FormControlLabel
                     control={
@@ -142,7 +142,8 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                         format='yyyy/MM/dd'
                         mask='____/__/__'
                         keyboardIcon={<EventNoteIcon/>}
-                        value={endDate}
+                        value = {endDate !== ''? new Date(endDate) : null}
+
                         onChange={handleEndDate}
                         TextFieldComponent={renderInput}
                       />
@@ -245,22 +246,19 @@ BasicInformation.propTypes = {
   isFeatured: PropTypes.bool.isRequired,
   course: PropTypes.string.isRequired,
   semester: PropTypes.string.isRequired,
-  startDate: PropTypes.instanceOf(Date).isRequired,
-  endDate: PropTypes.instanceOf(Date).isRequired,
+  startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
+  endDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
   departments: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     description: PropTypes.string,
     preview: PropTypes.string.isRequired,
   })).isRequired,
-  // TODO: ask if is correct
   departmentList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     description: PropTypes.string,

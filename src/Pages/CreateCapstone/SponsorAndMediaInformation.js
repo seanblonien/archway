@@ -18,7 +18,7 @@ import Button from '@material-ui/core/Button';
 const SponsorAndMediaInformation = (props) => {
 
   const {classes, setCover, cover, thumbnail, media, setThumbnail, setMedia,
-    selectedSponsor, handleSelectSponsor, sponsorList, handleConfirmSponsor, checkedSponsors,
+    selectedSponsor, handleSelectSponsor, sponsorList, checkedSponsors,
     setCheckedSponsor
   } = props;
   return (
@@ -43,9 +43,6 @@ const SponsorAndMediaInformation = (props) => {
                           validators={['required'] }
                           errorMessages={['this field is required']}
                         >
-                          <MenuItem value=''>
-                            <em>None</em>
-                          </MenuItem>
                           {sponsorList.map(sponsor => (
                             <MenuItem
                               key={sponsor.id}
@@ -162,8 +159,6 @@ SponsorAndMediaInformation.propTypes = {
     name: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     description: PropTypes.string,
-    preview: PropTypes.string.isRequired,
-    thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
   })).isRequired,
   checkedSponsors: PropTypes.oneOfType([
     PropTypes.string,
@@ -172,8 +167,6 @@ SponsorAndMediaInformation.propTypes = {
       name: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
       description: PropTypes.string,
-      preview: PropTypes.string.isRequired,
-      thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
     })).isRequired
   ]).isRequired,
 };
