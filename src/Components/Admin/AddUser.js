@@ -1,4 +1,4 @@
-import {Box, Button, List, ListItem, Typography} from '@material-ui/core';
+import {Box, Button, Typography} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import _ from 'lodash';
