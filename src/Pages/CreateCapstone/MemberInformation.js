@@ -15,6 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PropTypes from 'prop-types';
 import React from 'react';
+import _ from 'lodash';
 import {TextValidator} from 'react-material-ui-form-validator';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
@@ -41,12 +42,23 @@ const MemberInformation = ( props ) => {
     />
   );
 
-  const {AllUsers, classes, students, professors,
+  const {AllUsers, AllProfessors, classes, students, professors,
     setStudents, setProfessors,
   } = props;
 
-  const defaultProps = {
-    options: AllUsers,
+  const defaultPropsStudents = {
+    // options: AllUsers,
+    options: _.differenceWith(AllUsers, students, _.isEqual),
+    getOptionLabel: (option) => {
+      if (option.Fullname) {
+        return option.Fullname;
+      }
+      return '';
+    }
+  };
+
+  const defaultPropsProfessors = {
+    options: _.differenceWith(AllProfessors, professors, _.isEqual),
     getOptionLabel: (option) => {
       if (option.Fullname) {
         return option.Fullname;
@@ -94,7 +106,7 @@ const MemberInformation = ( props ) => {
                       <FormControl margin='dense' fullWidth variant='filled'>
                         <Autocomplete
                           id='Search for Student Team Members'
-                          {...defaultProps}
+                          {...defaultPropsStudents}
                           value={null}
                           onChange={(event, value) => {
                             setStudents([...students, value]);
@@ -136,7 +148,7 @@ const MemberInformation = ( props ) => {
                       <Grid item>
                         <Tooltip title='Search for name' arrow>
                           <Autocomplete
-                            {...defaultProps}
+                            {...defaultPropsProfessors}
                             style={{width: 300}}
                             value={null}
                             onChange={(event, value) => {
@@ -171,6 +183,12 @@ const arrayOfPersons = PropTypes.arrayOf(
 
 MemberInformation.propTypes = {
   AllUsers: PropTypes.arrayOf(PropTypes.shape({
+    Fullname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
+  }).isRequired).isRequired,
+  AllProfessors: PropTypes.arrayOf(PropTypes.shape({
     Fullname: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     description: PropTypes.string,

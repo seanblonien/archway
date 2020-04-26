@@ -114,8 +114,9 @@ class CreateCapstone extends Component {
     const sponsorList = await api.sponsors.find();
     const response = await api.users.find();
     // fetch all professors
-    // const professors = await api.users.find({department_null: false});
-    this.setState({sponsorList, departmentList, Users: response, AllUsers: response});
+    const professors = await api.users.find({department_null: false});
+    console.log(professors);
+    this.setState({sponsorList, departmentList, Users: response, AllUsers: response, AllProfessors: professors});
 
     if (capstoneID && isEditing) {
       const editCapstone = await api.capstones.findOne(capstoneID);
