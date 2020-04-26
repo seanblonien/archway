@@ -82,15 +82,6 @@
         "course": {
           "type": "string"
         },
-        "semester": {
-          "type": "enumeration",
-          "enum": [
-            "fall",
-            "winter",
-            "spring",
-            "summer"
-          ]
-        },
         "isFinishedEditing": {
           "type": "boolean",
           "default": false,
@@ -102,6 +93,9 @@
           "dominant": true,
           "targetAttribute": "professorCapstones",
           "unique": false
+        },
+        "semester": {
+          "type": "string"
         }
       }
     },
