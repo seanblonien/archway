@@ -27,9 +27,9 @@ const Dashboard = ({routes, match}) => {
             </Typography>
           </Box>
           <List>
-            {Object.values(routes).map(({name, Icon, path, permission, genPath}) =>
+            {Object.values(routes).map(({name, Icon, path, permission, genPath, useUser}) =>
               <Can perform={permission} key={name}>
-                <ListItem button component={Link} to={genPath ? genPath(user.username) : path}>
+                <ListItem button component={Link} to={genPath ? genPath(useUser ? user.username : '') : path}>
                   <ListItemIcon>
                     <Icon/>
                   </ListItemIcon>

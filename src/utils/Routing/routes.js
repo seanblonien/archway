@@ -11,7 +11,7 @@ import {permissions} from '../../constants';
 import About from '../../Pages/About';
 import AuthPage from '../../Pages/AuthPage';
 import Capstone from '../../Pages/Capstones';
-import CreateCapstone from '../../Pages/CreateCapstone';
+import CreateCapstone from '../../Pages/CreateCapstone/CreateCapstone';
 import Dashboard from '../../Pages/Dashboard';
 import FAQ from '../../Pages/FAQ';
 import Home from '../../Pages/Home';
@@ -37,6 +37,7 @@ const routes = {
       name: 'Profile',
       path: '/dashboard/profile/:username',
       genPath: (username ) => `/dashboard/profile/${username}`,
+      useUser: true,
       component: ViewProfile,
       Icon: AccountCircle,
       permission: permissions.users_permissions.user.me,
@@ -45,13 +46,16 @@ const routes = {
       name: 'Your Capstones',
       path: '/dashboard/capstones/:username',
       genPath: (username ) => `/dashboard/capstones/${username}`,
+      useUser: true,
       component: ViewYourCapstones,
       Icon: ViewQuilt,
       permission: permissions.application.capstones.find,
     },
     createcapstone: {
       name: 'Create Capstone',
-      path: '/dashboard/create-capstones',
+      path: '/dashboard/create-capstones/:capstoneID?',
+      genPath: (capstoneID ) => `/dashboard/create-capstones/${capstoneID}`,
+      useUser: false,
       component: CreateCapstone,
       Icon: Create,
       permission: permissions.application.capstones.create,

@@ -1,4 +1,5 @@
 import {Box} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -7,11 +8,16 @@ import withWidth from '@material-ui/core/withWidth';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import Can from '../Components/Can';
 import CapstonePhotos from '../Components/Capstone/CapstonePhotos';
-import Team from '../Components/Capstone/Team';
+import UserGrid from '../Components/Capstone/UserGrid';
 import Cover from '../Components/Cover';
+import PageWithMargin from '../Components/LayoutWrappers/PageWithMargin';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import SectionTitle from '../Components/Typography/SectionTitle';
+import {permissions} from '../constants';
+import AuthContext from '../Contexts/AuthContext';
 import api from '../Services/api';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
@@ -41,14 +47,23 @@ class ViewCapstone extends Component {
     history.push(routes.viewsponsor.genPath(sponsorName));
   };
 
+  handleEdit = () => {
+    const {capstone} = this.state;
+    history.push(routes.dashboard.createcapstone.genPath(capstone.id));
+  }
+
   render() {
     const {loading, capstone} = this.state;
+    const {user, isAuthenticated} = this.context;
+    const {handleEdit} = this;
+    const isThisProfessors = capstone.professors && capstone.professors.filter(prof => prof.id === user.id)[0];
+    const canEdit = isAuthenticated && isThisProfessors;
 
     return loading ?
       <LoadingCircle/> :
-      <div>
+      <>
         <Cover covers={capstone.cover}/>
-        <Grid container justify='flex-start' alignItems='flex-start' component={Box} px={6} py={2}>
+        <PageWithMargin>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
             <Typography variant='h3'>{capstone.name}</Typography>
             <Typography variant='h6'>
@@ -60,28 +75,37 @@ class ViewCapstone extends Component {
             <Typography variant='h6'>
               <strong>Sponsor(s):</strong> {this.getSponsors().join(', ') || 'None'}
             </Typography>
-            {capstone.sponsors[0] && <Grid item>
-              <GridList cellHeight={120} cols={1}>
-                <GridListTile
-                  style={{maxWidth: '320px'}}
-                  key={capstone.sponsors[0].logo.url}
-                  onClick={() => this.handleSponsorClick(capstone.sponsors[0].id)}
-                >
-                  <img
-                    src={imageURL.sponsor(capstone.sponsors[0].logo)}
-                    alt='Sponsor' style={{height: '100%', width: '100%'}}
-                  />
-                </GridListTile>
+            <Grid item>
+              <GridList cellHeight={120} cols={2}>
+                {capstone.sponsors && capstone.sponsors.map(sponsor => (
+                  <GridListTile
+                    style={{maxWidth: '320px'}}
+                    key={`sponsor-${sponsor.id}`}
+                    onClick={() => this.handleSponsorClick(sponsor.id)}
+                  >
+                    <img
+                      src={imageURL.sponsor(sponsor.logo)}
+                      alt='Sponsor' style={{height: '100%', width: '100%'}}
+                    />
+                  </GridListTile>
+                ))}
               </GridList>
-            </Grid>}
+            </Grid>
             <br/>
           </Grid>
           <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} my={2}>
             <MediaMarkdown>{capstone.description}</MediaMarkdown>
           </Grid>
-          {capstone.members[0] &&
+          {capstone.students[0] &&
             <Grid item xs={12} component={Box} py={2}>
-              <Team capstone={capstone}/>
+              <SectionTitle>Students</SectionTitle>
+              <UserGrid userList={capstone.students}/>
+            </Grid>
+          }
+          {capstone.professors[0] &&
+            <Grid item xs={12} component={Box} py={2}>
+              <SectionTitle>Professors</SectionTitle>
+              <UserGrid userList={capstone.professors}/>
             </Grid>
           }
           {capstone.media[0] &&
@@ -89,11 +113,22 @@ class ViewCapstone extends Component {
               <CapstonePhotos capstone={capstone}/>
             </Grid>
           }
-        </Grid>
-      </div>
+          {canEdit &&
+            <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} my={4}>
+              <Can perform={permissions.application.capstones.update}>
+                <Button variant='contained' onClick={handleEdit}>
+                  Edit Capstone
+                </Button>
+              </Can>
+            </Grid>
+          }
+        </PageWithMargin>
+      </>
     ;
   }
 }
+
+ViewCapstone.contextType = AuthContext;
 
 export default compose(
   withWidth(),

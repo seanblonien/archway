@@ -1,3 +1,4 @@
+import Filter from 'bad-words';
 import _ from 'lodash';
 import {userImport} from '../constants';
 import api from '../Services/api';
@@ -34,3 +35,8 @@ export const validateEmail = (email) => {
 };
 
 export const passwordMatch = (password, secondPassword) => password === secondPassword;
+
+export const isProfane = value => {
+  const filter = new Filter();
+  return !filter.isProfane(value);
+};

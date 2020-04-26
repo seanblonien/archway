@@ -13,14 +13,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {withSnackbar} from 'notistack';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import gStyle from '../../utils/styles.module.css';
-import api from '../../Services/api';
 import AuthContext from '../../Contexts/AuthContext';
+import api from '../../Services/api';
 import {snack} from '../../utils/Snackbar';
+import root from '../../utils/styles.module.css';
 
 const styles = {
   form: {
@@ -210,7 +210,7 @@ class ProposalForm extends Component {
     }
 
     return (
-      <div className={gStyle.gridListContainer}>
+      <div className={root.gridListContainer}>
         {id !== '' &&
           <Button variant='outlined' color='primary' onClick={this.handleClickOpen}>
             {title}

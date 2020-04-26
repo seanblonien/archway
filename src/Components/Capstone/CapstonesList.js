@@ -12,12 +12,11 @@ import routes from '../../utils/Routing/routes';
 import history from '../../utils/Routing/history';
 import {imageURL, convertStrapiDate} from '../../utils/utils';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
   },
   gridList: {
     flexWrap: 'nowrap',

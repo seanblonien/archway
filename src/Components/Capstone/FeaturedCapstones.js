@@ -11,7 +11,7 @@ import {Link as RouterLink} from 'react-router-dom';
 import api from '../../Services/api';
 import history from '../../utils/Routing/history';
 import routes from '../../utils/Routing/routes';
-import gStyle from '../../utils/styles.module.css';
+import root from '../../utils/styles.module.css';
 import {imageURL} from '../../utils/utils';
 import LoadingCircle from '../LoadingCircle';
 import {StyledLink} from '../Typography/StyledLink';
@@ -44,7 +44,7 @@ class FeaturedCapstones extends Component {
       <Grid item xs={6} align='right'>
         <Paper className={classes.featuredPaper}>
           <Typography variant='h4'>Featured Capstones</Typography>
-          <div className={gStyle.gridListContainer}>
+          <div className={root.gridListContainer}>
             <GridList cellHeight={180} cols={2}>
               {featuredCapstones.map((result, i) => (
                 <GridListTile
