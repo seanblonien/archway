@@ -1,18 +1,17 @@
 import DateFnsUtils from '@date-io/date-fns';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Switch from '@material-ui/core/Switch';
 import Tooltip from '@material-ui/core/Tooltip';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
-import {SelectValidator, TextValidator} from 'react-material-ui-form-validator';
+import React from 'react';
+import {TextValidator} from 'react-material-ui-form-validator';
 import Cards from '../../Components/Cards';
 import MarkdownEditor from '../../Components/Markdown/MarkdownEditor';
 import PageTitleTypography from '../../Components/PageTitleTypography';
@@ -24,8 +23,6 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
   startDate, endDate, departmentList, departments, preview, description,
   handleChange, handleStartDate, handleEndDate,
   setDepartments, setDescription}) => {
-  const [selectedDepartment, setSelectDepartment] = useState('');
-  const [availableDepartments, setAvailableDepartments] = useState(departmentList);
   const renderInput = (inputProps) => (
     <TextValidator
       validators={['required', 'isProfane'] }
@@ -33,6 +30,27 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
       {...inputProps}
     />
   );
+
+  const renderInputForDepartment = (inputProps) => (
+    <TextValidator
+      label='Search for a Department'
+      variant='outlined'
+      validators={['haveDepartment'] }
+      errorMessages={['Must select a department']}
+      {...inputProps}
+    />
+  );
+
+  const defaultPropsDepartments = {
+    // options: AllUsers,
+    options: _.differenceWith(departmentList, departments, _.isEqual),
+    getOptionLabel: (option) => {
+      if (option.name) {
+        return option.name;
+      }
+      return '';
+    }
+  };
 
   return (
     <Grid item xs={12}>
@@ -157,47 +175,21 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
 
             <Grid item xs={12}>
               {/* select department */}
-              <Grid container alignItems='center' spacing={5} direction='row'>
-                <Tooltip title='Select A Department' arrow>
-                  <Grid item xs={8}>
-                    <FormControl margin='dense' fullWidth variant='filled'>
-                      <SelectValidator
-                        label='Select a department'
-                        variant='outlined'
-                        value={selectedDepartment}
-                        onChange={event => {
-                          setSelectDepartment(event.target.value);
-                        }}
-                        validators={['haveDepartment'] }
-                        errorMessages={['this field is required']}
-                      >
-                        {availableDepartments.map(dept => (
-                          <MenuItem
-                            key={dept.id}
-                            value={dept}
-                          >{dept.name}</MenuItem>
-                        ))}
-                      </SelectValidator>
-                    </FormControl>
-                  </Grid>
-                </Tooltip>
-
-                <Grid item xs={2}>
-                  <Button
-                    variant='outlined' color='primary' onClick={() => {
-                      if (selectedDepartment === '') {
-                        return;
-                      }
-                      setDepartments([...departments, selectedDepartment]);
-                      setSelectDepartment('');
-                      setAvailableDepartments(_.differenceWith(availableDepartments, departments, _.isEqual));
-
-                  }}
-                  >
-                    Confirm
-                  </Button>
+              <Tooltip title='Select A Department' arrow>
+                <Grid item xs={12}>
+                  <FormControl margin='dense' fullWidth variant='filled'>
+                    <Autocomplete
+                      id='Search for a Department'
+                      {...defaultPropsDepartments}
+                      value={null}
+                      onChange={(event, value) => {
+                        setDepartments([...departments, value]);
+                      }}
+                      renderInput={renderInputForDepartment}
+                    />
+                  </FormControl>
                 </Grid>
-              </Grid>
+              </Tooltip>
             </Grid>
             <Grid item xs={12}>
               <Cards

@@ -1,15 +1,14 @@
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
+import {TextValidator} from 'react-material-ui-form-validator';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
-import {SelectValidator} from 'react-material-ui-form-validator';
+import React from 'react';
 import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import PageTitleTypography from '../../Components/PageTitleTypography';
@@ -19,15 +18,30 @@ import _ from 'lodash';
 const SponsorAndMediaInformation = (props) => {
 
   const {classes, setCover, cover, thumbnail, media, setThumbnail, setMedia,
-    selectedSponsor, handleSelectSponsor, sponsorList, checkedSponsors,
+     sponsorList, checkedSponsors,
     setCheckedSponsor
   } = props;
 
-  const [availableSponsors, setAvailableSponsors] = useState(sponsorList);
+  const renderInputForSponsor = (inputProps) => (
+    <TextValidator
+      label='Search for a Sponsor'
+      variant='outlined'
+      validators={['haveDepartment'] }
+      errorMessages={['Must select a department']}
+      {...inputProps}
+    />
+  );
 
-  // useEffect(() => {
-  //   setAvailableSponsors(_.differenceWith(availableSponsors, checkedSponsors, _.isEqual))
-  // }, [checkedSponsors, availableSponsors]);
+  const defaultPropsSponsor = {
+    // options: AllUsers,
+    options: _.differenceWith(sponsorList, checkedSponsors, _.isEqual),
+    getOptionLabel: (option) => {
+      if (option.name) {
+        return option.name;
+      }
+      return '';
+    }
+  };
 
   return (
     <Grid container justify='center'>
@@ -38,43 +52,19 @@ const SponsorAndMediaInformation = (props) => {
             <Divider/>
             <Grid container justify='center'>
               <Grid item xs={12}>
-                <Grid container justify='center' spacing={2} alignItems='center'>
-                  <Tooltip title='Select a Sponsor' arrow>
-                    <Grid item xs={9}>
-                      <FormControl margin='dense' fullWidth variant='filled'>
-                        <SelectValidator
-                          variant='outlined'
-                          id='demo-customized-select'
-                          label='Select a sponsor'
-                          value={selectedSponsor}
-                          onChange={handleSelectSponsor}
-                        >
-                          {availableSponsors.map(sponsor => (
-                            <MenuItem
-                              key={sponsor.id}
-                              value={sponsor}
-                            >{sponsor.name}</MenuItem>
-                          ))}
-                        </SelectValidator>
-                      </FormControl>
-                    </Grid>
-                  </Tooltip>
-                  <Grid item xs>
-                    <Button
-                      variant='outlined' color='primary'
-                      onClick={() => {
-                        if (selectedSponsor === '') {
-                          return;
-                        }
-                        setCheckedSponsor([...checkedSponsors, selectedSponsor]);
-                        setAvailableSponsors(_.differenceWith(availableSponsors, checkedSponsors, _.isEqual));
-
+                <Tooltip title='Select a Sponsor' arrow>
+                  <FormControl margin='dense' fullWidth variant='filled'>
+                    <Autocomplete
+                      id='Search for a Sponsor'
+                      {...defaultPropsSponsor}
+                      value={null}
+                      onChange={(event, value) => {
+                        setCheckedSponsor([...checkedSponsors, value]);
                       }}
-                    >
-                      Confirm
-                    </Button>
-                  </Grid>
-                </Grid>
+                      renderInput={renderInputForSponsor}
+                    />
+                  </FormControl>
+                </Tooltip>
               </Grid>
               <Grid item xs={12}>
                 <Cards
