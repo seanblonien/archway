@@ -1,11 +1,18 @@
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import {strapiURL} from '../../constants';
 import SectionTitle from '../Typography/SectionTitle';
+
+const styles = () => ({
+  pointer:{
+    cursor: 'pointer'
+  }
+});
 
 class CapstonePhotos extends Component {
   constructor(props) {
@@ -24,6 +31,7 @@ class CapstonePhotos extends Component {
   }
 
   render() {
+    const {classes} = this.props;
     const {photos, photoIndex, isOpen} = this.state;
 
     return (
@@ -34,6 +42,7 @@ class CapstonePhotos extends Component {
             <GridListTile
               key={photo.url} cols={2}
               onClick={() => this.setState({photoIndex: i, isOpen: true})}
+              className={classes.pointer}
             >
               <img src={strapiURL + photo.url} alt=''/>
             </GridListTile>
@@ -66,4 +75,4 @@ CapstonePhotos.propTypes = {
   capstone: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
 };
 
-export default CapstonePhotos;
+export default withStyles(styles) (CapstonePhotos);

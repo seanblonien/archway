@@ -16,6 +16,9 @@ const styles = () => ({
     justifyContent: 'space-between',
     overflow: 'hidden',
   },
+  pointer:{
+    cursor: 'pointer'
+  }
 });
 
 const UserGrid = ({classes, userList}) => {
@@ -35,6 +38,7 @@ const UserGrid = ({classes, userList}) => {
               cols={2}
               style={{height: '150px', width: '150px', paddingRight: '2%', paddingTop: '2%'}}
               onClick={() => handleTileClick(user.username)}
+              className={classes.pointer}
             >
               <img src={imageURL.user(user.picture)} alt=''/>
             </GridListTile>

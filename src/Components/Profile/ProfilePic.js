@@ -15,7 +15,8 @@ import {snack} from '../../utils/Snackbar';
 const styles = () => ({
   picBorder:{
     border: '4px solid black', borderRadius: '12px',
-    width: '100%', height: 'auto'
+    objectFit: 'cover',
+    width: '100%', height: '275px',
   }
 });
 
