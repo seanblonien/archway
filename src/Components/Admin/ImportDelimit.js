@@ -6,7 +6,6 @@ import {withSnackbar} from 'notistack';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {compose} from 'recompose';
-import {USER_IMPORT_TYPE} from '../../constants';
 import api from '../../Services/api';
 import exampleImport from '../../Static/exampleImport.csv';
 import {snackbarPropTypes} from '../../utils/PropTypesConfig';
@@ -19,6 +18,13 @@ import {userImportFields} from './AddUser';
 import FieldList from './FieldList';
 import UploadCSV from './UploadCSV';
 import UploadText from './UploadText';
+
+export const USER_IMPORT_TYPE = {
+  'none': 0,
+  'file': 1,
+  'text': 2,
+  'manual': 3
+};
 
 const IMPORT_STATE = {
   'none': 1,
