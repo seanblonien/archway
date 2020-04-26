@@ -46,6 +46,7 @@ const routes = {
       name: 'Profile',
       path: '/dashboard/profile/:username',
       genPath: (username ) => `/dashboard/profile/${username}`,
+      useUser: true,
       component: ViewProfile,
       Icon: AccountCircle,
       permission: permissions.users_permissions.user.me,
