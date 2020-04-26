@@ -116,7 +116,6 @@ const MemberInformation = ( props ) => {
                         </Tooltip>
                       </Grid>
                     </Grid>
-
                   </Grid>
                   {/* team list */}
                   <Grid item xs={9}>
@@ -196,6 +195,11 @@ MemberInformation.propTypes = {
   setStudents: PropTypes.func.isRequired,
   setProfessors: PropTypes.func.isRequired,
   setTeachingAssistants: PropTypes.func.isRequired,
+};
+
+MemberInformation.defaultProps = {
+  selectedTA: '',
+  selectedProfessor: '',
 };
 
 export default MemberInformation;

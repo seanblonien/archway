@@ -3,12 +3,12 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth/withWidth';
-import _ from 'lodash';
 import {withSnackbar} from 'notistack';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {ValidatorForm} from 'react-material-ui-form-validator';
 import compose from 'recompose/compose';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import {ValidatorForm} from 'react-material-ui-form-validator';
 import GridBox from '../../Components/LayoutWrappers/GridBox';
 import GridPageContainer from '../../Components/LayoutWrappers/GridPageContainer';
 import LoadingCircle from '../../Components/LoadingCircle';
@@ -110,7 +110,6 @@ class CreateCapstone extends Component {
     ValidatorForm.addValidationRule('haveProfessor', () => !_.isEmpty(this.state.professors));
     ValidatorForm.addValidationRule('haveDepartment', () => !_.isEmpty(this.state.departments));
     /* eslint-enable react/destructuring-assignment */
-
     const departmentList = await api.departments.find();
     const sponsorList = await api.sponsors.find();
     const response = await api.users.find();

@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +13,7 @@ import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
+import Button from '@material-ui/core/Button';
 
 const SponsorAndMediaInformation = (props) => {
 
@@ -41,9 +41,6 @@ const SponsorAndMediaInformation = (props) => {
                           value={selectedSponsor}
                           onChange={handleSelectSponsor}
                         >
-                          <MenuItem value=''>
-                            <em>None</em>
-                          </MenuItem>
                           {sponsorList.map(sponsor => (
                             <MenuItem
                               key={sponsor.id}
@@ -160,8 +157,6 @@ SponsorAndMediaInformation.propTypes = {
     name: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     description: PropTypes.string,
-    preview: PropTypes.string.isRequired,
-    thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
   })).isRequired,
   checkedSponsors: PropTypes.oneOfType([
     PropTypes.string,
@@ -170,8 +165,6 @@ SponsorAndMediaInformation.propTypes = {
       name: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
       description: PropTypes.string,
-      preview: PropTypes.string.isRequired,
-      thumbnail: PropTypes.shape({url: PropTypes.string, id: PropTypes.string}).isRequired,
     })).isRequired
   ]).isRequired,
 };
