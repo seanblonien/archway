@@ -204,14 +204,14 @@ class ImportDelimit extends Component {
                 <Grid item xs>
                   <FieldList
                     fields={userImportFields
-                      .filter(field => field.required)
+                      .filter(field => field.validators && field.validators.includes('required'))
                       .map(field => field.label)} label='Required fields are:'
                   />
                 </Grid>
                 <Grid item xs>
                   <FieldList
                     fields={userImportFields
-                      .filter(field => !field.required)
+                      .filter(field => !(field.validators && field.validators.includes('required')))
                       .map(field => field.label)} label='Optional fields are:'
                   />
                 </Grid>
