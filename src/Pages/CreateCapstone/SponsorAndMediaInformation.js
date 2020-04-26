@@ -8,12 +8,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 import {SelectValidator} from 'react-material-ui-form-validator';
 import Cards from '../../Components/Cards';
 import DragAndDrop from '../../Components/DragAndDropZone/DragAndDrop';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
+import _ from 'lodash';
 
 const SponsorAndMediaInformation = (props) => {
 
@@ -21,6 +22,13 @@ const SponsorAndMediaInformation = (props) => {
     selectedSponsor, handleSelectSponsor, sponsorList, checkedSponsors,
     setCheckedSponsor
   } = props;
+
+  const [availableSponsors, setAvailableSponsors] = useState(sponsorList);
+
+  // useEffect(() => {
+  //   setAvailableSponsors(_.differenceWith(availableSponsors, checkedSponsors, _.isEqual))
+  // }, [checkedSponsors, availableSponsors]);
+
   return (
     <Grid container justify='center'>
       <Grid item xs={12}>
@@ -41,7 +49,7 @@ const SponsorAndMediaInformation = (props) => {
                           value={selectedSponsor}
                           onChange={handleSelectSponsor}
                         >
-                          {sponsorList.map(sponsor => (
+                          {availableSponsors.map(sponsor => (
                             <MenuItem
                               key={sponsor.id}
                               value={sponsor}
@@ -54,9 +62,14 @@ const SponsorAndMediaInformation = (props) => {
                   <Grid item xs>
                     <Button
                       variant='outlined' color='primary'
-                      onClick={() => (
-                        setCheckedSponsor([...checkedSponsors, selectedSponsor])
-                      )}
+                      onClick={() => {
+                        if (selectedSponsor === '') {
+                          return;
+                        }
+                        setCheckedSponsor([...checkedSponsors, selectedSponsor]);
+                        setAvailableSponsors(_.differenceWith(availableSponsors, checkedSponsors, _.isEqual));
+
+                      }}
                     >
                       Confirm
                     </Button>

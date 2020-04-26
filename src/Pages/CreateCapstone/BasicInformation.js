@@ -17,6 +17,7 @@ import Cards from '../../Components/Cards';
 import MarkdownEditor from '../../Components/Markdown/MarkdownEditor';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
+import _ from 'lodash';
 
 
 const BasicInformation = ({classes, name, isFeatured, course, semester,
@@ -24,6 +25,7 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
   handleChange, handleStartDate, handleEndDate,
   setDepartments, setDescription}) => {
   const [selectedDepartment, setSelectDepartment] = useState('');
+  const [availableDepartments, setAvailableDepartments] = useState(departmentList);
   const renderInput = (inputProps) => (
     <TextValidator
       validators={['required', 'isProfane'] }
@@ -169,7 +171,7 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                         validators={['haveDepartment'] }
                         errorMessages={['this field is required']}
                       >
-                        {departmentList.map(dept => (
+                        {availableDepartments.map(dept => (
                           <MenuItem
                             key={dept.id}
                             value={dept}
@@ -183,9 +185,14 @@ const BasicInformation = ({classes, name, isFeatured, course, semester,
                 <Grid item xs={2}>
                   <Button
                     variant='outlined' color='primary' onClick={() => {
+                      if (selectedDepartment === '') {
+                        return;
+                      }
                       setDepartments([...departments, selectedDepartment]);
                       setSelectDepartment('');
-                    }}
+                      setAvailableDepartments(_.differenceWith(availableDepartments, departments, _.isEqual));
+
+                  }}
                   >
                     Confirm
                   </Button>
