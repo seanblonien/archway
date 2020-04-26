@@ -1,5 +1,4 @@
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
@@ -15,7 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React from 'react';
 import {TextValidator} from 'react-material-ui-form-validator';
 import PageTitleTypography from '../../Components/PageTitleTypography';
 import {imageURL} from '../../utils/utils';
@@ -34,7 +33,7 @@ const MemberInformation = ( props ) => {
 
   const renderInputForProfessor = (inputProps) => (
     <TextValidator
-      label='Search for Professor'
+      label='Search for Professors and TA'
       variant='outlined'
       validators={['haveProfessor'] }
       errorMessages={['Must select a professor']}
@@ -46,21 +45,13 @@ const MemberInformation = ( props ) => {
     <TextValidator
       label='Search for TA'
       variant='outlined'
-      validators={['haveTA'] }
-      errorMessages={['Must select a TA']}
       {...inputProps}
     />
   );
 
-  const [selectUser, setSelectUser] = useState('');
-
-  const {AllUsers, classes, members, selectedProfessor, selectedTA,
-    handleConfirmTeammate, handleSelectedPerson, handleRemoveTeammate
+  const {AllUsers, classes, students, professors,
+    setStudents, setProfessors, setTeachingAssistants,
   } = props;
-
-  const handleSelectUser = (event, values) => {
-    setSelectUser(values);
-  };
 
   const defaultProps = {
     options: AllUsers,
@@ -72,7 +63,7 @@ const MemberInformation = ( props ) => {
     }
   };
 
-  const displayUser = (participant, canDelete=true) => (
+  const displayUser = (participant, canDelete=true, participants, setParticipants) => (
     <ListItem
       key={participant.id}
       alignItems='flex-start'
@@ -87,7 +78,7 @@ const MemberInformation = ( props ) => {
       {canDelete &&
         <ListItemSecondaryAction>
           <IconButton aria-label='delete'>
-            <DeleteIcon onClick={() => handleRemoveTeammate(participant.id)}/>
+            <DeleteIcon onClick={() => setParticipants(participants.filter(s => s.id !== participant.id))}/>
           </IconButton>
         </ListItemSecondaryAction>
       }
@@ -95,7 +86,7 @@ const MemberInformation = ( props ) => {
 
   return (
     <Grid container justify='center'>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <Grid container  alignItems='center' spacing={2}>
@@ -111,27 +102,18 @@ const MemberInformation = ( props ) => {
                       <Grid item xs={8}>
                         <Tooltip title='Search for name' arrow>
                           <FormControl margin='dense' fullWidth variant='filled'>
-
                             <Autocomplete
-                              id='Search for Team Members'
+                              id='Search for Student Team Members'
                               {...defaultProps}
                               style={{width: 300}}
-                              value={selectUser}
-                              onChange={handleSelectUser}
+                              value={null}
+                              onChange={(event, value) => {
+                                setStudents([...students, value]);
+                              }}
                               renderInput={renderInputForMembers}
                             />
                           </FormControl>
                         </Tooltip>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <Button
-                          variant='outlined' color='primary' onClick={() => {
-                            handleConfirmTeammate(selectUser);
-                            setSelectUser('');
-                          }}
-                        >
-                          Confirm
-                        </Button>
                       </Grid>
                     </Grid>
 
@@ -139,8 +121,7 @@ const MemberInformation = ( props ) => {
                   {/* team list */}
                   <Grid item xs={9}>
                     <List>
-                      {members.map(member => displayUser(member))
-                      }
+                      {students.map(member => displayUser(member, true, students, setStudents))}
                     </List>
                   </Grid>
 
@@ -152,12 +133,12 @@ const MemberInformation = ( props ) => {
         </Card>
 
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <Grid container alignItems='center' spacing={2}>
               <Grid item xs={12}>
-                <PageTitleTypography text='Staff Information' align='left' size='h5'/>
+                <PageTitleTypography text='Professors and Teaching Assitants' align='left' size='h5'/>
                 <Divider/>
               </Grid>
 
@@ -169,35 +150,18 @@ const MemberInformation = ( props ) => {
                       <Grid item>
                         <Tooltip title='Search for name' arrow>
                           <Autocomplete
-                            id='Search for Professor'
                             {...defaultProps}
                             style={{width: 300}}
-                            onChange={handleSelectedPerson('selectedProfessor')}
+                            value={null}
+                            onChange={(event, value) => {
+                              setProfessors([...professors, value]);
+                            }}
                             renderInput={renderInputForProfessor}
                           />
                         </Tooltip>
                       </Grid>
                       <Grid>
-                        {(selectedProfessor && selectedProfessor !== '') && displayUser(selectedProfessor, false)}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  {/* search TA */}
-                  <Grid item>
-                    <Grid container alignItems='center' justify='center' spacing={2} direction='row'>
-                      <Grid item>
-                        <Tooltip title='Search for name' arrow>
-                          <Autocomplete
-                            id='Search for TA'
-                            {...defaultProps}
-                            style={{width: 300}}
-                            onChange={handleSelectedPerson('selectedTA')}
-                            renderInput={renderInputForTA}
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item>
-                        {(selectedTA && selectedTA !== '') && displayUser(selectedTA, false)}
+                        {professors.map(member => displayUser(member, true, professors, setProfessors))}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -211,6 +175,14 @@ const MemberInformation = ( props ) => {
   );
 };
 
+const arrayOfPersons = PropTypes.arrayOf(
+  PropTypes.shape({
+    Fullname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
+  }).isRequired
+);
+
 MemberInformation.propTypes = {
   AllUsers: PropTypes.arrayOf(PropTypes.shape({
     Fullname: PropTypes.string.isRequired,
@@ -218,30 +190,12 @@ MemberInformation.propTypes = {
     description: PropTypes.string,
     picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
   }).isRequired).isRequired,
-  members: PropTypes.arrayOf(PropTypes.shape({
-    Fullname: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
-  }).isRequired).isRequired,
-  selectedTA: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      Fullname: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
-    })
-  ]).isRequired,
-  selectedProfessor: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      Fullname: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      picture: PropTypes.shape({url: PropTypes.string, id: PropTypes.string})
-    })
-  ]).isRequired,
-  handleConfirmTeammate: PropTypes.func.isRequired,
-  handleSelectedPerson: PropTypes.func.isRequired,
-  handleRemoveTeammate: PropTypes.func.isRequired
+  students: arrayOfPersons.isRequired,
+  professors: arrayOfPersons.isRequired,
+  teachingAssistants: arrayOfPersons.isRequired,
+  setStudents: PropTypes.func.isRequired,
+  setProfessors: PropTypes.func.isRequired,
+  setTeachingAssistants: PropTypes.func.isRequired,
 };
 
 export default MemberInformation;

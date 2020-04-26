@@ -1,3 +1,4 @@
+import {Box} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {withStyles} from '@material-ui/core/styles';
@@ -8,7 +9,14 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import compose from 'recompose/compose';
+import GridBox from '../../Components/LayoutWrappers/GridBox';
+import GridPageContainer from '../../Components/LayoutWrappers/GridPageContainer';
+import LoadingCircle from '../../Components/LoadingCircle';
+import SectionTitle from '../../Components/Typography/SectionTitle';
+import AuthContext from '../../Contexts/AuthContext';
 import api from '../../Services/api';
+import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
 import {snack} from '../../utils/Snackbar';
 import {isProfane} from '../../utils/validation';
 import BasicInformation from './BasicInformation';
@@ -23,7 +31,6 @@ const styles = theme => ({
     position: 'relative',
     overflow: 'auto',
     maxHeight: '300px',
-
   },
   card: {
     marginTop: '1%',
@@ -63,14 +70,14 @@ const initialState = {
   selectedSponsor: '',
   AllUsers: [],
   Users: [],
-  members: [],
-  selectedProfessor: '',
-  selectedTA: '',
-  selectedUser: '',
+  professors: [],
+  students: [],
   course: '',
   capstoneId: '',
   removeImg: false,
-  semester: ''
+  semester: '',
+  loading: true,
+  isEditing: false
 };
 
 class CreateCapstone extends Component {
@@ -80,36 +87,39 @@ class CreateCapstone extends Component {
   }
 
   async componentDidMount() {
+    await this.initialize();
+  }
+
+  async componentDidUpdate (prevProps) {
+    // eslint-disable-next-line react/destructuring-assignment
+    if(prevProps.match.params.capstoneID !== this.props.match.params.capstoneID) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState(initialState);
+      await this.initialize();
+    }
+  }
+
+  initialize = async () => {
+    const {match} = this.props;
+    const {capstoneID} = match.params;
+    const isEditing = !_.isNil(capstoneID);
+    this.setState({isEditing});
     /* eslint-disable react/destructuring-assignment */
     ValidatorForm.addValidationRule('isProfane', isProfane);
-    ValidatorForm.addValidationRule('haveMembers', () => !_.isEmpty(this.state.members));
-    ValidatorForm.addValidationRule('haveProfessor', () => !_.isEmpty(this.state.selectedProfessor));
-    ValidatorForm.addValidationRule('haveTA', () => !_.isEmpty(this.state.selectedTA));
+    ValidatorForm.addValidationRule('haveMembers', () => !_.isEmpty(this.state.students));
+    ValidatorForm.addValidationRule('haveProfessor', () => !_.isEmpty(this.state.professors));
     ValidatorForm.addValidationRule('haveDepartment', () => !_.isEmpty(this.state.departments));
     /* eslint-enable react/destructuring-assignment */
 
     const departmentList = await api.departments.find();
     const sponsorList = await api.sponsors.find();
+    const response = await api.users.find();
     // fetch all professors
     // const professors = await api.users.find({department_null: false});
+    this.setState({sponsorList, departmentList, Users: response, AllUsers: response});
 
-    this.setState({sponsorList, departmentList});
-
-    const response = await api.users.find();
-    this.setState({Users: response, AllUsers: response});
-
-    // TODO: if not a created capstone, clear, else reset all things
-    const editId = '5e99c90f5350f40031d08f1c';
-    if (editId) {
-      const editCapstone = await api.capstones.findOne(editId);
-
-      const teachingAssistantID = await api.getRoleIDFromName('TeachingAssistant');
-      const professorID = await api.getRoleIDFromName('Professor');
-      const teamMembers = editCapstone.members.filter(member => (
-        member.role !== teachingAssistantID && member.role !== professorID
-      ));
-      const professor = editCapstone.members.filter(member => member.role !== professorID);
-      const TA = editCapstone.members.filter(member => member.role !== teachingAssistantID);
+    if (capstoneID && isEditing) {
+      const editCapstone = await api.capstones.findOne(capstoneID);
 
       const thumbnail = editCapstone.thumbnail ? [editCapstone.thumbnail] : [];
       const cover = editCapstone.cover ? editCapstone.cover : [];
@@ -124,45 +134,21 @@ class CreateCapstone extends Component {
         departments: _.cloneDeep(editCapstone.departments),
         preview: editCapstone.preview,
         description: editCapstone.description,
-        members: teamMembers,
-        selectedProfessor: professor[0],
-        selectedTA: TA[0],
+        professors: editCapstone.professors,
+        students: editCapstone.students,
         thumbnail,
         cover,
         media,
         checkedSponsors: editCapstone.sponsors,
-        capstoneId: editId
+        capstoneId: capstoneID
       });
     }
+    this.setState({loading: false});
   }
-
-  handleDescription = content => {
-    this.setState({'description': content});
-  };
 
   handleChange = (event) => {
     const {checked, value, name, type} = event.target;
     this.setState({[name]: type === 'checkbox' ? checked : value});
-  };
-
-  handleSelectedPerson = name => (event, values) => {
-    this.setState({[name]: values});
-  };
-
-  handleConfirmDepartment = (selectedDepartment) => {
-    const {departments} = this.state;
-    if (selectedDepartment !== '' && !departments.includes(selectedDepartment)) {
-      const joinedDepartments = departments.concat(selectedDepartment);
-      this.setState({departments: joinedDepartments});
-    }
-  };
-
-  handleRemoveDepartment = (selectDepartmentId) => {
-    const {departments} = this.state;
-    const copyOfDepartments = _.cloneDeep(departments);
-    this.setState({
-      departments: copyOfDepartments.filter(t => selectDepartmentId !== t.id)
-    });
   };
 
   handleConfirmSponsor = (selectedSponsor) => {
@@ -173,33 +159,6 @@ class CreateCapstone extends Component {
         this.setState({checkedSponsors: joinedSponsor});
       }
     }
-  };
-
-  handleRemoveSponsor = (selectedSponsorId) => {
-    const {checkedSponsors} = this.state;
-    const copyOfSponsors = _.cloneDeep(checkedSponsors);
-    this.setState({
-      checkedSponsors: copyOfSponsors.filter(t => selectedSponsorId !== t.id)
-    });
-  };
-
-  handleConfirmTeammate = (selectedUser) => {
-    const user = selectedUser;
-    const {members} = this.state;
-    if (user !== '') {
-      if (!members.includes(user)) {
-        const joinedMembers = members.concat(user);
-        this.setState({members: joinedMembers});
-      }
-    }
-  };
-
-  handleRemoveTeammate = (selectedUserId) => {
-    const {members} = this.state;
-    const copyOfMembers = _.cloneDeep(members);
-    this.setState({
-      members: copyOfMembers.filter(t => selectedUserId !== t.id)
-    });
   };
 
   handleStartDate = (startDateInput) => {
@@ -224,10 +183,6 @@ class CreateCapstone extends Component {
     }
   };
 
-  handleNewUser = (newUser) => {
-    this.setState({...newUser});
-  };
-
   handleSelectSponsor = (event) => {
     this.setState({selectedSponsor: event.target.value});
   };
@@ -241,9 +196,8 @@ class CreateCapstone extends Component {
       endDate,
       departments,
       description,
-      members,
-      selectedProfessor,
-      selectedTA,
+      students,
+      professors,
       preview,
       checkedSponsors,
       semester
@@ -268,15 +222,11 @@ class CreateCapstone extends Component {
     if (description !== '') {
       uploadContent.description = description;
     }
-    if (members.length > 0) {
-      const UserIDs = members.map(p => p.id);
-      uploadContent.members = UserIDs;
+    if (students.length > 0) {
+      uploadContent.students = students.map(p => p.id);
     }
-    if (selectedTA && selectedTA !== '' && selectedTA !== []) {
-      uploadContent.members = uploadContent.members.concat(selectedTA.id);
-    }
-    if (selectedProfessor && selectedProfessor !== '' && selectedProfessor !== []) {
-      uploadContent.members = uploadContent.members.concat(selectedProfessor.id);
+    if (professors.length > 0) {
+      uploadContent.professors = professors.map(p => p.id);
     }
     if (checkedSponsors.length > 0) {
       uploadContent.sponsors = checkedSponsors.map(s => s.id);
@@ -288,7 +238,9 @@ class CreateCapstone extends Component {
     await this.handleUpload(true);
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('successful submit!', snack.success);
-    this.setState(initialState);
+    const {user}= this.context;
+    history.push(routes.dashboard.viewyourcapstones.genPath(user.username));
+    this.setState({...initialState, loading: false});
   };
 
   handleSave = async () => {
@@ -328,92 +280,95 @@ class CreateCapstone extends Component {
   };
 
   render() {
-    const {classes} = this.props;
-    const {enqueueSnackbar} = this.props;
+    const {classes, enqueueSnackbar} = this.props;
+    const {loading, isEditing} = this.state;
 
     return(
-      <div>
-        {/* Page header */}
-        <ValidatorForm
-          onSubmit={this.handleSubmit}
-          onError={() => enqueueSnackbar('problem submitting', snack.error)}
-        >
-          <Grid container justify='center'>
-            <BasicInformation
-              classes={classes}
-              handleChange={this.handleChange}
-              handleStartDate={this.handleStartDate}
-              handleEndDate={this.handleEndDate}
-              setDepartments={(departments) => this.setState({departments})}
-              setDescription={(description) => this.setState({description})}
-              {...this.state}
-            />
-            <MemberInformation
-              classes={classes}
-              handleConfirmTeammate={this.handleConfirmTeammate}
-              handleRemoveTeammate={this.handleRemoveTeammate}
-              handleNewUser={this.handleNewUser}
-              handleSelectedPerson={this.handleSelectedPerson}
-              {...this.state}
-            />
-            <SponsorAndMediaInformation
-              classes={classes}
-              handleSelectSponsor={this.handleSelectSponsor}
-              handleConfirmSponsor={this.handleConfirmSponsor}
-              setCheckedSponsor={(checkedSponsors) => this.setState({checkedSponsors})}
-              setThumbnail={(thumbnail) => this.setState({thumbnail})}
-              setCover={(cover) => this.setState({cover})}
-              setMedia={(media) => this.setState({media})}
-              {...this.state}
-            />
-            <Grid item xs={12} md={10}>
-              <Grid container justify='space-around' spacing={3} alignItems='center'>
-                <Grid item xs={3}>
-                  <Button
-                    fullWidth
-                    variant='contained'
-                    color='primary'
-                    onClick={this.handleSave}
-                    style={{marginTop: '1%'}}
-                  >
-                    Save
-                  </Button>
-                </Grid>
-                <Grid item xs={3}>
-                  <Button
-                    type='submit'
-                    fullWidth
-                    variant='contained'
-                    color='primary'
-                    style={{marginTop: '1%'}}
-                  >
-                    Add Capstone
-                  </Button>
-                </Grid>
-                <Grid item xs={3}>
-                  <Button
-                    fullWidth
-                    variant='contained'
-                    color='primary'
-                    style={{marginTop: '1%'}}
-                    onClick={() => this.setState(initialState)}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
+      loading ?
+        <LoadingCircle/>
+        :
+        <GridPageContainer>
+          <GridBox>
+            <SectionTitle>{isEditing ? 'Edit Capstone' : 'Create Capstone'}</SectionTitle>
+            <ValidatorForm
+              onSubmit={this.handleSubmit}
+              onError={() => enqueueSnackbar('problem submitting', snack.error)}
+            >
+              <div>
+                <BasicInformation
+                  classes={classes}
+                  handleChange={this.handleChange}
+                  handleStartDate={this.handleStartDate}
+                  handleEndDate={this.handleEndDate}
+                  setDepartments={(departments) => this.setState({departments})}
+                  setDescription={(description) => this.setState({description})}
+                  {...this.state}
+                />
+                <MemberInformation
+                  classes={classes}
+                  setStudents={(students) => this.setState({students})}
+                  setProfessors={(professors) => this.setState({professors})}
+                  {...this.state}
+                />
+                <SponsorAndMediaInformation
+                  classes={classes}
+                  handleSelectSponsor={this.handleSelectSponsor}
+                  handleConfirmSponsor={this.handleConfirmSponsor}
+                  setCheckedSponsor={(checkedSponsors) => this.setState({checkedSponsors})}
+                  setThumbnail={(thumbnail) => this.setState({thumbnail})}
+                  setCover={(cover) => this.setState({cover})}
+                  setMedia={(media) => this.setState({media})}
+                  {...this.state}
+                />
+                <Grid item xs={12} component={Box} pt={3}>
+                  <Grid container justify='space-around' spacing={3} alignItems='center'>
+                    <Grid item xs={3}>
+                      <Button
+                        fullWidth
+                        variant='contained'
+                        color='primary'
+                        onClick={this.handleSave}
+                        style={{marginTop: '1%'}}
+                      >
+                        Save
+                      </Button>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Button
+                        type='submit'
+                        fullWidth
+                        variant='contained'
+                        color='primary'
+                        style={{marginTop: '1%'}}
+                      >
+                        Add Capstone
+                      </Button>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Button
+                        fullWidth
+                        variant='contained'
+                        color='primary'
+                        style={{marginTop: '1%'}}
+                        onClick={() => this.setState({...initialState, loading: false})}
+                      >
+                        Cancel
+                      </Button>
+                    </Grid>
 
-              </Grid>
-            </Grid>
-          </Grid>
-        </ValidatorForm>
-
-      </div>
+                  </Grid>
+                </Grid>
+              </div>
+            </ValidatorForm>
+          </GridBox>
+        </GridPageContainer>
     );
   }
 }
 
+CreateCapstone.contextType = AuthContext;
 CreateCapstone.propTypes = {
-  enqueueSnackbar: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired
 };
 
 export default compose(

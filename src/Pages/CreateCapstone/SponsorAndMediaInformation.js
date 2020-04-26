@@ -18,12 +18,12 @@ import {imageURL} from '../../utils/utils';
 const SponsorAndMediaInformation = (props) => {
 
   const {classes, setCover, cover, thumbnail, media, setThumbnail, setMedia,
-    selectedSponsor, handleSelectSponsor, sponsorList, handleConfirmSponsor, checkedSponsors,
+    selectedSponsor, handleSelectSponsor, sponsorList, checkedSponsors,
     setCheckedSponsor
   } = props;
   return (
     <Grid container justify='center'>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <PageTitleTypography text='Sponsor Information' align='left' size='h5'/>
@@ -40,8 +40,6 @@ const SponsorAndMediaInformation = (props) => {
                           label='Select a sponsor'
                           value={selectedSponsor}
                           onChange={handleSelectSponsor}
-                          validators={['required'] }
-                          errorMessages={['this field is required']}
                         >
                           <MenuItem value=''>
                             <em>None</em>
@@ -85,7 +83,7 @@ const SponsorAndMediaInformation = (props) => {
         </Card>
 
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>
@@ -102,7 +100,7 @@ const SponsorAndMediaInformation = (props) => {
         </Card>
 
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>
@@ -118,7 +116,7 @@ const SponsorAndMediaInformation = (props) => {
         </Card>
 
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12}>
         <Card className={classes.card}>
           <CardContent>
             <Typography align='center' variant='h5'>

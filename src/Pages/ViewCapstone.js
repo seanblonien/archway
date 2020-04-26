@@ -1,4 +1,5 @@
 import {Box} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -7,11 +8,15 @@ import withWidth from '@material-ui/core/withWidth';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
+import Can from '../Components/Can';
 import CapstonePhotos from '../Components/Capstone/CapstonePhotos';
-import Team from '../Components/Capstone/Team';
+import UserGrid from '../Components/Capstone/UserGrid';
 import Cover from '../Components/Cover';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
+import SectionTitle from '../Components/Typography/SectionTitle';
+import {permissions} from '../constants';
+import AuthContext from '../Contexts/AuthContext';
 import api from '../Services/api';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
@@ -41,8 +46,17 @@ class ViewCapstone extends Component {
     history.push(routes.viewsponsor.genPath(sponsorName));
   };
 
+  handleEdit = () => {
+    const {capstone} = this.state;
+    history.push(routes.dashboard.createcapstone.genPath(capstone.id));
+  }
+
   render() {
     const {loading, capstone} = this.state;
+    const {user, isAuthenticated} = this.context;
+    const {handleEdit} = this;
+    let x = capstone.professors && capstone.professors.filter(prof => prof.id === user.id)[0];
+    const canEdit = isAuthenticated && x;
 
     return loading ?
       <LoadingCircle/> :
@@ -79,14 +93,30 @@ class ViewCapstone extends Component {
           <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} my={2}>
             <MediaMarkdown>{capstone.description}</MediaMarkdown>
           </Grid>
-          {capstone.members[0] &&
+          {capstone.students[0] &&
             <Grid item xs={12} component={Box} py={2}>
-              <Team capstone={capstone}/>
+              <SectionTitle>Students</SectionTitle>
+              <UserGrid userList={capstone.students}/>
             </Grid>
+          }
+          {capstone.professors[0] &&
+          <Grid item xs={12} component={Box} py={2}>
+            <SectionTitle>Professors</SectionTitle>
+            <UserGrid userList={capstone.professors}/>
+          </Grid>
           }
           {capstone.media[0] &&
             <Grid item xs={12} component={Box} py={2}>
               <CapstonePhotos capstone={capstone}/>
+            </Grid>
+          }
+          {canEdit &&
+            <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} my={4}>
+              <Can perform={permissions.application.capstones.update}>
+                <Button variant='contained' onClick={handleEdit}>
+                  Edit Capstone
+                </Button>
+              </Can>
             </Grid>
           }
         </Grid>
@@ -94,6 +124,8 @@ class ViewCapstone extends Component {
     ;
   }
 }
+
+ViewCapstone.contextType = AuthContext;
 
 export default compose(
   withWidth(),
