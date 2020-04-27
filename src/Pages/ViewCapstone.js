@@ -60,6 +60,7 @@ class ViewCapstone extends Component {
   }
 
   render() {
+    const {classes} = this.props;
     const {loading, capstone} = this.state;
     const {user, isAuthenticated} = this.context;
     const {handleEdit} = this;
@@ -90,6 +91,7 @@ class ViewCapstone extends Component {
                       style={{maxWidth: '320px'}}
                       key={`sponsor-${sponsor.id}`}
                       onClick={() => this.handleSponsorClick(sponsor.id)}
+                      className={classes.pointer}
                     >
                       <img
                         src={imageURL.sponsor(sponsor.logo)}
