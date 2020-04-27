@@ -37,7 +37,7 @@
         },
         "description": {
           "type": "richtext",
-          "required": true,
+          "required": false,
           "maxLength": 10000
         },
         "preview": {
