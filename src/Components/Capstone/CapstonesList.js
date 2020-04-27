@@ -72,10 +72,10 @@ class CapstonesList extends Component {
 
     return (
       <div className={classes.root}>
-        <GridList className={classes.gridList} cellHeight={180} cols={1}>
+        <GridList className={classes.gridList} cellHeight={180}>
           {capstoneList.map((result, i) => (
             <GridListTile
-              style={{maxWidth: '300px', padding: '20px'}}
+              style={{maxWidth: '300px', padding: '20px', width: '300px'}}
               key={capstoneList[i].id}
               onClick={() => this.handleTileClick(result.id)}
             >
