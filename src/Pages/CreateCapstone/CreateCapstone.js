@@ -212,6 +212,10 @@ class CreateCapstone extends Component {
     }
     if (professors.length > 0) {
       uploadContent.professors = professors.map(p => p.id);
+      const {user} = this.context;
+      if(user && user.id && !uploadContent.professors.includes(user.id)) {
+        uploadContent.professors.push(user.id);
+      }
     }
     if (checkedSponsors.length > 0) {
       uploadContent.sponsors = checkedSponsors.map(s => s.id);
@@ -223,8 +227,8 @@ class CreateCapstone extends Component {
     await this.handleUpload(true);
     const {enqueueSnackbar} = this.props;
     enqueueSnackbar('Capstone submitted successfully!', snack.success);
-    const {user}= this.context;
-    history.push(routes.dashboard.viewyourcapstones.genPath(user.username));
+    const {capstoneId} = this.state;
+    history.push(routes.viewcapstone.genPath(capstoneId));
     this.setState({...initialState, loading: false});
   };
 
