@@ -8,8 +8,12 @@ import {A} from '../Markdown/MarkdownComponents';
 export const linkStyles = theme => ({
   link: {
     color: theme.palette.primary.main,
-    '&:hover, &:active': {
-      color: theme.palette.secondary.main,
+    '&:hover': {
+      color: theme.palette.action.hover,
+      textDecorationLine: 'underline'
+    },
+    '&:active': {
+      color: theme.palette.action.active,
       textDecorationLine: 'underline'
     },
     textDecorationLine: 'none'

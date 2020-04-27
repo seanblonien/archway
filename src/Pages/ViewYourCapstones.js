@@ -33,7 +33,7 @@ class ViewYourCapstones extends Component {
         :
         <GridPageContainer>
           <GridBox>
-            <SectionTitle>Your Capstones</SectionTitle>
+            <SectionTitle>My Capstones</SectionTitle>
             {capstones &&
               <CapstonesTab capstones={capstones}/>
             }
