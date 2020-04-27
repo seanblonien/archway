@@ -15,7 +15,7 @@ const Dashboard = ({routes, match}) => {
   const [hasRoutedToDefault, setHasRoutedToDefault] = useState(false);
 
   useEffect(() => {
-    if(match.path === appRoutes.dashboard.path && !hasRoutedToDefault){
+    if(match.path === appRoutes.dashboard.path && match.isExact && !hasRoutedToDefault){
       setHasRoutedToDefault(true);
       const defaultChild = appRoutes.dashboard[appRoutes.dashboard.routeNames[0]].genPath(user.username);
       history.push(defaultChild);
