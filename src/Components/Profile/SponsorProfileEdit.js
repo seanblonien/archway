@@ -1,5 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
@@ -52,9 +53,9 @@ class SponsorProfileEdit extends Component {
               value={user.sponsorOrganization}
             >
               {sponsors.map(sponsor => (
-                <option key={sponsor.id} value={sponsor}>
+                <MenuItem key={sponsor.id} value={sponsor}>
                   {sponsor.name}
-                </option>
+                </MenuItem>
               ))}
             </Select>
           </Grid>
