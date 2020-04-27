@@ -16,7 +16,7 @@ const styles = () => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'left',
   },
   gridList: {
     transform: 'translateZ(0)',
@@ -26,6 +26,11 @@ const styles = () => ({
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
   },
+  tile: {
+    maxWidth: '300px',
+    margin: '5px',
+    cursor: 'pointer'
+  }
 });
 
 class CapstonesList extends Component {
@@ -73,10 +78,11 @@ class CapstonesList extends Component {
 
     return (
       <div className={classes.root}>
-        <GridList className={classes.gridList} cellHeight={180} cols={2}>
+        <GridList className={classes.gridList} cellHeight={180}>
           {capstoneList.map((result, i) => (
             <GridListTile
-              style={{maxWidth: '300px', padding: '10px'}}
+              cols={capstoneList.length > 1 ? 1 : 2}
+              className={classes.tile}
               key={capstoneList[i].id}
               onClick={() => this.handleTileClick(result.id)}
             >

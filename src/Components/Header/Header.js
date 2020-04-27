@@ -78,7 +78,7 @@ class Header extends Component {
           </span>
         }
       >
-        <AccountCircle fontSize='large'/>
+        <AccountCircle fontSize='large' style={{cursor: 'pointer'}}/>
       </StyledTooltip>
     );
 
