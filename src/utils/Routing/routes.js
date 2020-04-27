@@ -44,7 +44,7 @@ const routes = {
     },
     viewprofile: {
       name: 'Profile',
-      path: '/dashboard/profile/:username',
+      path: '/dashboard/profile/:username?',
       genPath: (username ) => `/dashboard/profile/${username}`,
       useUser: true,
       component: ViewProfile,

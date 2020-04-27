@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import Can from '../Components/Can';
 import GridPageContainer from '../Components/LayoutWrappers/GridPageContainer';
 import GridPaper from '../Components/LayoutWrappers/GridPaper';
+import LoadingCircle from '../Components/LoadingCircle';
 import CancelSubmit from '../Components/Profile/CancelSubmit';
 import EditButton from '../Components/Profile/EditButton';
 import MainProfile from '../Components/Profile/MainProfile';
@@ -38,18 +39,26 @@ class ViewProfile extends Component {
       editing: false,
       profile: initialState,
       unchangedProfile: initialState,
+      loading: true
     };
   }
 
   async componentDidMount() {
     const {match} = this.props;
+    const {user} = this.context;
 
     // Get the data for the profile in question
-    const response = await api.users.find({username: match.params.username});
+    let response;
+    if(match.params.username){
+      response = await api.users.find({username: match.params.username});
+    } else if(user && user.username) {
+      response = await api.users.find({username: user.username});
+      this.setState({editing: true});
+    }
     const profile = response[0];
     const unchangedProfile = response[0];
 
-    this.setState({profile, unchangedProfile});
+    this.setState({profile, unchangedProfile, loading: false});
   }
 
   updatePicture = (pic) => {
@@ -89,12 +98,16 @@ class ViewProfile extends Component {
   };
 
   render() {
-    const {editing, profile} = this.state;
+    const {editing, profile, loading} = this.state;
     const {match} = this.props;
     const {user, isAuthenticated} = this.context;
 
     // The logged in (authenticated) user can only edit their own profile
     const canEdit = isAuthenticated && profile && user.username === profile.username;
+
+    if(loading) {
+      return <LoadingCircle/>;
+    }
 
     return (
       profile ?
