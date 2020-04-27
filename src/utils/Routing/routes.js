@@ -34,7 +34,7 @@ const routes = {
     protected: true,
     routeNames: ['viewyourcapstones','viewprofile','createcapstone','reviewproposals', 'viewyourproposals', 'importusers'],
     viewyourcapstones: {
-      name: 'Your Capstones',
+      name: 'My Capstones',
       path: '/dashboard/capstones/:username',
       genPath: (username ) => `/dashboard/capstones/${username}`,
       useUser: true,
@@ -43,7 +43,7 @@ const routes = {
       permission: permissions.application.capstones.find,
     },
     viewprofile: {
-      name: 'Profile',
+      name: 'My Profile',
       path: '/dashboard/profile/:username?',
       genPath: (username ) => `/dashboard/profile/${username}`,
       useUser: true,
@@ -68,7 +68,7 @@ const routes = {
       permission: permissions.application.proposal_approval.find,
     },
     viewyourproposals: {
-      name: 'Your Proposals',
+      name: 'My Proposals',
       path: '/dashboard/view-your-proposals',
       component: ViewYourProposals,
       Icon: Description,
