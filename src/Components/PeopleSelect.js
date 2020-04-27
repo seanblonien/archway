@@ -43,7 +43,7 @@ const PeopleSelect = ({title, users, selectedUsers, setSelectedUsers}) => {
                     renderInput={(params) =>
                       <TextField
                         {...params}
-                        label='Search for Students'
+                        label='Search for Professors'
                         variant='outlined'
                       />
                     }
