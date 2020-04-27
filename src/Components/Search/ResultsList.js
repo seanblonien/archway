@@ -94,9 +94,6 @@ class ResultsList extends Component {
     const dids = departmentCapstones.map(dc => dc.id);
     const sids = sponsorCapstones.map(sc => sc.id);
 
-    console.log(dids);
-    console.log(sids);
-
     // Find the ids that appear in all 3 lists (AND operation)
     const cids = qids.filter(value => dids.includes(value) && sids.includes(value));
 
