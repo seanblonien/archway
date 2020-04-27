@@ -1,18 +1,18 @@
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
 import {HashLink as Link} from 'react-router-hash-link';
 import compose from 'recompose/compose';
+import GridBox from '../Components/LayoutWrappers/GridBox';
 import GridPageContainer from '../Components/LayoutWrappers/GridPageContainer';
+import GridPaper from '../Components/LayoutWrappers/GridPaper';
 import PageWithMargin from '../Components/LayoutWrappers/PageWithMargin';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import api from '../Services/api';
 import routes from '../utils/Routing/routes';
-import root from '../utils/styles.module.css';
 
 const styles = theme => ({
   link: {
@@ -53,10 +53,10 @@ class FAQ extends Component {
       return (
         <PageWithMargin>
           <GridPageContainer>
-            <Grid item xs={12}>
+            <Grid item xs={12} component={Box} textAlign='center'>
               <Typography variant='h2'>Frequently Asked Questions</Typography>
             </Grid>
-            <Grid item xs={12} container>
+            <Grid item xs={12} container component={Box} justify='center' alignItems='center' py={5}>
               {categories.map((category) => (
                 <Grid key={`top${category.toString()}`} item xs={6}>
                   <Typography variant='h5' align='left'>
@@ -65,7 +65,7 @@ class FAQ extends Component {
                   {faqs.map((question, index) => (
                     <div key={`top${index}`}>
                       {category === question.category &&
-                        <Box item xs={12} style={{marginLeft: '4%'}}>
+                        <Box>
                           <Link className={classes.link} to={`${routes.faq.path}#question${index}`}>
                             <Typography align='left'>
                               {question.question}
@@ -79,32 +79,34 @@ class FAQ extends Component {
               ))}
             </Grid>
 
-            <Grid item xs={12} container>
+            <GridBox>
               {categories.map((category) => (
-                <Paper key={category.toString()} className={root.largePaper}>
-                  <Grid item xs={12}>
-                    <Typography variant='h4' align='center'>
-                      {category}
-                    </Typography>
-                    {faqs.map((question, index) => (
-                      <div key={index}>
-                        { category === question.category &&
-                          <Box style={{marginLeft: '4%'}}>
-                            <Typography variant='h5' id={`question${index}`}>
-                              {question.question}
-                            </Typography>
-                            <Box textAlign='left'>
-                              <MediaMarkdown>
-                                {question.answer}
-                              </MediaMarkdown>
-                            </Box>
-                          </Box>}
-                      </div>
-                    ))}
-                  </Grid>
-                </Paper>
+                <Box key={category.toString()} py={1}>
+                  <GridPaper>
+                    <Grid item xs={12}>
+                      <Typography variant='h4' align='center'>
+                        {category}
+                      </Typography>
+                      {faqs.map((question, index) => (
+                        <div key={index}>
+                          { category === question.category &&
+                            <Box mx={2}>
+                              <Typography variant='h5' id={`question${index}`}>
+                                {question.question}
+                              </Typography>
+                              <Box textAlign='justify'>
+                                <MediaMarkdown>
+                                  {question.answer}
+                                </MediaMarkdown>
+                              </Box>
+                            </Box>}
+                        </div>
+                      ))}
+                    </Grid>
+                  </GridPaper>
+                </Box>
               ))}
-            </Grid>
+            </GridBox>
           </GridPageContainer>
         </PageWithMargin>
       );
