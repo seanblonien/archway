@@ -60,7 +60,6 @@ class ViewCapstone extends Component {
   }
 
   render() {
-    const {classes} = this.props;
     const {loading, capstone} = this.state;
     const {user, isAuthenticated} = this.context;
     const {handleEdit} = this;
@@ -72,38 +71,39 @@ class ViewCapstone extends Component {
       <>
         <Cover covers={capstone.cover}/>
         <PageWithMargin>
-          <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
-            <Typography variant='h3'>{capstone.name}</Typography>
-            <Typography variant='h6'>
-              <strong>Start Date:</strong> {convertStrapiDate(capstone.startDate).toDateString()}
-            </Typography>
-            <Typography variant='h6'>
-              <strong>End Date:</strong> {convertStrapiDate(capstone.endDate).toDateString()}
-            </Typography>
-            <Typography variant='h6'>
-              <strong>Sponsor(s):</strong> {this.getSponsors().join(', ') || 'None'}
-            </Typography>
-            <Grid item>
-              <GridList cellHeight={120} cols={2}>
-                {capstone.sponsors && capstone.sponsors.map(sponsor => (
-                  <GridListTile
-                    style={{maxWidth: '320px'}}
-                    key={`sponsor-${sponsor.id}`}
-                    onClick={() => this.handleSponsorClick(sponsor.id)}
-                    className={classes.pointer}
-                  >
-                    <img
-                      src={imageURL.sponsor(sponsor.logo)}
-                      alt='Sponsor' style={{height: '100%', width: '100%'}}
-                    />
-                  </GridListTile>
-                ))}
-              </GridList>
+          <Grid container direction='row'>
+            <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
+              <Typography variant='h3'>{capstone.name}</Typography>
+              <Typography variant='h6'>
+                <strong>Start Date:</strong> {convertStrapiDate(capstone.startDate).toDateString()}
+              </Typography>
+              <Typography variant='h6'>
+                <strong>End Date:</strong> {convertStrapiDate(capstone.endDate).toDateString()}
+              </Typography>
+              <Typography variant='h6'>
+                <strong>Sponsor(s):</strong> {this.getSponsors().join(', ') || 'None'}
+              </Typography>
+              <Grid item>
+                <GridList cellHeight={120} cols={2}>
+                  {capstone.sponsors && capstone.sponsors.map(sponsor => (
+                    <GridListTile
+                      style={{maxWidth: '320px'}}
+                      key={`sponsor-${sponsor.id}`}
+                      onClick={() => this.handleSponsorClick(sponsor.id)}
+                    >
+                      <img
+                        src={imageURL.sponsor(sponsor.logo)}
+                        alt='Sponsor' style={{height: '100%', width: '100%'}}
+                      />
+                    </GridListTile>
+                  ))}
+                </GridList>
+              </Grid>
+              <br/>
             </Grid>
-            <br/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} my={2}>
-            <MediaMarkdown>{capstone.description}</MediaMarkdown>
+            <Grid item xs={12} sm={12} md={8} lg={8} xl={6} component={Box} my={2}>
+              <MediaMarkdown>{capstone.description}</MediaMarkdown>
+            </Grid>
           </Grid>
           {capstone.students[0] &&
             <Grid item xs={12} component={Box} py={2}>
