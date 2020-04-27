@@ -5,12 +5,15 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import {withSnackbar} from 'notistack';
 import React, {Component} from 'react';
+import PageWithMargin from '../Components/LayoutWrappers/PageWithMargin';
 import Can from '../Components/Can';
 import CapstonesTab from '../Components/Capstone/CapstonesTab';
+import UserGrid from '../Components/Capstone/UserGrid';
 import Cover from '../Components/Cover';
 import LoadingCircle from '../Components/LoadingCircle';
 import MediaMarkdown from '../Components/Markdown/MediaMarkdown';
 import SponsorForm from '../Components/Sponsor/SponsorForm';
+import SectionTitle from '../Components/Typography/SectionTitle';
 import {permissions} from '../constants';
 import AuthContext from '../Contexts/AuthContext';
 import api from '../Services/api';
@@ -89,12 +92,26 @@ class ViewASponsor extends Component {
               </Link>
             </Grid>
           </Grid>
-          <Grid item container direction='row' justify='space-around' style={{marginTop: '4%'}}>
-            <Grid item xs={11}>
-              {sponsor.capstones[0] && <CapstonesTab capstones={sponsor.capstones}/>}
-            </Grid>
-          </Grid>
         </Grid>
+        <PageWithMargin>
+          {sponsor.capstones[0] &&
+            <>
+              <Grid item xs={12}>
+                <SectionTitle>{sponsor.name} Capstones</SectionTitle>
+              </Grid>
+              <Grid item xs={12}>
+                <CapstonesTab capstones={sponsor.capstones}/>
+              </Grid>
+            </>
+          }
+          {sponsor.personnel[0] ?
+            <Grid item xs={12}>
+              <SectionTitle>Personnel</SectionTitle>
+              <UserGrid userList={sponsor.personnel}/>
+            </Grid>
+            : null
+          }
+        </PageWithMargin>
       </div>
     ;
   }
