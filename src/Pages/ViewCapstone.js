@@ -5,6 +5,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
+import {withStyles} from '@material-ui/core/styles';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import React, {Component} from 'react';
 import compose from 'recompose/compose';
@@ -22,6 +23,12 @@ import api from '../Services/api';
 import history from '../utils/Routing/history';
 import routes from '../utils/Routing/routes';
 import {convertStrapiDate, imageURL} from '../utils/utils';
+
+const styles = () => ({
+  pointer:{
+    cursor: 'pointer'
+  }
+});
 
 class ViewCapstone extends Component {
   constructor(props) {
@@ -56,7 +63,7 @@ class ViewCapstone extends Component {
     const {loading, capstone} = this.state;
     const {user, isAuthenticated} = this.context;
     const {handleEdit} = this;
-    const isThisProfessors = capstone.professors && capstone.professors.filter(prof => prof.id === user.id)[0];
+    const isThisProfessors = isAuthenticated && capstone.professors && capstone.professors.filter(prof => prof.id === user.id)[0];
     const canEdit = isAuthenticated && isThisProfessors;
 
     return loading ?
@@ -132,7 +139,5 @@ class ViewCapstone extends Component {
 
 ViewCapstone.contextType = AuthContext;
 
-export default compose(
-  withWidth(),
-)(ViewCapstone);
+export default compose(withWidth(), withStyles(styles)) (ViewCapstone);
 
