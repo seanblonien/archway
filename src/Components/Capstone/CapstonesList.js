@@ -1,26 +1,27 @@
-import {withStyles, withTheme} from '@material-ui/core/styles';
-import compose from 'recompose/compose';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
+import {withStyles, withTheme} from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
-import PropTypes from 'prop-types';
-import routes from '../../utils/Routing/routes';
+import compose from 'recompose/compose';
 import history from '../../utils/Routing/history';
-import {imageURL, convertStrapiDate} from '../../utils/utils';
+import routes from '../../utils/Routing/routes';
+import {convertStrapiDate, imageURL} from '../../utils/utils';
 
 const styles = () => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    overflow: 'hidden',
+    justifyContent: 'space-around',
   },
   gridList: {
-    flexWrap: 'nowrap',
     transform: 'translateZ(0)',
+    overflow: 'auto',
+    maxHeight: '400px'
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
@@ -72,10 +73,10 @@ class CapstonesList extends Component {
 
     return (
       <div className={classes.root}>
-        <GridList className={classes.gridList} cellHeight={180}>
+        <GridList className={classes.gridList} cellHeight={180} cols={2}>
           {capstoneList.map((result, i) => (
             <GridListTile
-              style={{maxWidth: '300px', padding: '20px', width: '300px'}}
+              style={{maxWidth: '300px', padding: '10px'}}
               key={capstoneList[i].id}
               onClick={() => this.handleTileClick(result.id)}
             >

@@ -83,19 +83,19 @@ class ResultsList extends Component {
 
   search = async (searchTerm) => {
     // Query the database for capstones with the query string, the selected departments, and the selected sponsors (OR operation)
-    const [queryCapstones, departmentCapstones, sponsorCapstones] = await Promise.all([
+    const [queryCapstones, departments, sponsorCapstones] = await Promise.all([
       api.capstones.find({_q: searchTerm}),
-      api.capstones.find({departments: {id: this.selectedDepartments}}),
+      api.departments.find({id_in: this.selectedDepartments}),
       api.capstones.find({sponsors: {id: this.selectedSponsors}})
     ]);
 
     // Save only the ids from the queried capstones
     const qids = queryCapstones.map(qc => qc.id);
-    const dids = departmentCapstones.map(dc => dc.id);
+    const dids = departments.map(department => department.capstones.map(dc => dc.id)).reduce((obj, elem) => {
+      obj.push(...elem);
+      return obj;
+    }, []);
     const sids = sponsorCapstones.map(sc => sc.id);
-
-    console.log(dids);
-    console.log(sids);
 
     // Find the ids that appear in all 3 lists (AND operation)
     const cids = qids.filter(value => dids.includes(value) && sids.includes(value));
