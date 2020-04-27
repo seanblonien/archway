@@ -1,3 +1,4 @@
+import {withStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -13,7 +14,13 @@ import {childrenPropTypes} from '../utils/PropTypesConfig';
 import root from '../utils/styles.module.css';
 import {getFirstNWords} from '../utils/utils';
 
-const Cards = ({listItems, childURL, imageURLFunction, mediaHeight, canRoute, canDelete, setListItems, previewWords, ...rest}) => {
+const styles = () => ({
+  contain:{
+    objectFit: 'contain',
+  }
+});
+
+const Cards = ({classes, imageContained, listItems, childURL, imageURLFunction, mediaHeight, canRoute, canDelete, setListItems, previewWords, ...rest}) => {
   const ActionArea = ({to, ...props}) => (
     canRoute
       ? <CardActionArea component={Link} to={to} {...props}/>
@@ -32,6 +39,7 @@ const Cards = ({listItems, childURL, imageURLFunction, mediaHeight, canRoute, ca
                 component='img'
                 height={mediaHeight}
                 image={imageURLFunction(listItems[i].thumbnail)}
+                className={imageContained? classes.contain : ''}
               />
               <CardContent>
                 <Typography variant='h5'>
@@ -67,10 +75,13 @@ Cards.propTypes = {
   canRoute: PropTypes.bool,
   setListItems: PropTypes.func,
   previewWords: PropTypes.number,
-  canDelete: PropTypes.bool
+  canDelete: PropTypes.bool,
+  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+  imageContained: PropTypes.bool,
 };
 
 Cards.defaultProps = {
+  imageContained: false,
   mediaHeight: 300,
   canRoute: true,
   canDelete: false,
@@ -79,4 +90,4 @@ Cards.defaultProps = {
   childURL: () => null
 };
 
-export default Cards;
+export default withStyles(styles) (Cards);

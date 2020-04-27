@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+import {withStyles} from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InfoIcon from '@material-ui/icons/Info';
@@ -15,6 +16,12 @@ import root from '../../utils/styles.module.css';
 import {imageURL} from '../../utils/utils';
 import LoadingCircle from '../LoadingCircle';
 import {StyledLink} from '../Typography/StyledLink';
+
+const styles = () => ({
+  pointer:{
+    cursor: 'pointer'
+  }
+});
 
 class FeaturedCapstones extends Component {
   constructor(props) {
@@ -51,6 +58,7 @@ class FeaturedCapstones extends Component {
                   style={{maxWidth: '300px'}}
                   key={result.id}
                   onClick={() => this.handleTileClick(result.id)}
+                  className={classes.pointer}
                 >
                   <img
                     src={imageURL.capstone(featuredCapstones[i].thumbnail)}
@@ -81,4 +89,4 @@ class FeaturedCapstones extends Component {
   }
 }
 
-export default FeaturedCapstones;
+export default withStyles(styles) (FeaturedCapstones);

@@ -56,7 +56,7 @@ class ViewSponsors extends Component {
 
     if (!loading) {
       return (
-        <CardLayout title='Our Sponsors' listItems={sponsors} childURL={routes.viewsponsor.genPath} imageURLFunction={imageURL.sponsor}/>
+        <CardLayout title='Our Sponsors' listItems={sponsors} childURL={routes.viewsponsor.genPath} imageURLFunction={imageURL.sponsor} imageContained/>
       );
     }
 
