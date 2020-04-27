@@ -1,3 +1,4 @@
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -10,6 +11,12 @@ import routes from '../../utils/Routing/routes';
 import {imageURL} from '../../utils/utils';
 import Can from '../Can';
 import LoadingCircle from '../LoadingCircle';
+
+const styles = () => ({
+  pointer:{
+    cursor: 'pointer'
+  }
+});
 
 class FeaturedSponsors extends Component {
   constructor(props) {
@@ -31,6 +38,7 @@ class FeaturedSponsors extends Component {
   };
 
   render () {
+    const {classes} = this.props;
     const {loading, featuredSponsors} = this.state;
 
     return loading ?
@@ -48,6 +56,7 @@ class FeaturedSponsors extends Component {
                   style={{maxWidth: '200px'}}
                   key={featuredSponsors[i].logo.url}
                   onClick={() => this.handleSponsorClick(result.id)}
+                  className={classes.pointer}
                 >
                   <img
                     src={imageURL.sponsor(featuredSponsors[i].logo)}
@@ -63,4 +72,4 @@ class FeaturedSponsors extends Component {
   }
 }
 
-export default FeaturedSponsors;
+export default withStyles(styles) (FeaturedSponsors);
