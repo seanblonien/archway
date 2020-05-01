@@ -22,7 +22,5 @@ export default class UploadEndpoint {
   });
 
   // Deletes an upload by its id.
-  delete = (id) => {
-    this.apiClient.delete(`${this.name}/files/${id}`);
-  };
+  delete = (id) => this.apiClient.delete(`${this.name}/files/${id}`);
 }

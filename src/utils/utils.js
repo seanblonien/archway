@@ -2,10 +2,7 @@ import _ from 'lodash';
 import {useLocation} from 'react-router-dom';
 import {strapiURL} from '../constants';
 import api from '../Services/api';
-import defaultCapstoneImg from '../Static/defaultCapstone.svg';
-import defaultCoverImg from '../Static/defaultCover.svg';
-import defaultDepartmentImg from '../Static/defaultDepartment.svg';
-import defaultSponsorImg from '../Static/defaultSponsor.svg';
+import defaultArchImg from '../Static/arch.svg';
 import defaultUserImg from '../Static/defaultUser.png';
 import {widthPropTypes} from './PropTypesConfig';
 
@@ -30,10 +27,11 @@ const checkImage = (image, defaultImage) => image && _.get(image, 'url') ?  stra
 // returned.
 export const imageURL = {
   user: (image) => checkImage(image, defaultUserImg),
-  sponsor: (image) => checkImage(image, defaultSponsorImg),
-  department: (image) => checkImage(image, defaultDepartmentImg),
-  capstone: (image) => checkImage(image, defaultCapstoneImg),
-  cover: (image) => checkImage(image, defaultCoverImg)
+  sponsor: (image) => checkImage(image, defaultArchImg),
+  department: (image) => checkImage(image, defaultArchImg),
+  capstone: (image) => checkImage(image, defaultArchImg),
+  cover: (image) => checkImage(image, defaultArchImg),
+  university: (image) => checkImage(image, defaultArchImg),
 };
 
 // Gets an image from strapi and reformats it so that it can be used as a

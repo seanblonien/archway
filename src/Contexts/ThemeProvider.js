@@ -1,65 +1,43 @@
 import React, {Component} from 'react';
-import {ThemeProvider as MUIThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import LoadingCircle from '../Components/LoadingCircle';
 import api from '../Services/api';
+import {childrenPropTypes} from '../utils/PropTypesConfig';
+
+export const ThemeContext = React.createContext(null);
 
 class ThemeProvider extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
-      loading: true,
-      customTheme: [],
+      theme: null,
+      loading: true
     };
   }
 
   async componentDidMount() {
-    const customTheme = await api.theme.find();
-    this.setState({loading: false, customTheme});
+    const theme = await api.theme.find();
+    this.setState({loading: false, theme});
   }
 
-  render() {
+  setTheme = (theme) => {
+    this.setState({theme});
+  }
+
+  render () {
     const {children} = this.props;
-    const {loading, customTheme} = this.state;
+    const {theme, loading} = this.state;
+    const {setTheme} = this;
 
-    return loading ?
-      <LoadingCircle/> :
-      <MUIThemeProvider
-        theme={createMuiTheme(
-          {
-            university: customTheme.universityName,
-            palette: {
-              primary: {
-                main: customTheme.primaryColor,
-              },
-              secondary: {
-                main: customTheme.secondaryColor,
-              },
-              error: {
-                main: customTheme.errorColor,
-              },
-              background: {
-                default: customTheme.backgroundColor,
-              },
-              action: {
-                active: customTheme.activeColor,
-                hover: customTheme.hoverColor,
-                selected: customTheme.selectedColor,
-              }
-            },
-          }
-        )}
-      >
-        <div>
-          {children}
-        </div>
-      </MUIThemeProvider>;
+    if(loading) return <LoadingCircle/>;
+
+    return (
+      <ThemeContext.Provider value={{theme, setTheme}}>
+        {children}
+      </ThemeContext.Provider>
+    );
   }
-
 }
 
-ThemeProvider.propTypes = {
-  children: PropTypes.node.isRequired
-};
+ThemeProvider.propTypes = childrenPropTypes;
 
 export default ThemeProvider;

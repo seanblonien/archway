@@ -1,10 +1,10 @@
-import {withStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
@@ -39,7 +39,7 @@ const Cards = ({classes, imageContained, listItems, childURL, imageURLFunction, 
                 component='img'
                 height={mediaHeight}
                 image={imageURLFunction(listItems[i].thumbnail)}
-                className={imageContained? classes.contain : ''}
+                className={imageContained ? classes.contain : ''}
               />
               <CardContent>
                 <Typography variant='h5'>
@@ -76,7 +76,7 @@ Cards.propTypes = {
   setListItems: PropTypes.func,
   previewWords: PropTypes.number,
   canDelete: PropTypes.bool,
-  classes: PropTypes.objectOf(PropTypes.object).isRequired,
+  classes: PropTypes.objectOf(PropTypes.object),
   imageContained: PropTypes.bool,
 };
 
@@ -86,6 +86,7 @@ Cards.defaultProps = {
   canRoute: true,
   canDelete: false,
   previewWords: 20,
+  classes: {},
   setListItems: () => null,
   childURL: () => null
 };
