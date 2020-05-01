@@ -421,6 +421,16 @@
         },
         "universityName": {
           "type": "string"
+        },
+        "logo": {
+          "type": "media",
+          "multiple": false,
+          "required": false,
+          "allowedTypes": [
+            "images",
+            "files",
+            "videos"
+          ]
         }
       }
     }
