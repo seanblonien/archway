@@ -23,6 +23,9 @@ export default class Endpoint {
   // Updates an entry using its id for this endpoint.
   update = (id, data) => this.apiClient.put(`${this.name}/${id}`, data);
 
+  // Updates a single type entry for this endpoint.
+  updateOne = (data) => this.apiClient.put(`${this.name}`, data);
+
   // Deletes an entry using its id for this endpoint.
   delete = (id) => this.apiClient.delete(`${this.name}/${id}`);
 }

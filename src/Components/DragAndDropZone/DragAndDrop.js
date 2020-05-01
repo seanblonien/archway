@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function DragAndDrop({files, setFiles, accept, single}) {
+export default function DragAndDrop({files, setFiles, accept, single, cols}) {
   const classes = useStyles();
 
   const onDrop = useCallback(acceptedFiles => {
@@ -37,7 +37,7 @@ export default function DragAndDrop({files, setFiles, accept, single}) {
         }
       </div>
       {files && !_.isEmpty(files) &&
-        <Box my={1} component={GridList} cols={3}>
+        <Box my={1} component={GridList} cols={cols}>
           {files.map((file) => (
             <GridListTile key={file.name}>
               {file.id
@@ -72,9 +72,11 @@ DragAndDrop.propTypes = {
   setFiles: PropTypes.func.isRequired,
   accept: PropTypes.string,
   single: PropTypes.bool,
+  cols: PropTypes.number
 };
 
 DragAndDrop.defaultProps = {
   accept: '*',
   single: false,
+  cols: 3
 };

@@ -32,6 +32,7 @@
     "prop-types": "^15.7.2",
     "pure-react-carousel": "^1.26.0",
     "react": "^16.13.0",
+    "react-color": "^2.18.0",
     "react-dom": "^16.13.0",
     "react-dropzone": "^10.2.1",
     "react-image-lightbox": "^5.1.1",
