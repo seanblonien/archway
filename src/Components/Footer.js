@@ -8,9 +8,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import React, {Component} from 'react';
 import {SocialIcon} from 'react-social-icons';
+import {ThemeContext} from '../Contexts/ThemeProvider';
 import api from '../Services/api';
 import archway from '../Static/arch.svg';
-import universityLogo from '../Static/univ_logo.svg';
+import {imageURL} from '../utils/utils';
 import PageWithMargin from './LayoutWrappers/PageWithMargin';
 import LoadingCircle from './LoadingCircle';
 import MediaMarkdown from './Markdown/MediaMarkdown';
@@ -33,9 +34,10 @@ class Footer extends Component {
   }
 
   getLogo = (logoType) => {
+    const {theme: {logo: universityLogo}} = this.context;
     switch (logoType) {
       case 'university':
-        return universityLogo;
+        return imageURL.university(universityLogo);
       case 'archway':
       default:
         return archway;
@@ -122,5 +124,7 @@ class Footer extends Component {
     );
   }
 }
+
+Footer.contextType = ThemeContext;
 
 export default Footer;

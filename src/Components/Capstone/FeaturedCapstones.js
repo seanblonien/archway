@@ -3,8 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import {withStyles} from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InfoIcon from '@material-ui/icons/Info';
 import React, {Component} from 'react';
@@ -17,10 +17,22 @@ import {imageURL} from '../../utils/utils';
 import LoadingCircle from '../LoadingCircle';
 import {StyledLink} from '../Typography/StyledLink';
 
-const styles = () => ({
+const styles = (theme) => ({
   pointer:{
     cursor: 'pointer'
-  }
+  },
+  featuredPaper:{
+    background: theme.palette.secondary.main,
+    color: 'black',
+    marginTop: 30,
+    marginLeft: 30,
+    textAlign: 'center',
+    height: 450,
+    maxWidth: 600,
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)',
+  },
 });
 
 class FeaturedCapstones extends Component {
@@ -89,4 +101,4 @@ class FeaturedCapstones extends Component {
   }
 }
 
-export default withStyles(styles) (FeaturedCapstones);
+export default withStyles(styles)(FeaturedCapstones);

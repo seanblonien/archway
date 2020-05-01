@@ -10,6 +10,7 @@
     "jsx-a11y",
     "prettier"
   ],
+  "ignorePatterns": ["node_modules/", "build/"],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "semi": ["error", "always"],

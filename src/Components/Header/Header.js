@@ -11,11 +11,11 @@ import React, {Component} from 'react';
 import {Link as RouterLink, withRouter} from 'react-router-dom';
 import compose from 'recompose/compose';
 import AuthContext from '../../Contexts/AuthContext';
+import {ThemeContext} from '../../Contexts/ThemeProvider';
 import api from '../../Services/api';
-import universityLogo from '../../Static/univ_logo.svg';
 import {widthPropTypes} from '../../utils/PropTypesConfig';
 import appRoutes from '../../utils/Routing/routes';
-import {widthMatchUp} from '../../utils/utils';
+import {imageURL, widthMatchUp} from '../../utils/utils';
 import MenuLink from './MenuLink';
 import SearchBar from './SearchBar';
 import {StyledTooltip} from './StyledTooltip';
@@ -85,7 +85,11 @@ class Header extends Component {
     const rootLabel = (useArchway) => (
       <Box component={Grid} container alignItems='center' justify='center'>
         <Box mx={2}>
-          <img src={universityLogo} alt={theme.university} title={theme.university} height='40' width='40'/>
+          <ThemeContext.Consumer>
+            {({theme: {logo: universityLogo}} ) => (
+              <img src={imageURL.university(universityLogo)} alt={theme.university} title={theme.university} height='40' width='40'/>
+            )}
+          </ThemeContext.Consumer>
         </Box>
         <span className={classes.title}>{theme.university}{useArchway && ' | Archway'}</span>
       </Box>
