@@ -58,3 +58,22 @@ The user, once they click on 'Password Reset' will be redirected to the reset pa
 ![Password Reset Form](images/resetPasswordForm.png)
 
 The Unique Code will be autofilled based on the link contained within the email. This will allow the user to reset their password.
+
+
+## Role-based Access Control
+
+Archway has a few different roles of users. The primary roles of the application are the Admin user, the Professor user, the Sponsor user, the Student user, and the Anonymous user. The largest difference between these roles is what they are allowed to access. Archway has security measures in place to ensure that certain roles only see their specific information, specifically in the dashboards.
+
+For example for the Admin profile: 
+
+![Admin Dashboard](images/adminDashboard.png)
+
+The Admin role has many different abilities allowed to them, as seen on the left. However, not every role has all of this access.
+
+As for a Student role, their dashboard looks like this:
+
+![Student Dashboard](images/studentDashboard.png)
+
+One can easily see that there is a significant lack of access in the Student dashboard.
+
+This Role-based Access Control maintains a high level of security. Each user only has certain access to certain data.
