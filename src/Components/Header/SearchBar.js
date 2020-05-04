@@ -1,105 +1,92 @@
-/*
-Filename: SearchBar.js
-Contributors: Ryan Cave
- */
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Redirect, withRouter } from 'react-router-dom';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@material-ui/icons/Search';
+import React, {Component} from 'react';
+import history from '../../utils/Routing/history';
+import routes from '../../utils/Routing/routes';
+import {formatQuery} from '../../utils/utils';
 
 const styles = theme => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        marginLeft: theme.spacing.unit * 2,
-        marginRight: theme.spacing.unit,
-        width: 250,
-        placeholder: "Search..."
-    },
-    dense: {
-        marginTop: 19,
-    },
-    menu: {
-        width: 200,
-    },
-    input: {
-        color: 'white',
-    }
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(1),
+    width: 250,
+  },
+  menu: {
+    width: 200,
+  },
+  input: {
+    color: 'white',
+  },
+  pointer:{
+    color: 'white',
+    cursor: 'pointer'
+  }
 });
 
-class TextFields extends React.Component {
-    constructor(props) {
-        super(props);
-        this.keyPress = this.keyPress.bind(this);
-        this.state = {
-            input: '',
-            redirect: false,
-            redirectPath: "/SearchRedirect/"
-        }
-    }
-
-    handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value,
-        });
+class SearchBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      input: '',
     };
+  }
 
-    keyPress(e){
-        if(e.keyCode === 13){
-            let newPath = this.state.redirectPath;
+  handleChange = event => {
+    this.setState({input: event.target.value});
+  };
 
-            if (window.location.pathname.includes("ViewSponsors")){
-                newPath += "ViewSponsors/" + e.target.value;
-            }
-            else {
-                newPath += "Capstones/" + e.target.value;
-            }
-
-            console.log(newPath);
-
-            this.setState(() => ({
-                redirect: true,
-                redirectPath: newPath,
-            }))
-
-        }
+  search = event => {
+    const {input} = this.state;
+    if(input.length > 0) {
+      const searchTerm = formatQuery({search: input});
+      history.push(routes.search.genPath(searchTerm));
     }
+    event.preventDefault();
+  };
 
-    render() {
-        const { classes } = this.props;
+  clearSearch = () => {
+    this.setState({input: ''});
+  }
 
-        if (this.state.redirect === true){
-            return(
-                <Redirect to={this.state.redirectPath}  />
+  render() {
+    const {classes} = this.props;
+    const {input} = this.state;
+
+    return (
+      <form className={classes.container} noValidate autoComplete='off' onSubmit={this.search}>
+        <TextField
+          placeholder='Search...'
+          className={classes.textField}
+          value={input}
+          onChange={this.handleChange}
+          fullWidth
+          margin='none'
+          InputProps={{
+            className: (classes.input),
+            startAdornment: (
+              <InputAdornment position='start'>
+                <SearchIcon className={classes.pointer} onClick={this.search}/>
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position='end'>
+                {input.length > 0 &&
+                  <ClearIcon className={classes.pointer} onClick={this.clearSearch}/>
+                }
+              </InputAdornment>
             )
-        }
-
-        return (
-            <form className={classes.container} noValidate autoComplete="off">
-                <TextField
-                    id="standard-name"
-                    placeholder="Search..."
-                    className={classes.textField}
-                    value={this.state.input}
-                    onChange={this.handleChange('input')}
-                    margin="normal"
-                    onKeyDown={this.keyPress}
-                    InputProps={{
-                        className: classes.input
-                    }}
-                />
-            </form>
-        );
-    }
+          }}
+        />
+      </form>
+    );
+  }
 }
 
-TextFields.propTypes = {
-    classes: PropTypes.object.isRequired,
-
-};
-
-export default withRouter(withStyles(styles)(TextFields));
+export default withStyles(styles) (SearchBar);

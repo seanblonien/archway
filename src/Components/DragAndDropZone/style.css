@@ -1,0 +1,30 @@
+.dropzone {
+    padding: 30px;
+    height: 30vh;
+    border: 5px dashed #154734;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-preview {
+    padding: 30px;
+    height: 30vh;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropzone-img {
+    z-index: 999;
+}
+
+.dropzone-img:hover {
+    opacity: 0;
+}

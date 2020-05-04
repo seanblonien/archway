@@ -1,98 +1,130 @@
-/*
-Filename: Footer.js
-Contributors:
-Stephen Tate - Wrote entire file.
- */
-
-import React from 'react';
-import {withStyles} from "@material-ui/core";
-import compose from 'recompose/compose';
+import {Box} from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import React, {Component} from 'react';
+import {SocialIcon} from 'react-social-icons';
+import {ThemeContext} from '../Contexts/ThemeProvider';
+import api from '../Services/api';
+import archway from '../Static/arch.svg';
+import {imageURL} from '../utils/utils';
+import PageWithMargin from './LayoutWrappers/PageWithMargin';
+import LoadingCircle from './LoadingCircle';
+import MediaMarkdown from './Markdown/MediaMarkdown';
+import {StyledLink} from './Typography/StyledLink';
 
+class Footer extends Component {
+  constructor (props) {
+    super(props);
 
-const styles = theme =>({
+    this.state = {
+      loading: true,
+      sections: [],
+      lastLine: {}
+    };
+  }
 
-    divStyle: {
-        background: theme.palette.primary.main,
-        width: '100%',
-        bottom: 0,
-        position: 'absolute',
-        maxHeight: '120px',
-        paddingTop: '5px',
-        paddingLeft: '5px',
-    },
-    textStyle: {
-        color: 'white',
-        textDecoration: 'none',
-        marginTop: '0px',
-        marginBottom: '0px',
-    },
-    navigationHeading: {
-        color: 'white',
-        textDecoration: 'none',
-        marginTop: '0px',
-        marginBottom: '5px',
-        borderBottom: '2px solid white'
+  async componentDidMount() {
+    const {footerLinks: {sections,  lastLine}} = await api.headerfooter.find();
+    this.setState({loading: false, sections, lastLine});
+  }
+
+  getLogo = (logoType) => {
+    const {theme: {logo: universityLogo}} = this.context;
+    switch (logoType) {
+      case 'university':
+        return imageURL.university(universityLogo);
+      case 'archway':
+      default:
+        return archway;
     }
-});
+  };
 
+  alignSection = (index) => {
+    const {sections} = this.state;
+    if(index === 0) {
+      return 'flex-start';
+    }
+    if(index === sections.length - 1){
+      return 'flex-end';
+    }
+    return 'center';
+  };
 
-class Footer extends React.Component{
+  render () {
+    const {loading, sections, lastLine} = this.state;
+    const {getLogo, alignSection, props} = this;
 
-    render() {
-        const { classes } = this.props;
-
-        return(
-            <div className={classes.divStyle}>
-                <div>
-                    <Grid container justify="center">
-                        <Grid item xs={12} md={10}>
-                            <Typography className={classes.navigationHeading}>
-                                <b>Navigation</b>
-                            </Typography>
-                            <Grid container>
-                                <Grid item xs={4} md={2}>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/Home" className={classes.textStyle}>Home Page</a>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/About" className={classes.textStyle}>About Page</a>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/Sponsors" className={classes.textStyle}>Sponsor A Project</a>
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={4} md={2}>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/ViewAllDepartments" className={classes.textStyle}>Departments</a>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/FAQ" className={classes.textStyle}>Help and Info</a>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.textStyle}>
-                                        <a href="/Sponsors" className={classes.textStyle}>View Sponsors</a>
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={4} md={2}>
-
-                                </Grid>
-                                <Grid item xs={4} md={2}>
-
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={6}>
-                            </Grid>
-
-                        </Grid>
+    return (
+      loading ?
+        <LoadingCircle/>
+        :
+        <PageWithMargin {...props}>
+          <Grid container justify='center' alignItems='center'>
+            <Grid item xs={12} component={Box} pt={10} pb={3}>
+              <Divider light/>
+            </Grid>
+            <Grid item xs={12} md={10} lg={9} xl={8} container>
+              <Grid item xs={12} container justify='space-between'>
+                {sections && sections.map((section, i) => (
+                  <Grid item xs key={`footer-section-${section.id}`} container direction='column' alignContent={alignSection(i)}>
+                    <Typography variant='h6'>{section.sectionHeader}</Typography>
+                    <List disablePadding dense>
+                      {section.links && section.links.map((link) => (
+                        link.isLogo ?
+                          <ListItem key={`footer-logo-${link.id}`}>
+                            <Box m={1}>
+                              <StyledLink to={link.path}>
+                                <img src={getLogo(link.logoType)} alt={link.label} title={link.label} height={link.logoHeight} width={link.logoWidth}/>
+                              </StyledLink>
+                            </Box>
+                          </ListItem>
+                          :
+                          <ListItem key={`footer-link-${link.id}`}>
+                            {link.isSocial &&
+                              <ListItemIcon>
+                                <SocialIcon url={link.path} style={{height: 32, width: 32}}/>
+                              </ListItemIcon>
+                            }
+                            <ListItemText>
+                              <StyledLink to={link.path}>{link.label}</StyledLink>
+                            </ListItemText>
+                          </ListItem>
+                      ))}
+                    </List>
+                  </Grid>
+                ))}
+              </Grid>
+              <Grid item xs={12} container justify='space-between' component={Box} pt={1}>
+                <Grid item xs={12} component={Box} py={1}>
+                  <Divider light/>
+                </Grid>
+                <Grid item xs={6} container justify='flex-start'>
+                  {lastLine.left &&
+                    <Grid item>
+                      <MediaMarkdown>{lastLine.left}</MediaMarkdown>
                     </Grid>
-                </div>
-            </div>
-        );
-    }
+                  }
+                </Grid>
+                <Grid item xs={6} container justify='flex-end'>
+                  {lastLine.left &&
+                    <Grid item>
+                      <MediaMarkdown>{lastLine.right}</MediaMarkdown>
+                    </Grid>
+                  }
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </PageWithMargin>
+    );
+  }
 }
 
-export default compose(
-    withStyles(styles),
-)(Footer);
+Footer.contextType = ThemeContext;
+
+export default Footer;

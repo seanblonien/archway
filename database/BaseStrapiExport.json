@@ -1,0 +1,623 @@
+{
+  "application": [
+    {
+      "name": "about page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "about_pages",
+      "attributes": {
+        "main_paragraph": {
+          "type": "richtext"
+        }
+      }
+    },
+    {
+      "name": "capstones",
+      "description": "Describes a Capstone Project",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "capstones",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "default": false
+        },
+        "startDate": {
+          "type": "date",
+          "required": true
+        },
+        "endDate": {
+          "type": "date",
+          "required": true
+        },
+        "description": {
+          "type": "richtext",
+          "required": false,
+          "maxLength": 10000
+        },
+        "preview": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "media",
+          "multiple": true,
+          "required": false
+        },
+        "media": {
+          "type": "media",
+          "multiple": true,
+          "required": false
+        },
+        "sponsors": {
+          "nature": "manyToMany",
+          "target": "application::sponsors.sponsors",
+          "dominant": true,
+          "targetAttribute": "capstones",
+          "unique": false
+        },
+        "students": {
+          "nature": "manyToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": true,
+          "targetAttribute": "studentCapstones",
+          "unique": false
+        },
+        "thumbnail": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "departments": {
+          "nature": "manyToMany",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "capstones",
+          "unique": false
+        },
+        "course": {
+          "type": "string"
+        },
+        "isFinishedEditing": {
+          "type": "boolean",
+          "default": false,
+          "required": false
+        },
+        "professors": {
+          "nature": "manyToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": true,
+          "targetAttribute": "professorCapstones",
+          "unique": false
+        },
+        "semester": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "departments",
+      "description": "Describes a Department",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "departments",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        "capstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": true,
+          "targetAttribute": "departments",
+          "unique": false
+        },
+        "url": {
+          "type": "string"
+        },
+        "email": {
+          "type": "email"
+        },
+        "description": {
+          "type": "richtext",
+          "default": "10000"
+        },
+        "thumbnail": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "proposals": {
+          "nature": "manyToMany",
+          "target": "application::proposals.proposals",
+          "dominant": true,
+          "targetAttribute": "departments",
+          "unique": false
+        },
+        "phone": {
+          "type": "string"
+        },
+        "preview": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "media",
+          "multiple": true,
+          "required": false
+        },
+        "professors": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "professorDepartment",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "faqs",
+      "description": "Describes a FAQ",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "faqs",
+      "attributes": {
+        "category": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string",
+          "required": true
+        },
+        "answer": {
+          "type": "richtext",
+          "required": true,
+          "maxLength": 10000
+        }
+      }
+    },
+    {
+      "name": "header-footer",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "header_footers",
+      "attributes": {
+        "headerLinks": {
+          "type": "json"
+        },
+        "footerLinks": {
+          "type": "json"
+        }
+      }
+    },
+    {
+      "name": "home page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "home_pages",
+      "attributes": {
+        "infoparagraph": {
+          "type": "richtext"
+        },
+        "bgimage": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        }
+      }
+    },
+    {
+      "name": "proposal approval",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "proposal_approvals",
+      "attributes": {
+        "canApprove": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    {
+      "name": "proposals",
+      "description": "Describes a proposal made by a sponsor",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "posts",
+      "attributes": {
+        "projectTitle": {
+          "type": "string",
+          "unique": false,
+          "default": "New Proposal"
+        },
+        "phone": {
+          "type": "string",
+          "unique": false
+        },
+        "isIntellectualPropertyRequired": {
+          "type": "boolean"
+        },
+        "isNondisclosureRequired": {
+          "type": "boolean"
+        },
+        "dateSubmitted": {
+          "type": "date",
+          "unique": false
+        },
+        "creator": {
+          "nature": "oneWay",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "unique": false
+        },
+        "departments": {
+          "nature": "manyToMany",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "proposals",
+          "unique": false
+        },
+        "status": {
+          "type": "enumeration",
+          "enum": [
+            "notSubmitted",
+            "submittedPending",
+            "submittedApproved",
+            "submittedDenied"
+          ],
+          "default": "notSubmitted"
+        },
+        "dateApproved": {
+          "type": "date"
+        },
+        "projectUse": {
+          "type": "richtext"
+        },
+        "financialSupport": {
+          "type": "richtext"
+        },
+        "projectDeliverables": {
+          "type": "richtext"
+        },
+        "projectDescription": {
+          "type": "richtext"
+        },
+        "email": {
+          "type": "email"
+        },
+        "sponsors": {
+          "nature": "manyToMany",
+          "target": "application::sponsors.sponsors",
+          "dominant": true,
+          "targetAttribute": "proposals",
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "sponsor page",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "sponsor_pages",
+      "attributes": {
+        "leftcolumn": {
+          "type": "richtext"
+        },
+        "rightcolumn": {
+          "type": "richtext"
+        },
+        "bgimage": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "main_paragraph": {
+          "type": "richtext"
+        }
+      }
+    },
+    {
+      "name": "sponsors",
+      "description": "Describes a Sponsor for a Capstone Project",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "sponsors",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "capstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "sponsors",
+          "unique": false
+        },
+        "url": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "thumbnail": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "description": {
+          "type": "richtext",
+          "required": false,
+          "maxLength": 10000
+        },
+        "preview": {
+          "type": "string"
+        },
+        "isFeatured": {
+          "type": "boolean"
+        },
+        "cover": {
+          "type": "media",
+          "multiple": true,
+          "required": false
+        },
+        "proposals": {
+          "nature": "manyToMany",
+          "target": "application::proposals.proposals",
+          "dominant": false,
+          "targetAttribute": "sponsors",
+          "unique": false
+        },
+        "personnel": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "sponsorOrganization",
+          "unique": false
+        },
+        "isVerified": {
+          "type": "boolean"
+        }
+      }
+    },
+    {
+      "name": "theme",
+      "description": "",
+      "connection": "default",
+      "kind": "singleType",
+      "collectionName": "themes",
+      "attributes": {
+        "primaryColor": {
+          "type": "string"
+        },
+        "secondaryColor": {
+          "type": "string"
+        },
+        "backgroundColor": {
+          "type": "string"
+        },
+        "errorColor": {
+          "type": "string"
+        },
+        "activeColor": {
+          "type": "string"
+        },
+        "hoverColor": {
+          "type": "string"
+        },
+        "selectedColor": {
+          "type": "string"
+        },
+        "universityName": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "media",
+          "multiple": false,
+          "required": false,
+          "allowedTypes": [
+            "images",
+            "files",
+            "videos"
+          ]
+        }
+      }
+    }
+  ],
+  "plugins": [
+    {
+      "name": "permission",
+      "description": "",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "users-permissions_permission",
+      "attributes": {
+        "type": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "controller": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "action": {
+          "type": "string",
+          "required": true,
+          "configurable": false
+        },
+        "enabled": {
+          "type": "boolean",
+          "required": true,
+          "configurable": false
+        },
+        "policy": {
+          "type": "string",
+          "configurable": false
+        },
+        "role": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.role",
+          "dominant": false,
+          "targetAttribute": "permissions",
+          "configurable": false,
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "role",
+      "description": "",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "users-permissions_role",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "minLength": 3,
+          "required": true,
+          "configurable": false
+        },
+        "description": {
+          "type": "string",
+          "configurable": false
+        },
+        "type": {
+          "type": "string",
+          "unique": true,
+          "configurable": false
+        },
+        "permissions": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.permission",
+          "dominant": false,
+          "targetAttribute": "role",
+          "configurable": false,
+          "unique": false
+        },
+        "users": {
+          "nature": "oneToMany",
+          "target": "plugins::users-permissions.user",
+          "dominant": false,
+          "targetAttribute": "role",
+          "configurable": false,
+          "unique": false
+        }
+      }
+    },
+    {
+      "name": "user",
+      "description": "",
+      "connection": "default",
+      "kind": "collectionType",
+      "collectionName": "users-permissions_user",
+      "attributes": {
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "unique": true,
+          "configurable": false,
+          "required": true
+        },
+        "email": {
+          "type": "email",
+          "minLength": 6,
+          "configurable": false,
+          "required": true
+        },
+        "provider": {
+          "type": "string",
+          "configurable": false
+        },
+        "password": {
+          "type": "password",
+          "minLength": 6,
+          "configurable": false,
+          "private": true
+        },
+        "resetPasswordToken": {
+          "type": "string",
+          "configurable": false,
+          "private": true
+        },
+        "confirmed": {
+          "type": "boolean",
+          "default": false,
+          "configurable": false
+        },
+        "blocked": {
+          "type": "boolean",
+          "default": false,
+          "configurable": false
+        },
+        "role": {
+          "nature": "manyToOne",
+          "target": "plugins::users-permissions.role",
+          "dominant": false,
+          "targetAttribute": "users",
+          "configurable": false,
+          "unique": false
+        },
+        "Fullname": {
+          "type": "string",
+          "minLength": 3,
+          "unique": true,
+          "configurable": false,
+          "required": true
+        },
+        "description": {
+          "type": "richtext",
+          "maxLength": 10000
+        },
+        "picture": {
+          "type": "media",
+          "multiple": false,
+          "required": false
+        },
+        "professorDepartment": {
+          "nature": "manyToOne",
+          "target": "application::departments.departments",
+          "dominant": false,
+          "targetAttribute": "professors",
+          "unique": false
+        },
+        "sponsorOrganization": {
+          "nature": "manyToOne",
+          "target": "application::sponsors.sponsors",
+          "dominant": false,
+          "targetAttribute": "personnel",
+          "unique": false
+        },
+        "jobTitle": {
+          "type": "string"
+        },
+        "professorCapstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "professors",
+          "unique": false
+        },
+        "studentCapstones": {
+          "nature": "manyToMany",
+          "target": "application::capstones.capstones",
+          "dominant": false,
+          "targetAttribute": "students",
+          "unique": false
+        }
+      }
+    }
+  ]
+}

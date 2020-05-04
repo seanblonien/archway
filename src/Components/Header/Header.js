@@ -1,187 +1,153 @@
-/*
-Filename: Header.js
-Contributors: Ryan Cave
- */
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import {university} from "../../constants";
+import {Box} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import Grid from '@material-ui/core/Grid';
+import {withStyles, withTheme} from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import { withStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
+import withWidth from '@material-ui/core/withWidth';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import SearchBar from './SearchBar.js';
-import Drawer from './Drawer.js';
+import React, {Component} from 'react';
+import {Link as RouterLink, withRouter} from 'react-router-dom';
+import compose from 'recompose/compose';
+import AuthContext from '../../Contexts/AuthContext';
+import {ThemeContext} from '../../Contexts/ThemeProvider';
+import api from '../../Services/api';
+import {widthPropTypes} from '../../utils/PropTypesConfig';
+import appRoutes from '../../utils/Routing/routes';
+import {imageURL, widthMatchUp} from '../../utils/utils';
+import MenuLink from './MenuLink';
+import SearchBar from './SearchBar';
+import {StyledTooltip} from './StyledTooltip';
+import SubMenu from './SubMenu';
 
-const styles = theme => ({
-    root: {
-        width: '100%',
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing.unit * 2,
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing.unit * 3,
-            width: 'auto',
-        },
-    },
-    searchIcon: {
-        width: theme.spacing.unit * 9,
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'left'
-    },
-    sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-        },
-    },
-    sectionMobile: {
-        display: 'flex',
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
-    },
-
+const styles = () => ({
+  tab: {
+    color: 'white',
+    fontSize: '20px',
+    maxWidth: 'none',
+    minWidth: '100px',
+    opacity: 1
+  },
+  title: {
+    fontSize: '25px',
+  },
 });
 
-class PrimarySearchAppBar extends React.Component {
-    state = {
-        anchorEl: null,
-        mobileMoreAnchorEl: null
+class Header extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      loading: true,
+      routes: null,
+      tab: 'root',
     };
+  }
 
-    handleProfileMenuOpen = event => {
-        this.setState({ anchorEl: event.currentTarget });
-    };
+  async componentDidMount() {
+    const {headerLinks: {routes}} = await api.headerfooter.find();
+    this.setState({loading: false, routes});
+  }
 
-    handleMenuClose = () => {
-        this.setState({ anchorEl: null });
-        this.handleMobileMenuClose();
-    };
+  setTab = (event, tab) => {
+    this.setState({tab});
+  }
 
-    handleMobileMenuOpen = event => {
-        this.setState({ mobileMoreAnchorEl: event.currentTarget });
-    };
+  handleLogout = () =>{
+    const {logout} = this.context;
+    logout();
+  };
 
-    handleMobileMenuClose = () => {
-        this.setState({ mobileMoreAnchorEl: null });
-    };
+  render() {
+    const {isAuthenticated} = this.context;
+    const {loading, routes, tab} = this.state;
+    const {classes, theme, width} = this.props;
+    const {setTab, handleLogout} = this;
 
-    handleLogout = () =>{
-        this.props.auth.logout();
-        this.handleMenuClose();
-    };
+    const profileMenu = (
+      <StyledTooltip
+        title={
+          <span>
+            {isAuthenticated ?
+              <>
+                <MenuLink to={appRoutes.dashboard.path}>Dashboard</MenuLink>
+                <MenuLink onClick={handleLogout}>Logout</MenuLink>
+              </>
+              : <MenuLink to={appRoutes.auth.login.path}>Login / Register</MenuLink>
+            }
+          </span>
+        }
+      >
+        <AccountCircle fontSize='large' style={{cursor: 'pointer'}}/>
+      </StyledTooltip>
+    );
 
-    handleToAccount = () =>{
-        window.location = '/ViewUser/' + localStorage.getItem("nickname");
-    };
+    const rootLabel = (useArchway) => (
+      <Box component={Grid} container alignItems='center' justify='center'>
+        <Box mx={2}>
+          <ThemeContext.Consumer>
+            {({theme: {logo: universityLogo}} ) => (
+              <img src={imageURL.university(universityLogo)} alt={theme.university} title={theme.university} height='40' width='40'/>
+            )}
+          </ThemeContext.Consumer>
+        </Box>
+        <span className={classes.title}>{theme.university}{useArchway && ' | Archway'}</span>
+      </Box>
+    );
 
-    render() {
-        const { anchorEl } = this.state;
-        const { classes } = this.props;
-        const isMenuOpen = Boolean(anchorEl);
+    return (
+      loading
+        ? null
+        : <div>
+          <AppBar position='static'>
+            <Toolbar variant='dense'>
+              <Box display='flex' component={Grid} container justify='center'>
+                <Grid item xs={12} md={8}>
+                  <Tabs
+                    value={tab}
+                    onChange={setTab}
+                    component={Grid} container orientation={widthMatchUp(width, 'md') ? 'horizontal' : 'vertical'}
+                  >
+                    {routes && routes.map(route => (
+                      <Tab
+                        key={`tab-${route.id}`} value={route.id}
+                        className={classes.tab}
+                        component={RouterLink}
+                        to={route.path}
+                        label={
+                          <SubMenu
+                            subRoutes={route.subRoutes}
+                            title={route.isRoot ? rootLabel(route.useArchway) : route.label}
+                          />
+                        }
+                      />
+                    ))}
+                  </Tabs>
+                </Grid>
 
-        const renderMenu = (
-            <Menu
-                anchorEl={anchorEl}
-
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                open={isMenuOpen}
-                onClose={this.handleMenuClose}
-            >
-
-                {this.props.auth.isAuthenticated() && <MenuItem onClick={this.handleToAccount}>Account</MenuItem>}
-                {!this.props.auth.isAuthenticated() && <MenuItem onClick={this.props.auth.login}>Login / Register</MenuItem>}
-                {this.props.auth.isAuthenticated() && <MenuItem onClick={this.handleLogout}>Logout</MenuItem>}
-
-            </Menu>
-        );
-
-        return (
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-
-                            < Drawer {...this.props} />
-
-
-                            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                                {university} | Cappy
-                            </Typography>
-
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon />
-                                </div>
-                            </div>
-
-                            <div key={new Date().getTime()} >
-                            <SearchBar />
-                            </div>
-
-                            <div className={classes.grow} />
-                            <div className={classes.sectionDesktop}>
-                                <IconButton
-                                    aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={this.handleProfileMenuOpen}
-                                    color="inherit"
-                                >
-                                    <AccountCircle />
-                                </IconButton>
-                            </div>
-
-
-                            <div className={classes.sectionMobile}>
-                                <IconButton
-                                    aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={this.handleProfileMenuOpen}
-                                    color="inherit"
-                                >
-                                    <MoreIcon />
-                                </IconButton>
-                            </div>
-                    </Toolbar>
-                </AppBar>
-                {renderMenu}
-            </div>
-        );
-    }
+                <Grid item xs={12} md={4} container direction='row' alignItems='center' wrap='nowrap'>
+                  <Grid item xs container justify='flex-end'>
+                    <SearchBar/>
+                  </Grid>
+                  <Grid item xs={1} container justify='flex-end'>
+                    {profileMenu}
+                  </Grid>
+                  <Grid item xs={1}/>
+                </Grid>
+              </Box>
+            </Toolbar>
+          </AppBar>
+        </div>
+    );
+  }
 }
 
-PrimarySearchAppBar.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
+Header.contextType = AuthContext;
+Header.propTypes = widthPropTypes;
 
-
-export default withStyles(styles)(PrimarySearchAppBar);
+export default compose(
+  withWidth(),
+  withStyles(styles),
+  withRouter,
+  withTheme
+)(Header);

@@ -1,0 +1,50 @@
+.pageTitle {
+    padding: 2%;
+    color: black;
+    text-align: center;
+}
+.mainContentBorder {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.largePaper {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 3%;
+    width: 100%;
+    background-color: lightgray !important;
+}
+.card {
+    max-height: 450px;
+    max-width: 400px;
+}
+.largeButton {
+    color: black;
+    width: 350px;
+    height: 50px;
+    left: -14%;
+}
+.gridListContainer {
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: center;
+    overflow: hidden;
+}
+.table {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.bodyContainer {
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+.bodyContent {
+    min-height: 100vh;
+}
+.bodyFooter {
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
