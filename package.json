@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "babel-eslint": "~10.0.3",
     "bad-words": "^3.0.3",
+    "commander": "^5.1.0",
     "date-fns": "^2.11.1",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.10.0",
