@@ -29,6 +29,9 @@ This document gives an overview of all of the different documentation pieces wit
 * [Domain Model](DomainModel.md)
 * [Use Cases](UseCases.md)
 * [Authentication and Authorization](AuthenticationAndAuthorization.md)
+* [Roles and Permissions](RolesAndPermissions.md)
+* [Wireframes](Wireframes.md)
+* [Brand and Logo](BrandAndLogo.md)
 * [Burndown Charts](BurndownCharts.md)
 * [Spring 2019 Cappy Documentation](Spring2019CappyUsefulDocumentation.zip)
 
