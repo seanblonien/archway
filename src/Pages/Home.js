@@ -46,16 +46,7 @@ const surroundStyle = {
   width: '370px',
 };
 
-const styles = (theme) => ({
-  featuredPaper:{
-    background: theme.palette.secondary.main,
-    color: 'black',
-    marginTop: 30,
-    marginLeft: 30,
-    textAlign: 'center',
-    height: 450,
-    maxWidth: 600,
-  },
+const styles = () => ({
   infoTextPaper: {
     background: 'lightgrey',
     color: 'black',
@@ -64,9 +55,6 @@ const styles = (theme) => ({
     marginRight: 30,
     maxWidth: 600,
     textAlign: 'center',
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
   },
 });
 
@@ -143,7 +131,7 @@ class Home extends Component {
             spacing={3}
           >
             <Can perform={permissions.application.capstones.find}>
-              <FeaturedCapstones classes={classes}/>
+              <FeaturedCapstones/>
             </Can>
 
             <Grid item xs={6}>

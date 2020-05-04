@@ -1,4 +1,4 @@
-import {AccountCircle, Create, Description, Publish, ViewList, ViewQuilt} from '@material-ui/icons';
+import {AccountCircle, Create, Description, Palette, Publish, ViewList, ViewQuilt} from '@material-ui/icons';
 import ImportUsers from '../../Components/Admin/ImportUsers';
 import ForgotPassword from '../../Components/Auth/ForgotPassword';
 import Login from '../../Components/Auth/Login';
@@ -18,6 +18,7 @@ import Home from '../../Pages/Home';
 import NotFound from '../../Pages/NotFound';
 import SearchResults from '../../Pages/SearchResults';
 import Sponsors from '../../Pages/Sponsors';
+import Theming from '../../Pages/Theming';
 import ViewADepartment from '../../Pages/ViewADepartment';
 import ViewAllDepartments from '../../Pages/ViewAllDepartments';
 import ViewASponsor from '../../Pages/ViewASponsor';
@@ -32,7 +33,7 @@ const routes = {
     path: '/dashboard',
     component: Dashboard,
     protected: true,
-    routeNames: ['viewyourcapstones','viewprofile','createcapstone','reviewproposals', 'viewyourproposals', 'importusers'],
+    routeNames: ['viewyourcapstones','viewprofile','createcapstone','reviewproposals', 'viewyourproposals', 'theming','importusers'],
     viewyourcapstones: {
       name: 'My Capstones',
       path: '/dashboard/capstones/:username',
@@ -73,6 +74,13 @@ const routes = {
       component: ViewYourProposals,
       Icon: Description,
       permission: permissions.application.proposals.create,
+    },
+    theming: {
+      name: 'Theming',
+      path: '/dashboard/theming',
+      component: Theming,
+      Icon: Palette,
+      permission: permissions.application.theme.update,
     },
     importusers: {
       name: 'Import Users',
