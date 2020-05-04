@@ -166,42 +166,42 @@ The final documentation for Archway will be in the FinalDocumentation folder in 
 
 |               Task               |    Sean Blonien    |    Jack Titzman    |   Katy Atchison    |    Caleb DeHaan    |     Yunzhe Liu     |    Emily Tracey    |
 | :------------------------------: | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: |
-|            About Page            | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|       All Departments Page       |                    |                    | :heavy_check_mark: |                    |                    |                    |
-|          API Controller          | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|       Architecture Diagram       |                    |                    | :heavy_check_mark: |                    |                    |                    |
-|          Authentication          | :heavy_check_mark: |                    |                    | :heavy_check_mark: |                    |                    |
-|          Burndown Chart          | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|   Code Standardization/Linting   | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|   Configurable Styling/Theming   | :heavy_check_mark: |                    | :heavy_check_mark: |                    |                    |                    |
-|       Create Capstone Page       |                    |                    |                    |                    | :heavy_check_mark: |                    |
-|          Dashboard Page          | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|            Demo Data             |                    | :heavy_check_mark: | :heavy_check_mark: |                    | :heavy_check_mark: | :heavy_check_mark: |
-|           Docker Files           | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|         Domain Diagrams          |                    |                    |                    |                    | :heavy_check_mark: |                    |
-|  Database Import/Export Scripts  | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|        Email Verification        |                    |                    |                    | :heavy_check_mark: |                    |                    |
-|             FAQ Page             |                    |                    |                    |                    |                    | :heavy_check_mark: |
-|              Footer              | :heavy_check_mark: |                    |                    | :heavy_check_mark: |                    |                    |
-|              Header              | :heavy_check_mark: |                    |                    |                    |                    | :heavy_check_mark: |
-|            Home Page             |                    |                    |                    |                    |                    | :heavy_check_mark: |
-|        Import Users Page         | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|        Installation Guide        | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|              Login               |                    |                    |                    | :heavy_check_mark: |                    |                    |
-|         Markdown Editor          | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|       Professor User Guide       |                    |                    |                    |                    | :heavy_check_mark: |                    |
-|           Profile Page           |                    | :heavy_check_mark: |                    |                    |                    |                    |
-|         Programmer Guide         | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|        Project Proposals         |                    |                    |                    |                    |                    | :heavy_check_mark: |
-|        Public User Guide         |                    |                    | :heavy_check_mark: |                    |                    |                    |
-|           Registration           |                    |                    |                    | :heavy_check_mark: |                    |                    |
-| Role Based Access Control (RBAC) | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|             Routing              | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|       Search Results Page        |                    | :heavy_check_mark: |                    |                    |                    |                    |
-|       Single Capstone Page       |                    |                    | :heavy_check_mark: |                    |                    |                    |
-|      Single Department Page      |                    |                    | :heavy_check_mark: |                    |                    | :heavy_check_mark: |
-|       Single Sponsor Page        |                    |                    | :heavy_check_mark: |                    |                    | :heavy_check_mark: |
-|       Sponsor Landing Page       |                    |                    | :heavy_check_mark: |                    |                    |                    |
-|      Snackbar Notifications      | :heavy_check_mark: |                    |                    |                    |                    |                    |
-|        Student User Guide        |                    |                    | :heavy_check_mark: |                    |                    |                    |
-|         Vision Document          |                    | :heavy_check_mark: |                    |                    |                    |                    |
+|            About Page            |          ✔         |                    |                    |                    |                    |                    |
+|       All Departments Page       |                    |                    |          ✔         |                    |                    |                    |
+|          API Controller          |          ✔         |                    |                    |                    |                    |                    |
+|       Architecture Diagram       |                    |                    |          ✔         |                    |                    |                    |
+|          Authentication          |          ✔         |                    |                    |          ✔         |                    |                    |
+|          Burndown Chart          |          ✔         |                    |                    |                    |                    |                    |
+|   Code Standardization/Linting   |          ✔         |                    |                    |                    |                    |                    |
+|   Configurable Styling/Theming   |          ✔         |                    |          ✔         |                    |                    |                    |
+|       Create Capstone Page       |                    |                    |                    |                    |          ✔         |                    |
+|          Dashboard Page          |          ✔         |                    |                    |                    |                    |                    |
+|            Demo Data             |                    |          ✔         |          ✔         |                    |          ✔         |          ✔         |
+|           Docker Files           |          ✔         |                    |                    |                    |                    |                    |
+|         Domain Diagrams          |                    |                    |                    |                    |          ✔         |                    |
+|  Database Import/Export Scripts  |          ✔         |                    |                    |                    |                    |                    |
+|        Email Verification        |          ✔         |                    |                    |          ✔         |                    |                    |
+|             FAQ Page             |          ✔         |                    |                    |                    |                    |          ✔         |
+|              Footer              |          ✔         |                    |                    |          ✔         |                    |                    |
+|              Header              |          ✔         |                    |                    |                    |                    |          ✔         |
+|            Home Page             |                    |                    |                    |                    |                    |          ✔         |
+|        Import Users Page         |          ✔         |                    |                    |                    |                    |                    |
+|        Installation Guide        |          ✔         |                    |                    |                    |                    |                    |
+|              Login               |                    |                    |                    |          ✔         |                    |                    |
+|         Markdown Editor          |          ✔         |                    |                    |                    |                    |                    |
+|       Professor User Guide       |                    |                    |                    |                    |          ✔         |                    |
+|           Profile Page           |                    |          ✔         |                    |                    |                    |                    |
+|         Programmer Guide         |          ✔         |                    |                    |                    |                    |                    |
+|        Project Proposals         |                    |                    |                    |                    |                    |          ✔         |
+|        Public User Guide         |                    |                    |          ✔         |                    |                    |                    |
+|           Registration           |                    |                    |                    |          ✔         |                    |                    |
+| Role Based Access Control (RBAC) |          ✔         |                    |                    |                    |                    |                    |
+|             Routing              |          ✔         |                    |                    |                    |                    |                    |
+|       Search Results Page        |                    |          ✔         |                    |                    |                    |                    |
+|       Single Capstone Page       |                    |                    |          ✔         |                    |                    |                    |
+|      Single Department Page      |                    |                    |          ✔         |                    |                    |          ✔         |
+|       Single Sponsor Page        |                    |                    |          ✔         |                    |                    |          ✔         |
+|       Sponsor Landing Page       |                    |                    |          ✔         |                    |                    |                    |
+|      Snackbar Notifications      |          ✔         |                    |                    |                    |                    |                    |
+|        Student User Guide        |                    |                    |          ✔         |                    |                    |                    |
+|         Vision Document          |                    |          ✔         |                    |                    |                    |                    |
