@@ -28,10 +28,13 @@ This document gives an overview of all of the different documentation pieces wit
 * [Database Design Diagrams](DatabaseDesignDiagram.md)
 * [Domain Model](DomainModel.md)
 * [Use Cases](UseCases.md)
+* [Authentication and Authorization](AuthenticationAndAuthorization.md)
 * [Burndown Charts](BurndownCharts.md)
 * [Spring 2019 Cappy Documentation](Spring2019CappyUsefulDocumentation.zip)
 
-## Project Management Documents
+## Other Documents
 
+* [Group Overview](GroupOverview.md) <-- About archway team members
 * [Project Team Contact Info](ProjectTeamContactInfo.md)
-* [Authentication and Authorization](AuthenticationAndAuthorization.md)
+* [Milestone 1 Presentation](files/ArchwayMilestone1Presentation.pptx)
+* [Milestone 2 Final Presentation](files/ArchwayFinalPresentation.pptx)
