@@ -9,7 +9,7 @@ The purpose of this guide is to provide actions available to system administrato
 1. Manage content types
 1. All admin operations
 
-### Add new users
+### 1. Add new users
 
 There are several ways to add new users into the system. You can access the Strapi admin portal and enter user information (See below) OR you can preform the operations from the dashboard in app.
 
@@ -22,7 +22,7 @@ There are several ways to add new users into the system. You can access the Stra
 1. Enter or upload the requested information.
 1. Click either **Add User** or **Import** to create.
 
-### Change permissions
+### 2. Change permissions
 
 Permissions can be changes from the Strapi to the admin portal. Please sign in with the administrator credentials. After signing in, on the left-hand panel, navigate to Roles and Permissions.
 
@@ -49,7 +49,7 @@ Click the green Save button.
 
 Note: you may want to export the database after changing permissions to ensure that changes are preserved.
 
-### Manage content types
+### 3. Manage content types
 
 Content types can be created, edited, and deleted through the Strapi admin portal. Please sign in with the administrator credentials. After signing in, on the left-hand panel, navigate to Content-Types Builder.
 
@@ -69,7 +69,7 @@ Click on the type to delete. Select the edit icon next to the content type name.
 
 Note: changing the content types may cause errors on the frontend. Content types should be tested before adding them to production.
 
-### All admin operations
+### 4. All admin operations
 
 Administrators are able to preform actions defined in other user guides. If desired you can explore other guides to gain information about how to perform other operations including management of proposals, departments and sponsors. However most operations can be preformed from within the Strapi Admin portal.
 
