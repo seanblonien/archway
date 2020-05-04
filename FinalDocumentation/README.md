@@ -22,8 +22,16 @@ This document gives an overview of all of the different documentation pieces wit
 
 ## Software Engineering Documentation
 
-* [Database Design Diagrams](DatabaseDesignDiagram.md)
-* [Glossary](Glossary.md)
-* [Use Cases](UseCases.md)
 * [Vision Document](VisionDocument.md)
-* [Requirements Document](Requirements Document
+* [Glossary](Glossary.md)
+* [Architecture Diagram](ArchitectureDiagram.md)
+* [Database Design Diagrams](DatabaseDesignDiagram.md)
+* [Domain Model](DomainModel.md)
+* [Use Cases](UseCases.md)
+* [Burndown Charts](BurndownCharts.md)
+* [Spring 2019 Cappy Documentation](Spring2019CappyUsefulDocumentation.zip)
+
+## Project Management Documents
+
+* [Project Team Contact Info](ProjectTeamContactInfo.md)
+* [Authentication and Authorization](AuthenticationAndAuthorization.md)
