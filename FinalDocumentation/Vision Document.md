@@ -184,3 +184,172 @@ All of the documentation for Archway, including this vision document, will be in
 
 The final documentation for Archway will be in the FinalDocumentation folder in the root directory.
 
+
+
+## Team Responsibilities
+
+##### About Page
+
+* Sean Blonien
+
+##### All Departments Page
+
+* Katy Atchison
+
+##### API Controller
+
+* Sean Blonien
+
+##### Architecture Diagram
+
+* Katy Atchison
+
+##### Authentication
+
+* Sean Blonien
+* Caleb DeHaan
+
+##### Burndown Chart
+
+* Sean Blonien
+
+##### Code Standardization/Linting
+
+* Sean Blonien
+
+##### Configurable Styling/Theming
+
+* Katy Atchison (Strapi content types)
+* Sean Blonien (In-app solution)
+
+##### Create Capstone Page
+
+* Yunzhe Liu
+
+##### Dashboard Page
+
+* Sean Blonien
+
+##### Demo Data
+
+* Katy Atchison
+* Yunzhe Liu
+* Jack Titzman
+* Emily Tracey
+
+##### Docker Files
+
+* Sean Blonien
+
+##### Domain Diagrams
+
+* Yunzhe Liu
+
+##### Database Import/Export Scripts
+
+* Sean Blonien
+
+##### Email Verification
+
+* Caleb DeHaan
+
+##### FAQ Page
+
+* Emily Tracey
+
+##### Footer
+
+* Sean Blonien (Dynamic)
+* Caleb DeHaan (Design)
+
+##### Header
+
+* Sean Blonien (Dynamic)
+* Emily Tracey (Design)
+
+##### Home Page
+
+* Emily Tracey
+
+##### Import Users Page
+
+* Sean Blonien
+
+##### Installation Guide
+
+* Sean Blonien
+
+##### Login
+
+* Caleb DeHaan
+
+##### Markdown Editor
+
+* Sean Blonien
+
+##### Professor User Guide
+
+* Yunzhe Liu
+
+##### Profile Page (View and Edit)
+
+* Jack Titzman
+
+##### Programmer Guide
+
+* Sean Blonien
+
+##### Project Proposals (Create and Approve)
+
+* Emily Tracey
+
+##### Public User Guide
+
+* Katy Atchison
+
+##### Registration
+
+* Caleb DeHaan
+
+##### Role Based Access Control (RBAC)
+
+* Sean Blonien
+
+##### Routing
+
+* Sean Blonien
+
+##### Search Results Page (Search and Filter)
+
+* Jack Titzman
+
+##### Single Capstone Page
+
+* Katy Atchison
+
+##### Single Department Page
+
+* Katy Atchison (Design)
+* Emily Tracey (Edit Department)
+
+##### Single Sponsor Page
+
+* Katy Atchison (Design)
+* Emily Tracey (Edit Sponsor)
+
+##### Sponsor Landing Page
+
+* Katy Atchison
+
+##### Snackbar Notifications
+
+* Sean Blonien
+
+##### Student User Guide
+
+* Katy Atchison
+
+##### Vision Document
+
+* Jack Titzman
+
