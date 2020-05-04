@@ -12,43 +12,33 @@ Yunzhe Liu
 
 Emily Tracey
 
-
-
 ## Introduction
 
-##### Purpose
+### Purpose
 
 The purpose of this document is to define the high-level scope and purpose of the Archway Capstone Management System. This document will discuss the the problem, proposed solution, and high-level features of the project.
 
-##### Scope
+### Scope
 
 This document encompasses the entirety of the Archway project. The project will be developed by a group of six students in the *Section 02 - Pariveda 03* group at Baylor University. This project will be built off of the existing Cappy project previously developed by the *Section 02 - Group 01* group at Baylor University in Spring 2019. Archway will allow universities to showcase their capstone projects and potential sponsors to browse existing and archived projects.
 
-##### Definitions, Acronyms, and Abbreviations
-
-##### References
-
-##### Overview
-
-
+### Definitions, Acronyms, and Abbreviations
 
 ## Positioning
 
-##### Business Opportunity
+### Business Opportunity
 
 Many universities offer capstone programs that give upper-level students the opportunity to demonstrate and synthesize the knowledge and experience that they have gained throughout their college career. These programs can exist in many different departments. Currently, there is not a dedicated system that allows universities to showcase these capstone programs on their website.
 
 The Archway software product will allow universities to create and edit customizable capstone project pages. Then, potential sponsors and other users will be able to search for capstones so they can express their interest in getting involved. Finally, sponsors will be able to collaborate with the university by proposing new project ideas for future capstone programs to work on.
 
-##### Problem Statement
+### Problem Statement
 
 The lack of a capstone management system affects both universities and sponsors. The impact of the problem is that universities are missing out on possible sponsorships by failing to showcase their capstone programs. A successful solution would include the creation of a capstone management system that allows universities to showcase capstone projects in a simple, easy to use website.
 
-##### Product Position Statement
+### Product Position Statement
 
 For universities with capstone programs that currently do not have a way to showcase capstone projects, Archway is a Capstone Management System that provides universities with a centralized and configurable software solution to get their capstone projects seen by sponsors. Unlike other systems which are geared more towards a single audience, our product benefits both universities and sponsors.
-
-
 
 ## User Descriptions
 
@@ -64,15 +54,13 @@ For universities with capstone programs that currently do not have a way to show
 
 *Admin* - Admins have complete control over the site. They can create, edit, and delete roles with varying permissions. They can assign roles to users. They can import new users. They can create, edit, and delete capstone projects and department pages.
 
-
-
 ## Product Overview
 
-##### Product Perspective
+### Product Perspective
 
 The Archway product is intended to be used by many universities as they see fit. Some universities may choose to use Archway as a standalone application, while others may choose to integrate it into their main website.
 
-##### Summary of Capabilities
+### Summary of Capabilities
 
 | Customer Benefit                                             | Supporting Feature                                           |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -81,48 +69,44 @@ The Archway product is intended to be used by many universities as they see fit.
 | Sponsors can propose project ideas.                          | Sponsors can submit a project proposal form that will then be reviewed by the relevant professors. |
 | Sponsors can contribute to projects that they are interested in. | Sponsors can browse capstone projects and choose to get involved by contacting the appropriate professor(s). |
 
-##### Assumptions and Dependencies
+### Assumptions and Dependencies
 
 * The Archway server will have the necessary ports open, and the necessary software installed to run Archway (Javascript, NodeJS, Strapi, MongoDB, Docker)
 * If the admin changes the default roles/permissions, the features in this vision document may not be the same.
 
-
-
 ## Product Features
 
-##### View and Search Capstones
+### View and Search Capstones
 
 Ability for all users to see capstones and filter capstone content on the search page
 
-##### New Sponsor Sign Up
+### New Sponsor Sign Up
 
 Ability for a potential sponsor to sign up so they can manage projects and project proposals
 
-##### Project Proposal
+### Project Proposal
 
 Ability for a signed in sponsor to request a project proposal
 
-##### Create Capstone
+### Create Capstone
 
 Ability for a professor or admin to create a capstone project Actors: Professor or admin
 
-##### Edit Capstone
+### Edit Capstone
 
 Ability for a participant in a capstone
 
-##### Import Users
+### Import Users
 
 Ability for an admin to add users
 
-##### User Complete Sign Up
+### User Complete Sign Up
 
 Ability for a new user to complete registration
 
-##### Change Dynamic Content
+### Change Dynamic Content
 
 Ability for an admin to change text, photos and dynamic content
-
-
 
 ## Constraints
 
@@ -136,19 +120,15 @@ A major constraint might be the customizability of Archway. While it would be ni
 
 *Usability* - Our goal is to make Archway user-friendly. The site navigation should feel natural and exploratory, and all forms should be clearly labeled and named appropriately.
 
-
-
 ## Precedence and Priority
 
 For this project, we are using the MoSCoW method of prioritization. Each user story is reported in our GitLab backlog and assigned either a Must, Should, Could, or Won't label. We will work on completing the user stories in this order as the sprints progress. As the project advances, we will continue to reevaluate the existing user stories and may decide to change their prioritization. Our goal is to finish all of the “must haves” and as many “should haves” and “could haves” as we can by the final presentation.
-
-
 
 ## Documentation Requirements
 
 All of the documentation for Archway, including this vision document, will be included in the team's GitLab wiki. The following documents will be included in the wiki:
 
-##### Guides
+### Guides
 
 * Installation Guide
 * Programmer Guide
@@ -158,13 +138,13 @@ All of the documentation for Archway, including this vision document, will be in
 * User Guide
 * Gitlab Review
 
-##### Design
+### Design
 
 * Wireframes
 * Brand and Logo
 * Roles and Permissions
 
-##### Software Engineering Documentation
+### Software Engineering Documentation
 
 * Planning Document
 * Database Design Diagrams
@@ -174,13 +154,11 @@ All of the documentation for Archway, including this vision document, will be in
 * Requirements Document
 * Old Documentation
 
-##### Other
+### Other
 
 * Project Team Contact Info
 * Milestone 1 Presentation
 * Final Presentation
-
-
 
 The final documentation for Archway will be in the FinalDocumentation folder in the root directory.
 
