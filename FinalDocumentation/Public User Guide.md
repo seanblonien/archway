@@ -1,10 +1,10 @@
-## Public User Guide
+# Public User Guide
 
 The purpose of this guide is to provide instructions on operations available to all unauthenticated users. This includes any person viewing the site who has not created or logged in to an account. This is the base level of functionality that all users, authenticated or not, will have on this application.
 
 
 
-### Contents within this guide:
+## Contents within this guide:
 
 1. Getting more information
 2. Viewing sponsors

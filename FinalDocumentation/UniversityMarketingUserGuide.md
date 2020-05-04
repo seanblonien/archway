@@ -1,5 +1,5 @@
 # Univeristy Marketing User Guide
-The purpose of this guide is to provide operations avaiable to university marketers. A University Marketer is defined as someone who wishes to change page content, images and colors. 
+The purpose of this guide is to provide operations available to university marketers. A University Marketer is defined as someone who wishes to change page content, images and colors. 
 
 ## Contents within this guide:
 1. Access your account
