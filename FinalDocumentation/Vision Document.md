@@ -188,168 +188,44 @@ The final documentation for Archway will be in the FinalDocumentation folder in 
 
 ## Team Responsibilities
 
-##### About Page
-
-* Sean Blonien
-
-##### All Departments Page
-
-* Katy Atchison
-
-##### API Controller
-
-* Sean Blonien
-
-##### Architecture Diagram
-
-* Katy Atchison
-
-##### Authentication
-
-* Sean Blonien
-* Caleb DeHaan
-
-##### Burndown Chart
-
-* Sean Blonien
-
-##### Code Standardization/Linting
-
-* Sean Blonien
-
-##### Configurable Styling/Theming
-
-* Katy Atchison (Strapi content types)
-* Sean Blonien (In-app solution)
-
-##### Create Capstone Page
-
-* Yunzhe Liu
-
-##### Dashboard Page
-
-* Sean Blonien
-
-##### Demo Data
-
-* Katy Atchison
-* Yunzhe Liu
-* Jack Titzman
-* Emily Tracey
-
-##### Docker Files
-
-* Sean Blonien
-
-##### Domain Diagrams
-
-* Yunzhe Liu
-
-##### Database Import/Export Scripts
-
-* Sean Blonien
-
-##### Email Verification
-
-* Caleb DeHaan
-
-##### FAQ Page
-
-* Emily Tracey
-
-##### Footer
-
-* Sean Blonien (Dynamic)
-* Caleb DeHaan (Design)
-
-##### Header
-
-* Sean Blonien (Dynamic)
-* Emily Tracey (Design)
-
-##### Home Page
-
-* Emily Tracey
-
-##### Import Users Page
-
-* Sean Blonien
-
-##### Installation Guide
-
-* Sean Blonien
-
-##### Login
-
-* Caleb DeHaan
-
-##### Markdown Editor
-
-* Sean Blonien
-
-##### Professor User Guide
-
-* Yunzhe Liu
-
-##### Profile Page (View and Edit)
-
-* Jack Titzman
-
-##### Programmer Guide
-
-* Sean Blonien
-
-##### Project Proposals (Create and Approve)
-
-* Emily Tracey
-
-##### Public User Guide
-
-* Katy Atchison
-
-##### Registration
-
-* Caleb DeHaan
-
-##### Role Based Access Control (RBAC)
-
-* Sean Blonien
-
-##### Routing
-
-* Sean Blonien
-
-##### Search Results Page (Search and Filter)
-
-* Jack Titzman
-
-##### Single Capstone Page
-
-* Katy Atchison
-
-##### Single Department Page
-
-* Katy Atchison (Design)
-* Emily Tracey (Edit Department)
-
-##### Single Sponsor Page
-
-* Katy Atchison (Design)
-* Emily Tracey (Edit Sponsor)
-
-##### Sponsor Landing Page
-
-* Katy Atchison
-
-##### Snackbar Notifications
-
-* Sean Blonien
-
-##### Student User Guide
-
-* Katy Atchison
-
-##### Vision Document
-
-* Jack Titzman
-
+|               Task               |    Sean Blonien    |    Jack Titzman    |   Katy Atchison    |    Caleb DeHaan    |     Yunzhe Liu     |    Emily Tracey    |
+| :------------------------------: | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: |
+|            About Page            | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|       All Departments Page       |                    |                    | :heavy_check_mark: |                    |                    |                    |
+|          API Controller          | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|       Architecture Diagram       |                    |                    | :heavy_check_mark: |                    |                    |                    |
+|          Authentication          | :heavy_check_mark: |                    |                    | :heavy_check_mark: |                    |                    |
+|          Burndown Chart          | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|   Code Standardization/Linting   | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|   Configurable Styling/Theming   | :heavy_check_mark: |                    | :heavy_check_mark: |                    |                    |                    |
+|       Create Capstone Page       |                    |                    |                    |                    | :heavy_check_mark: |                    |
+|          Dashboard Page          | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|            Demo Data             |                    | :heavy_check_mark: | :heavy_check_mark: |                    | :heavy_check_mark: | :heavy_check_mark: |
+|           Docker Files           | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|         Domain Diagrams          |                    |                    |                    |                    | :heavy_check_mark: |                    |
+|  Database Import/Export Scripts  | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|        Email Verification        |                    |                    |                    | :heavy_check_mark: |                    |                    |
+|             FAQ Page             |                    |                    |                    |                    |                    | :heavy_check_mark: |
+|              Footer              | :heavy_check_mark: |                    |                    | :heavy_check_mark: |                    |                    |
+|              Header              | :heavy_check_mark: |                    |                    |                    |                    | :heavy_check_mark: |
+|            Home Page             |                    |                    |                    |                    |                    | :heavy_check_mark: |
+|        Import Users Page         | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|        Installation Guide        | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|              Login               |                    |                    |                    | :heavy_check_mark: |                    |                    |
+|         Markdown Editor          | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|       Professor User Guide       |                    |                    |                    |                    | :heavy_check_mark: |                    |
+|           Profile Page           |                    | :heavy_check_mark: |                    |                    |                    |                    |
+|         Programmer Guide         | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|        Project Proposals         |                    |                    |                    |                    |                    | :heavy_check_mark: |
+|        Public User Guide         |                    |                    | :heavy_check_mark: |                    |                    |                    |
+|           Registration           |                    |                    |                    | :heavy_check_mark: |                    |                    |
+| Role Based Access Control (RBAC) | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|             Routing              | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|                A                 |                    | :heavy_check_mark: |                    |                    |                    |                    |
+|       Single Capstone Page       |                    |                    | :heavy_check_mark: |                    |                    |                    |
+|      Single Department Page      |                    |                    | :heavy_check_mark: |                    |                    | :heavy_check_mark: |
+|       Single Sponsor Page        |                    |                    | :heavy_check_mark: |                    |                    | :heavy_check_mark: |
+|       Sponsor Landing Page       |                    |                    | :heavy_check_mark: |                    |                    |                    |
+|      Snackbar Notifications      | :heavy_check_mark: |                    |                    |                    |                    |                    |
+|        Student User Guide        |                    |                    | :heavy_check_mark: |                    |                    |                    |
+|         Vision Document          |                    | :heavy_check_mark: |                    |                    |                    |                    |
