@@ -5,8 +5,8 @@ This document gives an overview of all of the different documentation pieces wit
 ## Developer Guides
 
 * [Installation Guide](InstallationGuide.md) <-- Running the project
-* [Programmer Guide](ProgrammerGuide.md)
-* [Gitlab Review](GitlabReview.md)
+* [Programmer Guide](ProgrammerGuide.md) <-- Programming tools and standards
+* [Gitlab Review](GitlabReview.md)  <-- How our Gitlab works
 * [Introduction to Docker](IntroductionToDocker.md)
 * [Docker Commands](DockerCommands.md)
 * [Gitlab Markdown Guide](https://docs.gitlab.com/ee/user/markdown.html)
@@ -19,3 +19,11 @@ This document gives an overview of all of the different documentation pieces wit
 * [Student](UserGuide-Student.md)
 * [Sponsor](UserGuide-Sponsor.md)
 * [University Marketing](UserGuide-UniversityMarketing.md)
+
+## Software Engineering Documentation
+
+* [Database Design Diagrams](DatabaseDesignDiagram.md)
+* [Glossary](Glossary.md)
+* [Use Cases](UseCases.md)
+* [Vision Document](VisionDocument.md)
+* [Requirements Document](Requirements Document
