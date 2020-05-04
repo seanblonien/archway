@@ -1,1 +1,3 @@
-![Architecture Diagram](/Users/katy_atch/Dropbox/A- Spring 2020/Capstone/Documentation/CapstoneArchitectureUpdated.png)
+# Architecture Diagram
+
+![Architecture Diagram](./images/ArchitectureDiagram.png)
