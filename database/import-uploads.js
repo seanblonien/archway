@@ -29,7 +29,7 @@ const ARGV_REQUIRED_LENGTH = 3;
     // Copy the local uploads zip to the Strapi container
     await execShellCommand(...parseCmdAndArgs(`docker cp ${filename} strapi:/uploads.zip`));
     // Unzip the uploads
-    await execShellCommand(...parseCmdAndArgs('docker exec strapi unzip /uploads.zip -d /'));
+    await execShellCommand(...parseCmdAndArgs('docker exec strapi unzip -o /uploads.zip -d /'));
 
     console.log('\nUploads import successful!');
     process.exit(s.successCode);
