@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sponsors",
+  "info": {
+    "name": "sponsors",
+    "description": "Describes a Sponsor for a Capstone Project"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "capstones": {
+      "collection": "capstones",
+      "via": "sponsors"
+    },
+    "url": {
+      "type": "string"
+    },
+    "logo": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "thumbnail": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "description": {
+      "type": "richtext",
+      "required": false,
+      "maxLength": 10000
+    },
+    "preview": {
+      "type": "string"
+    },
+    "isFeatured": {
+      "type": "boolean"
+    },
+    "cover": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "proposals": {
+      "collection": "proposals",
+      "via": "sponsors"
+    },
+    "personnel": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "sponsorOrganization"
+    },
+    "isVerified": {
+      "type": "boolean"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "kind": "collectionType",
+  "collectionName": "posts",
+  "info": {
+    "name": "proposals",
+    "description": "Describes a proposal made by a sponsor"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "projectTitle": {
+      "type": "string",
+      "unique": false,
+      "default": "New Proposal"
+    },
+    "phone": {
+      "type": "string",
+      "unique": false
+    },
+    "isIntellectualPropertyRequired": {
+      "type": "boolean"
+    },
+    "isNondisclosureRequired": {
+      "type": "boolean"
+    },
+    "dateSubmitted": {
+      "type": "date",
+      "unique": false
+    },
+    "creator": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "departments": {
+      "collection": "departments",
+      "via": "proposals"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "notSubmitted",
+        "submittedPending",
+        "submittedApproved",
+        "submittedDenied"
+      ],
+      "default": "notSubmitted"
+    },
+    "dateApproved": {
+      "type": "date"
+    },
+    "projectUse": {
+      "type": "richtext"
+    },
+    "financialSupport": {
+      "type": "richtext"
+    },
+    "projectDeliverables": {
+      "type": "richtext"
+    },
+    "projectDescription": {
+      "type": "richtext"
+    },
+    "email": {
+      "type": "email"
+    },
+    "sponsors": {
+      "via": "proposals",
+      "collection": "sponsors",
+      "dominant": true
+    }
+  }
+}

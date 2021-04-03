@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "departments",
+  "info": {
+    "name": "departments",
+    "description": "Describes a Department"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "capstones": {
+      "collection": "capstones",
+      "via": "departments",
+      "dominant": true
+    },
+    "url": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "description": {
+      "type": "richtext",
+      "default": "10000"
+    },
+    "thumbnail": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "proposals": {
+      "via": "departments",
+      "collection": "proposals",
+      "dominant": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "preview": {
+      "type": "string"
+    },
+    "cover": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "professors": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "professorDepartment"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "singleType",
+  "collectionName": "header_footers",
+  "info": {
+    "name": "header-footer"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "headerLinks": {
+      "type": "json"
+    },
+    "footerLinks": {
+      "type": "json"
+    }
+  }
+}

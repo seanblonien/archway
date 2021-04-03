@@ -41,6 +41,8 @@ services:
     # Join the network used for back-end intercommunication (between Strapi and database)
     networks:
       - backend
+    volumes:
+      - ./strapi/app:/srv/app
 
   # Run configuration for the app front end
   app:

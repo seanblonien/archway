@@ -1,0 +1,17 @@
+{
+  "kind": "singleType",
+  "collectionName": "proposal_approvals",
+  "info": {
+    "name": "proposal approval"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "canApprove": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

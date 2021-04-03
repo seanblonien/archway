@@ -1,0 +1,48 @@
+{
+  "kind": "singleType",
+  "collectionName": "themes",
+  "info": {
+    "name": "theme"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "primaryColor": {
+      "type": "string"
+    },
+    "secondaryColor": {
+      "type": "string"
+    },
+    "backgroundColor": {
+      "type": "string"
+    },
+    "errorColor": {
+      "type": "string"
+    },
+    "activeColor": {
+      "type": "string"
+    },
+    "hoverColor": {
+      "type": "string"
+    },
+    "selectedColor": {
+      "type": "string"
+    },
+    "universityName": {
+      "type": "string"
+    },
+    "logo": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/proposal-approval",
+      "handler": "proposal-approval.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/proposal-approval",
+      "handler": "proposal-approval.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/proposal-approval",
+      "handler": "proposal-approval.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

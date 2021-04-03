@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "sponsor_pages",
+  "info": {
+    "name": "sponsor page"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "leftcolumn": {
+      "type": "richtext"
+    },
+    "rightcolumn": {
+      "type": "richtext"
+    },
+    "bgimage": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "main_paragraph": {
+      "type": "richtext"
+    }
+  }
+}

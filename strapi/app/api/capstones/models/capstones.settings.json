@@ -1,0 +1,88 @@
+{
+  "kind": "collectionType",
+  "collectionName": "capstones",
+  "info": {
+    "name": "capstones",
+    "description": "Describes a Capstone Project"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "endDate": {
+      "type": "date",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": false,
+      "maxLength": 10000
+    },
+    "preview": {
+      "type": "string"
+    },
+    "cover": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "media": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "sponsors": {
+      "via": "capstones",
+      "collection": "sponsors",
+      "dominant": true
+    },
+    "students": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "studentCapstones",
+      "dominant": true
+    },
+    "thumbnail": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "departments": {
+      "via": "capstones",
+      "collection": "departments"
+    },
+    "course": {
+      "type": "string"
+    },
+    "isFinishedEditing": {
+      "type": "boolean",
+      "default": false,
+      "required": false
+    },
+    "professors": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "professorCapstones",
+      "dominant": true
+    },
+    "semester": {
+      "type": "string"
+    }
+  }
+}
